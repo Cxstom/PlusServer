@@ -60,6 +60,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             }
 
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_AvatarLooks", 1);
+            Session.SendMessage(new AvatarAspectUpdateMessageComposer(Look, Gender));
             if (Session.GetHabbo().Look.Contains("ha-1006"))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.WEAR_HAT);
 

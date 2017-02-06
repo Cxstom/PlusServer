@@ -2,6 +2,8 @@
 {
     public static class ServerPacketHeader
     {
+
+        public const int AvatarAspectUpdateMessageComposer = 1208;//TODO
         public const int UnknownGroupMessageComposer = 1981;
         public const int QuestionParserMessageComposer = 1719;
         public const int CatalogItemDiscountMessageComposer = 3322;//3944
