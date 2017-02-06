@@ -32,6 +32,8 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
                 }
                 base.WriteInteger(0);
                 base.WriteBoolean(false);
+                base.WriteBoolean(false);// TODO: Figure out
+                base.WriteString("");//previewImage -> e.g; catalogue/pet_lion.png
             }
 
             base.WriteInteger(1);//Count

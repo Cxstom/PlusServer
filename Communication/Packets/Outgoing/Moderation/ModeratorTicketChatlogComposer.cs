@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Support;
+using Plus.Utilities;
 
 namespace Plus.Communication.Packets.Outgoing.Moderation
 {
@@ -21,10 +22,10 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
 
             base.WriteByte(1);
             base.WriteShort(2);//Count
-           base.WriteString("roomName");
+            base.WriteString("roomName");
             base.WriteByte(2);
-           base.WriteString(RoomData.Name);
-           base.WriteString("roomId");
+            base.WriteString(RoomData.Name);
+            base.WriteString("roomId");
             base.WriteByte(1);
             base.WriteInteger(RoomData.Id);
 
@@ -33,10 +34,10 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
             {
                 Habbo Habbo = PlusEnvironment.GetHabboById(Ticket.ReportedId);
 
-                base.WriteInteger(((int)PlusEnvironment.GetUnixTimestamp() - Convert.ToInt32(Timestamp)) * 1000);
+                base.WriteString(UnixTimestamp.FromUnixTimestamp(Timestamp).ToShortTimeString());
                 base.WriteInteger(Ticket.ReportedId);
-               base.WriteString(Habbo != null ? Habbo.Username : "No username");
-               base.WriteString(Chat);
+                base.WriteString(Habbo != null ? Habbo.Username : "No username");
+                base.WriteString(Chat);
                 base.WriteBoolean(false);
             }
         }

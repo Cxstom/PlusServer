@@ -8,6 +8,7 @@ using Plus.HabboHotel.Users;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Cache;
+using Plus.Utilities;
 
 namespace Plus.Communication.Packets.Outgoing.Moderation
 {
@@ -17,7 +18,7 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
             : base(ServerPacketHeader.ModeratorUserChatlogMessageComposer)
         {
             base.WriteInteger(UserId);
-           base.WriteString(PlusEnvironment.GetGame().GetClientManager().GetNameById(UserId));
+            base.WriteString(PlusEnvironment.GetGame().GetClientManager().GetNameById(UserId));
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT room_id,entry_timestamp,exit_timestamp FROM user_roomvisits WHERE `user_id` = " + UserId + " ORDER BY entry_timestamp DESC LIMIT 5");
@@ -37,10 +38,10 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
 
                         base.WriteByte(1);
                         base.WriteShort(2);//Count
-                       base.WriteString("roomName");
+                        base.WriteString("roomName");
                         base.WriteByte(2);
-                       base.WriteString(RoomName); // room name
-                       base.WriteString("roomId");
+                        base.WriteString(RoomName); // room name
+                        base.WriteString("roomId");
                         base.WriteByte(1);
                         base.WriteInteger(Convert.ToInt32(Visit["room_id"]));
 
@@ -63,10 +64,10 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
                                 if (Habbo == null)
                                     continue;
 
-                                base.WriteInteger(((int)PlusEnvironment.GetUnixTimestamp() - Convert.ToInt32(Log["timestamp"])) * 1000);
+                                base.WriteString(UnixTimestamp.FromUnixTimestamp(Convert.ToInt32(Log["timestamp"])).ToShortTimeString());
                                 base.WriteInteger(Habbo.Id);
-                               base.WriteString(Habbo.Username);
-                               base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Log["message"])) ? "*user sent a blank message*" : Convert.ToString(Log["message"]));
+                                base.WriteString(Habbo.Username);
+                                base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Log["message"])) ? "*user sent a blank message*" : Convert.ToString(Log["message"]));
                                 base.WriteBoolean(false);
                             }
                         }
