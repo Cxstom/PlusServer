@@ -24,12 +24,12 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
                 base.WriteInteger(ticket.Score);
                 base.WriteInteger(0);
                 base.WriteInteger(ticket.SenderId);
-               base.WriteString(ticket.SenderName);
+                base.WriteString(ticket.SenderName);
                 base.WriteInteger(ticket.ReportedId);
-               base.WriteString(ticket.ReportedName);
+                base.WriteString(ticket.ReportedName);
                 base.WriteInteger((ticket.Status == TicketStatus.PICKED) ? ticket.ModeratorId : 0);
-               base.WriteString(ticket.ModName);
-               base.WriteString(ticket.Message);
+                base.WriteString(ticket.ModName);
+                base.WriteString(ticket.Message);
                 base.WriteInteger(0);
                 base.WriteInteger(0);
             }
@@ -37,26 +37,32 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
             base.WriteInteger(UserPresets.Count);
             foreach (string pre in UserPresets)
             {
-               base.WriteString(pre);
+                base.WriteString(pre);
             }
 
-            base.WriteInteger(UserActionPresets.Count);
+            /*base.WriteInteger(UserActionPresets.Count);
             foreach (KeyValuePair<string, List<ModerationPresetActionMessages>> Cat in UserActionPresets.ToList())
             {
-               base.WriteString(Cat.Key);
+                base.WriteString(Cat.Key);
                 base.WriteBoolean(true);
                 base.WriteInteger(Cat.Value.Count);
                 foreach (ModerationPresetActionMessages Preset in Cat.Value.ToList())
                 {
-                   base.WriteString(Preset.Caption);
-                   base.WriteString(Preset.MessageText);
+                    base.WriteString(Preset.Caption);
+                    base.WriteString(Preset.MessageText);
                     base.WriteInteger(Preset.BanTime); // Account Ban Hours
                     base.WriteInteger(Preset.IPBanTime); // IP Ban Hours
                     base.WriteInteger(Preset.MuteTime); // Mute in Hours
                     base.WriteInteger(0);//Trading lock duration
-                   base.WriteString(Preset.Notice + "\n\nPlease Note: Avatar ban is an IP ban!");
+                    base.WriteString(Preset.Notice + "\n\nPlease Note: Avatar ban is an IP ban!");
                     base.WriteBoolean(false);//Show HabboWay
                 }
+            }*/
+
+            // TODO: Figure out
+            base.WriteInteger(0);
+            {
+                //Loop a string.
             }
 
             base.WriteBoolean(true); // Ticket right
@@ -70,7 +76,7 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
             base.WriteInteger(RoomPresets.Count);
             foreach (string pre in RoomPresets)
             {
-               base.WriteString(pre);
+                base.WriteString(pre);
             }
         }
     }

@@ -13,6 +13,7 @@ namespace Plus.Communication.Packets.Outgoing.Handshake
         {
             base.WriteBoolean(true);
             base.WriteBoolean(false);
+            base.WriteBoolean(true);
         }
     }
 }

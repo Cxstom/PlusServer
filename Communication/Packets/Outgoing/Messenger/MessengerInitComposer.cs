@@ -17,7 +17,6 @@ namespace Plus.Communication.Packets.Outgoing.Messenger
             base.WriteInteger(PlusStaticGameSettings.MessengerFriendLimit);//Friends max.
             base.WriteInteger(300);
             base.WriteInteger(800);
-            base.WriteInteger(1100);
             base.WriteInteger(0); // category count
         }
     }
