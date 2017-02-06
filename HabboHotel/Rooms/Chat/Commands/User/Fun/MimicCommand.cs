@@ -7,7 +7,7 @@ using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.GameClients;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Database.Interfaces;
-
+using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 
 namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
 {
@@ -71,7 +71,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
             if (User != null)
             {
-                Session.SendMessage(new AvatarAspectUpdateMessageComposer(Session.GetHabbo().Look, Session.GetHabbo().Gender));
+                Session.SendMessage(new AvatarAspectUpdateComposer(Session.GetHabbo().Look, Session.GetHabbo().Gender));
                 Session.SendMessage(new UserChangeComposer(User, true));
                 Room.SendMessage(new UserChangeComposer(User, false));
             }
