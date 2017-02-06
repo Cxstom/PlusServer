@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Users
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE users SET look = @look, gender = @gender WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `users` SET `look` = @look, `gender` = @gender WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
                 dbClient.AddParameter("look", Look);
                 dbClient.AddParameter("gender", Gender);
                 dbClient.RunQuery();
