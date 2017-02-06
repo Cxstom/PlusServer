@@ -13,6 +13,10 @@ namespace Plus.Communication.Packets.Incoming.Handshake
             if (Session == null || Session.RC4Client == null || Session.GetHabbo() != null)
                 return;
 
+            string SSO = Packet.PopString();
+            if (string.IsNullOrEmpty(SSO) || SSO.Length < 15)
+                return;
+
             Session.TryAuthenticate(Packet.PopString());
         }
     }
