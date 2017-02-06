@@ -71,6 +71,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
             if (User != null)
             {
+                Session.SendMessage(new AvatarAspectUpdateMessageComposer(Session.GetHabbo().Look, Session.GetHabbo().Gender));
                 Session.SendMessage(new UserChangeComposer(User, true));
                 Room.SendMessage(new UserChangeComposer(User, false));
             }
