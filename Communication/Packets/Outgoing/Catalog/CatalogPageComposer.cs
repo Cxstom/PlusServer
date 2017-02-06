@@ -4,7 +4,6 @@ using System.Linq;
 using Plus.Core;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Catalog;
-using Plus.HabboHotel.Items.Utilities;
 using Plus.HabboHotel.Catalog.Utilities;
 
 namespace Plus.Communication.Packets.Outgoing.Catalog
@@ -127,6 +126,17 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
                 base.WriteInteger(0);
             base.WriteInteger(-1);
             base.WriteBoolean(false);
+
+            base.WriteInteger(PlusEnvironment.GetGame().GetCatalog().GetPromotions().ToList().Count);//Count
+            foreach (CatalogPromotion Promotion in PlusEnvironment.GetGame().GetCatalog().GetPromotions().ToList())
+            {
+                base.WriteInteger(Promotion.Id);
+                base.WriteString(Promotion.Title);
+                base.WriteString(Promotion.Image);
+                base.WriteInteger(Promotion.Unknown);
+                base.WriteString(Promotion.PageLink);
+                base.WriteInteger(Promotion.ParentId);
+            }
         }
     }
 }

@@ -11,24 +11,31 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
         {
             WriteRootIndex(Session, Pages);
 
-            foreach (CatalogPage Page in Pages)
+            foreach (CatalogPage Parent in Pages)
             {
-                if (Page.ParentId != -1 || Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
+                if (Parent.ParentId != -1 || Parent.MinimumRank > Session.GetHabbo().Rank || (Parent.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
                     continue;
 
-                WritePage(Page, CalcTreeSize(Session, Pages, Page.Id));
+                WritePage(Parent, CalcTreeSize(Session, Pages, Parent.Id));
 
-                foreach (CatalogPage child in Pages)
+                foreach (CatalogPage Child in Pages)
                 {
-                    if (child.ParentId != Page.Id || Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
+                    if (Child.ParentId != Parent.Id || Child.MinimumRank > Session.GetHabbo().Rank || (Child.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
                         continue;
 
-                    WritePage(child, 0);
+                    WritePage(Child, CalcTreeSize(Session, Pages, Child.Id));
+                    foreach (CatalogPage SubChild in Pages)
+                    {
+                        if (SubChild.ParentId != Child.Id || SubChild.MinimumRank > Session.GetHabbo().Rank)
+                            continue;
+
+                        WritePage(SubChild, 0);
+                    }
                 }
             }
 
             base.WriteBoolean(false);
-           base.WriteString("NORMAL");
+            base.WriteString("NORMAL");
         }
 
         public void WriteRootIndex(GameClient Session, ICollection<CatalogPage> Pages)
@@ -36,8 +43,8 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             base.WriteBoolean(true);
             base.WriteInteger(0);
             base.WriteInteger(-1);
-           base.WriteString("root");
-           base.WriteString(string.Empty);
+            base.WriteString("root");
+            base.WriteString(string.Empty);
             base.WriteInteger(0);
             base.WriteInteger(CalcTreeSize(Session, Pages, -1));
         }
@@ -47,8 +54,8 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             base.WriteBoolean(Page.Visible);
             base.WriteInteger(Page.Icon);
             base.WriteInteger(Page.Id);
-           base.WriteString(Page.PageLink);
-           base.WriteString(Page.Caption);
+            base.WriteString(Page.PageLink);
+            base.WriteString(Page.Caption);
 
             base.WriteInteger(Page.ItemOffers.Count);
             foreach (int i in Page.ItemOffers.Keys)
@@ -64,7 +71,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             int i = 0;
             foreach (CatalogPage Page in Pages)
             {
-                if (Page.MinimumRank > Session.GetHabbo().Rank|| (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1) || Page.ParentId != ParentId)
+                if (Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1) || Page.ParentId != ParentId)
                     continue;
 
                 if (Page.ParentId == ParentId)
