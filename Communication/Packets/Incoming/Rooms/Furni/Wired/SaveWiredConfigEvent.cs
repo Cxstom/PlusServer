@@ -20,13 +20,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Wired
             if (!Session.GetHabbo().InRoom)
                 return;
 
+            Room Room = Session.GetHabbo().CurrentRoom;
+            if (Room == null || Room.CheckRights(Session, false, true))
+                return;
+
             int ItemId = Packet.PopInt();
 
             Session.SendMessage(new HideWiredConfigComposer());
-
-            Room Room = Session.GetHabbo().CurrentRoom;
-            if (Room == null)
-                return;
 
             Item SelectedItem = Room.GetRoomItemHandler().GetItem(ItemId);
             if (SelectedItem == null)
