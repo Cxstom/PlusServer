@@ -511,6 +511,7 @@
     <Compile Include="Communication\Packets\Outgoing\Rooms\AI\Pets\PetInformationComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\AI\Pets\PetTrainingPanelComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\ActionComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\AvatarAspectUpdateComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\AvatarEffectComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\CarryObjectComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\DanceComposer.cs" />

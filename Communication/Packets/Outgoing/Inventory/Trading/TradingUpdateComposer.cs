@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
                 foreach (Item Item in User.OfferedItems.ToList())
                 {
                     base.WriteInteger(Item.Id);
-                   base.WriteString(Item.GetBaseItem().Type.ToString().ToLower());
+                    base.WriteString(Item.GetBaseItem().Type.ToString().ToLower());
                     base.WriteInteger(Item.Id);
                     base.WriteInteger(Item.Data.SpriteId);
                     base.WriteInteger(0);//Not sure.
@@ -29,7 +29,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
                     {
                         base.WriteBoolean(false);//Stackable
                         base.WriteInteger(256);
-                       base.WriteString("");
+                        base.WriteString("");
                         base.WriteInteger(Item.LimitedNo);
                         base.WriteInteger(Item.LimitedTot);
                     }
@@ -37,7 +37,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
                     {
                         base.WriteBoolean(true);//Stackable
                         base.WriteInteger(0);
-                       base.WriteString("");
+                        base.WriteString("");
                     }
 
                     base.WriteInteger(0);
@@ -46,6 +46,9 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
 
                     if (Item.GetBaseItem().Type == 's')
                         base.WriteInteger(0);
+
+                    base.WriteInteger(User.OfferedItems.Count);
+                    base.WriteInteger(0);//Total Value
                 }
             }
         }
