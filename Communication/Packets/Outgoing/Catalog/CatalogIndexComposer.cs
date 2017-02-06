@@ -20,7 +20,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 
                 foreach (CatalogPage child in Pages)
                 {
-                    if (child.ParentId != Page.Id || Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
+                    if (child.ParentId != child.Id || child.MinimumRank > Session.GetHabbo().Rank || (child.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
                         continue;
 
                     WritePage(child, 0);
