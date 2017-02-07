@@ -36,8 +36,7 @@ namespace Plus.HabboHotel
     public class Game
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Game");
-
-        private readonly GroupForumManager _groupForumManager;
+        
         private readonly PacketManager _packetManager;
         private readonly GameClientManager _clientManager;
         private readonly ModerationManager _modManager;
@@ -75,7 +74,6 @@ namespace Plus.HabboHotel
             this._clientManager = new GameClientManager();
             this._modManager = new ModerationManager();
             this._moderationTool = new ModerationTool();
-            this._groupForumManager = new GroupForumManager();
             this._itemDataManager = new ItemDataManager();
             this._itemDataManager.Init();
 
@@ -217,16 +215,12 @@ namespace Plus.HabboHotel
         {
             return _groupManager;
         }
-
-        public GroupForumManager GetGroupForumManager()
-        {
-            return _groupForumManager;
-        }
-
+        
         public LandingViewManager GetLandingManager()
         {
             return _landingViewManager;
         }
+
         public TelevisionManager GetTelevisionManager()
         {
             return _televisionManager;
