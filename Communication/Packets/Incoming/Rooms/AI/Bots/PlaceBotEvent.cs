@@ -61,7 +61,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
             //TODO: Hmm, maybe not????
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `bots` SET `room_id` = '" + Room.RoomId + "', `x` = @CoordX, `y` = @CoordY WHERE `id` = @BotId LIMIT 1");
+                dbClient.SetQuery("UPDATE `bots` SET `room_id` = @roomId, `x` = @CoordX, `y` = @CoordY WHERE `id` = @BotId LIMIT 1");
+                dbClient.AddParameter("roomId", Room.RoomId);
                 dbClient.AddParameter("BotId", Bot.Id);
                 dbClient.AddParameter("CoordX", X);
                 dbClient.AddParameter("CoordY", Y);

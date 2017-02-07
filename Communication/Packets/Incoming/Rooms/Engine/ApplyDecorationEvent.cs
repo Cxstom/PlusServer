@@ -78,11 +78,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `rooms` SET " + DecorationKey + " = @extradata WHERE `id` = '" + Room.RoomId + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `rooms` SET `" + DecorationKey + "` = @extradata WHERE `id` = '" + Room.RoomId + "' LIMIT 1");
                 dbClient.AddParameter("extradata", Item.ExtraData);
                 dbClient.RunQuery();
 
-                dbClient.RunQuery("DELETE FROM items WHERE id=" + Item.Id + " LIMIT 1");
+                dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Item.Id + "' LIMIT 1");
             }
 
             Session.GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
