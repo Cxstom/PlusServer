@@ -23,11 +23,6 @@ namespace Plus
         public const int UserCreditsUpdateTimer = 15;
 
         /// <summary>
-        ///     The time a user will have to wait for Diamonds update in minutes
-        /// </summary>
-        public const int UserDiamondsUpdateAmount = 1;
-
-        /// <summary>
         ///     The maximum amount of furniture that can be placed in a room.
         /// </summary>
         public const int RoomFurnitureLimit = 7500;

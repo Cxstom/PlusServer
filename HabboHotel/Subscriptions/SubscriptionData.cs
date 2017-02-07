@@ -14,9 +14,8 @@ namespace Plus.HabboHotel.Subscriptions
         public int Credits { get; set; }
         public int Duckets { get; set; }
         public int Respects { get; set; }
-        public int Diamonds { get; set; }
 
-        public SubscriptionData(int Id, string Name, string Badge, int Credits, int Duckets, int Respects, int Diamonds)
+        public SubscriptionData(int Id, string Name, string Badge, int Credits, int Duckets, int Respects)
         {
             this.Id = Id;
             this.Name = Name;
@@ -24,7 +23,6 @@ namespace Plus.HabboHotel.Subscriptions
             this.Credits = Credits;
             this.Duckets = Duckets;
             this.Respects = Respects;
-            this.Diamonds = Diamonds;
         }
     }
 }
