@@ -143,6 +143,7 @@
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\GetForumStatsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\GetThreadDataEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\GetThreadListDataEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\PostGroupContentEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\UpdateForumReadMarkerEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\UpdateForumSettingsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GroupForums\UpdateForumThreadStatusEvent.cs" />

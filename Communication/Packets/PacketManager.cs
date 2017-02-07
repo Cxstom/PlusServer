@@ -33,6 +33,8 @@ using Plus.Communication.Packets.Incoming.Inventory.Pets;
 using Plus.Communication.Packets.Incoming.LandingView;
 using Plus.Communication.Packets.Incoming.Messenger;
 using Plus.Communication.Packets.Incoming.Groups;
+
+
 using Plus.Communication.Packets.Incoming.Rooms.Settings;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Pets;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Bots;
@@ -457,6 +459,16 @@ namespace Plus.Communication.Packets
 
         private void RegisterGroups()
         {
+            this._incomingPackets.Add(ClientPacketHeader.GetForumsListDataMessageEvent, new GetForumsListDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetForumStatsMessageEvent, new GetForumStatsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetThreadsListDataMessageEvent, new GetThreadsListDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetThreadDataMessageEvent, new GetThreadDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.PostGroupContentMessageEvent, new PostGroupContentEvent());
+            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupThreadMessageEvent, new DeleteGroupThreadEvent());
+            //this._incomingPackets.Add(ClientPacketHeader.UpdateForumReadMarkerMessageEvent, new UpdateForumReadMarkerEvent());
+            this._incomingPackets.Add(ClientPacketHeader.UpdateForumSettingsMessageEvent, new UpdateForumSettingsEvent());
+           // this._incomingPackets.Add(ClientPacketHeader.UpdateForumThreadStatusMessageEvent, new UpdateForumThreadStatusEvent());
+            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupPostMessageEvent, new DeleteGroupPostEvent());
             this._incomingPackets.Add(ClientPacketHeader.JoinGroupMessageEvent, new JoinGroupEvent());
             this._incomingPackets.Add(ClientPacketHeader.RemoveGroupFavouriteMessageEvent, new RemoveGroupFavouriteEvent());
             this._incomingPackets.Add(ClientPacketHeader.SetGroupFavouriteMessageEvent, new SetGroupFavouriteEvent());
