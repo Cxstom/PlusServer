@@ -17,7 +17,7 @@ namespace Plus.Communication.Packets.Incoming.Handshake
             if (string.IsNullOrEmpty(SSO) || SSO.Length < 15)
                 return;
 
-            Session.TryAuthenticate(Packet.PopString());
+            Session.TryAuthenticate(SSO);
         }
     }
 }
