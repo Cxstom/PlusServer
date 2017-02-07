@@ -260,7 +260,7 @@ namespace Plus
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `username` FROM `users` WHERE id = @id LIMIT 1");
+                dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @id LIMIT 1");
                 dbClient.AddParameter("id", UserId);
                 Name = dbClient.getString();
             }
@@ -354,7 +354,7 @@ namespace Plus
             using (IQueryAdapter dbClient = _manager.GetQueryReactor())
             {
                 dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
-                dbClient.RunQuery("UPDATE `users` SET online = '0', `auth_ticket` = NULL");
+                dbClient.RunQuery("UPDATE `users` SET `online` = '0', `auth_ticket` = NULL");
                 dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0'");
                 dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
             }
