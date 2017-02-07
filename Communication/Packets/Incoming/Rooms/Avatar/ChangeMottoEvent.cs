@@ -54,7 +54,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `users` SET `motto` = @motto WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `users` SET `motto` = @motto WHERE `id` = @userId LIMIT 1");
+                dbClient.AddParameter("userId", Session.GetHabbo().Id);
                 dbClient.AddParameter("motto", newMotto);
                 dbClient.RunQuery();
             }

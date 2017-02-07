@@ -42,7 +42,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             DataRow Data = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `base_id`,`extra_data` FROM `user_presents` WHERE `item_id` = '" + Present.Id + "' LIMIT 1");
+                dbClient.SetQuery("SELECT `base_id`,`extra_data` FROM `user_presents` WHERE `item_id` = @presentId LIMIT 1");
+                dbClient.AddParameter("presentId", Present.Id);
                 Data = dbClient.getRow();
             }
 
@@ -135,7 +136,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("UPDATE `items` SET `base_item` = @BaseItem, `extra_data` = @edata WHERE `id` = " + Present.Id + " LIMIT 1");
+                    dbClient.SetQuery("UPDATE `items` SET `base_item` = @BaseItem, `extra_data` = @edata WHERE `id` = @itemId LIMIT 1");
+                    dbClient.AddParameter("itemId", Present.Id);
                     dbClient.AddParameter("BaseItem", Row["base_id"]);
                     dbClient.AddParameter("edata", Row["extra_data"]);
                     dbClient.RunQuery();
@@ -153,7 +155,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     {
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.RunQuery("UPDATE `items` SET `room_id` = '0' WHERE `id` = " + Present.Id + " LIMIT 1");
+                            dbClient.SetQuery("UPDATE `items` SET `room_id` = '0' WHERE `id` = @itemId LIMIT 1");
+                            dbClient.AddParameter("itemId", Present.Id);
+                            dbClient.RunQuery();
                         }
 
                         ItemIsInRoom = false;
@@ -163,7 +167,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                 {
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
-                        dbClient.RunQuery("UPDATE `items` SET `room_id` = '0' WHERE `id` = " + Present.Id + " LIMIT 1");
+                        dbClient.SetQuery("UPDATE `items` SET `room_id` = '0' WHERE `id` = @itemId LIMIT 1");
+                        dbClient.AddParameter("itemId", Present.Id);
+                        dbClient.RunQuery();
                     }
 
                     ItemIsInRoom = false;

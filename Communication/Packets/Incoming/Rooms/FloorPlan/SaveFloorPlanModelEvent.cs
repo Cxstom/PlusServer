@@ -144,7 +144,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
                     dbClient.RunQuery();
                 }
 
-                dbClient.SetQuery("UPDATE `rooms` SET `model_name` = @ModelName, `wallthick` = @WallThick, `floorthick` = @FloorThick WHERE `id` = '" + Room.Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `rooms` SET `model_name` = @ModelName, `wallthick` = @WallThick, `floorthick` = @FloorThick WHERE `id` = @roomId LIMIT 1");
+                dbClient.AddParameter("roomId", Room.Id);
                 dbClient.AddParameter("ModelName", "model_bc_" + Room.Id);
                 dbClient.AddParameter("WallThick", WallThick);
                 dbClient.AddParameter("FloorThick", FloorThick);
