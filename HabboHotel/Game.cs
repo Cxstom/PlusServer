@@ -11,11 +11,13 @@ using Plus.HabboHotel.Items.Televisions;
 using Plus.HabboHotel.Navigator;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Groups;
+using Plus.HabboHotel.Groups.Forums;
+
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.LandingView;
 using Plus.HabboHotel.Global;
-using Plus.HabboHotel.Groups.Forums;
+
 using Plus.HabboHotel.Games;
 
 using Plus.HabboHotel.Rooms.Chat;
@@ -35,6 +37,7 @@ namespace Plus.HabboHotel
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Game");
 
+        private readonly GroupForumManager _groupForumManager;
         private readonly PacketManager _packetManager;
         private readonly GameClientManager _clientManager;
         private readonly ModerationManager _modManager;
@@ -60,7 +63,6 @@ namespace Plus.HabboHotel
         private readonly BadgeManager _badgeManager;
         private readonly PermissionManager _permissionManager;
         private readonly SubscriptionManager _subscriptionManager;
-        private readonly GroupForumManager _groupForumManager;
 
         private bool _cycleEnded;
         private bool _cycleActive;
@@ -73,7 +75,7 @@ namespace Plus.HabboHotel
             this._clientManager = new GameClientManager();
             this._modManager = new ModerationManager();
             this._moderationTool = new ModerationTool();
-
+            this._groupForumManager = new GroupForumManager();
             this._itemDataManager = new ItemDataManager();
             this._itemDataManager.Init();
 
@@ -85,7 +87,7 @@ namespace Plus.HabboHotel
             this._navigatorManager = new NavigatorManager();
             this._roomManager = new RoomManager();
             this._chatManager = new ChatManager();
-            this._groupForumManager = new GroupForumManager();
+            this._groupManager = new GroupManager();
             this._questManager = new QuestManager();
             this._achievementManager = new AchievementManager();
             this._talentTrackManager = new TalentTrackManager();
