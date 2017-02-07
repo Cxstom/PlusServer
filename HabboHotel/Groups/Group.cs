@@ -20,12 +20,12 @@ namespace Plus.HabboHotel.Groups
         public int Colour2 { get; set; }
         public bool ForumEnabled { get; set; }
         public GroupType GroupType { get; set; }
-
+        public bool HasForum;
         private List<int> _members;
         private List<int> _requests;
         private List<int> _administrators;
-        
-        public Group(int Id, string Name, string Description, string Badge, int RoomId, int Owner, int Time, int Type, int Colour1, int Colour2, int AdminOnlyDeco)
+
+        public Group(int Id, string Name, string Description, string Badge, int RoomId, int Owner, int Time, int Type, int Colour1, int Colour2, int AdminOnlyDeco, bool HasForum)
         {
             this.Id = Id;
             this.Name = Name;
@@ -36,6 +36,7 @@ namespace Plus.HabboHotel.Groups
             this.CreatorId = Owner;
             this.Colour1 = (Colour1 == 0) ? 1 : Colour1;
             this.Colour2 = (Colour2 == 0) ? 1 : Colour2;
+            this.HasForum = HasForum;
 
             switch (Type)
             {
@@ -99,7 +100,7 @@ namespace Plus.HabboHotel.Groups
                     foreach (DataRow Row in GetRequests.Rows)
                     {
                         int UserId = Convert.ToInt32(Row["user_id"]);
-                        
+
                         if (this._members.Contains(UserId) || this._administrators.Contains(UserId))
                         {
                             dbClient.RunQuery("DELETE FROM `group_requests` WHERE `group_id` = '" + this.Id + "' AND `user_id` = '" + UserId + "'");

@@ -15,7 +15,7 @@ using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.LandingView;
 using Plus.HabboHotel.Global;
-
+using Plus.HabboHotel.Groups.Forums;
 using Plus.HabboHotel.Games;
 
 using Plus.HabboHotel.Rooms.Chat;
@@ -60,6 +60,7 @@ namespace Plus.HabboHotel
         private readonly BadgeManager _badgeManager;
         private readonly PermissionManager _permissionManager;
         private readonly SubscriptionManager _subscriptionManager;
+        private readonly GroupForumManager _groupForumManager;
 
         private bool _cycleEnded;
         private bool _cycleActive;
@@ -84,7 +85,7 @@ namespace Plus.HabboHotel
             this._navigatorManager = new NavigatorManager();
             this._roomManager = new RoomManager();
             this._chatManager = new ChatManager();
-            this._groupManager = new GroupManager();
+            this._groupForumManager = new GroupForumManager();
             this._questManager = new QuestManager();
             this._achievementManager = new AchievementManager();
             this._talentTrackManager = new TalentTrackManager();
