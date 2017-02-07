@@ -16,9 +16,7 @@ namespace Plus.Communication.Packets.Outgoing.Groups
             base.WriteInteger(ViewOrder);
             base.WriteInteger(StartIndex);
             base.WriteInteger(StartIndex);
-
-            base.WriteInteger(Forums.Count); // Liste Compte Forums
-
+            base.WriteInteger(Forums.Count); 
             foreach (var Forum in Forums)
             {
                 var lastpost = Forum.GetLastPost();

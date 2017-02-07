@@ -216,6 +216,11 @@ namespace Plus.HabboHotel
             return _groupManager;
         }
 
+        public GroupForumManager GetGroupForumManager()
+        {
+            return _groupForumManager;
+        }
+
         public LandingViewManager GetLandingManager()
         {
             return _landingViewManager;

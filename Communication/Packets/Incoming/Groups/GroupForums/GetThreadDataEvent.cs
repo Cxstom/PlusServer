@@ -21,7 +21,6 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             if (Forum == null)
             {
-               // Session.SendNotification("Forum introuvable!");
                 return;
             }
 
