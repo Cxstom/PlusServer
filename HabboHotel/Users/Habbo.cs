@@ -1053,20 +1053,23 @@ namespace Plus.HabboHotel.Users
                 {
                     int CreditUpdate = PlusStaticGameSettings.UserCreditsUpdateAmount;
                     int DucketUpdate = PlusStaticGameSettings.UserPixelsUpdateAmount;
-                    
+                    int DiamondUpdate = PlusStaticGameSettings.UserDiamondsUpdateAmount;
+
                     SubscriptionData SubData = null;
                     if (PlusEnvironment.GetGame().GetSubscriptionManager().TryGetSubscriptionData(this._vipRank, out SubData))
                     {
                         CreditUpdate += SubData.Credits;
                         DucketUpdate += SubData.Duckets;
+                        DiamondUpdate += SubData.Diamonds;
                     }
 
                     this._credits += CreditUpdate;
                     this._duckets += DucketUpdate;
+                    this._diamonds += DiamondUpdate;
 
                     this._client.SendMessage(new CreditBalanceComposer(this._credits));
                     this._client.SendMessage(new HabboActivityPointNotificationComposer(this._duckets, DucketUpdate));
-
+                    this._client.SendMessage(new HabboActivityPointNotificationComposer(this.Diamonds, DiamondUpdate, 5));
                     this.CreditsUpdateTick = PlusStaticGameSettings.UserCreditsUpdateTimer;
                 }
             }
