@@ -120,7 +120,6 @@ namespace Plus.Communication.Packets
             this.RegisterAvatar();
             this.RegisterMessenger();
             this.RegisterGroups();
-            this.RegisterGroupForums();
             this.RegisterRoomSettings();
             this.RegisterPets();
             this.RegisterBots();
@@ -459,23 +458,8 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.DeclineBuddyMessageEvent, new DeclineBuddyEvent());
         }
 
-
-        private void RegisterGroupForums()
-        {
-            this._incomingPackets.Add(ClientPacketHeader.GetForumsListDataMessageEvent, new GetForumsListDataEvent());
-            this._incomingPackets.Add(ClientPacketHeader.GetForumStatsMessageEvent, new GetForumStatsEvent());
-            this._incomingPackets.Add(ClientPacketHeader.GetThreadsListDataMessageEvent, new GetThreadsListDataEvent());
-            this._incomingPackets.Add(ClientPacketHeader.GetThreadDataMessageEvent, new GetThreadDataEvent());
-            this._incomingPackets.Add(ClientPacketHeader.PostGroupContentMessageEvent, new PostGroupContentEvent());
-            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupThreadMessageEvent, new DeleteGroupThreadEvent());
-            //this._incomingPackets.Add(ClientPacketHeader.UpdateForumReadMarkerMessageEvent, new UpdateForumReadMarkerEvent());
-            this._incomingPackets.Add(ClientPacketHeader.UpdateForumSettingsMessageEvent, new UpdateForumSettingsEvent());
-            // this._incomingPackets.Add(ClientPacketHeader.UpdateForumThreadStatusMessageEvent, new UpdateForumThreadStatusEvent());
-        }
         private void RegisterGroups()
         {
-            
-            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupPostMessageEvent, new DeleteGroupPostEvent());
             this._incomingPackets.Add(ClientPacketHeader.JoinGroupMessageEvent, new JoinGroupEvent());
             this._incomingPackets.Add(ClientPacketHeader.RemoveGroupFavouriteMessageEvent, new RemoveGroupFavouriteEvent());
             this._incomingPackets.Add(ClientPacketHeader.SetGroupFavouriteMessageEvent, new SetGroupFavouriteEvent());
