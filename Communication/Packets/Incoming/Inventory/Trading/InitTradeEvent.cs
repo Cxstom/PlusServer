@@ -45,7 +45,9 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
-                        dbClient.RunQuery("UPDATE `user_info` SET `trading_locked` = '0' WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                        dbClient.SetQuery("UPDATE `user_info` SET `trading_locked` = '0' WHERE `id` = @userId LIMIT 1");
+                        dbClient.AddParameter("userId", Session.GetHabbo().Id);
+                        dbClient.RunQuery();
                     }
                 }
             }

@@ -43,8 +43,9 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE groups SET badge = @badge WHERE id=" + Group.Id + " LIMIT 1");
+                dbClient.SetQuery("UPDATE `groups` SET `badge` = @badge WHERE `id` = @groupId LIMIT 1");
                 dbClient.AddParameter("badge", newBadge);
+                dbClient.AddParameter("groupId", Group.Id);
                 dbClient.RunQuery();
             }
 

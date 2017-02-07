@@ -64,7 +64,9 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     Session.GetHabbo().GetStats().FavouriteGroupId = 0;
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
-                        dbClient.RunQuery("UPDATE `user_stats` SET `groupid` = '0' WHERE `id` = '" + UserId + "' LIMIT 1");
+                        dbClient.SetQuery("UPDATE `user_stats` SET `groupid` = '0' WHERE `id` = @userId LIMIT 1");
+                        dbClient.AddParameter("userId", UserId);
+                        dbClient.RunQuery();
                     }
 
                     if (Group.AdminOnlyDeco == 0)

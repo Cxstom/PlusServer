@@ -19,7 +19,9 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Badges
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `user_badges` SET `badge_slot` = '0' WHERE `user_id` = '" + Session.GetHabbo().Id + "'");
+                dbClient.SetQuery("UPDATE `user_badges` SET `badge_slot` = '0' WHERE `user_id` = @userId");
+                dbClient.AddParameter("userId", Session.GetHabbo().Id);
+                dbClient.RunQuery();
             }
 
             for (int i = 0; i < 5; i++)
@@ -37,8 +39,10 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Badges
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("UPDATE `user_badges` SET `badge_slot` = " + Slot + " WHERE `badge_id` = @badge AND `user_id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                    dbClient.SetQuery("UPDATE `user_badges` SET `badge_slot` = @slot WHERE `badge_id` = @badge AND `user_id` = @userId LIMIT 1");
+                    dbClient.AddParameter("slot", Slot);
                     dbClient.AddParameter("badge", Badge);
+                    dbClient.AddParameter("userId", Session.GetHabbo().Id);
                     dbClient.RunQuery();
                 }
             }

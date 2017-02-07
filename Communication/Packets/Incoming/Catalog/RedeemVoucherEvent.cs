@@ -36,7 +36,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             DataRow GetRow = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT * FROM `user_vouchers` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `voucher` = @Voucher LIMIT 1");
+                dbClient.SetQuery("SELECT * FROM `user_vouchers` WHERE `user_id` = @userId AND `voucher` = @Voucher LIMIT 1");
+                dbClient.AddParameter("userId", Session.GetHabbo().Id);
                 dbClient.AddParameter("Voucher", VoucherCode);
                 GetRow = dbClient.getRow();
             }
@@ -50,7 +51,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("INSERT INTO `user_vouchers` (`user_id`,`voucher`) VALUES ('" + Session.GetHabbo().Id + "', @Voucher)");
+                    dbClient.SetQuery("INSERT INTO `user_vouchers` (`user_id`,`voucher`) VALUES (@userId, @Voucher)");
+                    dbClient.AddParameter("userId", Session.GetHabbo().Id);
                     dbClient.AddParameter("Voucher", VoucherCode);
                     dbClient.RunQuery();
                 }

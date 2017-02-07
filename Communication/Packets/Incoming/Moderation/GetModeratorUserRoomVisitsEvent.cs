@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             Dictionary<double, RoomData> Visits = new Dictionary<double, RoomData>();
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT room_id, `entry_timestamp` FROM `user_roomvisits` WHERE `user_id` =@id ORDER BY `entry_timestamp` DESC LIMIT 50");
+                dbClient.SetQuery("SELECT `room_id`, `entry_timestamp` FROM `user_roomvisits` WHERE `user_id` = @id ORDER BY `entry_timestamp` DESC LIMIT 50");
                 dbClient.AddParameter("id", UserId);
                 Table = dbClient.getTable();
 
