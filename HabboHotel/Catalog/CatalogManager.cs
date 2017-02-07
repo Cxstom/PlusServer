@@ -24,10 +24,11 @@ namespace Plus.HabboHotel.Catalog
         private ClothingManager _clothingManager;
 
         private Dictionary<int, int> _itemOffers;
-        private Dictionary<int, CatalogPage> _pages;
-        private Dictionary<int, CatalogBot> _botPresets;
-        private Dictionary<int, Dictionary<int, CatalogItem>> _items;
-        private Dictionary<int, Dictionary<int, CatalogDeal>> _deals;
+        private readonly Dictionary<int, CatalogPage> _pages;
+        private readonly Dictionary<int, CatalogBot> _botPresets;
+        private readonly Dictionary<int, Dictionary<int, CatalogItem>> _items;
+        private readonly Dictionary<int, Dictionary<int, CatalogDeal>> _deals;
+        private readonly Dictionary<int, CatalogPromotion> _promotions;
 
         public CatalogManager()
         {
@@ -41,6 +42,7 @@ namespace Plus.HabboHotel.Catalog
             this._botPresets = new Dictionary<int, CatalogBot>();
             this._items = new Dictionary<int, Dictionary<int, CatalogItem>>();
             this._deals = new Dictionary<int, Dictionary<int, CatalogDeal>>();
+            this._promotions = new Dictionary<int, CatalogPromotion>();
         }
 
         public void Init(ItemDataManager ItemDataManager)
@@ -53,6 +55,8 @@ namespace Plus.HabboHotel.Catalog
                 this._items.Clear();
             if (this._deals.Count > 0)
                 this._deals.Clear();
+            if (this._promotions.Count > 0)
+                this._promotions.Clear();
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -140,6 +144,18 @@ namespace Plus.HabboHotel.Catalog
                     }
                 }
 
+                dbClient.SetQuery("SELECT * FROM `catalog_promotions`");
+                DataTable GetPromotions = dbClient.getTable();
+
+                if (GetPromotions != null)
+                {
+                    foreach (DataRow Row in GetPromotions.Rows)
+                    {
+                        if (!this._promotions.ContainsKey(Convert.ToInt32(Row["id"])))
+                            this._promotions.Add(Convert.ToInt32(Row["id"]), new CatalogPromotion(Convert.ToInt32(Row["id"]), Convert.ToString(Row["title"]), Convert.ToString(Row["image"]), Convert.ToInt32(Row["unknown"]), Convert.ToString(Row["page_link"]), Convert.ToInt32(Row["parent_id"])));
+                    }
+                }
+
                 this._petRaceManager.Init();
                 this._clothingManager.Init();
             }
@@ -165,6 +181,11 @@ namespace Plus.HabboHotel.Catalog
         public ICollection<CatalogPage> GetPages()
         {
             return this._pages.Values;
+        }
+
+        public ICollection<CatalogPromotion> GetPromotions()
+        {
+            return this._promotions.Values;
         }
 
         public MarketplaceManager GetMarketplace()

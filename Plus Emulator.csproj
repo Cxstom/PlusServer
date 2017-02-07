@@ -511,6 +511,7 @@
     <Compile Include="Communication\Packets\Outgoing\Rooms\AI\Pets\PetInformationComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\AI\Pets\PetTrainingPanelComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\ActionComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\AvatarAspectUpdateComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\AvatarEffectComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\CarryObjectComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Rooms\Avatar\DanceComposer.cs" />
@@ -609,6 +610,7 @@
     <Compile Include="HabboHotel\Cache\Process\ProcessComponent.cs" />
     <Compile Include="HabboHotel\Cache\Type\UserCache.cs" />
     <Compile Include="HabboHotel\Catalog\CatalogDeal.cs" />
+    <Compile Include="HabboHotel\Catalog\CatalogPromotion.cs" />
     <Compile Include="HabboHotel\Catalog\Clothing\ClothingItem.cs" />
     <Compile Include="HabboHotel\Catalog\Clothing\ClothingManager.cs" />
     <Compile Include="HabboHotel\Catalog\Marketplace\MarketOffer.cs" />

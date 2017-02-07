@@ -13,8 +13,8 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Settings
             : base(ServerPacketHeader.RoomSettingsDataMessageComposer)
         {
             base.WriteInteger(Room.RoomId);
-           base.WriteString(Room.Name);
-           base.WriteString(Room.Description);
+            base.WriteString(Room.Name);
+            base.WriteString(Room.Description);
             base.WriteInteger(RoomAccessUtility.GetRoomAccessPacketNum(Room.Access));
             base.WriteInteger(Room.Category);
             base.WriteInteger(Room.UsersMax);
@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Settings
             base.WriteInteger(Room.Tags.Count);
             foreach (string Tag in Room.Tags.ToArray())
             {
-               base.WriteString(Tag);
+                base.WriteString(Tag);
             }
 
             base.WriteInteger(Room.TradeSettings); //Trade
@@ -45,7 +45,6 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Settings
             base.WriteInteger(Room.WhoCanMute); // who can mute
             base.WriteInteger(Room.WhoCanKick); // who can kick
             base.WriteInteger(Room.WhoCanBan); // who can ban
-
         }
     }
 }

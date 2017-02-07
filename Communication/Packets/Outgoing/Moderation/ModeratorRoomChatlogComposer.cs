@@ -19,10 +19,10 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
         {
             base.WriteByte(1);
             base.WriteShort(2);//Count
-           base.WriteString("roomName");
+            base.WriteString("roomName");
             base.WriteByte(2);
-           base.WriteString(Room.Name);
-           base.WriteString("roomId");
+            base.WriteString(Room.Name);
+            base.WriteString("roomId");
             base.WriteByte(1);
             base.WriteInteger(Room.Id);
 
@@ -43,18 +43,18 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
 
                     if (Habbo == null)
                     {
-                        base.WriteInteger(((int)PlusEnvironment.GetUnixTimestamp() - Convert.ToInt32(Row["timestamp"])) * 1000);
+                        base.WriteString(UnixTimestamp.FromUnixTimestamp(Convert.ToInt32(Row["timestamp"])).ToShortTimeString());
                         base.WriteInteger(-1);
-                       base.WriteString("Unknown User");
-                       base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"])) ? "*user sent a blank message*" : Convert.ToString(Row["message"]));
+                        base.WriteString("Unknown User");
+                        base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"])) ? "*user sent a blank message*" : Convert.ToString(Row["message"]));
                         base.WriteBoolean(false);
                     }
                     else
                     {
-                        base.WriteInteger(((int)PlusEnvironment.GetUnixTimestamp() - Convert.ToInt32(Row["timestamp"])) * 1000);
+                        base.WriteString(UnixTimestamp.FromUnixTimestamp(Convert.ToInt32(Row["timestamp"])).ToShortTimeString());
                         base.WriteInteger(Habbo.Id);
-                       base.WriteString(Habbo.Username);
-                       base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"]) )? "*user sent a blank message*" : Convert.ToString(Row["message"]));
+                        base.WriteString(Habbo.Username);
+                        base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"])) ? "*user sent a blank message*" : Convert.ToString(Row["message"]));
                         base.WriteBoolean(false);
                     }
                 }

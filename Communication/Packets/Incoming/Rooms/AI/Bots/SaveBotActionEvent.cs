@@ -73,7 +73,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
 
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.RunQuery("UPDATE `bots` SET `look` = '" + Session.GetHabbo().Look + "', `gender` = '" + Session.GetHabbo().Gender + "' WHERE `id` = '" + Bot.BotData.Id + "' LIMIT 1");
+                            dbClient.SetQuery("UPDATE `bots` SET `look` = @look, `gender` = '" + Session.GetHabbo().Gender + "' WHERE `id` = '" + Bot.BotData.Id + "' LIMIT 1");
+                            dbClient.AddParameter("look", Session.GetHabbo().Look);
+                            dbClient.RunQuery();
                         }
 
                         //Room.SendMessage(new UserChangeComposer(BotUser.GetClient(), true));

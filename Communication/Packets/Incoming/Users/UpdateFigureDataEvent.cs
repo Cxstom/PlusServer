@@ -10,6 +10,7 @@ using Plus.HabboHotel.Quests;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Moderation;
+using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 
 namespace Plus.Communication.Packets.Incoming.Users
 {
@@ -53,13 +54,14 @@ namespace Plus.Communication.Packets.Incoming.Users
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE users SET look = @look, gender = @gender WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `users` SET `look` = @look, `gender` = @gender WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
                 dbClient.AddParameter("look", Look);
                 dbClient.AddParameter("gender", Gender);
                 dbClient.RunQuery();
             }
 
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_AvatarLooks", 1);
+            Session.SendMessage(new AvatarAspectUpdateComposer(Look, Gender));
             if (Session.GetHabbo().Look.Contains("ha-1006"))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.WEAR_HAT);
 

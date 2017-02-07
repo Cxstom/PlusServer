@@ -60,7 +60,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     return;
             }
 
-            if (Amount < 1 || Amount > 100)
+            if (Amount < 1 || Amount > 100 || !Item.HaveOffer)
                 Amount = 1;
 
             int AmountPurchase = Item.Amount > 1 ? Item.Amount : Amount;

@@ -75,7 +75,10 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `bots` SET `look` = '" + User.BotData.Look + "', `gender` = '" + User.BotData.Gender + "' WHERE `id` = '" + User.BotData.Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `bots` SET `look` = @look, `gender` = @gender WHERE `id` = '" + User.BotData.Id + "' LIMIT 1");
+                dbClient.AddParameter("look", User.BotData.Look);
+                dbClient.AddParameter("gender", User.BotData.Gender);
+                dbClient.RunQuery();
             }
 
             return true;
