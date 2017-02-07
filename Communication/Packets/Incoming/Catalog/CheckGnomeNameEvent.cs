@@ -43,10 +43,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 return;
             }
 
-            string allowedCharacters = "abcdefjhijklmnopqrstuvwxyz0123456789".ToLower();
-            if (!PetName.Contains(allowedCharacters.ToLower()))
+            if (!PlusEnvironment.IsValidAlphaNumeric(PetName))
             {
                 Session.SendMessage(new CheckGnomeNameComposer(PetName, 1));
+                return;
             }
 
             int X = Item.GetX;
