@@ -39,7 +39,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                 int pages = ((Friends.Count() - 1) / 700) + 1;
                 foreach (ICollection<MessengerBuddy> batch in Friends.Batch(700))
                 {
-                    Session.SendMessage(new BuddyListComposer(Friends, Session.GetHabbo(), pages, page));
+                    Session.SendMessage(new BuddyListComposer(batch.ToList(), Session.GetHabbo(), pages, page));
 
                     page++;
                 }

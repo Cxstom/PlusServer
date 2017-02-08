@@ -22,9 +22,9 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             else
             {
                 int page = 0;
-                foreach (ICollection<MessengerBuddy> batch in Requests.Batch(700))
+                foreach (ICollection<MessengerRequest> batch in Requests.Batch(3))
                 {
-                    Session.SendMessage(new BuddyRequestsComposer(Requests, page));
+                    Session.SendMessage(new BuddyRequestsComposer(batch.ToList(), page));
                     page++;
                 }
             }

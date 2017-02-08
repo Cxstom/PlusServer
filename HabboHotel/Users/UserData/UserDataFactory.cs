@@ -32,7 +32,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             DataTable dFavouriteRooms = null;
             DataTable dIgnores = null;
             DataTable dBadges = null;
-            DataTable dEffects = null;
             DataTable dFriends = null;
             DataTable dRequests = null;
             DataTable dRooms = null;
@@ -71,9 +70,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
 
                 dbClient.SetQuery("SELECT `badge_id`,`badge_slot` FROM user_badges WHERE `user_id` = '" + UserId + "'");
                 dBadges = dbClient.getTable();
-
-                dbClient.SetQuery("SELECT `effect_id`,`total_duration`,`is_activated`,`activated_stamp` FROM user_effects WHERE `user_id` = '" + UserId + "'");
-                dEffects = dbClient.getTable();
 
                 dbClient.SetQuery(
                     "SELECT users.id,users.username,users.motto,users.look,users.last_online,users.hide_inroom,users.hide_online " +
@@ -207,7 +203,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             dFavouriteRooms = null;
             dIgnores = null;
             dBadges = null;
-            dEffects = null;
             dFriends = null;
             dRequests = null;
             dRooms = null;
