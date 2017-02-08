@@ -11,19 +11,19 @@ namespace Plus.Communication.Packets.Outgoing.Messenger
 {
     class BuddyRequestsComposer : ServerPacket
     {
-        public BuddyRequestsComposer(ICollection<MessengerRequest> Requests)
+        public BuddyRequestsComposer(ICollection<MessengerRequest> Requests, int cycle)
             : base(ServerPacketHeader.BuddyRequestsMessageComposer)
         {
-            base.WriteInteger(Requests.Count);
+            base.WriteInteger(cycle);
             base.WriteInteger(Requests.Count);
 
             foreach (MessengerRequest Request in Requests)
             {
                 base.WriteInteger(Request.From);
-               base.WriteString(Request.Username);
+                base.WriteString(Request.Username);
 
                 UserCache User = PlusEnvironment.GetGame().GetCacheManager().GenerateUser(Request.From);
-               base.WriteString(User != null ? User.Look : "");
+                base.WriteString(User != null ? User.Look : "");
             }
         }
     }

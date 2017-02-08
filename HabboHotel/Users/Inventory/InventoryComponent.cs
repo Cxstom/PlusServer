@@ -355,5 +355,13 @@ namespace Plus.HabboHotel.Users.Inventory
         {
             return this._wallItems.Values;
         }
+
+        public IEnumerable<Item> GetWallAndFloor
+        {
+            get
+            {
+                return this._floorItems.Values.Concat(this._wallItems.Values);
+            }
+        }
     }
 }

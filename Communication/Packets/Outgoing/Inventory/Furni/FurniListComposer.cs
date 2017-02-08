@@ -12,19 +12,14 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Furni
 {
     class FurniListComposer : ServerPacket
     {
-        public FurniListComposer(List<Item> Items, ICollection<Item> Walls)
+        public FurniListComposer(ICollection<Item> Items, int pages, int page)
             : base(ServerPacketHeader.FurniListMessageComposer)
         {
-            base.WriteInteger(1);
-            base.WriteInteger(1);
+            base.WriteInteger(pages);//Pages
+            base.WriteInteger(page);//Page?
 
-            base.WriteInteger(Items.Count + Walls.Count);
-            foreach (Item Item in Items.ToList())
-            {
-                WriteItem(Item);
-            }
-
-            foreach (Item Item in Walls.ToList())
+            base.WriteInteger(Items.Count);
+            foreach (Item Item in Items)
             {
                 WriteItem(Item);
             }
@@ -33,7 +28,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Furni
         private void WriteItem(Item Item)
         {
             base.WriteInteger(Item.Id);
-           base.WriteString(Item.GetBaseItem().Type.ToString().ToUpper());
+            base.WriteString(Item.GetBaseItem().Type.ToString().ToUpper());
             base.WriteInteger(Item.Id);
             base.WriteInteger(Item.GetBaseItem().SpriteId);
 
@@ -41,7 +36,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Furni
             {
                 base.WriteInteger(1);
                 base.WriteInteger(256);
-               base.WriteString(Item.ExtraData);
+                base.WriteString(Item.ExtraData);
                 base.WriteInteger(Item.LimitedNo);
                 base.WriteInteger(Item.LimitedTot);
             }
@@ -58,7 +53,7 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Furni
 
             if (!Item.IsWallItem)
             {
-               base.WriteString(string.Empty);
+                base.WriteString(string.Empty);
                 base.WriteInteger(0);
             }
         }

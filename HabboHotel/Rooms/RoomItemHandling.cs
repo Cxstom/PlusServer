@@ -145,7 +145,7 @@ namespace Plus.HabboHotel.Rooms
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
                         dbClient.SetQuery("UPDATE `items` SET `user_id` = @UserId WHERE `id` = @ItemId LIMIT 1");
-                        dbClient.AddParameter("ItemId", Item.UserID);
+                        dbClient.AddParameter("ItemId", Item.Id);
                         dbClient.AddParameter("UserId", this._room.OwnerId);
                         dbClient.RunQuery();
                     }

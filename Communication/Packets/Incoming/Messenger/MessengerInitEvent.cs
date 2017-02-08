@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
+using MoreLinq;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.Communication.Packets.Outgoing.Messenger;
 
@@ -27,8 +28,23 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             }
 
             Session.SendMessage(new MessengerInitComposer());
-            Session.SendMessage(new BuddyListComposer(Friends, Session.GetHabbo()));
 
+            int page = 0;
+            if (Friends.Count() == 0)
+            {
+                Session.SendMessage(new BuddyListComposer(Friends, Session.GetHabbo(), 1, 0));
+            }
+            else
+            {
+                int pages = ((Friends.Count() - 1) / 700) + 1;
+                foreach (ICollection<MessengerBuddy> batch in Friends.Batch(700))
+                {
+                    Session.SendMessage(new BuddyListComposer(Friends, Session.GetHabbo(), pages, page));
+
+                    page++;
+                }
+            }
+          
             Session.GetHabbo().GetMessenger().ProcessOfflineMessages();
         }
     }

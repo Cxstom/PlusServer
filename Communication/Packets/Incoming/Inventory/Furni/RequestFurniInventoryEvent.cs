@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Collections.Generic;
 
+using MoreLinq;
 using Plus.HabboHotel.Items;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
-
-
 
 namespace Plus.Communication.Packets.Incoming.Inventory.Furni
 {
@@ -14,24 +11,24 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Furni
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            ICollection<Item> FloorItems = Session.GetHabbo().GetInventoryComponent().GetFloorItems();
-            ICollection<Item> WallItems = Session.GetHabbo().GetInventoryComponent().GetWallItems();
+            IEnumerable<Item> Items = Session.GetHabbo().GetInventoryComponent().GetWallAndFloor;
 
-            if (Session.GetHabbo().InventoryAlert == false)
+            int page = 0;
+            int pages = ((Items.Count() - 1) / 700) + 1;
+
+            if (Items.Count() == 0)
             {
-                Session.GetHabbo().InventoryAlert = true;
-                int TotalCount = FloorItems.Count + WallItems.Count;
-                if (TotalCount >= 5000)
+                Session.SendMessage(new FurniListComposer(Items.ToList(), 1, 0));
+            }
+            else
+            {
+                foreach (ICollection<Item> batch in Items.Batch(700))
                 {
-                    Session.SendNotification("Hey! Our system has detected that you have a very large inventory!\n\n" +
-                        "The maximum an inventory can load is 8000 items, you have " + TotalCount + " items loaded now.\n\n" +
-                        "If you have 8000 loaded now then you're probably over the limit and some items will be hidden until you free up space.\n\n" +
-                        "Please note that we are not responsible for you crashing because of too large inventorys!");
+                    Session.SendMessage(new FurniListComposer(batch.ToList(), pages, page));
+
+                    page++;
                 }
             }
-
-           
-            Session.SendMessage(new FurniListComposer(FloorItems.ToList(), WallItems));
         }
     }
 }

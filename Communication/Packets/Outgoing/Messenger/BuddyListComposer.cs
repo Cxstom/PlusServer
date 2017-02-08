@@ -11,27 +11,27 @@ namespace Plus.Communication.Packets.Outgoing.Messenger
 {
     class BuddyListComposer : ServerPacket
     {
-        public BuddyListComposer(ICollection<MessengerBuddy> Friends, Habbo Player)
+        public BuddyListComposer(ICollection<MessengerBuddy> friends, Habbo player, int pages, int page)
             : base(ServerPacketHeader.BuddyListMessageComposer)
         {
-            base.WriteInteger(1);
-            base.WriteInteger(0);
+            base.WriteInteger(pages);// Pages
+            base.WriteInteger(page);// Page
 
-            base.WriteInteger(Friends.Count);
-            foreach (MessengerBuddy Friend in Friends.ToList())
+            base.WriteInteger(friends.Count);
+            foreach (MessengerBuddy Friend in friends.ToList())
             {
-                Relationship Relationship = Player.Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(Friend.UserId)).Value;
+                Relationship Relationship = player.Relationships.FirstOrDefault(x => x.Value.UserId == Convert.ToInt32(Friend.UserId)).Value;
 
                 base.WriteInteger(Friend.Id);
-               base.WriteString(Friend.mUsername);
+                base.WriteString(Friend.mUsername);
                 base.WriteInteger(1);//Gender.
                 base.WriteBoolean(Friend.IsOnline);
                 base.WriteBoolean(Friend.IsOnline && Friend.InRoom);
-               base.WriteString(Friend.IsOnline ? Friend.mLook : string.Empty);
+                base.WriteString(Friend.IsOnline ? Friend.mLook : string.Empty);
                 base.WriteInteger(0); // category id
-               base.WriteString(Friend.IsOnline ? Friend.mMotto : string.Empty);
-               base.WriteString(string.Empty);//Alternative name?
-               base.WriteString(string.Empty);
+                base.WriteString(Friend.IsOnline ? Friend.mMotto : string.Empty);
+                base.WriteString(string.Empty);//Alternative name?
+                base.WriteString(string.Empty);
                 base.WriteBoolean(true);
                 base.WriteBoolean(false);
                 base.WriteBoolean(false);//Pocket Habbo user.
