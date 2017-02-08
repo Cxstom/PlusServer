@@ -33,6 +33,8 @@ using Plus.Communication.Packets.Incoming.Inventory.Pets;
 using Plus.Communication.Packets.Incoming.LandingView;
 using Plus.Communication.Packets.Incoming.Messenger;
 using Plus.Communication.Packets.Incoming.Groups;
+
+
 using Plus.Communication.Packets.Incoming.Rooms.Settings;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Pets;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Bots;
@@ -126,6 +128,7 @@ namespace Plus.Communication.Packets
             this.RegisterModeration();
             this.RegisterGameCenter();
             this.RegisterNames();
+
         }
 
         public void TryExecutePacket(GameClient Session, ClientPacket Packet)

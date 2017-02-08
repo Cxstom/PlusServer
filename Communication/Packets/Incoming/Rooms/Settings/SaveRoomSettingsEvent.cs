@@ -11,7 +11,6 @@ using Plus.Communication.Packets.Outgoing.Navigator;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Rooms.Settings;
 using Plus.Database.Interfaces;
-using Plus.HabboHotel.Navigator;
 
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Settings
@@ -210,15 +209,29 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE rooms SET caption = @caption, description = @description, password = @password, category = " +
-                    CategoryId + ", state = '" + AccessStr + "', tags = @tags, users_max = " + MaxUsers +
-                    ", allow_pets = '" + AllowPets + "', allow_pets_eat = '" + AllowPetsEat + "', room_blocking_disabled = '" +
-                    RoomBlockingEnabled + "', allow_hidewall = '" + Room.Hidewall + "', floorthick = " +
-                    Room.FloorThickness + ", wallthick = " + Room.WallThickness + ", mute_settings='" + Room.WhoCanMute +
-                    "', kick_settings='" + Room.WhoCanKick + "',ban_settings='" + Room.WhoCanBan + "', `chat_mode` = '" + Room.chatMode + "', `chat_size` = '" + Room.chatSize + "', `chat_speed` = '" + Room.chatSpeed + "', `chat_extra_flood` = '" + Room.extraFlood + "', `chat_hearing_distance` = '" + Room.chatDistance + "', `trade_settings` = '" + Room.TradeSettings + "' WHERE `id` = '" + Room.RoomId + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `rooms` SET `caption` = @caption, `description` = @description, `password` = @password, `category` = @categoryId, `state` = @state, `tags` = @tags, `users_max` = @maxUsers, `allow_pets` = @allowPets, `allow_pets_eat` = @allowPetsEat, `room_blocking_disabled` = @roomBlockingDisabled, `allow_hidewall` = @allowHidewall, `floorthick` = @floorThick, `wallthick` = @wallThick, `mute_settings` = @muteSettings, `kick_settings` = @kickSettings, `ban_settings` = @banSettings, `chat_mode` = @chatMode, `chat_size` = @chatSize, `chat_speed` = @chatSpeed, `chat_extra_flood` = @extraFlood, `chat_hearing_distance` = @chatDistance, `trade_settings` = @tradeSettings WHERE `id` = @roomId LIMIT 1");
+                dbClient.AddParameter("categoryId", CategoryId);
+                dbClient.AddParameter("maxUsers", MaxUsers);
+                dbClient.AddParameter("allowPets", AllowPets);
+                dbClient.AddParameter("allowPetsEat", AllowPetsEat);
+                dbClient.AddParameter("roomBlockingDisabled", RoomBlockingEnabled);
+                dbClient.AddParameter("allowHidewall", Room.Hidewall);
+                dbClient.AddParameter("floorThick", Room.FloorThickness);
+                dbClient.AddParameter("wallThick", Room.WallThickness);
+                dbClient.AddParameter("muteSettings", Room.WhoCanMute);
+                dbClient.AddParameter("kickSettings", Room.WhoCanKick);
+                dbClient.AddParameter("banSettings", Room.WhoCanBan);
+                dbClient.AddParameter("chatMode", Room.chatMode);
+                dbClient.AddParameter("chatSize", Room.chatSize);
+                dbClient.AddParameter("chatSpeed", Room.chatSpeed);
+                dbClient.AddParameter("extraFlood", Room.extraFlood);
+                dbClient.AddParameter("chatDistance", Room.chatDistance);
+                dbClient.AddParameter("tradeSettings", Room.TradeSettings);
+                dbClient.AddParameter("roomId", Room.Id);
                 dbClient.AddParameter("caption", Room.Name);
                 dbClient.AddParameter("description", Room.Description);
                 dbClient.AddParameter("password", Room.Password);
+                dbClient.AddParameter("state", AccessStr);
                 dbClient.AddParameter("tags", formattedTags.ToString());
                 dbClient.RunQuery();
             }

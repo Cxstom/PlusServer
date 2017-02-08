@@ -1,5 +1,4 @@
 ﻿using Plus.HabboHotel.Navigator;
-using Plus.HabboHotel.Navigator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
             foreach (SearchResultList Category in Categories.ToList())
             {
                 base.WriteInteger(Category.Id);
-               base.WriteString(Category.PublicName);
+                base.WriteString(Category.PublicName);
                 base.WriteBoolean(true);//TODO
             }
         }

@@ -32,7 +32,7 @@ namespace Plus.HabboHotel.Groups
         {
             this._groupLoadingSync = new Object();
 
-            this.Init();  
+            this.Init();
         }
 
         public bool TryGetGroup(int Id, out Group Group)
@@ -58,7 +58,7 @@ namespace Plus.HabboHotel.Groups
                     {
                         Group = new Group(
                             Convert.ToInt32(Row["id"]), Convert.ToString(Row["name"]), Convert.ToString(Row["desc"]), Convert.ToString(Row["badge"]), Convert.ToInt32(Row["room_id"]), Convert.ToInt32(Row["owner_id"]),
-                            Convert.ToInt32(Row["created"]), Convert.ToInt32(Row["state"]), Convert.ToInt32(Row["colour1"]), Convert.ToInt32(Row["colour2"]), Convert.ToInt32(Row["admindeco"]));
+                            Convert.ToInt32(Row["created"]), Convert.ToInt32(Row["state"]), Convert.ToInt32(Row["colour1"]), Convert.ToInt32(Row["colour2"]), Convert.ToInt32(Row["admindeco"]), Convert.ToInt32(Row["has_forum"]) == 1);
                         this._groups.TryAdd(Group.Id, Group);
                         return true;
                     }
@@ -110,6 +110,7 @@ namespace Plus.HabboHotel.Groups
             }
 
             log.Info("Group Manager -> LOADED");
+            log.Info("Group Forum Manager -> LOADED");
         }
 
         public void ClearInfo()
@@ -123,7 +124,7 @@ namespace Plus.HabboHotel.Groups
 
         public bool TryCreateGroup(Habbo Player, string Name, string Description, int RoomId, string Badge, int Colour1, int Colour2, out Group Group)
         {
-            Group = new Group(0, Name, Description, Badge, RoomId, Player.Id, (int)PlusEnvironment.GetUnixTimestamp(), 0, Colour1, Colour2, 0);
+            Group = new Group(0, Name, Description, Badge, RoomId, Player.Id, (int)PlusEnvironment.GetUnixTimestamp(), 0, Colour1, Colour2, 0, false);
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Badge))
                 return false;
 

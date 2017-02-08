@@ -58,9 +58,10 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE `groups` SET `state` = @GroupState, `admindeco` = @AdminDeco WHERE `id` = " + Group.Id + " LIMIT 1");
+                dbClient.SetQuery("UPDATE `groups` SET `state` = @GroupState, `admindeco` = @AdminDeco WHERE `id` = @groupId LIMIT 1");
                 dbClient.AddParameter("GroupState", (Group.GroupType == GroupType.OPEN ? 0 : Group.GroupType == GroupType.LOCKED ? 1 : 2).ToString());
                 dbClient.AddParameter("AdminDeco", (FurniOptions == 1 ? 1 : 0).ToString());
+                dbClient.AddParameter("groupId", Group.Id);
                 dbClient.RunQuery();
             }
 

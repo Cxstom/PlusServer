@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Cache;
 
@@ -11,19 +7,19 @@ namespace Plus.Communication.Packets.Outgoing.Messenger
 {
     class BuddyRequestsComposer : ServerPacket
     {
-        public BuddyRequestsComposer(ICollection<MessengerRequest> Requests)
+        public BuddyRequestsComposer(ICollection<MessengerRequest> requests)
             : base(ServerPacketHeader.BuddyRequestsMessageComposer)
         {
-            base.WriteInteger(Requests.Count);
-            base.WriteInteger(Requests.Count);
+            base.WriteInteger(requests.Count);
+            base.WriteInteger(requests.Count);
 
-            foreach (MessengerRequest Request in Requests)
+            foreach (MessengerRequest Request in requests)
             {
                 base.WriteInteger(Request.From);
-               base.WriteString(Request.Username);
+                base.WriteString(Request.Username);
 
                 UserCache User = PlusEnvironment.GetGame().GetCacheManager().GenerateUser(Request.From);
-               base.WriteString(User != null ? User.Look : "");
+                base.WriteString(User != null ? User.Look : "");
             }
         }
     }

@@ -7,39 +7,37 @@ namespace Plus.Communication.Packets.Incoming.Navigator
 {
     class NewNavigatorSearchEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            string Category = Packet.PopString();
-            string Unknown = Packet.PopString();
+            string Category = packet.PopString();
+            string Search = packet.PopString();
 
-            if (!string.IsNullOrEmpty(Unknown))
+            ICollection<SearchResultList> Categories = new List<SearchResultList>();
+
+            if (!string.IsNullOrEmpty(Search))
             {
-                Category = "hotel_view";
-                ICollection<SearchResultList> Test = new List<SearchResultList>();
-
-                SearchResultList Null = null;
-                if (PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(0, out Null))
+                SearchResultList QueryResult = null;
+                if (PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(0, out QueryResult))
                 {
-                    Test.Add(Null);
-                    Session.SendMessage(new NavigatorSearchResultSetComposer(Category, Unknown, Test, Session));
+                    Categories.Add(QueryResult);
                 }
             }
             else
             {
-                //Fetch the categorys.
-                ICollection<SearchResultList> Test = PlusEnvironment.GetGame().GetNavigator().GetCategorysForSearch(Category);
-                if (Test.Count == 0)
+                Categories = PlusEnvironment.GetGame().GetNavigator().GetCategorysForSearch(Category);
+                if (Categories.Count == 0)
                 {
-                    ICollection<SearchResultList> SecondTest = PlusEnvironment.GetGame().GetNavigator().GetResultByIdentifier(Category);
-                    if (SecondTest.Count > 0)
+                    //Are we going in deep?!
+                    Categories = PlusEnvironment.GetGame().GetNavigator().GetResultByIdentifier(Category);
+                    if (Categories.Count > 0)
                     {
-                        Session.SendMessage(new NavigatorSearchResultSetComposer(Category, Unknown, SecondTest, Session, 2, 100));
+                        session.SendMessage(new NavigatorSearchResultSetComposer(Category, Search, Categories, session, 2, 100));
                         return;
                     }
                 }
-
-                Session.SendMessage(new NavigatorSearchResultSetComposer(Category, Unknown, Test, Session));
             }
+
+            session.SendMessage(new NavigatorSearchResultSetComposer(Category, Search, Categories, session));
         }
     }
 }

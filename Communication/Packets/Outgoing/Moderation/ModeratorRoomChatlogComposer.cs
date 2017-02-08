@@ -1,63 +1,39 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Data;
-using System.Collections.Generic;
-using Plus.Database.Interfaces;
+﻿using System.Collections.Generic;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Users;
 
 using Plus.Utilities;
-using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Rooms.Chat.Logs;
 
 namespace Plus.Communication.Packets.Outgoing.Moderation
 {
     class ModeratorRoomChatlogComposer : ServerPacket
     {
-        public ModeratorRoomChatlogComposer(Room Room)
+        public ModeratorRoomChatlogComposer(Room room, ICollection<ChatlogEntry> chats)
             : base(ServerPacketHeader.ModeratorRoomChatlogMessageComposer)
         {
             base.WriteByte(1);
             base.WriteShort(2);//Count
             base.WriteString("roomName");
             base.WriteByte(2);
-            base.WriteString(Room.Name);
+            base.WriteString(room.Name);
             base.WriteString("roomId");
             base.WriteByte(1);
-            base.WriteInteger(Room.Id);
+            base.WriteInteger(room.Id);
 
-            DataTable Table = null;
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            base.WriteShort(chats.Count);
+            foreach (ChatlogEntry Entry in chats)
             {
-                dbClient.SetQuery("SELECT * FROM `chatlogs` WHERE `room_id` = @rid ORDER BY `id` DESC LIMIT 250");
-                dbClient.AddParameter("rid", Room.Id);
-                Table = dbClient.getTable();
-            }
-
-            base.WriteShort(Table.Rows.Count);
-            if (Table != null)
-            {
-                foreach (DataRow Row in Table.Rows)
+                string Username = "Unknown";
+                if (Entry.PlayerNullable() != null)
                 {
-                    UserCache Habbo = PlusEnvironment.GetGame().GetCacheManager().GenerateUser(Convert.ToInt32(Row["user_id"]));
-
-                    if (Habbo == null)
-                    {
-                        base.WriteString(UnixTimestamp.FromUnixTimestamp(Convert.ToInt32(Row["timestamp"])).ToShortTimeString());
-                        base.WriteInteger(-1);
-                        base.WriteString("Unknown User");
-                        base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"])) ? "*user sent a blank message*" : Convert.ToString(Row["message"]));
-                        base.WriteBoolean(false);
-                    }
-                    else
-                    {
-                        base.WriteString(UnixTimestamp.FromUnixTimestamp(Convert.ToInt32(Row["timestamp"])).ToShortTimeString());
-                        base.WriteInteger(Habbo.Id);
-                        base.WriteString(Habbo.Username);
-                        base.WriteString(string.IsNullOrWhiteSpace(Convert.ToString(Row["message"])) ? "*user sent a blank message*" : Convert.ToString(Row["message"]));
-                        base.WriteBoolean(false);
-                    }
+                    Username = Entry.PlayerNullable().Username;
                 }
+
+                base.WriteString(UnixTimestamp.FromUnixTimestamp(Entry.Timestamp).ToShortTimeString()); // time?
+                base.WriteInteger(Entry.PlayerId); // User Id
+                base.WriteString(Username); // Username
+                base.WriteString(Entry.Message); // Message
+                base.WriteBoolean(false); //TODO: Figure out
             }
         }
     }

@@ -53,7 +53,8 @@ namespace Plus.Communication.Packets.Incoming.Messenger
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("INSERT INTO `chatlogs_console_invitations` (`user_id`,`message`,`timestamp`) VALUES ('" + Session.GetHabbo().Id + "', @message, UNIX_TIMESTAMP())");
+                dbClient.SetQuery("INSERT INTO `chatlogs_console_invitations` (`user_id`,`message`,`timestamp`) VALUES (@userId, @message, UNIX_TIMESTAMP())");
+                dbClient.AddParameter("userId", Session.GetHabbo().Id);
                 dbClient.AddParameter("message", Message);
                 dbClient.RunQuery();
             }

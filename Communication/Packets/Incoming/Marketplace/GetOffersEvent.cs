@@ -47,11 +47,11 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
 
-                dbClient.SetQuery("SELECT `offer_id`, item_type, sprite_id, total_price, `limited_number`,`limited_stack` FROM catalog_marketplace_offers " + builder.ToString() + " " + str + " LIMIT 500");
+                dbClient.SetQuery("SELECT `offer_id`, `item_type`, `sprite_id`, `total_price`, `limited_number`,`limited_stack` FROM `catalog_marketplace_offers` " + builder.ToString() + " " + str + " LIMIT 500");
                 dbClient.AddParameter("search_query", "%" + SearchQuery + "%");
                 if (SearchQuery.Length >= 1)
                 {
-                    builder.Append(" AND public_name LIKE @search_query");
+                    builder.Append(" AND `public_name` LIKE @search_query");
                 }
                 table = dbClient.getTable();
             }

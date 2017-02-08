@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 
@@ -8,7 +6,6 @@ using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.GameClients;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.Database.Interfaces;
-
 
 namespace Plus.Communication.Packets.Incoming.Moderation
 {
@@ -28,7 +25,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             Dictionary<double, RoomData> Visits = new Dictionary<double, RoomData>();
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT room_id, `entry_timestamp` FROM `user_roomvisits` WHERE `user_id` =@id ORDER BY `entry_timestamp` DESC LIMIT 50");
+                dbClient.SetQuery("SELECT `room_id`, `entry_timestamp` FROM `user_roomvisits` WHERE `user_id` = @id ORDER BY `entry_timestamp` DESC LIMIT 50");
                 dbClient.AddParameter("id", UserId);
                 Table = dbClient.getTable();
 

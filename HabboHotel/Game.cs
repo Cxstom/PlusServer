@@ -11,6 +11,7 @@ using Plus.HabboHotel.Items.Televisions;
 using Plus.HabboHotel.Navigator;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Groups;
+
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.LandingView;
@@ -34,7 +35,7 @@ namespace Plus.HabboHotel
     public class Game
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Game");
-
+        
         private readonly PacketManager _packetManager;
         private readonly GameClientManager _clientManager;
         private readonly ModerationManager _modManager;
@@ -72,7 +73,6 @@ namespace Plus.HabboHotel
             this._clientManager = new GameClientManager();
             this._modManager = new ModerationManager();
             this._moderationTool = new ModerationTool();
-
             this._itemDataManager = new ItemDataManager();
             this._itemDataManager.Init();
 
@@ -214,11 +214,12 @@ namespace Plus.HabboHotel
         {
             return _groupManager;
         }
-
+        
         public LandingViewManager GetLandingManager()
         {
             return _landingViewManager;
         }
+
         public TelevisionManager GetTelevisionManager()
         {
             return _televisionManager;

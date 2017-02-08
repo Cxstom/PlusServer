@@ -4,7 +4,6 @@ using System.Text;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.Navigator;
-using Plus.HabboHotel.Navigator;
 
 namespace Plus.Communication.Packets.Outgoing.Navigator
 {
@@ -17,11 +16,11 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
             foreach (SearchResultList Cat in Categories)
             {
                 base.WriteInteger(Cat.Id);
-               base.WriteString(Cat.PublicName);
+                base.WriteString(Cat.PublicName);
                 base.WriteBoolean(Cat.RequiredRank <= Rank);
                 base.WriteBoolean(false);
-               base.WriteString("");
-               base.WriteString("");
+                base.WriteString("");
+                base.WriteString("");
                 base.WriteBoolean(false);
             }
         }

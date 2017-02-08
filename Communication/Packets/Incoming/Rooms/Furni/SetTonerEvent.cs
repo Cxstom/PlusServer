@@ -41,7 +41,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("UPDATE room_items_toner SET enabled = '1', data1=@data1 ,data2=@data2,data3=@data3 WHERE id=" + Item.Id + " LIMIT 1");
+                dbClient.SetQuery("UPDATE `room_items_toner` SET `enabled` = '1', `data1` = @data1, `data2` = @data2, `data3` = @data3 WHERE `id` = @itemId LIMIT 1");
+                dbClient.AddParameter("itemId", Item.Id);
                 dbClient.AddParameter("data1", Int1);
                 dbClient.AddParameter("data3", Int3);
                 dbClient.AddParameter("data2", Int2);

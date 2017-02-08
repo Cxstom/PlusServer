@@ -43,6 +43,12 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 return;
             }
 
+            if (!PlusEnvironment.IsValidAlphaNumeric(PetName))
+            {
+                Session.SendMessage(new CheckGnomeNameComposer(PetName, 1));
+                return;
+            }
+
             int X = Item.GetX;
             int Y = Item.GetY;
 
@@ -67,6 +73,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 Session.SendNotification("Oops, an error occoured. Please report this!");
                 return;
             }
+
+
+            
+            
 
             List<RandomSpeech> RndSpeechList = new List<RandomSpeech>();
             List<BotResponse> BotResponse = new List<BotResponse>();

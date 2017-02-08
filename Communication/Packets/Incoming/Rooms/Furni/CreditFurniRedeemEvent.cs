@@ -52,7 +52,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Exchange.Id + "' LIMIT 1");
+                dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @exchangeId LIMIT 1");
+                dbClient.AddParameter("exchangeId", Exchange.Id);
+                dbClient.RunQuery();
             }
 
             Session.SendMessage(new FurniListUpdateComposer());

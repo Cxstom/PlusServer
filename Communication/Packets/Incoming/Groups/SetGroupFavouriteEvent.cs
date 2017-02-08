@@ -29,7 +29,10 @@ namespace Plus.Communication.Packets.Incoming.Groups
             Session.GetHabbo().GetStats().FavouriteGroupId = Group.Id;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("UPDATE `user_stats` SET `groupid` = " + Session.GetHabbo().GetStats().FavouriteGroupId + " WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+                dbClient.SetQuery("UPDATE `user_stats` SET `groupid` = @groupId WHERE `id` = @userId LIMIT 1");
+                dbClient.AddParameter("groupId", Session.GetHabbo().GetStats().FavouriteGroupId);
+                dbClient.AddParameter("userId", Session.GetHabbo().Id);
+                dbClient.RunQuery();
             }
 
             if (Session.GetHabbo().InRoom && Session.GetHabbo().CurrentRoom != null)

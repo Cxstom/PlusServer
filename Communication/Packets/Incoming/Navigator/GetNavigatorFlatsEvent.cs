@@ -7,7 +7,6 @@ using Plus.HabboHotel.GameClients;
 using Plus.Communication.Packets.Incoming;
 using Plus.Communication.Packets.Outgoing.Navigator;
 using Plus.HabboHotel.Navigator;
-using Plus.HabboHotel.Navigator;
 
 namespace Plus.Communication.Packets.Incoming.Navigator
 {

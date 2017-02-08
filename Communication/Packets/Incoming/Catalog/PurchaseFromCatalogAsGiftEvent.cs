@@ -121,7 +121,9 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 //Insert the dummy item.
-                dbClient.SetQuery("INSERT INTO `items` (`base_item`,`user_id`,`extra_data`) VALUES ('" + PresentData.Id + "', '" + Habbo.Id + "', @extra_data)");
+                dbClient.SetQuery("INSERT INTO `items` (`base_item`,`user_id`,`extra_data`) VALUES (@baseId, @habboId, @extra_data)");
+                dbClient.AddParameter("baseId", PresentData.Id);
+                dbClient.AddParameter("habboId", Habbo.Id);
                 dbClient.AddParameter("extra_data", ED);
                 NewItemId = Convert.ToInt32(dbClient.InsertQuery());
 
@@ -242,12 +244,16 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 }
 
                 //Insert the present, forever.
-                dbClient.SetQuery("INSERT INTO `user_presents` (`item_id`,`base_id`,`extra_data`) VALUES ('" + NewItemId + "', '" + Item.Data.Id + "', @extra_data)");
+                dbClient.SetQuery("INSERT INTO `user_presents` (`item_id`,`base_id`,`extra_data`) VALUES (@itemId, @baseId, @extra_data)");
+                dbClient.AddParameter("itemId", NewItemId);
+                dbClient.AddParameter("baseId", Item.Data.Id);
                 dbClient.AddParameter("extra_data", (string.IsNullOrEmpty(ItemExtraData) ? "" : ItemExtraData));
                 dbClient.RunQuery();
 
                 //Here we're clearing up a record, this is dumb, but okay.
-                dbClient.RunQuery("DELETE FROM `items` WHERE `id` = " + NewItemId + " LIMIT 1;");
+                dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @deleteId LIMIT 1");
+                dbClient.AddParameter("deleteId", NewItemId);
+                dbClient.RunQuery();
             }
 
 

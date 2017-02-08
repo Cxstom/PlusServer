@@ -59,7 +59,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 }
                 else
                 {
-                    dbClient.SetQuery("SELECT id FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
+                    dbClient.SetQuery("SELECT `id` FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
                     int Id = dbClient.getInteger();
 
