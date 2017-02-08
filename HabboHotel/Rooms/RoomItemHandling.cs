@@ -851,6 +851,7 @@ namespace Plus.HabboHotel.Rooms
                     this._floorItems.TryRemove(Item.Id, out I);
                     Session.GetHabbo().GetInventoryComponent()._floorItems.TryAdd(Item.Id, I);
                     this._room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));
+                    this._rollers.Clear();
                 }
                 else if (Item.IsWallItem)
                 {
