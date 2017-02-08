@@ -11,7 +11,6 @@ using Plus.HabboHotel.Items.Televisions;
 using Plus.HabboHotel.Navigator;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Groups;
-using Plus.HabboHotel.Groups.Forums;
 
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Achievements;

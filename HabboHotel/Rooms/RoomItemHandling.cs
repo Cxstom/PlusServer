@@ -326,7 +326,7 @@ namespace Plus.HabboHotel.Rooms
                     if (ItemsOnRoller.Count > 10)
                         ItemsOnRoller = _room.GetGameMap().GetRoomItemForSquare(Roller.GetX, Roller.GetY, Roller.GetZ).Take(10).ToList();
 
-                    bool NextSquareIsRoller = (ItemsOnNext.Where(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER).Count() > 0);
+                    bool NextSquareIsRoller = (ItemsOnNext.Count(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER) > 0);
                     bool NextRollerClear = true;
 
                     double NextZ = 0.0;
@@ -509,15 +509,17 @@ namespace Plus.HabboHotel.Rooms
             bool NeedsReAdd = false;
 
             if (newItem)
+            {
                 if (Item.IsWired)
-                    if (Item.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps && _room.GetRoomItemHandler().GetFloor.Where(x => x.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps).Count() > 0)
+                {
+                    if (Item.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps && _room.GetRoomItemHandler().GetFloor.Count(x => x.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps) > 0)
                         return false;
-
+                }
+            }
 
             List<Item> ItemsOnTile = GetFurniObjects(newX, newY);
-            if (Item.GetBaseItem().InteractionType == InteractionType.ROLLER && ItemsOnTile.Where(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER && x.Id != Item.Id).Count() > 0)
+            if (Item.GetBaseItem().InteractionType == InteractionType.ROLLER && ItemsOnTile.Count(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER && x.Id != Item.Id) > 0)
                 return false;
-
 
             if (!newItem)
                 NeedsReAdd = _room.GetGameMap().RemoveFromMap(Item);

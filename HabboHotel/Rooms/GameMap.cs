@@ -1043,7 +1043,7 @@ namespace Plus.HabboHotel.Rooms
             List<Item> Items = _room.GetGameMap().GetAllRoomItemForSquare(To.X, To.Y);
             if (Items.Count > 0)
             {
-                bool HasGroupGate = Items.ToList().Where(x => x.GetBaseItem().InteractionType == InteractionType.GUILD_GATE).ToList().Count() > 0;
+                bool HasGroupGate = Items.ToList().Count(x => x.GetBaseItem().InteractionType == InteractionType.GUILD_GATE) > 0;
                 if (HasGroupGate)
                 {
                     Item I = Items.FirstOrDefault(x => x.GetBaseItem().InteractionType == InteractionType.GUILD_GATE);
@@ -1139,7 +1139,7 @@ namespace Plus.HabboHotel.Rooms
             List<Item> Items = _room.GetGameMap().GetAllRoomItemForSquare(To.X, To.Y);
             if (Items.Count > 0)
             {
-                bool HasGroupGate = Items.ToList().Where(x => x != null && x.GetBaseItem().InteractionType == InteractionType.GUILD_GATE).Count() > 0;
+                bool HasGroupGate = Items.ToList().Count(x => x != null && x.GetBaseItem().InteractionType == InteractionType.GUILD_GATE) > 0;
                 if (HasGroupGate)
                     return true;
             }

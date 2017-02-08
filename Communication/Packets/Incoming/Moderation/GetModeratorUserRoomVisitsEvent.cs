@@ -7,7 +7,6 @@ using Plus.HabboHotel.GameClients;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.Database.Interfaces;
 
-
 namespace Plus.Communication.Packets.Incoming.Moderation
 {
     class GetModeratorUserRoomVisitsEvent : IPacketEvent

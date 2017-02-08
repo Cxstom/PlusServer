@@ -620,11 +620,6 @@
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherManager.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherType.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherUtility.cs" />
-    <Compile Include="HabboHotel\Groups\GroupForums\GroupForum.cs" />
-    <Compile Include="HabboHotel\Groups\GroupForums\GroupForumSettings.cs" />
-    <Compile Include="HabboHotel\Groups\GroupForums\GroupForumThread.cs" />
-    <Compile Include="HabboHotel\Groups\GroupForums\GroupForumThreadPost.cs" />
-    <Compile Include="HabboHotel\Groups\GroupForums\GroupForumThreadPostView.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorCounter.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorLoveLock.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\ActorHasHandItemBox.cs" />

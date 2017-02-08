@@ -59,7 +59,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Conditions
 
                 bool HasFurni = false;
                 List<Item> Items = Instance.GetGameMap().GetAllRoomItemForSquare(Item.GetX, Item.GetY);
-                if (Items.Where(x => x.GetZ >= Item.GetZ).Count() > 1)
+                if (Items.Count(x => x.GetZ >= Item.GetZ) > 1)
                     HasFurni = true;
 
                 if (!HasFurni)

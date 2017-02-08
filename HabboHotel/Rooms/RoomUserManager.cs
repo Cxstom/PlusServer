@@ -475,7 +475,7 @@ namespace Plus.HabboHotel.Rooms
 
         public RoomUser GetBotByName(string Name)
         {
-            bool FoundBot = this._bots.Where(x => x.Value.BotData != null && x.Value.BotData.Name.ToLower() == Name.ToLower()).ToList().Count() > 0;
+            bool FoundBot = this._bots.Count(x => x.Value.BotData != null && x.Value.BotData.Name.ToLower() == Name.ToLower()) > 0;
             if (FoundBot)
             {
                 int Id = this._bots.FirstOrDefault(x => x.Value.BotData != null && x.Value.BotData.Name.ToLower() == Name.ToLower()).Value.BotData.Id;

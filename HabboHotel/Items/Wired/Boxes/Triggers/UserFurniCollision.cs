@@ -64,7 +64,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Triggers
             }
 
             //Check the ICollection to find the random addon effect.
-            bool HasRandomEffectAddon = Effects.Where(x => x.Type == WiredBoxType.AddonRandomEffect).ToList().Count() > 0;
+            bool HasRandomEffectAddon = Effects.Count(x => x.Type == WiredBoxType.AddonRandomEffect) > 0;
             if (HasRandomEffectAddon)
             {
                 //Okay, so we have a random addon effect, now lets get the IWiredItem and attempt to execute it.
