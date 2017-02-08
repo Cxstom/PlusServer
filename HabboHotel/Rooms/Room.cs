@@ -806,7 +806,7 @@ namespace Plus.HabboHotel.Rooms
                     Session.SendMessage(new CarryObjectComposer(RoomUser.VirtualId, RoomUser.CarryItemID));
 
                 if (!RoomUser.IsBot && !RoomUser.IsPet && RoomUser.CurrentEffect > 0)
-                    Room.SendMessage(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
+                    Session.SendMessage(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
             }
 
             Session.SendMessage(new UserUpdateComposer(_roomUserManager.GetUserList().ToList()));
@@ -966,14 +966,14 @@ namespace Plus.HabboHotel.Rooms
 
         private void SaveAI()
         {
-            foreach (RoomUser User in GetRoomUserManager().GetRoomUsers().ToList())
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                if (User == null || !User.IsBot)
-                    continue;
-
-                if (User.IsBot)
+                foreach (RoomUser User in GetRoomUserManager().GetRoomUsers().ToList())
                 {
-                    using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                    if (User == null || !User.IsBot)
+                        continue;
+
+                    if (User.IsBot)
                     {
                         dbClient.SetQuery("UPDATE bots SET x=@x, y=@y, z=@z, name=@name, look=@look, rotation=@rotation WHERE id=@id LIMIT 1;");
                         dbClient.AddParameter("name", User.BotData.Name);
