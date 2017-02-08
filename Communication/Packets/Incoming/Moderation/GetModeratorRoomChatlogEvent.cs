@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
+using System.Data;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Support;
+using Plus.Database.Interfaces;
+using Plus.HabboHotel.Users;
+using Plus.HabboHotel.Rooms.Chat.Logs;
 using Plus.Communication.Packets.Outgoing.Moderation;
 
 namespace Plus.Communication.Packets.Incoming.Moderation
@@ -20,16 +21,40 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 return;
 
             int Junk = Packet.PopInt();
+            int RoomId = Packet.PopInt();
 
             Room Room = null;
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Packet.PopInt(), out Room))
-                return;
-
-            try
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
             {
-                Session.SendMessage(new ModeratorRoomChatlogComposer(Room));
+                return;
             }
-            catch { Session.SendNotification("Overflow :/"); }
+
+            PlusEnvironment.GetGame().GetChatManager().GetLogs().FlushAndSave();
+
+            List<ChatlogEntry> Chats = new List<ChatlogEntry>();
+
+            DataTable Data = null;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT * FROM `chatlogs` WHERE `room_id` = @id ORDER BY `id` DESC LIMIT 100");
+                dbClient.AddParameter("id", RoomId);
+                Data = dbClient.getTable();
+
+                if (Data != null)
+                {
+                    foreach (DataRow Row in Data.Rows)
+                    {
+                        Habbo Habbo = PlusEnvironment.GetHabboById(Convert.ToInt32(Row["user_id"]));
+
+                        if (Habbo != null)
+                        {
+                            Chats.Add(new ChatlogEntry(Convert.ToInt32(Row["user_id"]), RoomId, Convert.ToString(Row["message"]), Convert.ToDouble(Row["timestamp"]), Habbo));
+                        }
+                    }
+                }
+            }
+
+            Session.SendMessage(new ModeratorRoomChatlogComposer(Room, Chats));
         }
     }
 }
