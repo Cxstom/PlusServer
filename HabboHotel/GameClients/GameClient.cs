@@ -166,8 +166,11 @@ namespace Plus.HabboHotel.GameClients
                     SendMessage(new CfhTopicsInitComposer());
 
                     SendMessage(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
-                    SendMessage(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));  
+                    SendMessage(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
                     //SendMessage(new TalentTrackLevelComposer());
+
+                    if (GetHabbo().GetMessenger() != null)
+                        GetHabbo().GetMessenger().OnStatusChanged(true);
 
                     if (!string.IsNullOrEmpty(MachineId))
                     {
