@@ -75,11 +75,11 @@
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="AStar">
-      <HintPath>bin\Debug\AStar.dll</HintPath>
+      <HintPath>libs\AStar.dll</HintPath>
     </Reference>
     <Reference Include="HabboEncryption, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\HabboEncryption.dll</HintPath>
+      <HintPath>libs\HabboEncryption.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
