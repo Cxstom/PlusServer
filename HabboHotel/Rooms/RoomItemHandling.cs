@@ -475,9 +475,9 @@ namespace Plus.HabboHotel.Rooms
             {
                 if (_movedItems.Count > 0)
                 {
-                    foreach (Item Item in _movedItems.Values.ToList())
+                    using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                        foreach (Item Item in _movedItems.Values.ToList())
                         {
                             if (!string.IsNullOrEmpty(Item.ExtraData))
                             {
