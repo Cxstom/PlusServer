@@ -36,8 +36,8 @@ namespace Plus.Communication.Packets.Incoming.Messenger
             }
             else
             {
-                int pages = ((Friends.Count() - 1) / 700) + 1;
-                foreach (ICollection<MessengerBuddy> batch in Friends.Batch(700))
+                int pages = ((Friends.Count() - 1) / 500) + 1;
+                foreach (ICollection<MessengerBuddy> batch in Friends.Batch(500))
                 {
                     Session.SendMessage(new BuddyListComposer(batch.ToList(), Session.GetHabbo(), pages, page));
 

@@ -46,10 +46,10 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
 
                     if (Item.GetBaseItem().Type == 's')
                         base.WriteInteger(0);
-
-                    base.WriteInteger(User.OfferedItems.Count);
-                    base.WriteInteger(0);//Total Value
                 }
+
+                base.WriteInteger(User.OfferedItems.Count);
+                base.WriteInteger(0);//Total Value
             }
         }
     }
