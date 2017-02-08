@@ -509,12 +509,16 @@ namespace Plus.HabboHotel.Rooms
             bool NeedsReAdd = false;
 
             if (newItem)
+            {
                 if (Item.IsWired)
-                    if (Item.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps && _room.GetRoomItemHandler().GetFloor.Where(x => x.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps).Count() > 0)
+                {
+                    if (Item.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps && _room.GetRoomItemHandler().GetFloor.Count(x => x.GetBaseItem().WiredType == WiredBoxType.EffectRegenerateMaps) > 0)
                         return false;
+                }
+            }
 
             List<Item> ItemsOnTile = GetFurniObjects(newX, newY);
-            if (Item.GetBaseItem().InteractionType == InteractionType.ROLLER && ItemsOnTile.Where(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER && x.Id != Item.Id).Count() > 0)
+            if (Item.GetBaseItem().InteractionType == InteractionType.ROLLER && ItemsOnTile.Count(x => x.GetBaseItem().InteractionType == InteractionType.ROLLER && x.Id != Item.Id)> 0)
                 return false;
 
             if (!newItem)
