@@ -998,6 +998,7 @@ namespace Plus.HabboHotel.Rooms
             _floorItems.Clear();
             _wallItems.Clear();
             _movedItems.Clear();
+            _rollers.Clear();
             this._roomItemUpdateQueue = null;
 
             _room = null;
@@ -1005,6 +1006,7 @@ namespace Plus.HabboHotel.Rooms
             _wallItems = null;
             _movedItems = null;
             _wallItems = null;
+            _rollers = null;
             _roomItemUpdateQueue = null;
         }
     }
