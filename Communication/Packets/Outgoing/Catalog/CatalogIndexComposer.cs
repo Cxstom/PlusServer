@@ -18,15 +18,19 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 
                 WritePage(Parent, CalcTreeSize(Session, Pages, Parent.Id));
 
-                foreach (CatalogPage Child in Pages)
+                foreach (CatalogPage child in Pages)
                 {
-                    if (Child.ParentId != Parent.Id || Child.MinimumRank > Session.GetHabbo().Rank || (Child.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
+                    if (child.ParentId != Parent.Id || child.MinimumRank > Session.GetHabbo().Rank || (child.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
                         continue;
 
-                    WritePage(Child, CalcTreeSize(Session, Pages, Child.Id));
+                    if (child.Enabled)
+                        WritePage(child, CalcTreeSize(Session, Pages, child.Id));
+                    else
+                        WriteNodeIndex(child, CalcTreeSize(Session, Pages, child.Id));
+                    
                     foreach (CatalogPage SubChild in Pages)
                     {
-                        if (SubChild.ParentId != Child.Id || SubChild.MinimumRank > Session.GetHabbo().Rank)
+                        if (SubChild.ParentId != child.Id || SubChild.MinimumRank > Session.GetHabbo().Rank)
                             continue;
 
                         WritePage(SubChild, 0);
@@ -38,7 +42,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             base.WriteString("NORMAL");
         }
 
-        public void WriteRootIndex(GameClient Session, ICollection<CatalogPage> Pages)
+        public void WriteRootIndex(GameClient session, ICollection<CatalogPage> pages)
         {
             base.WriteBoolean(true);
             base.WriteInteger(0);
@@ -46,24 +50,35 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             base.WriteString("root");
             base.WriteString(string.Empty);
             base.WriteInteger(0);
-            base.WriteInteger(CalcTreeSize(Session, Pages, -1));
+            base.WriteInteger(CalcTreeSize(session, pages, -1));
         }
 
-        public void WritePage(CatalogPage Page, int TreeSize)
+        public void WriteNodeIndex(CatalogPage page, int treeSize)
         {
-            base.WriteBoolean(Page.Visible);
-            base.WriteInteger(Page.Icon);
-            base.WriteInteger(Page.Id);
-            base.WriteString(Page.PageLink);
-            base.WriteString(Page.Caption);
+            base.WriteBoolean(page.Visible);
+            base.WriteInteger(page.Icon);
+            base.WriteInteger(-1);
+            base.WriteString(page.PageLink);
+            base.WriteString(page.Caption);
+            base.WriteInteger(0);
+            base.WriteInteger(treeSize);
+        }
 
-            base.WriteInteger(Page.ItemOffers.Count);
-            foreach (int i in Page.ItemOffers.Keys)
+        public void WritePage(CatalogPage page, int treeSize)
+        {
+            base.WriteBoolean(page.Visible);
+            base.WriteInteger(page.Icon);
+            base.WriteInteger(page.Id);
+            base.WriteString(page.PageLink);
+            base.WriteString(page.Caption);
+
+            base.WriteInteger(page.ItemOffers.Count);
+            foreach (int i in page.ItemOffers.Keys)
             {
                 base.WriteInteger(i);
             }
 
-            base.WriteInteger(TreeSize);
+            base.WriteInteger(treeSize);
         }
 
         public int CalcTreeSize(GameClient Session, ICollection<CatalogPage> Pages, int ParentId)
