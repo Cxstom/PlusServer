@@ -767,19 +767,6 @@ namespace Plus.HabboHotel.Rooms
             return false;
         }
 
-        public void AddChatlog(int Id, string Message)
-        {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("INSERT INTO `chatlogs` (user_id, room_id, message, timestamp) VALUES (@user, @room, @message, @time)");
-                dbClient.AddParameter("user", Id);
-                dbClient.AddParameter("room", RoomId);
-                dbClient.AddParameter("message", Message);
-                dbClient.AddParameter("time", PlusEnvironment.GetUnixTimestamp());
-                dbClient.RunQuery();
-            }
-        }
-
         public void SendObjects(GameClient Session)
         {
             Room Room = Session.GetHabbo().CurrentRoom;

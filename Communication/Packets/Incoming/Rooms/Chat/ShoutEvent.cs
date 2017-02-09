@@ -9,6 +9,7 @@ using Plus.Communication.Packets.Incoming;
 using Plus.Utilities;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.HabboHotel.Rooms.Chat.Styles;
+using Plus.HabboHotel.Rooms.Chat.Logs;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 {
@@ -64,7 +65,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 }
             }
 
-            Room.AddChatlog(Session.GetHabbo().Id, Message);
+            PlusEnvironment.GetGame().GetChatManager().GetLogs().StoreChatlog(new ChatlogEntry(Session.GetHabbo().Id, Room.Id, Message, UnixTimestamp.GetNow(), Session.GetHabbo(), Room));
+
             if (Message.StartsWith(":", StringComparison.CurrentCulture) && PlusEnvironment.GetGame().GetChatManager().GetCommands().Parse(Session, Message))
                 return;
             
