@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Wired
                 return;
 
             Room Room = Session.GetHabbo().CurrentRoom;
-            if (Room == null || Room.CheckRights(Session, false, true))
+            if (Room == null || !Room.CheckRights(Session, false, true))
                 return;
 
             int ItemId = Packet.PopInt();
