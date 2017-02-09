@@ -9,6 +9,7 @@ using Plus.Communication.Packets.Incoming;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.Utilities;
 using Plus.HabboHotel.Rooms.Chat.Styles;
+using Plus.HabboHotel.Rooms.Chat.Logs;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 {
@@ -75,8 +76,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 Session.SendWhisper("Oops, this user has their whispers disabled!");
                 return;
             }
-
-            Room.AddChatlog(Session.GetHabbo().Id, "<Whisper to " + ToUser + ">: " + Message);
+            
+            PlusEnvironment.GetGame().GetChatManager().GetLogs().StoreChatlog(new ChatlogEntry(Session.GetHabbo().Id, Room.Id, "<Whisper to " + ToUser + ">: " + Message, UnixTimestamp.GetNow(), Session.GetHabbo(), Room));
 
             if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(Message))
             {
