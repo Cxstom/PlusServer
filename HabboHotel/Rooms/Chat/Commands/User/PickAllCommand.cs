@@ -35,6 +35,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                 return;
 
             Room.GetRoomItemHandler().RemoveItems(Session);
+            Room.GetGameMap().GenerateMaps();
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {

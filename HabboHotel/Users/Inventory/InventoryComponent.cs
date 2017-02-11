@@ -31,10 +31,10 @@ namespace Plus.HabboHotel.Users.Inventory
         private int _userId;
         private GameClient _client;
 
-        public ConcurrentDictionary<int, Bot> _botItems;
-        public ConcurrentDictionary<int, Pet> _petsItems;
-        public ConcurrentDictionary<int, Item> _floorItems;
-        public ConcurrentDictionary<int, Item> _wallItems;
+        private ConcurrentDictionary<int, Bot> _botItems;
+        private ConcurrentDictionary<int, Pet> _petsItems;
+        private ConcurrentDictionary<int, Item> _floorItems;
+        private ConcurrentDictionary<int, Item> _wallItems;
 
         public InventoryComponent(int UserId, GameClient Client)
         {
@@ -133,7 +133,6 @@ namespace Plus.HabboHotel.Users.Inventory
 
             _client = null;
         }
-
 
         public void UpdateItems(bool FromDatabase)
         {
@@ -344,6 +343,16 @@ namespace Plus.HabboHotel.Users.Inventory
             {
                 throw new InvalidOperationException("Item did not match neither floor or wall item");
             }
+        }
+
+        public bool TryAddFloorItem(int itemId, Item item)
+        {
+            return this._floorItems.TryAdd(itemId, item);
+        }
+
+        public bool TryAddWallItem(int itemId, Item item)
+        {
+            return this._floorItems.TryAdd(itemId, item);
         }
 
         public ICollection<Item> GetFloorItems()

@@ -857,7 +857,7 @@ namespace Plus.HabboHotel.Rooms
                 {
                     Item I = null;
                     this._floorItems.TryRemove(Item.Id, out I);
-                    Session.GetHabbo().GetInventoryComponent()._floorItems.TryAdd(Item.Id, I);
+                    Session.GetHabbo().GetInventoryComponent().TryAddFloorItem(Item.Id, I);
                     this._room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));
                     this._rollers.Clear();
                 }
@@ -865,11 +865,10 @@ namespace Plus.HabboHotel.Rooms
                 {
                     Item I = null;
                     this._wallItems.TryRemove(Item.Id, out I);
-                    Session.GetHabbo().GetInventoryComponent()._wallItems.TryAdd(Item.Id, I);
+                    Session.GetHabbo().GetInventoryComponent().TryAddWallItem(Item.Id, I);
                     this._room.SendMessage(new ItemRemoveComposer(Item, Item.UserID));
                 }
-
-                this._room.GetGameMap().GenerateMaps();
+                
                 Session.SendMessage(new FurniListAddComposer(Item));
             }
 
