@@ -251,6 +251,16 @@ namespace Plus.HabboHotel.Moderation
             return this._modTickets.TryGetValue(TicketId, out Ticket);
         }
 
+        public bool UserHasTickets(int userId)
+        {
+            return this._modTickets.Count(x => x.Value.Sender.Id == userId) > 0;
+        }
+
+        public ModerationTicket GetTicketBySenderId(int userId)
+        {
+            return this._modTickets.FirstOrDefault(x => x.Value.Sender.Id == userId).Value;
+        }
+
         /// <summary>
         /// Runs a quick check to see if a ban record is cached in the server.
         /// </summary>

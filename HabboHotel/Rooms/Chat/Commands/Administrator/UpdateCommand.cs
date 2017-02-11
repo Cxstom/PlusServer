@@ -225,22 +225,6 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                         break;
                     }
 
-                case "tickets":
-                    {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_tickets"))
-                        {
-                            Session.SendWhisper("Oops, you do not have the 'command_update_tickets' permission.");
-                            break;
-                        }
-
-                        if (PlusEnvironment.GetGame().GetModerationTool().Tickets.Count > 0)
-                            PlusEnvironment.GetGame().GetModerationTool().Tickets.Clear();
-
-                        PlusEnvironment.GetGame().GetClientManager().ModAlert("Tickets have been purged. Please reload the client.");
-                        Session.SendWhisper("Tickets successfully purged.");
-                        break;
-                    }
-
                 case "vouchers":
                     {
                         if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_vouchers"))

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using Plus.HabboHotel.Moderation;
+using Plus.Communication.Packets.Outgoing.Moderation;
 
 namespace Plus.Communication.Packets.Incoming.Moderation
 {
@@ -12,9 +10,15 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             if (Session == null || Session.GetHabbo() == null || !Session.GetHabbo().GetPermissions().HasRight("mod_tool"))
                 return;
 
-            int Junk = Packet.PopInt();
+            int Junk = Packet.PopInt();//??
             int TicketId = Packet.PopInt();
-            PlusEnvironment.GetGame().GetModerationTool().PickTicket(Session, TicketId);
+
+            ModerationTicket Ticket = null;
+            if (!PlusEnvironment.GetGame().GetModerationManager().TryGetTicket(TicketId, out Ticket))
+                return;
+
+            Ticket.Moderator = Session.GetHabbo();
+            PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
         }
     }
 }

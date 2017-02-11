@@ -385,6 +385,7 @@
     <Compile Include="Communication\Packets\Outgoing\Messenger\NewBuddyRequestComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Messenger\RoomInviteComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\BroadcastMessageAlertComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Moderation\CallForHelpPendingCallsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\CfhTopicsInitComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\ModeratorInitComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\ModeratorRoomChatlogComposer.cs" />
@@ -826,7 +827,6 @@
     <Compile Include="HabboHotel\Rooms\RoomAppender.cs" />
     <Compile Include="HabboHotel\Rooms\RoomPromotion.cs" />
     <Compile Include="HabboHotel\Rooms\Trading\TradeUser.cs" />
-    <Compile Include="HabboHotel\Rooms\Chat\Moderation\ModerationRoomChatLog.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionData.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionManager.cs" />
     <Compile Include="HabboHotel\Support\TicketStatus.cs" />
@@ -1047,6 +1047,7 @@
   <ItemGroup>
     <Folder Include="Communication\Packets\Incoming\Rooms\Groups\" />
     <Folder Include="HabboHotel\Rooms\Chat\Commands\Roleplay\Generic\" />
+    <Folder Include="HabboHotel\Rooms\Chat\Moderation\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

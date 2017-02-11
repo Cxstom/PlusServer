@@ -23,19 +23,22 @@ namespace Plus.HabboHotel.Moderation
         public string Issue { get; set; }
         public RoomData Room { get; set; }
 
-        public ModerationTicket(int Id, int Type, int Category, double Timestamp, int Priority, Habbo Sender, Habbo Reported, string Issue, RoomData Room)
+        public List<string> ReportedChats;
+
+        public ModerationTicket(int id, int type, int category, double timestamp, int priority, Habbo sender, Habbo reported, string issue, RoomData room, List<string> reportedChats)
         {
-            this.Id = Id;
-            this.Type = Type;
-            this.Category = Category;
-            this.Timestamp = Timestamp;
-            this.Priority = Priority;
-            this.Sender = Sender;
-            this.Reported = Reported;
+            this.Id = id;
+            this.Type = type;
+            this.Category = category;
+            this.Timestamp = timestamp;
+            this.Priority = priority;
+            this.Sender = sender;
+            this.Reported = reported;
             this.Moderator = null;
-            this.Issue = Issue;
-            this.Room = Room;
+            this.Issue = issue;
+            this.Room = room;
             this.Answered = false;
+            this.ReportedChats = reportedChats;
         }
 
         public int GetStatus(int Id)

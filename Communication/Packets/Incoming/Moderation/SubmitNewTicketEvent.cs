@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-using Plus.HabboHotel.Support;
-using Plus.HabboHotel.Rooms.Chat.Moderation;
+using Plus.Utilities;
+using Plus.HabboHotel.Users;
+using Plus.Database.Interfaces;
+using Plus.HabboHotel.Moderation;
 using Plus.Communication.Packets.Outgoing.Moderation;
 
 namespace Plus.Communication.Packets.Incoming.Moderation
@@ -16,30 +15,49 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             if (Session == null || Session.GetHabbo() == null)
                 return;
 
-            if (PlusEnvironment.GetGame().GetModerationTool().UsersHasPendingTicket(Session.GetHabbo().Id))
+            // Run a quick check to see if we have any existing tickets.
+            if (PlusEnvironment.GetGame().GetModerationManager().UserHasTickets(Session.GetHabbo().Id))
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("You currently already have a pending ticket, please wait for a response from a moderator."));
+                ModerationTicket PendingTicket = PlusEnvironment.GetGame().GetModerationManager().GetTicketBySenderId(Session.GetHabbo().Id);
+                if (PendingTicket != null)
+                {
+                    Session.SendMessage(new CallForHelpPendingCallsComposer(PendingTicket));
+                    return;
+                }
+            }
+
+            List<string> Chats = new List<string>();
+
+            string Message = StringCharFilter.Escape(Packet.PopString().Trim());
+            int Category = Packet.PopInt();
+            int ReportedUserId = Packet.PopInt();
+            int Type = Packet.PopInt();// Unsure on what this actually is.
+
+            Habbo ReportedUser = PlusEnvironment.GetHabboById(ReportedUserId);
+            if (ReportedUser == null)
+            {
+                // User doesn't exist.
                 return;
             }
 
-            string Message = Packet.PopString();
-            int Type = Packet.PopInt();
-            int ReportedUser = Packet.PopInt();
-            int Room = Packet.PopInt();
-
             int Messagecount = Packet.PopInt();
-            List<string> Chats = new List<string>();
             for (int i = 0; i < Messagecount; i++)
             {
                 Packet.PopInt();
                 Chats.Add(Packet.PopString());
             }
 
-            ModerationRoomChatLog Chat = new ModerationRoomChatLog(Packet.PopInt(), Chats);
+            ModerationTicket Ticket = new ModerationTicket(1, Type, Category, UnixTimestamp.GetNow(), 1, Session.GetHabbo(), ReportedUser, Message, Session.GetHabbo().CurrentRoom, Chats);
+            if (!PlusEnvironment.GetGame().GetModerationManager().TryAddTicket(Ticket))
+                return;
 
-            PlusEnvironment.GetGame().GetModerationTool().SendNewTicket(Session, Type, ReportedUser, Message, Chats);
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.RunQuery("UPDATE `user_info` SET `cfhs` = `cfhs` + '1' WHERE `user_id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
+            }
+
             PlusEnvironment.GetGame().GetClientManager().ModAlert("A new support ticket has been submitted!");
-
+            PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
         }
     }
 }

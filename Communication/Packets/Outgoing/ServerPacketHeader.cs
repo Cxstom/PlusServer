@@ -2,6 +2,7 @@
 {
     public static class ServerPacketHeader
     {
+        public const int CallForHelpPendingCallsMessageComposer = 2460;
         public const int AvatarAspectUpdateMessageComposer = 884;
         public const int UnknownGroupMessageComposer = 1136;//1981
         public const int QuestionParserMessageComposer = 1163;//1719

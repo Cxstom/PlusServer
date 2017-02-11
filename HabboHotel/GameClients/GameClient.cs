@@ -217,7 +217,7 @@ namespace Plus.HabboHotel.GameClients
                           PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
-                          PlusEnvironment.GetGame().GetModerationTool().GetTickets));
+                          PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
                
                     if (!string.IsNullOrWhiteSpace(PlusEnvironment.GetDBConfig().DBData["welcome_message"]))

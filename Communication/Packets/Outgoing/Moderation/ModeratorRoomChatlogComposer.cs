@@ -32,8 +32,8 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
                 base.WriteString(UnixTimestamp.FromUnixTimestamp(Entry.Timestamp).ToShortTimeString()); // time?
                 base.WriteInteger(Entry.PlayerId); // User Id
                 base.WriteString(Username); // Username
-                base.WriteString(Entry.Message); // Message
-                base.WriteBoolean(false); //TODO: Figure out
+                base.WriteString(!string.IsNullOrEmpty(Entry.Message) ? Entry.Message : "** user sent a blank message **"); // Message        
+                base.WriteBoolean(false); //TODO, AI's?
             }
         }
     }

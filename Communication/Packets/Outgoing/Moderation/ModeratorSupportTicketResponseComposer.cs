@@ -8,11 +8,11 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
 {
     class ModeratorSupportTicketResponseComposer : ServerPacket
     {
-        public ModeratorSupportTicketResponseComposer(int Result)
+        public ModeratorSupportTicketResponseComposer(int result)
             : base(ServerPacketHeader.ModeratorSupportTicketResponseMessageComposer)
         {
-            base.WriteInteger(Result);
-           base.WriteString("");
+            base.WriteInteger(result);
+            base.WriteString("");
         }
     }
 }
