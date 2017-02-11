@@ -30,7 +30,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             DataRow dUserInfo = null;
             DataTable dAchievements = null;
             DataTable dFavouriteRooms = null;
-            DataTable dIgnores = null;
             DataTable dBadges = null;
             DataTable dFriends = null;
             DataTable dRequests = null;
@@ -64,10 +63,7 @@ namespace Plus.HabboHotel.Users.UserDataManagement
 
                 dbClient.SetQuery("SELECT room_id FROM user_favorites WHERE `user_id` = '" + UserId + "'");
                 dFavouriteRooms = dbClient.getTable();
-
-                dbClient.SetQuery("SELECT ignore_id FROM user_ignores WHERE `user_id` = '" + UserId + "'");
-                dIgnores = dbClient.getTable();
-
+                
                 dbClient.SetQuery("SELECT `badge_id`,`badge_slot` FROM user_badges WHERE `user_id` = '" + UserId + "'");
                 dBadges = dbClient.getTable();
 
@@ -120,12 +116,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             foreach (DataRow dRow in dFavouriteRooms.Rows)
             {
                 favouritedRooms.Add(Convert.ToInt32(dRow["room_id"]));
-            }
-
-            List<int> ignores = new List<int>();
-            foreach (DataRow dRow in dIgnores.Rows)
-            {
-                ignores.Add(Convert.ToInt32(dRow["ignore_id"]));
             }
 
             List<Badge> badges = new List<Badge>();
@@ -201,7 +191,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             dUserInfo = null;
             dAchievements = null;
             dFavouriteRooms = null;
-            dIgnores = null;
             dBadges = null;
             dFriends = null;
             dRequests = null;
@@ -209,7 +198,7 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             dRelations = null;
 
             errorCode = 0;
-            return new UserData(UserId, Achievements, favouritedRooms, ignores, badges, friends, requests, rooms, quests, user, Relationships);
+            return new UserData(UserId, Achievements, favouritedRooms, badges, friends, requests, rooms, quests, user, Relationships);
         }
 
         public static UserData GetUserData(int UserId)
@@ -255,7 +244,6 @@ namespace Plus.HabboHotel.Users.UserDataManagement
 
             ConcurrentDictionary<string, UserAchievement> Achievements = new ConcurrentDictionary<string, UserAchievement>();
             List<int> FavouritedRooms = new List<int>();
-            List<int> Ignores = new List<int>();
             List<Badge> Badges = new List<Badge>();
             Dictionary<int, MessengerBuddy> Friends = new Dictionary<int, MessengerBuddy>();
             Dictionary<int, MessengerRequest> FriendRequests = new Dictionary<int, MessengerRequest>();
@@ -272,7 +260,7 @@ namespace Plus.HabboHotel.Users.UserDataManagement
             }
 
             Habbo user = HabboFactory.GenerateHabbo(dUserInfo, UserInfo);
-            return new UserData(UserId, Achievements, FavouritedRooms, Ignores, Badges, Friends, FriendRequests, Rooms, Quests, user, Relationships);
+            return new UserData(UserId, Achievements, FavouritedRooms, Badges, Friends, FriendRequests, Rooms, Quests, user, Relationships);
         }
     }
 }

@@ -237,6 +237,7 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Settings\SaveEnforcedCategorySettingsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Sound\GetSongInfoEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Talents\GetTalentTrackEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Users\GetIgnoredUsersEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\GetUserTagsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\SetUserFocusPreferenceEvent.cs" />
     <Compile Include="Communication\Packets\Outgoing\Availability\MaintenanceStatusComposer.cs" />
@@ -344,7 +345,6 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Settings\UnbanUserFromRoomEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\ChangeNameEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\CheckValidNameEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Users\SetUsernameEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\SetMessengerInviteStatusEvent.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\CatalogOfferComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\CatalogUpdatedComposer.cs" />
@@ -599,6 +599,7 @@
     <Compile Include="Communication\Packets\Outgoing\Users\GetRelationshipsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\HabboGroupBadgesComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\HabboUserBadgesComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Users\IgnoredUsersComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\NameChangeUpdateComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\ProfileInformationComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\RespectNotificationComposer.cs" />
@@ -841,6 +842,7 @@
     <Compile Include="HabboHotel\Users\Effects\AvatarEffect.cs" />
     <Compile Include="HabboHotel\Users\Effects\AvatarEffectFactory.cs" />
     <Compile Include="HabboHotel\Users\Effects\EffectsComponent.cs" />
+    <Compile Include="HabboHotel\Users\Ignores\IgnoresComponent.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Bots\Bot.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Bots\BotLoader.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Pets\PetLoader.cs" />

@@ -862,7 +862,7 @@ namespace Plus.HabboHotel.Rooms
 
             foreach (RoomUser User in Tents[TentId].ToList())
             {
-                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().MutedUsers.Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
+                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
                     continue;
 
                 User.GetClient().SendMessage(Packet);

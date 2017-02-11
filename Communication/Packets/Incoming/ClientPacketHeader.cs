@@ -2,6 +2,9 @@
 {
     public static class ClientPacketHeader
     {
+        // Users
+        public const int GetIgnoredUsersMessageEvent = 198;
+
         public const int RemoveMyRightsMessageEvent = 111;//879
         public const int GiveHandItemMessageEvent = 2523;//3315
         public const int InitTradeMessageEvent = 3399;//3313
@@ -187,7 +190,6 @@
         public const int PurchaseFromCatalogMessageEvent = 3492;//2830
         public const int GetRentableSpaceMessageEvent = 2035;//793
         public const int OpenBotActionMessageEvent = 3236;//2544
-        public const int SetUsernameMessageEvent = 198;//2577
         public const int OpenCalendarBoxMessageEvent = 1229;//724
         public const int DeleteGroupPostMessageEvent = 1991;//317
         public const int GetClientVersionMessageEvent = 4000;//4000

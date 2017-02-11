@@ -147,6 +147,7 @@
 
         // Users
         public const int ScrSendUserInfoMessageComposer = 826;//2811
+        public const int IgnoredUsersMessageComposer = 2157;
 
         // Groups
         public const int UnknownGroupMessageComposer = 1136;//1T981
