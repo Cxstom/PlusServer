@@ -9,20 +9,20 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 {
     class GroupFurniConfigComposer : ServerPacket
     {
-        public GroupFurniConfigComposer(ICollection<Group> Groups)
+        public GroupFurniConfigComposer(ICollection<Group> groups)
             : base(ServerPacketHeader.GroupFurniConfigMessageComposer)
         {
-            base.WriteInteger(Groups.Count);
-            foreach (Group Group in Groups)
+            base.WriteInteger(groups.Count);
+            foreach (Group group in groups)
             {
-                base.WriteInteger(Group.Id);
-                base.WriteString(Group.Name);
-                base.WriteString(Group.Badge);
-                base.WriteString((PlusEnvironment.GetGame().GetGroupManager().SymbolColours.ContainsKey(Group.Colour1)) ? PlusEnvironment.GetGame().GetGroupManager().SymbolColours[Group.Colour1].Colour : "4f8a00"); // Group Colour 1
-                base.WriteString((PlusEnvironment.GetGame().GetGroupManager().BackGroundColours.ContainsKey(Group.Colour2)) ? PlusEnvironment.GetGame().GetGroupManager().BackGroundColours[Group.Colour2].Colour : "4f8a00"); // Group Colour 2            
+                base.WriteInteger(group.Id);
+                base.WriteString(group.Name);
+                base.WriteString(group.Badge);
+                base.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetColourCode(group.Colour1, true));
+                base.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetColourCode(group.Colour2, false));
                 base.WriteBoolean(false);
-                base.WriteInteger(Group.CreatorId);
-                base.WriteBoolean(Group.ForumEnabled);
+                base.WriteInteger(group.CreatorId);
+                base.WriteBoolean(group.ForumEnabled);
             }
         }
     }

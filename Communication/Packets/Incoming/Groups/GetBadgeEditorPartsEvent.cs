@@ -9,15 +9,14 @@ namespace Plus.Communication.Packets.Incoming.Groups
 {
     class GetBadgeEditorPartsEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            Session.SendMessage(new BadgeEditorPartsComposer(
-                PlusEnvironment.GetGame().GetGroupManager().Bases,
-                PlusEnvironment.GetGame().GetGroupManager().Symbols,
-                PlusEnvironment.GetGame().GetGroupManager().BaseColours,
-                PlusEnvironment.GetGame().GetGroupManager().SymbolColours,
-                PlusEnvironment.GetGame().GetGroupManager().BackGroundColours));
-       
+            session.SendMessage(new BadgeEditorPartsComposer(
+                PlusEnvironment.GetGame().GetGroupManager().BadgeBases,
+                PlusEnvironment.GetGame().GetGroupManager().BadgeSymbols,
+                PlusEnvironment.GetGame().GetGroupManager().BadgeBaseColours,
+                PlusEnvironment.GetGame().GetGroupManager().BadgeSymbolColours,
+                PlusEnvironment.GetGame().GetGroupManager().BadgeBackColours));
         }
     }
 }

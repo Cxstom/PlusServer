@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (Group.CreatorId != Session.GetHabbo().Id && !Session.GetHabbo().GetPermissions().HasRight("group_management_override"))
                 return;
 
-            Session.SendMessage(new ManageGroupComposer(Group));
+            Session.SendMessage(new ManageGroupComposer(Group, Group.Badge.Replace("b", "").Split('s')));
         }
     }
 }

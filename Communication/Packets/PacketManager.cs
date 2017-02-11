@@ -52,7 +52,6 @@ using Plus.Communication.Packets.Incoming.Rooms.Furni.Moodlight;
 using Plus.Communication.Packets.Incoming.Inventory.Trading;
 using Plus.Communication.Packets.Incoming.GameCenter;
 using Plus.Communication.Packets.Incoming.Marketplace;
-using Plus.Communication.Packets.Incoming.Navigator.New;
 using Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks;
 using Plus.Communication.Packets.Incoming.Talents;
 

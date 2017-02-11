@@ -626,6 +626,9 @@
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherManager.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherType.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherUtility.cs" />
+    <Compile Include="HabboHotel\Groups\BadgePartUtility.cs" />
+    <Compile Include="HabboHotel\Groups\GroupColours.cs" />
+    <Compile Include="HabboHotel\Groups\GroupBadgeParts.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorCounter.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorLoveLock.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\ActorHasHandItemBox.cs" />
@@ -860,7 +863,6 @@
     <Compile Include="HabboHotel\Catalog\CatalogBot.cs" />
     <Compile Include="HabboHotel\Groups\Group.cs" />
     <Compile Include="HabboHotel\Groups\GroupManager.cs" />
-    <Compile Include="HabboHotel\Groups\GroupParts.cs" />
     <Compile Include="HabboHotel\Items\ItemHopperFinder.cs" />
     <Compile Include="HabboHotel\Items\Interactor\IFurniInteractor.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorAlert.cs" />

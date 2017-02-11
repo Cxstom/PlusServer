@@ -82,6 +82,7 @@ namespace Plus.HabboHotel
             this._roomManager = new RoomManager();
             this._chatManager = new ChatManager();
             this._groupManager = new GroupManager();
+            this._groupManager.Init();
             this._questManager = new QuestManager();
             this._achievementManager = new AchievementManager();
             this._talentTrackManager = new TalentTrackManager();
