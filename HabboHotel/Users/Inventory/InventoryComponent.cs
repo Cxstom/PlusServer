@@ -1,28 +1,16 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
-using Plus.Core;
-using Plus.Utilities;
-using Plus.Communication.Packets.Incoming;
-
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Users.UserDataManagement;
 using Plus.HabboHotel.Users.Inventory.Pets;
 using Plus.HabboHotel.Users.Inventory.Bots;
-using Plus.Communication.Packets.Outgoing.Inventory.Bots;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
-using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
 using Plus.Database.Interfaces;
-
 
 namespace Plus.HabboHotel.Users.Inventory
 {

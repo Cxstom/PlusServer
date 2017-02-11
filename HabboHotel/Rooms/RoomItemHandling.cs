@@ -636,10 +636,6 @@ namespace Plus.HabboHotel.Rooms
                 if (Item.Rotation != newRot && Item.GetX == newX && Item.GetY == newY)
                     newZ = Item.GetZ;
 
-
-                Double StackingTile = 0;
-
-
                 // Are there any higher objects in the stack!?
                 foreach (Item I in ItemsComplete.ToList())
                 {

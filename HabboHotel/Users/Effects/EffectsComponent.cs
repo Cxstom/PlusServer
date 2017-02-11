@@ -30,22 +30,20 @@ namespace Plus.HabboHotel.Users.Effects
         /// <summary>
         /// Initializes the EffectsComponent.
         /// </summary>
-        /// <param name="UserId"></param>
-        public bool Init(Habbo Habbo)
+        public bool Init(Habbo habbo)
         {
             if (_effects.Count > 0)
                 return false;
-
-            DataTable GetEffects = null;
+            
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `user_effects` WHERE `user_id` = @id;");
-                dbClient.AddParameter("id", Habbo.Id);
-                GetEffects = dbClient.getTable();
+                dbClient.AddParameter("id", habbo.Id);
+                DataTable getEffects = dbClient.getTable();
 
-                if (GetEffects != null)
+                if (getEffects != null)
                 {
-                    foreach (DataRow Row in GetEffects.Rows)
+                    foreach (DataRow Row in getEffects.Rows)
                     {
                         if (this._effects.TryAdd(Convert.ToInt32(Row["id"]), new AvatarEffect(Convert.ToInt32(Row["id"]), Convert.ToInt32(Row["user_id"]), Convert.ToInt32(Row["effect_id"]), Convert.ToDouble(Row["total_duration"]), PlusEnvironment.EnumToBool(Row["is_activated"].ToString()), Convert.ToDouble(Row["activated_stamp"]), Convert.ToInt32(Row["quantity"]))))
                         {
@@ -55,7 +53,7 @@ namespace Plus.HabboHotel.Users.Effects
                 }
             }
 
-            this._habbo = Habbo;
+            this._habbo = habbo;
             this._currentEffect = 0;
             return true;
         }

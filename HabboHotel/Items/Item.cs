@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Linq;
-using System.Data;
 using System.Drawing;
 using System.Collections.Generic;
 
 using Plus.Core;
-using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Pathfinding;
-using Plus.HabboHotel.Rooms.Games;
 using Plus.HabboHotel.Items.Interactor;
 
 
 using Plus.Utilities;
-using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Rooms.Games.Freeze;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
-using Plus.Communication.Packets.Outgoing.Rooms.Session;
-
 
 using Plus.HabboHotel.Rooms.Games.Teams;
 using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
