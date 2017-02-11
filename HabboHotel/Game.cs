@@ -4,7 +4,6 @@ using log4net;
 using Plus.Communication.Packets;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Moderation;
-using Plus.HabboHotel.Support;
 using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Items.Televisions;

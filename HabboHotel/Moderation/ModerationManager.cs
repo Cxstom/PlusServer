@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -8,7 +7,6 @@ using System.Collections.Concurrent;
 using log4net;
 
 using Plus.Database.Interfaces;
-
 
 namespace Plus.HabboHotel.Moderation
 {
