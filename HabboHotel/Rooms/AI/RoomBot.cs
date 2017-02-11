@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms.AI.Speech;
 using Plus.HabboHotel.Rooms.AI.Types;
-using Plus.HabboHotel.Items.Utilities;
 using System.Drawing;
+using Plus.HabboHotel.Catalog.Utilities;
 
 namespace Plus.HabboHotel.Rooms.AI
 {

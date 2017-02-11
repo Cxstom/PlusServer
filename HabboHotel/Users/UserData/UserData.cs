@@ -1,16 +1,12 @@
-﻿using System.Collections;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Plus.HabboHotel.Achievements;
-using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users.Badges;
-using Plus.HabboHotel.Users.Inventory;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Users.Relationships;
-using System.Collections.Concurrent;
 
-namespace Plus.HabboHotel.Users.UserDataManagement
+namespace Plus.HabboHotel.Users.UserData
 {
     public class UserData
     {

@@ -1,6 +1,6 @@
 ﻿using System;
-using ConnectionManager;
-using Plus.Net;
+using Plus.Core.ConnectionManager;
+using Plus.Messages.Net;
 
 namespace Plus.Core
 {

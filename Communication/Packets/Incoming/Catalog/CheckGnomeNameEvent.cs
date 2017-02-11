@@ -7,14 +7,11 @@ using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms.AI.Speech;
-using Plus.HabboHotel.Items.Utilities;
-
-
-
 using Plus.Communication.Packets.Outgoing.Catalog;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Catalog.Utilities;
 using Plus.HabboHotel.Rooms.AI.Responses;
 
 namespace Plus.Communication.Packets.Incoming.Catalog

@@ -10,6 +10,7 @@ using Plus.Communication.Packets.Outgoing.Rooms.Permissions;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Incoming.Groups
 {

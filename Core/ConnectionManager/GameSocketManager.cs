@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
-using ConnectionManager.Socket_Exceptions;
-using SharedPacketLib;
-using System.Collections.Generic;
 using log4net;
-using System.Collections.Concurrent;
+using Plus.Core.ConnectionManager.Socket_Exceptions;
 
-namespace ConnectionManager
+namespace Plus.Core.ConnectionManager
 {
     public class SocketManager
     {

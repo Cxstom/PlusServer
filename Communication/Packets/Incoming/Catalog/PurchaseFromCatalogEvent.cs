@@ -9,7 +9,6 @@ using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Users.Effects;
-using Plus.HabboHotel.Items.Utilities;
 using Plus.HabboHotel.Users.Inventory.Bots;
 
 using Plus.HabboHotel.Rooms.AI;
@@ -21,6 +20,7 @@ using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 using Plus.Communication.Packets.Outgoing.Inventory.AvatarEffects;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Moderation;
+using Plus.HabboHotel.Catalog.Utilities;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {

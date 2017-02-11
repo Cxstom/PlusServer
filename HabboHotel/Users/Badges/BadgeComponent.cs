@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Users.UserDataManagement;
 using Plus.Communication.Packets.Incoming;
 
 using Plus.Communication.Packets.Outgoing.Inventory.Badges;
@@ -19,7 +18,7 @@ namespace Plus.HabboHotel.Users.Badges
         private readonly Habbo _player;
         private readonly Dictionary<string, Badge> _badges;
 
-        public BadgeComponent(Habbo Player, UserData data)
+        public BadgeComponent(Habbo Player, UserData.UserData data)
         {
             this._player = Player;
             this._badges = new Dictionary<string, Badge>();

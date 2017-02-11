@@ -10,8 +10,6 @@ using Plus.Core;
 
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Pathfinding;
-
 using Plus.HabboHotel.Items.Wired;
 using Plus.HabboHotel.Items.Data.Toner;
 using Plus.HabboHotel.Items.Data.Moodlight;
@@ -21,6 +19,7 @@ using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 using Plus.Communication.Packets.Outgoing;
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms
 {

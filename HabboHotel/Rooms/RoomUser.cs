@@ -11,7 +11,6 @@ using Plus.Core;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms.Games;
 
@@ -20,6 +19,7 @@ using Plus.Communication.Packets.Incoming;
 
 using Plus.HabboHotel.Rooms.Games.Freeze;
 using Plus.HabboHotel.Rooms.Games.Teams;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms
 {

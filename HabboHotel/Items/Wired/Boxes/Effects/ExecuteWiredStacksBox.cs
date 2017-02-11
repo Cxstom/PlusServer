@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
-
+using System.Linq;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Users;
 
-namespace Plus.HabboHotel.Items.Wired.Boxes.Conditions
+namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 {
     class ExecuteWiredStacksBox : IWiredItem
     {

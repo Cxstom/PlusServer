@@ -7,6 +7,7 @@ using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Outgoing.Groups
 {

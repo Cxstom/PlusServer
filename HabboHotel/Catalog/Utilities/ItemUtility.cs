@@ -4,7 +4,6 @@ using System.Text;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Items.Utilities;
 
 namespace Plus.HabboHotel.Catalog.Utilities
 {

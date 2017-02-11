@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SharedPacketLib
+namespace Plus.Core.ConnectionManager
 {
     public interface IDataParser : IDisposable, ICloneable
     {

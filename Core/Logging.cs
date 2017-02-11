@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using ConsoleWriter;
+using Plus.Core.ConsoleWriter;
 
 namespace Plus.Core
 {

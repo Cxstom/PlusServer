@@ -1,15 +1,12 @@
 ﻿using System;
-using ConnectionManager;
-using Plus.Core;
-using Plus.HabboHotel.GameClients;
-using Plus.Communication.Packets.Incoming;
-using SharedPacketLib;
-using System.Text;
-using Plus.Utilities;
 using System.IO;
 using log4net;
+using Plus.Communication.Packets.Incoming;
+using Plus.Core.ConnectionManager;
+using Plus.HabboHotel.GameClients;
+using Plus.Utilities;
 
-namespace Plus.Net
+namespace Plus.Messages.Net
 {
     public class GamePacketParser : IDataParser
     {

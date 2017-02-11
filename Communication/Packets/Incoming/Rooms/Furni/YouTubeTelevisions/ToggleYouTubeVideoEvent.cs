@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using Plus.Communication.Packets.Outgoing.Rooms.Furni.YouTubeTelevisions;
 
-using Plus.HabboHotel.Items.Televisions;
-using Plus.Communication.Packets.Outgoing.Rooms.Furni.YouTubeTelevisions;
-
-namespace Plus.Communication.Packets.Incoming.Rooms.Furni
+namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
 {
     class ToggleYouTubeVideoEvent : IPacketEvent
     {

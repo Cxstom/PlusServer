@@ -12,9 +12,9 @@ using Plus.Utilities.Enclosure;
 using System.Linq;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using System.Collections.Concurrent;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Items.Wired;
 using Plus.HabboHotel.Rooms.Games.Teams;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms.Games.Banzai
 {

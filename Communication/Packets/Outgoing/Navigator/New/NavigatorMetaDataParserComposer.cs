@@ -1,11 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
 using Plus.HabboHotel.Navigator;
 
-namespace Plus.Communication.Packets.Outgoing.Navigator
+namespace Plus.Communication.Packets.Outgoing.Navigator.New
 {
     class NavigatorMetaDataParserComposer : ServerPacket
     {

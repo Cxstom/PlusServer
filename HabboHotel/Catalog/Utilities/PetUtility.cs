@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.AI;
 
-
-namespace Plus.HabboHotel.Items.Utilities
+namespace Plus.HabboHotel.Catalog.Utilities
 {
     public static class PetUtility
     {

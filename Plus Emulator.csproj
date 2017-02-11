@@ -224,9 +224,9 @@
     <Compile Include="Communication\Packets\Incoming\Moderation\SubmitNewTicketEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\EditRoomEventEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\GetNavigatorFlatsEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\FindRandomFriendingRoomEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\InitializeNewNavigatorEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\NewNavigatorSearchEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\FindRandomFriendingRoomEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\InitializeNewNavigatorEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\NavigatorSearchEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Quests\GetDailyQuestEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Action\RemoveMyRightsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\LoveLocks\ConfirmLoveLockEvent.cs" />

@@ -10,7 +10,6 @@ using Plus.Core;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Global;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Rooms.Games;
@@ -30,6 +29,7 @@ using System.Text.RegularExpressions;
 using Plus.HabboHotel.Rooms.Games.Teams;
 
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms
 {

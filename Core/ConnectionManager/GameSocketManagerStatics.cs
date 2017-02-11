@@ -1,4 +1,4 @@
-﻿namespace ConnectionManager
+﻿namespace Plus.Core.ConnectionManager
 {
     public class GameSocketManagerStatics
     {

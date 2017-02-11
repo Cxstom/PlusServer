@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Astar.Algorithm;
-using Enclosure.Algorithm;
+using Plus.Utilities.Enclosure.Algorithm;
 
 namespace Plus.Utilities.Enclosure
 {

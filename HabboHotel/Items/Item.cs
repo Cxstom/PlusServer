@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 using Plus.Core;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Items.Interactor;
 
 
@@ -15,6 +14,7 @@ using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 
 using Plus.HabboHotel.Rooms.Games.Teams;
 using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Items
 {

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-using SharedPacketLib;
-
-namespace ConnectionManager
+namespace Plus.Core.ConnectionManager
 {
     public class ConnectionInformation : IDisposable
     {

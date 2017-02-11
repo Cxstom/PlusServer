@@ -1,15 +1,9 @@
 ﻿using System;
-
-using Plus.Net;
 using Plus.Core;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users;
 using Plus.Communication.Interfaces;
-using Plus.HabboHotel.Users.UserDataManagement;
-
-using ConnectionManager;
-
 using Plus.Communication.Packets.Outgoing.Sound;
 using Plus.Communication.Packets.Outgoing.Rooms.Chat;
 using Plus.Communication.Packets.Outgoing.Handshake;
@@ -33,6 +27,9 @@ using Plus.Communication.Packets.Outgoing.Notifications;
 using Plus.Communication.Packets.Outgoing.Rooms.Session;
 using Plus.Communication.Packets.Outgoing.Campaigns;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
+using Plus.Core.ConnectionManager;
+using Plus.HabboHotel.Users.UserData;
+using Plus.Messages.Net;
 
 namespace Plus.HabboHotel.GameClients
 {

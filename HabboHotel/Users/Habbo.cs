@@ -15,8 +15,6 @@ using Plus.HabboHotel.Users.Badges;
 using Plus.HabboHotel.Users.Inventory;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Users.Relationships;
-using Plus.HabboHotel.Users.UserDataManagement;
-
 using Plus.HabboHotel.Users.Process;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
@@ -942,13 +940,13 @@ namespace Plus.HabboHotel.Users
             return this._permissions.Init(this);
         }
 
-        public void InitInformation(UserData data)
+        public void InitInformation(UserData.UserData data)
         {
             BadgeComponent = new BadgeComponent(this   , data);
             Relationships = data.Relations;
         }
 
-        public void Init(GameClient client, UserData data)
+        public void Init(GameClient client, UserData.UserData data)
         {
             this.Achievements = data.achievements;
 

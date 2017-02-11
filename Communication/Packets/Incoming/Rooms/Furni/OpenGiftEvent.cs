@@ -17,6 +17,7 @@ using Plus.Communication.Packets.Outgoing.Rooms.Furni;
 
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 {

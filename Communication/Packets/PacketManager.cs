@@ -52,6 +52,7 @@ using Plus.Communication.Packets.Incoming.Rooms.Furni.Moodlight;
 using Plus.Communication.Packets.Incoming.Inventory.Trading;
 using Plus.Communication.Packets.Incoming.GameCenter;
 using Plus.Communication.Packets.Incoming.Marketplace;
+using Plus.Communication.Packets.Incoming.Navigator.New;
 using Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks;
 using Plus.Communication.Packets.Incoming.Talents;
 
@@ -290,7 +291,7 @@ namespace Plus.Communication.Packets
         public void RegisterNewNavigator()
         {
             this._incomingPackets.Add(ClientPacketHeader.InitializeNewNavigatorMessageEvent, new InitializeNewNavigatorEvent());
-            this._incomingPackets.Add(ClientPacketHeader.NewNavigatorSearchMessageEvent, new NewNavigatorSearchEvent());
+            this._incomingPackets.Add(ClientPacketHeader.NavigatorSearchMessageEvent, new NavigatorSearchEvent());
             this._incomingPackets.Add(ClientPacketHeader.FindRandomFriendingRoomMessageEvent, new FindRandomFriendingRoomEvent());
         }
 
@@ -635,7 +636,7 @@ namespace Plus.Communication.Packets
             this._packetNames.Add(ClientPacketHeader.EditRoomPromotionMessageEvent, "EditRoomEventEvent");
             this._packetNames.Add(ClientPacketHeader.GetEventCategoriesMessageEvent, "GetNavigatorFlatsEvent");
             this._packetNames.Add(ClientPacketHeader.InitializeNewNavigatorMessageEvent, "InitializeNewNavigatorEvent");
-            this._packetNames.Add(ClientPacketHeader.NewNavigatorSearchMessageEvent, "NewNavigatorSearchEvent");
+            this._packetNames.Add(ClientPacketHeader.NavigatorSearchMessageEvent, "NewNavigatorSearchEvent");
             this._packetNames.Add(ClientPacketHeader.FindRandomFriendingRoomMessageEvent, "FindRandomFriendingRoomEvent");
             this._packetNames.Add(ClientPacketHeader.GetQuestListMessageEvent, "GetQuestListEvent");
             this._packetNames.Add(ClientPacketHeader.StartQuestMessageEvent, "StartQuestEvent");

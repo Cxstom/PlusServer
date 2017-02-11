@@ -8,6 +8,7 @@ using log4net;
 using Plus.HabboHotel.Cache;
 using Plus.HabboHotel.Users;
 using Plus.Core;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.HabboHotel.Cache.Process
 {

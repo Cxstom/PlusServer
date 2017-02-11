@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
-
+using System.Collections.Generic;
+using System.Linq;
 using Plus.HabboHotel.Items;
 
-namespace Plus.HabboHotel.Rooms
+namespace Plus.HabboHotel.Rooms.Games
 {
     public class GameItemHandler
     {

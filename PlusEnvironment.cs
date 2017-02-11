@@ -14,10 +14,7 @@ using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Users.Messenger;
-using Plus.HabboHotel.Users.UserDataManagement;
 using Plus.Communication.Packets.Incoming;
-
-using Plus.Net;
 using Plus.Utilities;
 using log4net;
 
@@ -31,6 +28,9 @@ using Plus.Communication.Encryption;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Cache;
 using Plus.Database;
+using Plus.HabboHotel.Cache.Type;
+using Plus.HabboHotel.Users.UserData;
+using Plus.Messages.Net;
 
 namespace Plus
 {

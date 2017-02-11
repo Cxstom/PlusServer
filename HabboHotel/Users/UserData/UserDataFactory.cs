@@ -1,26 +1,16 @@
 ﻿using System;
-using System.Data;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
-
-using Plus.Core;
-using Plus.HabboHotel.Catalog;
-using Plus.HabboHotel.Groups;
-using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms.AI;
-using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Users.Badges;
+using System.Collections.Generic;
+using System.Data;
+using Plus.Database.Interfaces;
 using Plus.HabboHotel.Achievements;
-using Plus.HabboHotel.Users.Inventory;
+using Plus.HabboHotel.Rooms;
+using Plus.HabboHotel.Users.Authenticator;
+using Plus.HabboHotel.Users.Badges;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Users.Relationships;
-using Plus.HabboHotel.Users.Authenticator;
 
-using Plus.Database.Interfaces;
-
-
-namespace Plus.HabboHotel.Users.UserDataManagement
+namespace Plus.HabboHotel.Users.UserData
 {
     public class UserDataFactory
     {

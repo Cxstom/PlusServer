@@ -6,8 +6,6 @@ using System.Collections.Concurrent;
 
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Pathfinding;
-
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Core;
 

@@ -2,6 +2,7 @@
 
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Outgoing.Messenger
 {

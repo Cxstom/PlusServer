@@ -9,6 +9,7 @@ using Plus.HabboHotel.Items.Data.Toner;
 
 using Plus.Communication.Packets.Outgoing;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.HabboHotel.Items
 {
