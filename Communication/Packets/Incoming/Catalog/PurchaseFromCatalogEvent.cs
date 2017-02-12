@@ -21,6 +21,7 @@ using Plus.Communication.Packets.Outgoing.Inventory.AvatarEffects;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.HabboHotel.Catalog.Utilities;
+using Plus.HabboHotel.Badges;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {
@@ -702,6 +703,14 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     }
             }
 
+            BadgeDefinition Badge;
+
+            if(!string.IsNullOrEmpty(Item.Badge) &&
+                PlusEnvironment.GetGame().GetBadgeManager().TryGetBadge(Item.Badge, out Badge) &&
+                (string.IsNullOrEmpty(Badge.RequiredRight) || Session.GetHabbo().GetPermissions().HasRight(Badge.RequiredRight)))
+            {
+                Session.GetHabbo().GetBadgeComponent().GiveBadge(Badge.Code, true, Session);
+            }
 
             Session.SendMessage(new PurchaseOKComposer(Item, Item.Data));
             Session.SendMessage(new FurniListUpdateComposer());
