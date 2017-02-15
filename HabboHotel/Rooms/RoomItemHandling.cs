@@ -474,6 +474,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 if (_movedItems.Count > 0)
                 {
+                    // TODO: Big string builder?
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
                         foreach (Item Item in _movedItems.Values.ToList())
@@ -981,8 +982,7 @@ namespace Plus.HabboHotel.Rooms
 
         public void Dispose()
         {
-
-           this.SaveFurniture();
+            this.SaveFurniture();
 
             foreach (Item Item in this.GetWallAndFloor.ToList())
             {
@@ -992,19 +992,15 @@ namespace Plus.HabboHotel.Rooms
                 Item.Destroy();
             }
 
-            _floorItems.Clear();
-            _wallItems.Clear();
-            _movedItems.Clear();
-            _rollers.Clear();
+            this._movedItems.Clear();
+            this._rollers.Clear();
+            this._wallItems.Clear();
+            this._floorItems.Clear();
+            this.rollerItemsMoved.Clear();
+            this.rollerUsersMoved.Clear();
+            this.rollerMessages.Clear();
             this._roomItemUpdateQueue = null;
-
-            _room = null;
-            _floorItems = null;
-            _wallItems = null;
-            _movedItems = null;
-            _wallItems = null;
-            _rollers = null;
-            _roomItemUpdateQueue = null;
         }
     }
 }
+ 

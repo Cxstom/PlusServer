@@ -504,11 +504,6 @@ namespace Plus.HabboHotel.Items
             _affectedPoints = Tiles;
         }
 
-        public void Destroy()
-        {
-            _affectedPoints.Clear();
-        }
-
         public void ProcessUpdates()
         {
             if (this == null)
@@ -1596,6 +1591,13 @@ namespace Plus.HabboHotel.Items
                 GetRoom().RemoveUserFromTent(Id, user, this);
 
             GetRoom().GetWired().TriggerEvent(Wired.WiredBoxType.TriggerWalkOffFurni, user.GetClient().GetHabbo(), this);
+        }
+
+        public void Destroy()
+        {
+            this._room = null;
+            this._data = null;
+            _affectedPoints.Clear();
         }
     }
 }
