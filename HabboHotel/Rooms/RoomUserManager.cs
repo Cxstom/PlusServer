@@ -1251,7 +1251,7 @@ namespace Plus.HabboHotel.Rooms
                                         User.UnlockWalking();
                                     else
                                     {
-                                        int LinkedTele = ItemTeleporterFinder.GetLinkedTele(Item.Id, Room);
+                                        int LinkedTele = ItemTeleporterFinder.GetLinkedTele(Item.Id);
                                         int TeleRoomId = ItemTeleporterFinder.GetTeleRoomId(LinkedTele, Room);
 
                                         if (TeleRoomId == Room.RoomId)

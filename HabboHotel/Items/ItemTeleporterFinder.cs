@@ -10,7 +10,7 @@ namespace Plus.HabboHotel.Items
 {
     public static class ItemTeleporterFinder
     {
-        public static int GetLinkedTele(int TeleId, Room pRoom)
+        public static int GetLinkedTele(int TeleId)
         {
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -47,7 +47,7 @@ namespace Plus.HabboHotel.Items
 
         public static bool IsTeleLinked(int TeleId, Room pRoom)
         {
-            int LinkId = GetLinkedTele(TeleId, pRoom);
+            int LinkId = GetLinkedTele(TeleId);
 
             if (LinkId == 0)
             {

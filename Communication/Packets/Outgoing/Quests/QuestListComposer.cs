@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Outgoing.Quests
 {
     public class QuestListComposer : ServerPacket
     {
-        public QuestListComposer(GameClient Session, List<Quest> Quests, bool Send, Dictionary<string, int> UserQuestGoals, Dictionary<string, Quest> UserQuests)
+        public QuestListComposer(GameClient Session, bool Send, Dictionary<string, Quest> UserQuests)
             : base(ServerPacketHeader.QuestListMessageComposer)
         {
             base.WriteInteger(UserQuests.Count);

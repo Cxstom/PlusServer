@@ -831,7 +831,7 @@ namespace Plus.HabboHotel.Items
                                                 if (true)
                                                 {
                                                     // Woop! No more delay.
-                                                    int TeleId = ItemTeleporterFinder.GetLinkedTele(Id, GetRoom());
+                                                    int TeleId = ItemTeleporterFinder.GetLinkedTele(Id);
                                                     int RoomId = ItemTeleporterFinder.GetTeleRoomId(TeleId, GetRoom());
 
                                                     // Do we need to tele to the same room or gtf to another?

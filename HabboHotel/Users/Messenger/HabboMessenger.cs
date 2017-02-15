@@ -399,11 +399,9 @@ namespace Plus.HabboHotel.Users.Messenger
 
         public void LogPM(int From_Id, int ToId, string Message)
         {
-            int MyId = GetClient().GetHabbo().Id;
-            DateTime Now = DateTime.Now;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("INSERT INTO chatlogs_console VALUES (NULL, " + From_Id + ", " + ToId +            ", @message, UNIX_TIMESTAMP())");
+                dbClient.SetQuery("INSERT INTO chatlogs_console VALUES (NULL, " + From_Id + ", " + ToId + ", @message, UNIX_TIMESTAMP())");
                 dbClient.AddParameter("message", Message);
                 dbClient.RunQuery();
             }

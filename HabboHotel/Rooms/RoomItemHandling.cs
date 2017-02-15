@@ -684,7 +684,7 @@ namespace Plus.HabboHotel.Rooms
                     _wallItems.TryAdd(Item.Id, Item);
 
                 if (sendMessage)
-                    _room.SendMessage(new ObjectAddComposer(Item, _room));
+                    _room.SendMessage(new ObjectAddComposer(Item));
             }
             else
             {

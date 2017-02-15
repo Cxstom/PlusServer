@@ -234,7 +234,7 @@ namespace Plus.HabboHotel.Quests
                 }
             }
 
-            Session.SendMessage(new QuestListComposer(Session, _quests.Values.ToList(), (Message != null), UserQuestGoals, UserQuests));
+            Session.SendMessage(new QuestListComposer(Session, (Message != null), UserQuests));
         }
 
 
