@@ -823,6 +823,7 @@
     <Compile Include="HabboHotel\Rooms\Chat\Styles\ChatStyleManager.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Freeze\FreezePowerUp.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Teams\Team.cs" />
+    <Compile Include="HabboHotel\Rooms\Instance\BansComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\FilterComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\WiredComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Polls\RoomPollManager.cs" />

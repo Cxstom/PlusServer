@@ -1195,17 +1195,14 @@ namespace Plus.HabboHotel.Users
                 return;
             }
 
-            if (!this.GetClient().GetHabbo().GetPermissions().HasRight("room_ban_override") && Room.UserIsBanned(this.GetClient().GetHabbo().Id))
+
+            if (!this.GetPermissions().HasRight("room_ban_override") && Room.GetBans().IsBanned(this.Id))
             {
-                if (Room.HasBanExpired(this.GetClient().GetHabbo().Id))
-                    Room.RemoveBan(this.GetClient().GetHabbo().Id);
-                else
-                {
-                    this.GetClient().GetHabbo().RoomAuthOk = false;
-                    this.GetClient().SendMessage(new CantConnectComposer(4));
-                    this.GetClient().SendMessage(new CloseConnectionComposer());
-                    return;
-                }
+                this.RoomAuthOk = false;
+                this.GetClient().GetHabbo().RoomAuthOk = false;
+                this.GetClient().SendMessage(new CantConnectComposer(4));
+                this.GetClient().SendMessage(new CloseConnectionComposer());
+                return;
             }
 
             this.GetClient().SendMessage(new OpenConnectionComposer());

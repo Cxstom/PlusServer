@@ -51,7 +51,6 @@ namespace Plus.HabboHotel.Rooms
         public TonerData TonerData;
         public MoodlightData MoodlightData;
 
-        public Dictionary<int, double> Bans;
         public Dictionary<int, double> MutedUsers;
 
 
@@ -77,11 +76,10 @@ namespace Plus.HabboHotel.Rooms
 
         private FilterComponent _filterComponent = null;
         private WiredComponent _wiredComponent = null;
+        private BansComponent _bansComponent = null;
 
         public int IsLagging { get; set; }
         public int IdleTime { get; set; }
-
-        //private ProcessComponent _process = null;
 
         public Room(RoomData Data)
         {
@@ -146,7 +144,6 @@ namespace Plus.HabboHotel.Rooms
             this.PetMorphsAllowed = Data.PetMorphsAllowed;
 
             this.ActiveTrades = new ArrayList();
-            this.Bans = new Dictionary<int, double>();
             this.MutedUsers = new Dictionary<int, double>();
             this.Tents = new Dictionary<int, List<RoomUser>>();
 
@@ -157,13 +154,13 @@ namespace Plus.HabboHotel.Rooms
 
             this._filterComponent = new FilterComponent(this);
             this._wiredComponent = new WiredComponent(this);
+            this._bansComponent = new BansComponent(this);
 
             GetRoomItemHandler().LoadFurniture();
             GetGameMap().GenerateMaps();
 
             this.LoadPromotions();
             this.LoadRights();
-            this.LoadBans();
             this.LoadFilter();
             this.InitBots();
             this.InitPets();
@@ -176,71 +173,6 @@ namespace Plus.HabboHotel.Rooms
             get { return this._wordFilterList; }
             set { this._wordFilterList = value; }
         }
-
-        #region Room Bans
-
-        public bool UserIsBanned(int pId)
-        {
-            return Bans.ContainsKey(pId);
-        }
-
-        public void RemoveBan(int pId)
-        {
-            Bans.Remove(pId);
-        }
-
-        public void AddBan(int pId, long Time)
-        {
-            if (!Bans.ContainsKey(Convert.ToInt32(pId)))
-                Bans.Add(pId, PlusEnvironment.GetUnixTimestamp() + Time);
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.RunQuery("REPLACE INTO `room_bans` VALUES (" + pId + ", " + Id + ", " + (PlusEnvironment.GetUnixTimestamp() + Time) + ")");
-            }
-        }
-
-        public List<int> BannedUsers()
-        {
-            var Bans = new List<int>();
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT user_id FROM room_bans WHERE expire > UNIX_TIMESTAMP() AND room_id=" + Id);
-                DataTable Table = dbClient.getTable();
-
-                foreach (DataRow Row in Table.Rows)
-                {
-                    Bans.Add(Convert.ToInt32(Row[0]));
-                }
-            }
-
-            return Bans;
-        }
-
-        public bool HasBanExpired(int pId)
-        {
-            if (!UserIsBanned(pId))
-                return true;
-
-            if (Bans[pId] < PlusEnvironment.GetUnixTimestamp())
-                return true;
-
-            return false;
-        }
-
-        public void Unban(int UserId)
-        {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.RunQuery("DELETE FROM `room_bans` WHERE `user_id` = '" + UserId + "' AND `room_id` = '" + Id + "' LIMIT 1");
-            }
-
-            if (Bans.ContainsKey(UserId))
-                Bans.Remove(UserId);
-        }
-
-        #endregion
 
         #region Trading
 
@@ -479,6 +411,11 @@ namespace Plus.HabboHotel.Rooms
             return this._wiredComponent;
         }
 
+        public BansComponent GetBans()
+        {
+            return this._bansComponent;
+        }
+
         public void LoadPromotions()
         {
             DataRow GetPromotion = null;
@@ -537,27 +474,6 @@ namespace Plus.HabboHotel.Rooms
             foreach (DataRow Row in Data.Rows)
             {
                 this._wordFilterList.Add(Convert.ToString(Row["word"]));
-            }
-        }
-
-        public void LoadBans()
-        {
-            this.Bans = new Dictionary<int, double>();
-
-            DataTable Bans;
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT user_id, expire FROM room_bans WHERE room_id = " + Id);
-                Bans = dbClient.getTable();
-            }
-
-            if (Bans == null)
-                return;
-
-            foreach (DataRow ban in Bans.Rows)
-            {
-                this.Bans.Add(Convert.ToInt32(ban[0]), Convert.ToDouble(ban[1]));
             }
         }
 
@@ -974,9 +890,6 @@ namespace Plus.HabboHotel.Rooms
                 this.TonerData = null;
                 this.MoodlightData = null;
 
-                if (this.Bans.Count > 0)
-                    this.Bans.Clear();
-
                 if (this.MutedUsers.Count > 0)
                     this.MutedUsers.Clear();
 
@@ -1056,8 +969,10 @@ namespace Plus.HabboHotel.Rooms
 
                 if (this._wiredComponent != null)
                     this._wiredComponent.Cleanup();
+
+                if (this._bansComponent != null)
+                    this._bansComponent.Cleanup();
             }
         }
-
     }
 }
