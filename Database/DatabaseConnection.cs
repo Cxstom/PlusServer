@@ -18,25 +18,27 @@ namespace Plus.Database
             this._adapter = new NormalQueryReactor(this);
         }
 
-        public void Dispose()
-        {
-            if (this._con.State == ConnectionState.Open)
-            {
-                this._con.Close();
-            }
-
-            this._con.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public void connect()
         {
-            this.Open();
+            if (_con.State == ConnectionState.Closed)
+            {
+                try
+                {
+                    _con.Open();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
         }
 
         public void disconnect()
         {
-            this.Close();
+            if (_con.State == ConnectionState.Open)
+            {
+                _con.Close();
+            }
         }
 
         public IQueryAdapter GetQueryReactor()
@@ -59,27 +61,15 @@ namespace Plus.Database
             return _con.CreateCommand();
         }
 
-        public void Open()
+        public void Dispose()
         {
-            if (_con.State == ConnectionState.Closed)
+            if (this._con.State == ConnectionState.Open)
             {
-                try
-                {
-                    _con.Open();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                this._con.Close();
             }
-        }
 
-        public void Close()
-        {
-            if (_con.State == ConnectionState.Open)
-            {
-                _con.Close();
-            }
+            this._con.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

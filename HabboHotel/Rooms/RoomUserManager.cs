@@ -61,17 +61,6 @@ namespace Plus.HabboHotel.Rooms
             this.userCount = 0;
         }
 
-        public void Dispose()
-        {
-            this._users.Clear();
-            this._pets.Clear();
-            this._bots.Clear();
-
-            this._users = null;
-            this._pets = null;
-            this._bots = null;
-        }
-
         public RoomUser DeployBot(RoomBot Bot, Pet PetData)
         {
             var BotUser = new RoomUser(0, _room.RoomId, primaryPrivateUserID++, _room);
@@ -544,8 +533,7 @@ namespace Plus.HabboHotel.Rooms
 
         public RoomUser GetRoomUserByHabbo(string pName)
         {
-            RoomUser User = this.GetUserList().Where(x => x != null && x.GetClient() != null && x.GetClient().GetHabbo() != null && x.GetClient().GetHabbo().Username.Equals(pName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
+            RoomUser User = this.GetUserList().FirstOrDefault(x => x != null && x.GetClient() != null && x.GetClient().GetHabbo() != null && x.GetClient().GetHabbo().Username.Equals(pName, StringComparison.OrdinalIgnoreCase));
             if (User != null)
                 return User;
 
@@ -554,13 +542,13 @@ namespace Plus.HabboHotel.Rooms
 
         public void UpdatePets()
         {
-            foreach (Pet Pet in GetPets().ToList())
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                if (Pet == null)
-                    continue;
-
-                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                foreach (Pet Pet in GetPets().ToList())
                 {
+                    if (Pet == null)
+                        continue;
+
                     if (Pet.DBState == DatabaseUpdateState.NeedsInsert)
                     {
                         dbClient.SetQuery("INSERT INTO `bots` (`id`,`user_id`,`room_id`,`name`,`x`,`y`,`z`) VALUES ('" + Pet.PetId + "','" + Pet.OwnerId + "','" + Pet.RoomId + "',@name,'0','0','0')");
@@ -574,7 +562,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                     else if (Pet.DBState == DatabaseUpdateState.NeedsUpdate)
                     {
-                        //Surely this can be *99 better?
+                        //Surely this can be *99 better? // TODO
                         RoomUser User = GetRoomUserByVirtualId(Pet.VirtualId);
 
                         dbClient.RunQuery("UPDATE `bots` SET room_id = " + Pet.RoomId + ", x = " + (User != null ? User.X : 0) + ", Y = " + (User != null ? User.Y : 0) + ", Z = " + (User != null ? User.Z : 0) + " WHERE `id` = '" + Pet.PetId + "' LIMIT 1");
@@ -585,6 +573,32 @@ namespace Plus.HabboHotel.Rooms
                 }
             }
         }
+
+        private void UpdateBots()
+        {
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                foreach (RoomUser User in this.GetRoomUsers().ToList())
+                {
+                    if (User == null || !User.IsBot)
+                        continue;
+
+                    if (User.IsBot)
+                    {
+                        dbClient.SetQuery("UPDATE bots SET x=@x, y=@y, z=@z, name=@name, look=@look, rotation=@rotation WHERE id=@id LIMIT 1;");
+                        dbClient.AddParameter("name", User.BotData.Name);
+                        dbClient.AddParameter("look", User.BotData.Look);
+                        dbClient.AddParameter("rotation", User.BotData.Rot);
+                        dbClient.AddParameter("x", User.X);
+                        dbClient.AddParameter("y", User.Y);
+                        dbClient.AddParameter("z", User.Z);
+                        dbClient.AddParameter("id", User.BotData.BotId);
+                        dbClient.RunQuery();
+                    }
+                }
+            }
+        }
+
 
         public List<Pet> GetPets()
         {
@@ -1397,6 +1411,30 @@ namespace Plus.HabboHotel.Rooms
         public ICollection<RoomUser> GetUserList()
         {
             return this._users.Values;
+        }
+
+        public void Dispose()
+        {
+            this.UpdatePets();
+            this.UpdateBots();
+
+            this._room.RoomData.UsersNow = 0;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `id` = '" + this._room.Id + "' LIMIT 1");
+            }
+
+            this._users.Clear();
+            this._pets.Clear();
+            this._bots.Clear();
+
+            this.userCount = 0;
+            this.petCount = 0;
+
+            this._users = null;
+            this._pets = null;
+            this._bots = null;
+            this._room = null;
         }
     }
 }

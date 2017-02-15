@@ -273,5 +273,13 @@ namespace Plus.HabboHotel.Rooms.Games.Teams
                     }
             }
         }
+
+        public void Dispose()
+        {
+            this.BlueTeam.Clear();
+            this.GreenTeam.Clear();
+            this.RedTeam.Clear();
+            this.YellowTeam.Clear();
+        }
     }
 }

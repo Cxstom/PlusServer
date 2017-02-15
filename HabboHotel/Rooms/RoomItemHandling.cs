@@ -468,7 +468,7 @@ namespace Plus.HabboHotel.Rooms
             return mMessage;
         }
 
-        public void SaveFurniture()
+        private void SaveFurniture()
         {
             try
             {
@@ -981,6 +981,9 @@ namespace Plus.HabboHotel.Rooms
 
         public void Dispose()
         {
+
+           this.SaveFurniture();
+
             foreach (Item Item in this.GetWallAndFloor.ToList())
             {
                 if (Item == null)

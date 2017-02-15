@@ -951,31 +951,6 @@ namespace Plus.HabboHotel.Rooms
         }
         #endregion
 
-        private void SaveAI()
-        {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                foreach (RoomUser User in GetRoomUserManager().GetRoomUsers().ToList())
-                {
-                    if (User == null || !User.IsBot)
-                        continue;
-
-                    if (User.IsBot)
-                    {
-                        dbClient.SetQuery("UPDATE bots SET x=@x, y=@y, z=@z, name=@name, look=@look, rotation=@rotation WHERE id=@id LIMIT 1;");
-                        dbClient.AddParameter("name", User.BotData.Name);
-                        dbClient.AddParameter("look", User.BotData.Look);
-                        dbClient.AddParameter("rotation", User.BotData.Rot);
-                        dbClient.AddParameter("x", User.X);
-                        dbClient.AddParameter("y", User.Y);
-                        dbClient.AddParameter("z", User.Z);
-                        dbClient.AddParameter("id", User.BotData.BotId);
-                        dbClient.RunQuery();
-                    }
-                }
-            }
-        }
-
         public void Dispose()
         {
             SendMessage(new CloseConnectionComposer());
@@ -985,6 +960,7 @@ namespace Plus.HabboHotel.Rooms
                 isCrashed = false;
                 mDisposed = true;
 
+                /* TODO: Needs reviewing */
                 try
                 {
                     if (ProcessTask != null && ProcessTask.IsCompleted)
@@ -992,61 +968,96 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch { }
 
-                GetRoomItemHandler().SaveFurniture();
-
-                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                {
-                    dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `id` = '" + Id + "' LIMIT 1");
-                }
-
-                if (this._roomUserManager.PetCount > 0)
-                    this._roomUserManager.UpdatePets();
-
-                this.SaveAI();
-
-                UsersNow = 0;
-                RoomData.UsersNow = 0;
-
-                UsersWithRights.Clear();
-                Bans.Clear();
-                MutedUsers.Clear();
-                Tents.Clear();
+                if (this.ActiveTrades.Count > 0)
+                    this.ActiveTrades.Clear();
 
                 this.TonerData = null;
                 this.MoodlightData = null;
 
-                this._filterComponent.Cleanup();
-                this._wiredComponent.Cleanup();
+                if (this.Bans.Count > 0)
+                    this.Bans.Clear();
 
-                if (this._gameItemHandler != null)
-                    this._gameItemHandler.Dispose();
+                if (this.MutedUsers.Count > 0)
+                    this.MutedUsers.Clear();
+
+                if (this.Tents.Count > 0)
+                    this.Tents.Clear();
+
+                if (this.UsersWithRights.Count > 0)
+                    this.UsersWithRights.Clear();
 
                 if (this._gameManager != null)
+                {
                     this._gameManager.Dispose();
+                    this._gameManager = null;
+                }
 
                 if (this._freeze != null)
+                {
                     this._freeze.Dispose();
-
-                if (this._banzai != null)
-                    this._banzai.Dispose();
+                    this._freeze = null;
+                }
 
                 if (this._soccer != null)
+                {
                     this._soccer.Dispose();
+                    this._soccer = null;
+                }
+
+                if (this._banzai != null)
+                {
+                    this._banzai.Dispose();
+                    this._banzai = null;
+                }
 
                 if (this._gamemap != null)
+                {
                     this._gamemap.Dispose();
+                    this._gamemap = null;
+                }
+
+                if (this._gameItemHandler != null)
+                {
+                    this._gameItemHandler.Dispose();
+                    this._gameItemHandler = null;
+                }
+
+                // Room Data?
+
+                if (this.teambanzai != null)
+                {
+                    this.teambanzai.Dispose();
+                    this.teambanzai = null;
+                }
+
+                if (this.teamfreeze != null)
+                {
+                    this.teamfreeze.Dispose();
+                    this.teamfreeze = null;
+                }
 
                 if (this._roomUserManager != null)
+                {
                     this._roomUserManager.Dispose();
+                    this._roomUserManager = null;
+                }
 
                 if (this._roomItemHandling != null)
+                {
                     this._roomItemHandling.Dispose();
+                    this._roomItemHandling = null;
+                }
 
+                if (this._wordFilterList.Count > 0)
+                    this._wordFilterList.Clear();
 
+                if (this._filterComponent != null)
+                    this._filterComponent.Cleanup();
 
-                if (ActiveTrades.Count > 0)
-                    ActiveTrades.Clear();
+                if (this._wiredComponent != null)
+                    this._wiredComponent.Cleanup();
             }
         }
+
     }
 }
