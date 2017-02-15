@@ -853,8 +853,7 @@ namespace Plus.HabboHotel.Rooms
                     Item I = null;
                     this._floorItems.TryRemove(Item.Id, out I);
                     Session.GetHabbo().GetInventoryComponent().TryAddFloorItem(Item.Id, I);
-                    this._room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));
-                    this._rollers.Clear();
+                    this._room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));                    
                 }
                 else if (Item.IsWallItem)
                 {
@@ -867,6 +866,7 @@ namespace Plus.HabboHotel.Rooms
                 Session.SendMessage(new FurniListAddComposer(Item));
             }
 
+            this._rollers.Clear();
             return Items;
         }
 
