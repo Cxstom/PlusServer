@@ -1,40 +1,37 @@
 ﻿using System.Collections.Generic;
 
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.GameClients;
 
 namespace Plus.HabboHotel.Rooms.Trading
 {
-
-    public class TradeUser
+    public sealed class TradeUser
     {
-        public int UserId;
-        private readonly int RoomId;
-        public List<Item> OfferedItems;
+        private RoomUser _user;
+        private bool _accepted;
+        private Dictionary<int, Item> _offeredItems;
 
-        public TradeUser(int UserId, int RoomId)
+        public TradeUser(RoomUser User)
         {
-            this.UserId = UserId;
-            this.RoomId = RoomId;
-            HasAccepted = false;
-            OfferedItems = new List<Item>();
+            this._user = User;
+            this._accepted = false;
+            this._offeredItems = new Dictionary<int, Item>();
         }
 
-        public bool HasAccepted { get; set; }
-
-        public RoomUser GetRoomUser()
+        public RoomUser RoomUser
         {
-            Room Room;
-
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
-                return null;
-
-            return Room.GetRoomUserManager().GetRoomUserByHabbo(UserId);
+            get { return this._user; }
         }
 
-        public GameClient GetClient()
+        public bool HasAccepted
         {
-            return PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(UserId);
+            get { return this._accepted; }
+            set { this._accepted = value; }
+        }
+
+        public Dictionary<int, Item> OfferedItems
+        {
+            get { return this._offeredItems; }
+            set { this._offeredItems = value; }
         }
     }
 }

@@ -74,7 +74,7 @@ namespace Plus.HabboHotel.Rooms
         public double SetZ;
         public double SignTime;
         public byte SqState;
-        public Dictionary<string, string> Statusses;
+        private Dictionary<string, string> _statusses;
         public int TeleDelay; //byte
         public bool TeleportEnabled;
         public bool UpdateNeeded;
@@ -103,6 +103,10 @@ namespace Plus.HabboHotel.Rooms
         public int LLPartner = 0;
         public double TimeInRoom = 0;
 
+        private bool _trading = false;
+        private int _tradePartner = 0;
+        private int _tradeId = 0;
+
         public RoomUser(int HabboId, int RoomId, int VirtualId, Room room)
         {
             this.Freezed = false;
@@ -118,7 +122,7 @@ namespace Plus.HabboHotel.Rooms
             this.RotHead = 0;
             this.RotBody = 0;
             this.UpdateNeeded = true;
-            this.Statusses = new Dictionary<string, string>();
+            this._statusses = new Dictionary<string, string>();
 
             this.TeleDelay = -1;
             this.mRoom = room;
@@ -140,6 +144,10 @@ namespace Plus.HabboHotel.Rooms
 
             this.IsJumping = false;
             this.TimeInRoom = 0;
+
+            this._tradeId = 0;
+            this._tradePartner = 0;
+            this._trading = false;
         }
 
 
@@ -172,6 +180,32 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
+        public bool IsTrading
+        {
+            get { return this._trading; }
+            set { this._trading = value; }
+        }
+
+        public int TradePartner
+        {
+            get { return this._tradePartner; }
+            set { this._tradePartner = value; }
+        }
+
+        public int TradeId
+        {
+            get { return this._tradeId; }
+            set { this._tradeId = value; }
+        }
+
+
+        public Dictionary<string, string> Statusses
+        {
+            get { return this._statusses; }
+            //set { this._statusses = value; }
+        }
+
+
         public bool NeedsAutokick
         {
             get
@@ -189,20 +223,6 @@ namespace Plus.HabboHotel.Rooms
                     return false;
 
                 if (IdleTime >= 7200)
-                    return true;
-
-                return false;
-            }
-        }
-
-        public bool IsTrading
-        {
-            get
-            {
-                if (IsBot)
-                    return false;
-
-                if (Statusses.ContainsKey("trd"))
                     return true;
 
                 return false;
@@ -553,30 +573,30 @@ namespace Plus.HabboHotel.Rooms
             UpdateNeeded = true;
         }
 
-        public void SetStatus(string Key, string Value)
-        {
-            if (Statusses.ContainsKey(Key))
-            {
-                Statusses[Key] = Value;
-            }
-            else
-            {
-                AddStatus(Key, Value);
-            }
-        }
 
-        public void AddStatus(string Key, string Value)
+        public bool HasStatus(string Key)
         {
-            Statusses[Key] = Value;
+            return this._statusses.ContainsKey(Key);
         }
 
         public void RemoveStatus(string Key)
         {
-            if (Statusses.ContainsKey(Key))
+            if (HasStatus(Key))
+                this._statusses.Remove(Key);
+        }
+
+        public void SetStatus(string Key, string Value = "")
+        {
+            if (this._statusses.ContainsKey(Key))
             {
-                Statusses.Remove(Key);
+                this._statusses[Key] = Value;
+            }
+            else
+            {
+                this._statusses.Add(Key, Value);
             }
         }
+
 
         public void ApplyEffect(int effectID)
         {

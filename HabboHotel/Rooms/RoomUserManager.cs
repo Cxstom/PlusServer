@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Drawing;
@@ -9,15 +8,8 @@ using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.Core;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Global;
 using Plus.HabboHotel.Rooms.AI;
-using Plus.HabboHotel.Quests;
-using Plus.HabboHotel.Rooms.Games;
-
-using Plus.HabboHotel.Users;
-using Plus.HabboHotel.Users.Inventory;
-using Plus.Communication.Packets.Incoming;
-
+using Plus.HabboHotel.Rooms.Trading;
 using Plus.Utilities;
 
 using System.Data;
@@ -25,7 +17,6 @@ using Plus.Communication.Packets.Outgoing.Rooms.Session;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Rooms.Permissions;
 using Plus.Communication.Packets.Outgoing.Handshake;
-using System.Text.RegularExpressions;
 using Plus.HabboHotel.Rooms.Games.Teams;
 
 using Plus.Database.Interfaces;
@@ -343,10 +334,11 @@ namespace Plus.HabboHotel.Rooms
                             Session.GetHabbo().Effects().CurrentEffect = -1;
                     }
 
-                    if (_room != null)
+                    if (User.IsTrading)
                     {
-                        if (_room.HasActiveTrade(Session.GetHabbo().Id))
-                            _room.TryStopTrade(Session.GetHabbo().Id);
+                        Trade Trade = null;
+                        if (_room.GetTrading().TryGetTrade(User.TradeId, out Trade))
+                            Trade.EndTrade(User.TradeId);
                     }
 
                     //Session.GetHabbo().CurrentRoomId = 0;
@@ -905,15 +897,16 @@ namespace Plus.HabboHotel.Rooms
                                 {
                                     RoomUser Horse = GetRoomUserByVirtualId(User.HorseID);
                                     if (Horse != null)
-                                        Horse.AddStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+                                        Horse.SetStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
 
-                                    User.AddStatus("mv", +nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
+                                    User.SetStatus("mv", +nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
 
                                     User.UpdateNeeded = true;
                                     Horse.UpdateNeeded = true;
                                 }
                                 else
-                                    User.AddStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+                                    User.SetStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+
 
                                 int newRot = Rotation.Calculate(User.X, User.Y, nextX, nextY, User.moonwalkEnabled);
 

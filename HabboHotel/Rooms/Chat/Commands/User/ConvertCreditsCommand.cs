@@ -52,17 +52,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                         foreach (DataRow Row in Table.Rows)
                         {
                             Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(Convert.ToInt32(Row[0]));
-                            if (Item == null)
+                            if (Item == null || Item.RoomId > 0 || Item.Data.InteractionType != InteractionType.EXCHANGE)
                                 continue;
-
-                            if (!Item.GetBaseItem().ItemName.StartsWith("CF_") && !Item.GetBaseItem().ItemName.StartsWith("CFC_"))
-                                continue;
-
-                            if (Item.RoomId > 0)
-                                continue;
-
-                            string[] Split = Item.GetBaseItem().ItemName.Split('_');
-                            int Value = int.Parse(Split[1]);
+                            
+                            int Value = Item.Data.BehaviourData;
 
                             dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Item.Id + "' LIMIT 1");
 

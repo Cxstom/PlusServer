@@ -142,7 +142,8 @@ namespace Plus.HabboHotel.Items
         CANNON,
         COUNTER,
         CAMERA_PICTURE,
-        FX_PROVIDER
+        FX_PROVIDER,
+        EXCHANGE
     }
 
 
@@ -425,6 +426,8 @@ namespace Plus.HabboHotel.Items
                     return InteractionType.CAMERA_PICTURE;
                 case "fx_provider":
                     return InteractionType.FX_PROVIDER;
+                case "exchange":
+                    return InteractionType.EXCHANGE;
                 default:
                     {
                         //Logging.WriteLine("Unknown interaction type in parse code: " + pType, ConsoleColor.Yellow);

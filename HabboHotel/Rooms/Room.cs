@@ -77,6 +77,7 @@ namespace Plus.HabboHotel.Rooms
         private FilterComponent _filterComponent = null;
         private WiredComponent _wiredComponent = null;
         private BansComponent _bansComponent = null;
+        private TradingComponent _tradingComponent = null;
 
         public int IsLagging { get; set; }
         public int IdleTime { get; set; }
@@ -155,6 +156,7 @@ namespace Plus.HabboHotel.Rooms
             this._filterComponent = new FilterComponent(this);
             this._wiredComponent = new WiredComponent(this);
             this._bansComponent = new BansComponent(this);
+            this._tradingComponent = new TradingComponent(this);
 
             GetRoomItemHandler().LoadFurniture();
             GetGameMap().GenerateMaps();
@@ -173,65 +175,6 @@ namespace Plus.HabboHotel.Rooms
             get { return this._wordFilterList; }
             set { this._wordFilterList = value; }
         }
-
-        #region Trading
-
-        public bool HasActiveTrade(RoomUser User)
-        {
-            if (User.IsBot)
-                return false;
-
-            return HasActiveTrade(User.GetClient().GetHabbo().Id);
-        }
-
-        public bool HasActiveTrade(int UserId)
-        {
-            if (ActiveTrades.Count == 0)
-                return false;
-
-            foreach (Trade Trade in ActiveTrades.ToArray())
-            {
-                if (Trade.ContainsUser(UserId))
-                    return true;
-            }
-            return false;
-        }
-
-        public Trade GetUserTrade(int UserId)
-        {
-            foreach (Trade Trade in ActiveTrades.ToArray())
-            {
-                if (Trade.ContainsUser(UserId))
-                {
-                    return Trade;
-                }
-            }
-
-            return null;
-        }
-
-        public void TryStartTrade(RoomUser UserOne, RoomUser UserTwo)
-        {
-            if (UserOne == null || UserTwo == null || UserOne.IsBot || UserTwo.IsBot || UserOne.IsTrading ||
-                UserTwo.IsTrading || HasActiveTrade(UserOne) || HasActiveTrade(UserTwo))
-                return;
-
-            ActiveTrades.Add(new Trade(UserOne.GetClient().GetHabbo().Id, UserTwo.GetClient().GetHabbo().Id, RoomId));
-        }
-
-        public void TryStopTrade(int UserId)
-        {
-            Trade Trade = GetUserTrade(UserId);
-
-            if (Trade == null)
-                return;
-
-            Trade.CloseTrade(UserId);
-            ActiveTrades.Remove(Trade);
-        }
-
-        #endregion
-
 
         public int UserCount
         {
@@ -414,6 +357,11 @@ namespace Plus.HabboHotel.Rooms
         public BansComponent GetBans()
         {
             return this._bansComponent;
+        }
+
+        public TradingComponent GetTrading()
+        {
+            return this._tradingComponent;
         }
 
         public void LoadPromotions()
@@ -972,6 +920,9 @@ namespace Plus.HabboHotel.Rooms
 
                 if (this._bansComponent != null)
                     this._bansComponent.Cleanup();
+
+                if (this._tradingComponent != null)
+                    this._tradingComponent.Cleanup();
             }
         }
     }

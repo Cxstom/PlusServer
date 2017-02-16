@@ -10,8 +10,6 @@ using Plus.Communication.Packets.Outgoing.Groups;
 using Plus.Communication.Packets.Outgoing.Rooms.Permissions;
 using Plus.HabboHotel.Cache;
 
-
-
 namespace Plus.Communication.Packets.Incoming.Groups
 {
     class GiveAdminRightsEvent : IPacketEvent
@@ -44,7 +42,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 if (User != null)
                 {
                     if (!User.Statusses.ContainsKey("flatctrl 3"))
-                        User.AddStatus("flatctrl 3", "");
+                        User.SetStatus("flatctrl 3", "");
                     User.UpdateNeeded = true;
                     if (User.GetClient() != null)
                         User.GetClient().SendMessage(new YouAreControllerComposer(3));

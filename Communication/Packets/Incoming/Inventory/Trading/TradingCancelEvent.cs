@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using Plus.HabboHotel.Rooms;
+﻿using Plus.HabboHotel.Rooms;
+using Plus.HabboHotel.Rooms.Trading;
+using Plus.Communication.Packets.Outgoing.Inventory.Trading;
 
 namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 {
@@ -14,15 +11,22 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             if (Session == null || Session.GetHabbo() == null || !Session.GetHabbo().InRoom)
                 return;
 
-            Room Room;
-
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Session.GetHabbo().CurrentRoomId, out Room))
+            Room Room = Session.GetHabbo().CurrentRoom;
+            if (Room == null)
                 return;
 
-            if (!Room.CanTradeInRoom)
+            RoomUser RoomUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            if (RoomUser == null)
                 return;
 
-            Room.TryStopTrade(Session.GetHabbo().Id);
+            Trade Trade = null;
+            if (!Room.GetTrading().TryGetTrade(RoomUser.TradeId, out Trade))
+            {
+                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                return;
+            }
+
+            Trade.EndTrade(Session.GetHabbo().Id);
         }
     }
 }

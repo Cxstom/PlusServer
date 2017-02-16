@@ -24,6 +24,7 @@ namespace Plus.HabboHotel.Items
         public bool AllowGift { get; set; }
         public bool AllowInventoryStack { get; set; }
         public InteractionType InteractionType { get; set; }
+        public int BehaviourData { get; set; }
         public int Modes { get; set; }
         public List<int> VendingIds { get; set; }
         public List<double> AdjustableHeights { get; set; }
@@ -34,7 +35,7 @@ namespace Plus.HabboHotel.Items
         public bool ExtraRot { get; set; }
 
         public ItemData(int Id, int Sprite, string Name, string PublicName, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat,
-            bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int Modes,
+            bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int behaviourData, int Modes,
             string VendingIds, string AdjustableHeights, int EffectId, int WiredId, bool IsRare, int ClothingId, bool ExtraRot)
         {
             this.Id = Id;
@@ -54,6 +55,7 @@ namespace Plus.HabboHotel.Items
             this.AllowGift = AllowGift;
             this.AllowInventoryStack = AllowInventoryStack;
             this.InteractionType = InteractionType;
+            this.BehaviourData = behaviourData;
             this.Modes = Modes;
             this.VendingIds = new List<int>();
             if (VendingIds.Contains(","))
