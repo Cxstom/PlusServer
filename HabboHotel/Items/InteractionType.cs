@@ -24,32 +24,7 @@ namespace Plus.HabboHotel.Items
         POOL,
         ROLLER,
         FOOTBALL_GATE,
-        pet0,
-        pet1,
-        pet2,
-        pet3,
-        pet4,
-        pet5,
-        pet6,
-        pet7,
-        pet8,
-        pet9,
-        pet10,
-        pet11,
-        pet12,
-        pet13,
-        pet14,
-        pet15,
-        pet16,
-        pet17,
-        pet18,
-        pet19,
-        pet20,
-        pet21,
-        pet22,
-        pet28,
-        pet29,
-        pet30,
+        PET,
         ICE_SKATES,
         NORMAL_SKATES,
         lowpool,
@@ -192,58 +167,6 @@ namespace Plus.HabboHotel.Items
                     return InteractionType.ROLLER;
                 case "fbgate":
                     return InteractionType.FOOTBALL_GATE;
-                case "pet0":
-                    return InteractionType.pet0;
-                case "pet1":
-                    return InteractionType.pet1;
-                case "pet2":
-                    return InteractionType.pet2;
-                case "pet3":
-                    return InteractionType.pet3;
-                case "pet4":
-                    return InteractionType.pet4;
-                case "pet5":
-                    return InteractionType.pet5;
-                case "pet6":
-                    return InteractionType.pet6;
-                case "pet7":
-                    return InteractionType.pet7;
-                case "pet8":
-                    return InteractionType.pet8;
-                case "pet9":
-                    return InteractionType.pet9;
-                case "pet10":
-                    return InteractionType.pet10;
-                case "pet11":
-                    return InteractionType.pet11;
-                case "pet12":
-                    return InteractionType.pet12;
-                case "pet13": // Caballo
-                    return InteractionType.pet13;
-                case "pet14":
-                    return InteractionType.pet14;
-                case "pet15":
-                    return InteractionType.pet15;
-                case "pet16": // Mascota agregada
-                    return InteractionType.pet16;
-                case "pet17": // Mascota agregada
-                    return InteractionType.pet17;
-                case "pet18": // Mascota agregada
-                    return InteractionType.pet18;
-                case "pet19": // Mascota agregada
-                    return InteractionType.pet19;
-                case "pet20": // Mascota agregada
-                    return InteractionType.pet20;
-                case "pet21": // Mascota agregada
-                    return InteractionType.pet21;
-                case "pet22": // Mascota agregada
-                    return InteractionType.pet22;
-                case "pet28":
-                    return InteractionType.pet28;
-                case "pet29":
-                    return InteractionType.pet29;
-                case "pet30":
-                    return InteractionType.pet30;
                 case "iceskates":
                     return InteractionType.ICE_SKATES;
                 case "rollerskate":
@@ -428,6 +351,8 @@ namespace Plus.HabboHotel.Items
                     return InteractionType.FX_PROVIDER;
                 case "exchange":
                     return InteractionType.EXCHANGE;
+                case "pet":
+                    return InteractionType.PET;
                 default:
                     {
                         //Logging.WriteLine("Unknown interaction type in parse code: " + pType, ConsoleColor.Yellow);

@@ -19,7 +19,7 @@ namespace Plus.HabboHotel.Catalog.Utilities
             if (Item.Data.IsRare)
                 return false;
 
-            if (PetUtility.IsPet(Item.Data.InteractionType))
+            if (Item.Data.InteractionType == InteractionType.PET)
                 return false;
             return true;
         }

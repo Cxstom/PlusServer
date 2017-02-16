@@ -135,32 +135,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                     #region Pet handling
 
-                    case InteractionType.pet0:
-                    case InteractionType.pet1:
-                    case InteractionType.pet2:
-                    case InteractionType.pet3:
-                    case InteractionType.pet4:
-                    case InteractionType.pet5:
-                    case InteractionType.pet6:
-                    case InteractionType.pet7:
-                    case InteractionType.pet8:
-                    case InteractionType.pet9:
-                    case InteractionType.pet10:
-                    case InteractionType.pet11:
-                    case InteractionType.pet12:
-                    case InteractionType.pet13: //Caballo
-                    case InteractionType.pet14:
-                    case InteractionType.pet15:
-                    case InteractionType.pet16: //Mascota agregada
-                    case InteractionType.pet17: //Mascota agregada
-                    case InteractionType.pet18: //Mascota agregada
-                    case InteractionType.pet19: //Mascota agregada
-                    case InteractionType.pet20: //Mascota agregada
-                    case InteractionType.pet21: //Mascota agregada
-                    case InteractionType.pet22: //Mascota agregada
-                    case InteractionType.pet28:
-                    case InteractionType.pet29:
-                    case InteractionType.pet30:
+                    case InteractionType.PET:
 
                         try
                         {
