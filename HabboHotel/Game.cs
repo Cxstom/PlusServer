@@ -96,6 +96,7 @@ namespace Plus.HabboHotel
             this._languageLocale = new LanguageLocale();
             this._antiMutant = new AntiMutant();
             this._botManager = new BotManager();
+            this._botManager.Init();
 
             this._cacheManager = new CacheManager();
             this._rewardManager = new RewardManager();

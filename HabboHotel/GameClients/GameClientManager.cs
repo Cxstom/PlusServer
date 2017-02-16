@@ -4,7 +4,6 @@ using System.Text;
 using Plus.Core;
 using Plus.HabboHotel.Users.Messenger;
 
-
 using System.Linq;
 using System.Collections.Concurrent;
 using Plus.Communication.Packets.Outgoing;

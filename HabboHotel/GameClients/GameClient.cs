@@ -19,14 +19,9 @@ using Plus.Communication.Packets.Outgoing.BuildersClub;
 using Plus.HabboHotel.Moderation;
 
 using Plus.Database.Interfaces;
-using Plus.Utilities;
-using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Permissions;
 using Plus.Communication.Packets.Outgoing.Notifications;
-using Plus.Communication.Packets.Outgoing.Rooms.Session;
-using Plus.Communication.Packets.Outgoing.Campaigns;
-using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 using Plus.Core.ConnectionManager;
 using Plus.HabboHotel.Users.UserData;
 using Plus.Messages.Net;

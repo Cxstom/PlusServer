@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using Plus.Core;
-using Plus.HabboHotel.Items;
-using Plus.Communication.Packets.Incoming;
+﻿using Plus.HabboHotel.Items;
 
 namespace Plus.HabboHotel.Catalog
 {

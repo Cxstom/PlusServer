@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Collections.Generic;
 
 using log4net;
-using Plus.HabboHotel.Cache;
 using Plus.HabboHotel.Users;
 using Plus.Core;
 using Plus.HabboHotel.Cache.Type;

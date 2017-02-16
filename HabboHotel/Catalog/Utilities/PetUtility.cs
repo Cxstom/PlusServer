@@ -1,6 +1,5 @@
 ﻿using System;
 using Plus.Database.Interfaces;
-using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.AI;
 
 namespace Plus.HabboHotel.Catalog.Utilities

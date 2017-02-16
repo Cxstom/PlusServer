@@ -34,8 +34,12 @@ namespace Plus.HabboHotel.Catalog
         {
             this._marketplace = new MarketplaceManager();
             this._petRaceManager = new PetRaceManager();
+
             this._voucherManager = new VoucherManager();
+            this._voucherManager.Init();
+
             this._clothingManager = new ClothingManager();
+            this._clothingManager.Init();
 
             this._itemOffers = new Dictionary<int, int>();
             this._pages = new Dictionary<int, CatalogPage>();
