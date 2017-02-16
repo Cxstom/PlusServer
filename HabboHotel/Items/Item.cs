@@ -1575,7 +1575,7 @@ namespace Plus.HabboHotel.Items
 
             if (GetBaseItem().InteractionType == InteractionType.TENT || GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
             {
-                GetRoom().AddUserToTent(Id, user, this);
+                GetRoom().AddUserToTent(Id, user);
             }
 
             GetRoom().GetWired().TriggerEvent(Wired.WiredBoxType.TriggerWalkOnFurni, user.GetClient().GetHabbo(), this);
@@ -1588,7 +1588,7 @@ namespace Plus.HabboHotel.Items
                 return;
 
             if (GetBaseItem().InteractionType == InteractionType.TENT || GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
-                GetRoom().RemoveUserFromTent(Id, user, this);
+                GetRoom().RemoveUserFromTent(Id, user);
 
             GetRoom().GetWired().TriggerEvent(Wired.WiredBoxType.TriggerWalkOffFurni, user.GetClient().GetHabbo(), this);
         }

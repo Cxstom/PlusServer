@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Outgoing.Groups
 {
     class UpdateFavouriteGroupComposer : ServerPacket
     {
-        public UpdateFavouriteGroupComposer(int Id, Group Group, int VirtualId)
+        public UpdateFavouriteGroupComposer(Group Group, int VirtualId)
             : base(ServerPacketHeader.UpdateFavouriteGroupMessageComposer)
         {
             base.WriteInteger(VirtualId);//Sends 0 on .COM

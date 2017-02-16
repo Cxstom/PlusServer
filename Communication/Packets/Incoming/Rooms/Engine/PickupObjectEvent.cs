@@ -47,7 +47,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             if (ItemRights == true)
             {
                 if (Item.GetBaseItem().InteractionType == InteractionType.TENT || Item.GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
-                    Room.RemoveTent(Item.Id, Item);
+                    Room.RemoveTent(Item.Id);
 
                 if (Item.GetBaseItem().InteractionType == InteractionType.MOODLIGHT)
                 {

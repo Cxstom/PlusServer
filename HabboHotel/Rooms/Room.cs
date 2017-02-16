@@ -674,7 +674,7 @@ namespace Plus.HabboHotel.Rooms
             Tents.Add(TentId, new List<RoomUser>());
         }
 
-        public void RemoveTent(int TentId, Item Item)
+        public void RemoveTent(int TentId)
         {
             if (!Tents.ContainsKey(TentId))
                 return;
@@ -692,7 +692,7 @@ namespace Plus.HabboHotel.Rooms
                 Tents.Remove(TentId);
         }
 
-        public void AddUserToTent(int TentId, RoomUser User, Item Item)
+        public void AddUserToTent(int TentId, RoomUser User)
         {
             if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
             {
@@ -705,7 +705,7 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-        public void RemoveUserFromTent(int TentId, RoomUser User, Item Item)
+        public void RemoveUserFromTent(int TentId, RoomUser User)
         {
             if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
             {

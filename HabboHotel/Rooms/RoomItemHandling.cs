@@ -703,7 +703,7 @@ namespace Plus.HabboHotel.Rooms
 
             if (Item.GetBaseItem().InteractionType == InteractionType.TENT || Item.GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
             {
-                _room.RemoveTent(Item.Id, Item);
+                _room.RemoveTent(Item.Id);
                 _room.AddTent(Item.Id);
             }
 
