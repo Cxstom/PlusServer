@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 
 namespace Plus.Utilities
 {
-    public class HabboEncoding
+    public static class HabboEncoding
     {
         /* Encoding Functions */
         #region Encoding/Cipher Methods

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Plus.Utilities
 {
-    public class Randomizer
+    public static class Randomizer
     {
         private static Random rand = new Random();
 

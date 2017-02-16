@@ -4,7 +4,6 @@ using System.Security.Permissions;
 using Plus.Core;
 using log4net;
 using log4net.Config;
-using Plus.Utilities;
 
 namespace Plus
 {

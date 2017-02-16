@@ -1,6 +1,6 @@
 ﻿namespace Plus.HabboHotel.Rooms
 {
-    public class RoomAccessUtility
+    public static class RoomAccessUtility
     {
         public static int GetRoomAccessPacketNum(RoomAccess Access)
         {

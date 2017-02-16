@@ -10,7 +10,7 @@ namespace Plus.Messages.Net
 {
     public class GamePacketParser : IDataParser
     {
-        private static readonly ILog log = LogManager.GetLogger("Plus.Net.GamePacketParser");
+        private static readonly ILog log = LogManager.GetLogger("Plus.Messages.Net.GamePacketParser");
 
         public delegate void HandlePacket(ClientPacket message);
 

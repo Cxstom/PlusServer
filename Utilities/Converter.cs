@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Plus.Utilities
 {
-    public class Converter
+    public static class Converter
     {
         public static string BytesToHexString(byte[] bytes)
         {

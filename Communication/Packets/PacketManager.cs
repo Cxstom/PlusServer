@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 
 using log4net;
 
-using Plus.Core;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.GameClients;
 
@@ -33,7 +32,6 @@ using Plus.Communication.Packets.Incoming.Inventory.Pets;
 using Plus.Communication.Packets.Incoming.LandingView;
 using Plus.Communication.Packets.Incoming.Messenger;
 using Plus.Communication.Packets.Incoming.Groups;
-
 
 using Plus.Communication.Packets.Incoming.Rooms.Settings;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Pets;

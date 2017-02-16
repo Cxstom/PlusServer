@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Plus.Core.ConsoleWriter;
 
 namespace Plus.Core

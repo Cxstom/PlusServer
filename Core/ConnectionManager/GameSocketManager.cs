@@ -9,7 +9,7 @@ namespace Plus.Core.ConnectionManager
 {
     public class SocketManager
     {
-        private static readonly ILog log = LogManager.GetLogger("ConnectionManager");
+        private static readonly ILog log = LogManager.GetLogger("Plus.Core.ConnectionManager");
 
         #region declares
 
