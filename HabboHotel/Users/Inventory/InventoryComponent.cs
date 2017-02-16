@@ -19,10 +19,10 @@ namespace Plus.HabboHotel.Users.Inventory
         private int _userId;
         private GameClient _client;
 
-        private ConcurrentDictionary<int, Bot> _botItems;
-        private ConcurrentDictionary<int, Pet> _petsItems;
-        private ConcurrentDictionary<int, Item> _floorItems;
-        private ConcurrentDictionary<int, Item> _wallItems;
+        private readonly ConcurrentDictionary<int, Bot> _botItems;
+        private readonly ConcurrentDictionary<int, Pet> _petsItems;
+        private readonly ConcurrentDictionary<int, Item> _floorItems;
+        private readonly ConcurrentDictionary<int, Item> _wallItems;
 
         public InventoryComponent(int UserId, GameClient Client)
         {
@@ -113,11 +113,6 @@ namespace Plus.HabboHotel.Users.Inventory
 
             if (_wallItems != null)
                 _wallItems.Clear();
-
-            _botItems = null;
-            _petsItems = null;
-            _floorItems = null;
-            _wallItems = null;
 
             _client = null;
         }

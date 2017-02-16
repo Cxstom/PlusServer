@@ -972,7 +972,6 @@
     <Compile Include="HabboHotel\Users\Badges\Badge.cs" />
     <Compile Include="HabboHotel\Users\Badges\BadgeComponent.cs" />
     <Compile Include="HabboHotel\Users\Habbo.cs" />
-    <Compile Include="HabboHotel\Users\Inventory\Effects\AvatarEffectsInventoryComponent.cs" />
     <Compile Include="HabboHotel\Users\Inventory\InventoryComponent.cs" />
     <Compile Include="HabboHotel\Users\Messenger\HabboMessenger.cs" />
     <Compile Include="HabboHotel\Users\Messenger\MessengerBuddy.cs" />
