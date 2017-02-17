@@ -52,7 +52,7 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
 
                     base.WriteBoolean(ItemUtility.CanGiftItem(Item));
 
-                    if (Item.Data.InteractionType == InteractionType.DEAL)
+                    if (Item.Data.InteractionType == InteractionType.DEAL || Item.Data.InteractionType == InteractionType.ROOMDEAL)
                     {
                         CatalogDeal deal = null;
                         if (!PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))

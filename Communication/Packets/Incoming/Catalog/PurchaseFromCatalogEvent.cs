@@ -3,11 +3,10 @@ using System.Linq;
 using System.Collections.Generic;
 
 using Plus.Core;
-using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Groups;
+using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users.Effects;
 using Plus.HabboHotel.Users.Inventory.Bots;
 
@@ -358,6 +357,67 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                         {
                                             GeneratedGenericItems.AddRange(Items);
                                         }
+                                    }
+                                }
+                                break;
+                            }
+
+                        case InteractionType.ROOMDEAL:
+                            {
+                                CatalogDeal deal = null;
+                                if (PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))
+                                {
+                                    Room room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(deal.RoomId);
+                                    if (room == null)
+                                        Session.SendNotification("There was an error loading this Room Bundle, if this happens again please contact hotel management!");
+
+                                    RoomData newRoom = PlusEnvironment.GetGame().GetRoomManager().CreateRoom(Session, room.Name, room.Description, room.ModelName, room.Category, 10, room.TradeSettings, room.Wallpaper, room.Floor, room.Landscape, room.WallThickness, room.FloorThickness);
+                                    if (newRoom == null)
+                                        return;
+
+                                    Room myRoom = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(newRoom.Id);
+                                    if (myRoom != null)
+                                    {
+                                        List<Item> Items = ItemLoader.GetItemsForRoom(deal.RoomId, room);
+                                        Item teleLink = null;
+
+                                        foreach (var furni in Items)
+                                        {
+                                            if (furni.Data.InteractionType == InteractionType.TELEPORT)
+                                            {
+                                                if (teleLink == null)
+                                                {
+                                                    List<Item> TeleItems = ItemFactory.CreateTeleporterItems(furni.Data, Session.GetHabbo());
+
+                                                    if (TeleItems != null && TeleItems.ToList().Count > 1)
+                                                    {
+                                                        myRoom.GetRoomItemHandler().SetFloorItem(Session, TeleItems[0], furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                        teleLink = TeleItems[1];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    myRoom.GetRoomItemHandler().SetFloorItem(Session, teleLink, furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                    teleLink = null;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                NewItem = ItemFactory.CreateSingleItemNullable(furni.Data, Session.GetHabbo(), furni.ExtraData, "", furni.GroupId);
+
+                                                if (NewItem != null)
+                                                {
+                                                    if (NewItem.IsWallItem)
+                                                    {
+                                                        NewItem.wallCoord = furni.wallCoord;
+                                                        myRoom.GetRoomItemHandler().SetWallItem(Session, NewItem);
+                                                    }
+                                                    else
+                                                        myRoom.GetRoomItemHandler().SetFloorItem(Session, NewItem, furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                }
+                                            }
+                                        }
+                                        Session.GetHabbo().PrepareRoom(myRoom.Id, "");
                                     }
                                 }
                                 break;

@@ -504,7 +504,7 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-        public bool SetFloorItem(GameClient Session, Item Item, int newX, int newY, int newRot, bool newItem, bool OnRoller, bool sendMessage, bool updateRoomUserStatuses = false)
+        public bool SetFloorItem(GameClient Session, Item Item, int newX, int newY, int newRot, bool newItem, bool OnRoller, bool sendMessage, bool updateRoomUserStatuses = false, double height = -1)
         {
             bool NeedsReAdd = false;
 
@@ -549,116 +549,121 @@ namespace Plus.HabboHotel.Rooms
             // Start calculating new Z coordinate
             Double newZ = _room.GetGameMap().Model.SqFloorHeight[newX, newY];
 
-            if (!OnRoller)
+            if (height == -1)
             {
-                // Make sure this tile is open and there are no users here
-                if (_room.GetGameMap().Model.SqState[newX, newY] != SquareState.OPEN && !Item.GetBaseItem().IsSeat)
+                if (!OnRoller)
                 {
-                    return false;
-                }
-
-                foreach (ThreeDCoord Tile in AffectedTiles.Values)
-                {
-                    if (_room.GetGameMap().Model.SqState[Tile.X, Tile.Y] != SquareState.OPEN &&
-                        !Item.GetBaseItem().IsSeat)
+                    // Make sure this tile is open and there are no users here
+                    if (_room.GetGameMap().Model.SqState[newX, newY] != SquareState.OPEN && !Item.GetBaseItem().IsSeat)
                     {
-                        if (NeedsReAdd)
-                        {
-                            //AddItem(Item);
-                            _room.GetGameMap().AddToMap(Item);
-                        }
                         return false;
+                    }
+
+                    foreach (ThreeDCoord Tile in AffectedTiles.Values)
+                    {
+                        if (_room.GetGameMap().Model.SqState[Tile.X, Tile.Y] != SquareState.OPEN &&
+                            !Item.GetBaseItem().IsSeat)
+                        {
+                            if (NeedsReAdd)
+                            {
+                                //AddItem(Item);
+                                _room.GetGameMap().AddToMap(Item);
+                            }
+                            return false;
+                        }
+                    }
+
+                    // And that we have no users
+                    if (!Item.GetBaseItem().IsSeat && !Item.IsRoller)
+                    {
+                        foreach (ThreeDCoord Tile in AffectedTiles.Values)
+                        {
+                            if (_room.GetGameMap().GetRoomUsers(new Point(Tile.X, Tile.Y)).Count > 0)
+                            {
+                                if (NeedsReAdd)
+                                    _room.GetGameMap().AddToMap(Item);
+                                return false;
+                            }
+                        }
                     }
                 }
 
-                // And that we have no users
-                if (!Item.GetBaseItem().IsSeat && !Item.IsRoller)
+                // Find affected objects
+                var ItemsAffected = new List<Item>();
+                var ItemsComplete = new List<Item>();
+
+                foreach (ThreeDCoord Tile in AffectedTiles.Values.ToList())
                 {
-                    foreach (ThreeDCoord Tile in AffectedTiles.Values)
+                    List<Item> Temp = GetFurniObjects(Tile.X, Tile.Y);
+
+                    if (Temp != null)
                     {
-                        if (_room.GetGameMap().GetRoomUsers(new Point(Tile.X, Tile.Y)).Count > 0)
+                        ItemsAffected.AddRange(Temp);
+                    }
+                }
+
+
+                ItemsComplete.AddRange(ItemsOnTile);
+                ItemsComplete.AddRange(ItemsAffected);
+
+                if (!OnRoller)
+                {
+                    // Check for items in the stack that do not allow stacking on top of them
+                    foreach (Item I in ItemsComplete.ToList())
+                    {
+                        if (I == null)
+                            continue;
+
+                        if (I.Id == Item.Id)
+                            continue;
+
+                        if (I.GetBaseItem() == null)
+                            continue;
+
+                        if (!I.GetBaseItem().Stackable)
                         {
                             if (NeedsReAdd)
+                            {
+                                //AddItem(Item);
                                 _room.GetGameMap().AddToMap(Item);
+                            }
                             return false;
                         }
                     }
                 }
-            }
 
-            // Find affected objects
-            var ItemsAffected = new List<Item>();
-            var ItemsComplete = new List<Item>();
-
-            foreach (ThreeDCoord Tile in AffectedTiles.Values.ToList())
-            {
-                List<Item> Temp = GetFurniObjects(Tile.X, Tile.Y);
-
-                if (Temp != null)
+                //if (!Item.IsRoller)
                 {
-                    ItemsAffected.AddRange(Temp);
-                }
-            }
+                    // If this is a rotating action, maintain item at current height
+                    if (Item.Rotation != newRot && Item.GetX == newX && Item.GetY == newY)
+                        newZ = Item.GetZ;
 
-
-            ItemsComplete.AddRange(ItemsOnTile);
-            ItemsComplete.AddRange(ItemsAffected);
-
-            if (!OnRoller)
-            {
-                // Check for items in the stack that do not allow stacking on top of them
-                foreach (Item I in ItemsComplete.ToList())
-                {
-                    if (I == null)
-                        continue;
-
-                    if (I.Id == Item.Id)
-                        continue;
-
-                    if (I.GetBaseItem() == null)
-                        continue;
-
-                    if (!I.GetBaseItem().Stackable)
+                    // Are there any higher objects in the stack!?
+                    foreach (Item I in ItemsComplete.ToList())
                     {
-                        if (NeedsReAdd)
-                        {
-                            //AddItem(Item);
-                            _room.GetGameMap().AddToMap(Item);
+                        if (I == null)
+                            continue;
+                        if (I.Id == Item.Id)
+                            continue;
+
+                        if (I.GetBaseItem().InteractionType == InteractionType.STACKTOOL)
+                        {                       
+                            newZ = I.GetZ;
+                            break;
                         }
-                        return false;
+                        if (I.TotalHeight > newZ)
+                        {
+                            newZ = I.TotalHeight;
+                        }
                     }
                 }
+
+                // Verify the rotation is correct
+                if (newRot != 0 && newRot != 2 && newRot != 4 && newRot != 6 && newRot != 8 && !Item.GetBaseItem().ExtraRot)
+                    newRot = 0;
             }
-
-            //if (!Item.IsRoller)
-            {
-                // If this is a rotating action, maintain item at current height
-                if (Item.Rotation != newRot && Item.GetX == newX && Item.GetY == newY)
-                    newZ = Item.GetZ;
-
-                // Are there any higher objects in the stack!?
-                foreach (Item I in ItemsComplete.ToList())
-                {
-                    if (I == null)
-                        continue;
-                    if (I.Id == Item.Id)
-                        continue;
-
-                    if (I.GetBaseItem().InteractionType == InteractionType.STACKTOOL)
-                    {                       
-                        newZ = I.GetZ;
-                        break;
-                    }
-                    if (I.TotalHeight > newZ)
-                    {
-                        newZ = I.TotalHeight;
-                    }
-                }
-            }
-
-            // Verify the rotation is correct
-            if (newRot != 0 && newRot != 2 && newRot != 4 && newRot != 6 && newRot != 8 && !Item.GetBaseItem().ExtraRot)
-                newRot = 0;
+            else
+                newZ = height;
 
             Item.Rotation = newRot;
             int oldX = Item.GetX;

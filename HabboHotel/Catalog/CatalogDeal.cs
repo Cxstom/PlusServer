@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Data;
+using System.Collections.Generic;
 
 using Plus.HabboHotel.Items;
+using Plus.Database.Interfaces;
 
 namespace Plus.HabboHotel.Catalog
 {
@@ -9,12 +12,45 @@ namespace Plus.HabboHotel.Catalog
         public int Id { get; set; }
         public List<CatalogItem> ItemDataList { get; private set; }
         public string DisplayName { get; set; }
+        public int RoomId { get; set; }
 
-        public CatalogDeal(int Id, string Items, string DisplayName, ItemDataManager ItemDataManager)
+        public CatalogDeal(int Id, string Items, string DisplayName, int RoomId, ItemDataManager ItemDataManager)
         {
             this.Id = Id;
             this.DisplayName = DisplayName;
+            this.RoomId = RoomId;
             this.ItemDataList = new List<CatalogItem>();
+
+            if (RoomId != 0)
+            {
+                DataTable getRoomItems = null;
+                Dictionary<int, int> roomItems = new Dictionary<int, int>();
+
+                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.SetQuery("SELECT `items`.base_item, COALESCE(`items_groups`.`group_id`, 0) AS `group_id` FROM `items` LEFT OUTER JOIN `items_groups` ON `items`.`id` = `items_groups`.`id` WHERE `items`.`room_id` = @rid;");
+                    dbClient.AddParameter("rid", RoomId);
+                    getRoomItems = dbClient.getTable();
+                }
+
+                if (getRoomItems != null)
+                {
+                    foreach (DataRow dRow in getRoomItems.Rows)
+                    {
+                        int item_id = Convert.ToInt32(dRow["base_item"]);
+                        if (roomItems.ContainsKey(item_id))
+                            roomItems[item_id]++;
+                        else
+                            roomItems.Add(item_id, 1);
+                    }
+                }
+
+                foreach (var roomItem in roomItems)
+                    Items += roomItem.Key + "*" + roomItem.Value + ";";
+
+                if (roomItems.Count > 0)
+                    Items = Items.Remove(Items.Length - 1);
+            }
 
             string[] SplitItems = Items.Split(';');
             foreach (string Split in SplitItems)

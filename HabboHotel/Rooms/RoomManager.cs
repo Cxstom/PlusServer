@@ -429,7 +429,8 @@ namespace Plus.HabboHotel.Rooms
             return this._rooms.TryGetValue(RoomId, out Room);
         }
 
-        public RoomData CreateRoom(GameClient Session, string Name, string Description, string Model, int Category, int MaxVisitors, int TradeSettings)
+        public RoomData CreateRoom(GameClient Session, string Name, string Description, string Model, int Category, int MaxVisitors, int TradeSettings, 
+            string wallpaper = "0.0", string floor = "0.0", string landscape = "0.0", int wallthick = 0, int floorthick = 0)
         {
             if (!_roomModels.ContainsKey(Model))
             {
@@ -447,7 +448,7 @@ namespace Plus.HabboHotel.Rooms
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("INSERT INTO `rooms` (`roomtype`,`caption`,`description`,`owner`,`model_name`,`category`,`users_max`,`trade_settings`) VALUES ('private',@caption,@description,@UserId,@model,@category,@usersmax,@tradesettings)");
+                dbClient.SetQuery("INSERT INTO `rooms` (`roomtype`,`caption`,`description`,`owner`,`model_name`,`category`,`users_max`,`trade_settings`,`wallpaper`,`floor`,`landscape`,`floorthick`,`wallthick`) VALUES ('private',@caption,@description,@UserId,@model,@category,@usersmax,@tradesettings,@wallpaper,@floor,@landscape,@floorthick,@wallthick)");
                 dbClient.AddParameter("caption", Name);
                 dbClient.AddParameter("description", Description);
                 dbClient.AddParameter("UserId", Session.GetHabbo().Id);
@@ -455,6 +456,11 @@ namespace Plus.HabboHotel.Rooms
                 dbClient.AddParameter("category", Category);
                 dbClient.AddParameter("usersmax", MaxVisitors);
                 dbClient.AddParameter("tradesettings", TradeSettings);
+                dbClient.AddParameter("wallpaper", wallpaper);
+                dbClient.AddParameter("floor", floor);
+                dbClient.AddParameter("landscape", landscape);
+                dbClient.AddParameter("floorthick", floorthick);
+                dbClient.AddParameter("wallthick", wallthick);
 
                 RoomId = Convert.ToInt32(dbClient.InsertQuery());
             }

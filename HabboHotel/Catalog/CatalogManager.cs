@@ -99,7 +99,7 @@ namespace Plus.HabboHotel.Catalog
                     }
                 }
 
-                dbClient.SetQuery("SELECT `id`, `items`, `name` FROM `catalog_deals`");
+                dbClient.SetQuery("SELECT `id`, `items`, `name`, `room_id` FROM `catalog_deals`");
                 DataTable GetDeals = dbClient.getTable();
 
                 if (GetDeals != null)
@@ -109,8 +109,9 @@ namespace Plus.HabboHotel.Catalog
                         int Id = Convert.ToInt32(Row["id"]);
                         string Items = Convert.ToString(Row["items"]);
                         string Name = Convert.ToString(Row["name"]);
-                        
-                        CatalogDeal Deal = new CatalogDeal(Id, Items, Name, ItemDataManager);
+                        int RoomId = Convert.ToInt32(Row["room_id"]);
+
+                        CatalogDeal Deal = new CatalogDeal(Id, Items, Name, RoomId, ItemDataManager);
 
                         if (!this._deals.ContainsKey(Id))
                             this._deals.Add(Deal.Id, Deal);

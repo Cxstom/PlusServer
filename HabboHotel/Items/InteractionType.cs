@@ -100,6 +100,7 @@ namespace Plus.HabboHotel.Items
         CRACKABLE_EGG,
         EFFECT,
         DEAL,
+        ROOMDEAL,
 
         HORSE_SADDLE_1,
         HORSE_SADDLE_2,
@@ -317,6 +318,8 @@ namespace Plus.HabboHotel.Items
                     return InteractionType.EFFECT;
                 case "deal":
                     return InteractionType.DEAL;
+                case "roomdeal":
+                    return InteractionType.ROOMDEAL;
 
                 case "horse_saddle_1":
                     return InteractionType.HORSE_SADDLE_1;
