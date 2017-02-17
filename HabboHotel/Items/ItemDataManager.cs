@@ -92,6 +92,17 @@ namespace Plus.HabboHotel.Items
             return false;
         }
 
+        public ItemData GetItemByName(string name)
+        {
+            foreach (var entry in _items)
+            {
+                ItemData item = entry.Value;
+                if (item.ItemName == name)
+                    return item;
+            }
+            return null;
+        }
+
         public bool GetGift(int SpriteId, out ItemData Item)
         {
             if (this._gifts.TryGetValue(SpriteId, out Item))
