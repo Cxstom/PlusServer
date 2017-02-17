@@ -27,7 +27,7 @@ namespace Plus.HabboHotel.Catalog
         private readonly Dictionary<int, CatalogPage> _pages;
         private readonly Dictionary<int, CatalogBot> _botPresets;
         private readonly Dictionary<int, Dictionary<int, CatalogItem>> _items;
-        private readonly Dictionary<int, Dictionary<int, CatalogDeal>> _deals;
+        private readonly Dictionary<int, CatalogDeal> _deals;
         private readonly Dictionary<int, CatalogPromotion> _promotions;
 
         public CatalogManager()
@@ -45,7 +45,7 @@ namespace Plus.HabboHotel.Catalog
             this._pages = new Dictionary<int, CatalogPage>();
             this._botPresets = new Dictionary<int, CatalogBot>();
             this._items = new Dictionary<int, Dictionary<int, CatalogItem>>();
-            this._deals = new Dictionary<int, Dictionary<int, CatalogDeal>>();
+            this._deals = new Dictionary<int, CatalogDeal>();
             this._promotions = new Dictionary<int, CatalogPromotion>();
         }
 
@@ -99,7 +99,7 @@ namespace Plus.HabboHotel.Catalog
                     }
                 }
 
-                dbClient.SetQuery("SELECT * FROM `catalog_deals`");
+                dbClient.SetQuery("SELECT `id`, `items`, `name`, FROM `catalog_deals`");
                 DataTable GetDeals = dbClient.getTable();
 
                 if (GetDeals != null)
@@ -107,17 +107,13 @@ namespace Plus.HabboHotel.Catalog
                     foreach (DataRow Row in GetDeals.Rows)
                     {
                         int Id = Convert.ToInt32(Row["id"]);
-                        int PageId = Convert.ToInt32(Row["page_id"]);
                         string Items = Convert.ToString(Row["items"]);
                         string Name = Convert.ToString(Row["name"]);
-                        int Credits = Convert.ToInt32(Row["cost_credits"]);
-                        int Pixels = Convert.ToInt32(Row["cost_pixels"]);
+                        
+                        CatalogDeal Deal = new CatalogDeal(Id, Items, Name, ItemDataManager);
 
-                        if (!this._deals.ContainsKey(PageId))
-                            this._deals[PageId] = new Dictionary<int, CatalogDeal>();
-
-                        CatalogDeal Deal = new CatalogDeal(Id, PageId, Items, Name, Credits, Pixels, ItemDataManager);
-                        this._deals[PageId].Add(Deal.Id, Deal);
+                        if (!this._deals.ContainsKey(Id))
+                            this._deals.Add(Deal.Id, Deal);
                     }
                 }
 
@@ -132,8 +128,7 @@ namespace Plus.HabboHotel.Catalog
                         this._pages.Add(Convert.ToInt32(Row["id"]), new CatalogPage(Convert.ToInt32(Row["id"]), Convert.ToInt32(Row["parent_id"]), Row["enabled"].ToString(), Convert.ToString(Row["caption"]),
                             Convert.ToString(Row["page_link"]), Convert.ToInt32(Row["icon_image"]), Convert.ToInt32(Row["min_rank"]), Convert.ToInt32(Row["min_vip"]), Row["visible"].ToString(), Convert.ToString(Row["page_layout"]), 
                             Convert.ToString(Row["page_strings_1"]), Convert.ToString(Row["page_strings_2"]),
-                            this._items.ContainsKey(Convert.ToInt32(Row["id"])) ? this._items[Convert.ToInt32(Row["id"])] : new Dictionary<int, CatalogItem>(),
-                            this._deals.ContainsKey(Convert.ToInt32(Row["id"])) ? this._deals[Convert.ToInt32(Row["id"])] : new Dictionary<int, CatalogDeal>(), ref this._itemOffers));
+                            this._items.ContainsKey(Convert.ToInt32(Row["id"])) ? this._items[Convert.ToInt32(Row["id"])] : new Dictionary<int, CatalogItem>(), ref this._itemOffers));
                     }
                 }
 
@@ -180,6 +175,11 @@ namespace Plus.HabboHotel.Catalog
         public bool TryGetPage(int pageId, out CatalogPage page)
         {
             return this._pages.TryGetValue(pageId, out page);
+        }
+
+        public bool TryGetDeal(int dealId, out CatalogDeal deal)
+        {
+            return this._deals.TryGetValue(dealId, out deal);
         }
 
         public ICollection<CatalogPage> GetPages()

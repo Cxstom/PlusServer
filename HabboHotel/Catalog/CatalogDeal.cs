@@ -7,16 +7,12 @@ namespace Plus.HabboHotel.Catalog
     public class CatalogDeal
     {
         public int Id { get; set; }
-        public int PageId { get; set; }
         public List<CatalogItem> ItemDataList { get; private set; }
         public string DisplayName { get; set; }
-        public int CostCredits { get; set; }
-        public int CostPixels { get; set; }
 
-        public CatalogDeal(int Id, int PageId, string Items, string DisplayName, int Credits, int Pixels, ItemDataManager ItemDataManager)
+        public CatalogDeal(int Id, string Items, string DisplayName, ItemDataManager ItemDataManager)
         {
             this.Id = Id;
-            this.PageId = PageId;
             this.DisplayName = DisplayName;
             this.ItemDataList = new List<CatalogItem>();
 
@@ -33,11 +29,8 @@ namespace Plus.HabboHotel.Catalog
                 if (!ItemDataManager.GetItem(ItemId, out Data))
                     continue;
 
-                ItemDataList.Add(new CatalogItem(0, ItemId, Data, string.Empty, PageId, 0, 0, 0, 0, 0, 0, false, "", "", 0));
+                ItemDataList.Add(new CatalogItem(0, ItemId, Data, string.Empty, 0, 0, 0, 0, Amount, 0, 0, false, "", "", 0));
             }
-
-            this.CostCredits = Credits;
-            this.CostPixels = Pixels;
         }
     }
 }

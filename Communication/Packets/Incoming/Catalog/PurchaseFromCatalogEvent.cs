@@ -347,14 +347,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                         case InteractionType.DEAL:
                             {
-                                //Fetch the deal where the ID is this items ID.
-                                var DealItems = (from d in Page.Deals.Values.ToList() where d.Id == Item.Id select d);
-
-                                //This bit, iterating ONE item? How can I make this simpler
-                                foreach (CatalogDeal DealItem in DealItems)
+                                CatalogDeal deal = null;
+                                if (PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))
                                 {
-                                    //Here I loop the DealItems ItemDataList.
-                                    foreach (CatalogItem CatalogItem in DealItem.ItemDataList.ToList())
+                                    foreach (CatalogItem CatalogItem in deal.ItemDataList.ToList())
                                     {
                                         List<Item> Items = ItemFactory.CreateMultipleItems(CatalogItem.Data, Session.GetHabbo(), "", AmountPurchase);
 

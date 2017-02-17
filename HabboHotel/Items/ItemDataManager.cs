@@ -61,16 +61,14 @@ namespace Plus.HabboHotel.Items
                             string vendingIDS = Convert.ToString(Row["vending_ids"]);
                             string heightAdjustable = Convert.ToString(Row["height_adjustable"]);
                             int EffectId = Convert.ToInt32(Row["effect_id"]);
-                            int WiredId = Convert.ToInt32(Row["wired_id"]);
                             bool IsRare = PlusEnvironment.EnumToBool(Row["is_rare"].ToString());
-                            int ClothingId = Convert.ToInt32(Row["clothing_id"]);
                             bool ExtraRot = PlusEnvironment.EnumToBool(Row["extra_rot"].ToString());
 
                             if (!this._gifts.ContainsKey(spriteID))
-                                this._gifts.Add(spriteID, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, WiredId, IsRare, ClothingId, ExtraRot));
+                                this._gifts.Add(spriteID, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, IsRare, ExtraRot));
 
                             if (!this._items.ContainsKey(id))
-                                this._items.Add(id, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, WiredId, IsRare, ClothingId, ExtraRot));
+                                this._items.Add(id, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, IsRare, ExtraRot));
                         }
                         catch (Exception e)
                         {
