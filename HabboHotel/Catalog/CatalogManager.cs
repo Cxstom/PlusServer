@@ -99,7 +99,7 @@ namespace Plus.HabboHotel.Catalog
                     }
                 }
 
-                dbClient.SetQuery("SELECT `id`, `items`, `name`, FROM `catalog_deals`");
+                dbClient.SetQuery("SELECT `id`, `items`, `name` FROM `catalog_deals`");
                 DataTable GetDeals = dbClient.getTable();
 
                 if (GetDeals != null)
