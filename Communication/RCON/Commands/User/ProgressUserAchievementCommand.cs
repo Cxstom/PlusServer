@@ -12,7 +12,7 @@ namespace Plus.Communication.RCON.Commands.User
 
         public string Parameters
         {
-            get { return "%userId%"; }
+            get { return "%userId% %achievement% %progess%"; }
         }
 
         public bool TryExecute(string[] parameters)

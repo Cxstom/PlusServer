@@ -59,7 +59,9 @@ namespace Plus.Communication.RCON.Commands
         /// </summary>
         private void RegisterUser()
         {
+            this.Register("disconnect_user", new DisconnectUserCommand());
             this.Register("reload_user_motto", new ReloadUserMottoCommand());
+            this.Register("reload_user_currency", new ReloadUserCurrencyCommand());
             this.Register("progress_user_achievement", new ProgressUserAchievementCommand());
         }   
 
