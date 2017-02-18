@@ -1,4 +1,5 @@
-﻿using Plus.Communication.RCON.Commands.User;
+﻿using Plus.Communication.RCON.Commands.Hotel;
+using Plus.Communication.RCON.Commands.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,8 +66,11 @@ namespace Plus.Communication.RCON.Commands
         /// Registers the commands tailored towards the hotel.
         /// </summary>
         private void RegisterHotel()
-        { 
-
+        {
+            this.Register("reload_bans", new ReloadBansCommand());
+            this.Register("reload_quests", new ReloadQuestsCommand());
+            this.Register("reload_server_settings", new ReloadServerSettingsCommand());
+            this.Register("reload_vouchers", new ReloadVouchersCommand());
         }
 
         /// <summary>

@@ -608,6 +608,10 @@
     <Compile Include="Communication\Packets\Outgoing\Users\UserTagsComposer.cs" />
     <Compile Include="Communication\Packets\PacketManager.cs" />
     <Compile Include="Communication\RCON\Commands\CommandManager.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadBansCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadServerSettingsCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadQuestsCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadVouchersCommand.cs" />
     <Compile Include="Communication\RCON\Commands\IRCONCommand.cs" />
     <Compile Include="Communication\RCON\Commands\User\ReloadUserMottoCommand.cs" />
     <Compile Include="Communication\RCON\RCONConnection.cs" />
@@ -1051,7 +1055,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Communication\Packets\Incoming\Rooms\Groups\" />
-    <Folder Include="Communication\RCON\Commands\Hotel\" />
     <Folder Include="HabboHotel\Rooms\Chat\Commands\Roleplay\Generic\" />
     <Folder Include="HabboHotel\Rooms\Chat\Moderation\" />
   </ItemGroup>
