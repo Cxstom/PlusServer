@@ -789,7 +789,7 @@
     <Compile Include="HabboHotel\Rooms\Chat\Logs\ChatlogManager.cs" />
     <Compile Include="HabboHotel\Games\GameData.cs" />
     <Compile Include="HabboHotel\Games\GameDataManager.cs" />
-    <Compile Include="HabboHotel\Global\ServerStatusUpdater.cs" />
+    <Compile Include="Core\ServerStatusUpdater.cs" />
     <Compile Include="HabboHotel\Groups\GroupType.cs" />
     <Compile Include="HabboHotel\Items\Data\Moodlight\MoodlightPreset.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorCannon.cs" />
