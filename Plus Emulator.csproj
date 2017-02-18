@@ -618,6 +618,7 @@
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadQuestsCommand.cs" />
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadVouchersCommand.cs" />
     <Compile Include="Communication\RCON\Commands\IRCONCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\User\ProgressUserAchievementCommand.cs" />
     <Compile Include="Communication\RCON\Commands\User\ReloadUserMottoCommand.cs" />
     <Compile Include="Communication\RCON\RCONConnection.cs" />
     <Compile Include="Communication\RCON\RCONSocket.cs" />

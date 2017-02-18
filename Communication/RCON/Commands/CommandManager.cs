@@ -60,7 +60,8 @@ namespace Plus.Communication.RCON.Commands
         private void RegisterUser()
         {
             this.Register("reload_user_motto", new ReloadUserMottoCommand());
-        }
+            this.Register("progress_user_achievement", new ProgressUserAchievementCommand());
+        }   
 
         /// <summary>
         /// Registers the commands tailored towards the hotel.
