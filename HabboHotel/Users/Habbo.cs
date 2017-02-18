@@ -251,7 +251,7 @@ namespace Plus.HabboHotel.Users
             this._sessionStart = PlusEnvironment.GetUnixTimestamp();
             this._messengerSpamCount = 0;
             this._messengerSpamTime = 0;
-            this._creditsTickUpdate = PlusStaticGameSettings.UserCreditsUpdateTimer;
+            this._creditsTickUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.tick"));
 
             this._tentId = 0;
             this._hopperId = 0;
@@ -1058,9 +1058,9 @@ namespace Plus.HabboHotel.Users
 
                 if (this._creditsTickUpdate <= 0)
                 {
-                    int CreditUpdate = PlusStaticGameSettings.UserCreditsUpdateAmount;
-                    int DucketUpdate = PlusStaticGameSettings.UserPixelsUpdateAmount;
-                    
+                    int CreditUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.credit_reward"));
+                    int DucketUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.ducket_reward"));
+
                     SubscriptionData SubData = null;
                     if (PlusEnvironment.GetGame().GetSubscriptionManager().TryGetSubscriptionData(this._vipRank, out SubData))
                     {
@@ -1074,7 +1074,7 @@ namespace Plus.HabboHotel.Users
                     this._client.SendMessage(new CreditBalanceComposer(this._credits));
                     this._client.SendMessage(new HabboActivityPointNotificationComposer(this._duckets, DucketUpdate));
 
-                    this.CreditsUpdateTick = PlusStaticGameSettings.UserCreditsUpdateTimer;
+                    this.CreditsUpdateTick = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.tick"));
                 }
             }
             catch { }

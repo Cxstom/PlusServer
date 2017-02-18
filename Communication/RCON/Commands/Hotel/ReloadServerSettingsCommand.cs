@@ -16,8 +16,7 @@ namespace Plus.Communication.RCON.Commands.Hotel
 
         public bool TryExecute(string[] parameters)
         {
-            PlusEnvironment.ConfigData = new ConfigData(); 
-
+            PlusEnvironment.GetSettingsManager().Init();
             return true;
         }
     }

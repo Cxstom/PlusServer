@@ -48,12 +48,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             if (Item == null)
                 return;
 
-            if (Room.GetRoomItemHandler().GetWallAndFloor.Count() > PlusStaticGameSettings.RoomFurnitureLimit)
+            if (Room.GetRoomItemHandler().GetWallAndFloor.Count() > Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.item.placement_limit")))
             {
-                Session.SendNotification("You cannot have more than " + PlusStaticGameSettings.RoomFurnitureLimit + " items in a room!");
+                Session.SendNotification("You cannot have more than " + Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.item.placement_limit")) + " items in a room!");
                 return;
             }
-            else if (Item.GetBaseItem().ItemName.ToLower().Contains("cf") && Room.OwnerId != Session.GetHabbo().Id && !Session.GetHabbo().GetPermissions().HasRight("room_item_place_exchange_anywhere"))
+            else if (Item.Data.InteractionType == InteractionType.EXCHANGE && Room.OwnerId != Session.GetHabbo().Id && !Session.GetHabbo().GetPermissions().HasRight("room_item_place_exchange_anywhere"))
             {
                 Session.SendNotification("You cannot place exchange items in other people's rooms!");
                 return;

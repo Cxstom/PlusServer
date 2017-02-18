@@ -211,9 +211,9 @@ namespace Plus.HabboHotel.GameClients
                           PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
                           PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
-               
-                    if (!string.IsNullOrWhiteSpace(PlusEnvironment.GetDBConfig().DBData["welcome_message"]))
-                        SendMessage(new MOTDNotificationComposer(PlusEnvironment.GetDBConfig().DBData["welcome_message"]));
+
+                    if (PlusEnvironment.GetSettingsManager().TryGetValue("user.login.message.enabled") == "1")
+                        SendMessage(new MOTDNotificationComposer(PlusEnvironment.GetLanguageManager().TryGetValue("user.login.message")));
 
                     PlusEnvironment.GetGame().GetRewardManager().CheckRewards(this);
                     return true;

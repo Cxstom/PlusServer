@@ -26,8 +26,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             if (!Room.CheckRights(Session, true))
                 return;
-
-            if (PlusEnvironment.GetDBConfig().DBData["exchange_enabled"] != "1")
+            
+            if (PlusEnvironment.GetSettingsManager().TryGetValue("room.item.exchangeables.enabled") != "1")
             {
                 Session.SendNotification("The hotel managers have temporarilly disabled exchanging!");
                 return;

@@ -166,7 +166,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.ConfigData = new ConfigData();
+                        PlusEnvironment.GetSettingsManager().Init();
                         Session.SendWhisper("Server configuration successfully updated.");
                         break;
                     }
@@ -274,7 +274,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.GetGame().GetLanguageManager().Init();
+                        PlusEnvironment.GetLanguageManager().Init();
                         Session.SendWhisper("Locale cache successfully updated.");
                         break;
                     }

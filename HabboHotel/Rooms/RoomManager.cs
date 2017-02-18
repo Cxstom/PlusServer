@@ -434,13 +434,13 @@ namespace Plus.HabboHotel.Rooms
         {
             if (!_roomModels.ContainsKey(Model))
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_model_missing"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.creation.model.not_found"));
                 return null;
             }
 
             if (Name.Length < 3)
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_name_length_short"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.creation.name.too_short"));
                 return null;
             }
 

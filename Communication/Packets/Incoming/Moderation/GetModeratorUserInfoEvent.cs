@@ -29,7 +29,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
 
                 if (User == null)
                 {
-                    Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("user_not_found"));
+                    Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("user.not_found"));
                     return;
                 }
 

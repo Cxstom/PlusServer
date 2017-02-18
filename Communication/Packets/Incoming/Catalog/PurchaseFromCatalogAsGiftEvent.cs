@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             int Colour = Packet.PopInt();
             bool dnow = Packet.PopBoolean();
 
-            if (PlusEnvironment.GetDBConfig().DBData["gifts_enabled"] != "1")
+            if (PlusEnvironment.GetSettingsManager().TryGetValue("room.item.gifts.enabled") != "1")
             {
                 Session.SendNotification("The hotel managers have disabled gifting");
                 return;

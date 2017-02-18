@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms;
 using Plus.Communication.Packets.Outgoing.Inventory.Pets;
 
 using Plus.HabboHotel.Rooms.AI.Speech;
-using Plus.HabboHotel.Rooms.AI.Responses;
 using log4net;
 using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
+using System;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 {
@@ -33,7 +30,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 return;
             }
 
-            if (Room.GetRoomUserManager().PetCount > PlusStaticGameSettings.RoomPetPlacementLimit)
+            if (Room.GetRoomUserManager().PetCount > Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.pets.placement_limit")))
             {
                 Session.SendMessage(new RoomErrorNotifComposer(2));//5 = I have too many.
                 return;

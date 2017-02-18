@@ -24,14 +24,16 @@ namespace Plus.Communication.Packets.Incoming.Groups
             int Colour2 = packet.PopInt();
             int Unknown = packet.PopInt();
 
-            if (session.GetHabbo().Credits < PlusStaticGameSettings.GroupPurchaseAmount)
+            int groupCost = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("catalog.group.purchase.cost"));
+
+            if (session.GetHabbo().Credits < groupCost)
             {
-                session.SendMessage(new BroadcastMessageAlertComposer("A group costs " + PlusStaticGameSettings.GroupPurchaseAmount + " credits! You only have " + session.GetHabbo().Credits + "!"));
+                session.SendMessage(new BroadcastMessageAlertComposer("A group costs " + groupCost + " credits! You only have " + session.GetHabbo().Credits + "!"));
                 return;
             }
             else
             {
-                session.GetHabbo().Credits -= PlusStaticGameSettings.GroupPurchaseAmount;
+                session.GetHabbo().Credits -= groupCost;
                 session.SendMessage(new CreditBalanceComposer(session.GetHabbo().Credits));
             }
 

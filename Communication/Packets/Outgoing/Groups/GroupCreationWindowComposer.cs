@@ -12,13 +12,13 @@ namespace Plus.Communication.Packets.Outgoing.Groups
         public GroupCreationWindowComposer(ICollection<RoomData> Rooms)
             : base(ServerPacketHeader.GroupCreationWindowMessageComposer)
         {
-            base.WriteInteger(PlusStaticGameSettings.GroupPurchaseAmount);//Price
+            base.WriteInteger(Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("catalog.group.purchase.cost")));//Price
 
             base.WriteInteger(Rooms.Count);//Room count that the user has.
             foreach (RoomData Room in Rooms)
             {
                 base.WriteInteger(Room.Id);//Room Id
-               base.WriteString(Room.Name);//Room Name
+                base.WriteString(Room.Name);//Room Name
                 base.WriteBoolean(false);//What?
             }
 

@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            if (PlusEnvironment.GetDBConfig().DBData["catalogue_enabled"] != "1")
+            if (PlusEnvironment.GetSettingsManager().TryGetValue("catalog.enabled") != "1")
             {
                 Session.SendNotification("The hotel managers have disabled the catalogue");
                 return;

@@ -679,7 +679,7 @@ namespace Plus.HabboHotel.Rooms
                 if (_floorItems.ContainsKey(Item.Id))
                 {
                     if (Session != null)
-                        Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_item_placed"));
+                        Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.item.already_placed"));
                     _room.GetGameMap().RemoveFromMap(Item);
                     return true;
                 }
@@ -754,7 +754,7 @@ namespace Plus.HabboHotel.Rooms
 
             if (_floorItems.ContainsKey(Item.Id))
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_item_placed"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.item.already_placed"));
                 return true;
             }
 

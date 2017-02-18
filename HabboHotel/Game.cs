@@ -52,7 +52,6 @@ namespace Plus.HabboHotel
         private readonly LandingViewManager _landingViewManager;//TODO: Rename class
         private readonly GameDataManager _gameDataManager;
         private readonly ServerStatusUpdater _globalUpdater;
-        private readonly LanguageManager _languageManager;
         private readonly AntiMutant _antiMutant;
         private readonly BotManager _botManager;
         private readonly CacheManager _cacheManager;
@@ -96,9 +95,6 @@ namespace Plus.HabboHotel
 
             this._globalUpdater = new ServerStatusUpdater();
             this._globalUpdater.Init();
-
-            this._languageManager = new LanguageManager();
-            this._languageManager.Init();
 
             this._antiMutant = new AntiMutant();
             this._botManager = new BotManager();
@@ -233,11 +229,6 @@ namespace Plus.HabboHotel
         public GameDataManager GetGameDataManager()
         {
             return this._gameDataManager;
-        }
-
-        public LanguageManager GetLanguageManager()
-        {
-            return this._languageManager;
         }
 
         public AntiMutant GetAntiMutant()

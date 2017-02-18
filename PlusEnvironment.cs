@@ -24,6 +24,8 @@ using Plus.HabboHotel.Cache.Type;
 using Plus.HabboHotel.Users.UserData;
 using Plus.Communication.RCON;
 using Plus.Communication.ConnectionManager;
+using Plus.Core.Language;
+using Plus.Core.Settings;
 
 namespace Plus
 {
@@ -34,15 +36,18 @@ namespace Plus
         public const string PrettyVersion = "Plus Emulator";
         public const string PrettyBuild = "3.4.3.0";
 
-        private static ConfigurationData _configuration;
         private static Encoding _defaultEncoding;
-        private static ConnectionHandling _connectionManager;
-        private static Game _game;
-        private static DatabaseManager _manager;
-        public static ConfigData ConfigData;
-        public static RCONSocket _rcon;
         public static CultureInfo CultureInfo;
 
+        private static Game _game;
+        private static ConfigurationData _configuration;
+        private static ConnectionHandling _connectionManager;
+        private static LanguageManager _languageManager;
+        private static SettingsManager _settingsManager;
+        private static DatabaseManager _manager;
+        private static RCONSocket _rcon;
+
+        // TODO: Get rid?
         public static bool Event = false;
         public static DateTime lastEvent;
         public static DateTime ServerStarted;
@@ -126,8 +131,11 @@ namespace Plus
                 }
 
                 //Get the configuration & Game set.
-                ConfigData = new ConfigData();
-                _game = new Game();
+                _languageManager = new LanguageManager();
+                _languageManager.Init();
+
+                _settingsManager = new SettingsManager();
+                _settingsManager.Init();
 
                 //Have our encryption ready.
                 HabboEncryptionV2.Initialize(new RSAKeys());
@@ -139,6 +147,7 @@ namespace Plus
                 _connectionManager = new ConnectionHandling(int.Parse(GetConfig().data["game.tcp.port"]), int.Parse(GetConfig().data["game.tcp.conlimit"]), int.Parse(GetConfig().data["game.tcp.conperip"]), GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
                 _connectionManager.init();
 
+                _game = new Game();
                 _game.StartGameLoop();
 
                 TimeSpan TimeUsed = DateTime.Now - ServerStarted;
@@ -333,7 +342,7 @@ namespace Plus
             log.Info("Server shutting down...");
             Console.Title = "PLUS EMULATOR: SHUTTING DOWN!";
 
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("shutdown_alert")));
+            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
             GetGame().StopGameLoop();
             Thread.Sleep(2500);
             GetConnectionManager().Destroy();//Stop listening.
@@ -361,11 +370,6 @@ namespace Plus
             return _configuration;
         }
 
-        public static ConfigData GetDBConfig()
-        {
-            return ConfigData;
-        }
-
         public static Encoding GetDefaultEncoding()
         {
             return _defaultEncoding;
@@ -389,6 +393,16 @@ namespace Plus
         public static DatabaseManager GetDatabaseManager()
         {
             return _manager;
+        }
+
+        public static LanguageManager GetLanguageManager()
+        {
+            return _languageManager;
+        }
+
+        public static SettingsManager GetSettingsManager()
+        {
+            return _settingsManager;
         }
 
         public static ICollection<Habbo> GetUsersCached()
