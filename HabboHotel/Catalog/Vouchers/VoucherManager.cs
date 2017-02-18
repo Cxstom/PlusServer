@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 
 using Plus.Database.Interfaces;
 
-
 namespace Plus.HabboHotel.Catalog.Vouchers
 {
     public class VoucherManager
     {
-        private Dictionary<string, Voucher> _vouchers;
+        private readonly Dictionary<string, Voucher> _vouchers;
 
         public VoucherManager()
         {
             this._vouchers = new Dictionary<string, Voucher>();
-            this.Init();
         }
 
         public void Init()

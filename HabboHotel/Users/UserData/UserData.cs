@@ -1,16 +1,12 @@
-﻿using System.Collections;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Plus.HabboHotel.Achievements;
-using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users.Badges;
-using Plus.HabboHotel.Users.Inventory;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Users.Relationships;
-using System.Collections.Concurrent;
 
-namespace Plus.HabboHotel.Users.UserDataManagement
+namespace Plus.HabboHotel.Users.UserData
 {
     public class UserData
     {
@@ -23,18 +19,16 @@ namespace Plus.HabboHotel.Users.UserDataManagement
         public List<int> favouritedRooms;
         public Dictionary<int, MessengerRequest> requests;
         public Dictionary<int, MessengerBuddy> friends;
-        public List<int> ignores;
         public Dictionary<int, int> quests;
         public List<RoomData> rooms;
 
-        public UserData(int userID, ConcurrentDictionary<string, UserAchievement> achievements, List<int> favouritedRooms, List<int> ignores,
+        public UserData(int userID, ConcurrentDictionary<string, UserAchievement> achievements, List<int> favouritedRooms,
             List<Badge> badges, Dictionary<int, MessengerBuddy> friends, Dictionary<int, MessengerRequest> requests, List<RoomData> rooms, Dictionary<int, int> quests, Habbo user, 
             Dictionary<int, Relationship> Relations)
         {
             this.userID = userID;
             this.achievements = achievements;
             this.favouritedRooms = favouritedRooms;
-            this.ignores = ignores;
             this.badges = badges;
             this.friends = friends;
             this.requests = requests;

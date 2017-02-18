@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using Plus.Core;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms.Games;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Groups;
@@ -14,6 +13,7 @@ using Plus.HabboHotel.Rooms.Games.Teams;
 using System.Collections.Concurrent;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using System.Diagnostics;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms
 {

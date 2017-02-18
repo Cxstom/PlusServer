@@ -10,9 +10,6 @@ using Plus.Communication.Packets.Outgoing.Inventory.Achievements;
 using Plus.Database.Interfaces;
 using log4net;
 
-using Plus.HabboHotel.Users;
-
-
 namespace Plus.HabboHotel.Achievements
 {
     public class AchievementManager

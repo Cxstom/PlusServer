@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Plus.HabboHotel.Pathfinding
+namespace Plus.HabboHotel.Rooms.PathFinding
 {
     public struct ThreeDCoord : IEquatable<ThreeDCoord>
     {

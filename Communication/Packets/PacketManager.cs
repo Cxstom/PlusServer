@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 
 using log4net;
 
-using Plus.Core;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.GameClients;
 
@@ -33,7 +32,6 @@ using Plus.Communication.Packets.Incoming.Inventory.Pets;
 using Plus.Communication.Packets.Incoming.LandingView;
 using Plus.Communication.Packets.Incoming.Messenger;
 using Plus.Communication.Packets.Incoming.Groups;
-
 
 using Plus.Communication.Packets.Incoming.Rooms.Settings;
 using Plus.Communication.Packets.Incoming.Rooms.AI.Pets;
@@ -290,7 +288,7 @@ namespace Plus.Communication.Packets
         public void RegisterNewNavigator()
         {
             this._incomingPackets.Add(ClientPacketHeader.InitializeNewNavigatorMessageEvent, new InitializeNewNavigatorEvent());
-            this._incomingPackets.Add(ClientPacketHeader.NewNavigatorSearchMessageEvent, new NewNavigatorSearchEvent());
+            this._incomingPackets.Add(ClientPacketHeader.NavigatorSearchMessageEvent, new NavigatorSearchEvent());
             this._incomingPackets.Add(ClientPacketHeader.FindRandomFriendingRoomMessageEvent, new FindRandomFriendingRoomEvent());
         }
 
@@ -420,9 +418,9 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.SetRelationshipMessageEvent, new SetRelationshipEvent());
             this._incomingPackets.Add(ClientPacketHeader.CheckValidNameMessageEvent, new CheckValidNameEvent());
             this._incomingPackets.Add(ClientPacketHeader.ChangeNameMessageEvent, new ChangeNameEvent());
-            this._incomingPackets.Add(ClientPacketHeader.SetUsernameMessageEvent, new SetUsernameEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetHabboGroupBadgesMessageEvent, new GetHabboGroupBadgesEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetUserTagsMessageEvent, new GetUserTagsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetIgnoredUsersMessageEvent, new GetIgnoredUsersEvent());
         }
 
         private void RegisterSound()
@@ -635,7 +633,7 @@ namespace Plus.Communication.Packets
             this._packetNames.Add(ClientPacketHeader.EditRoomPromotionMessageEvent, "EditRoomEventEvent");
             this._packetNames.Add(ClientPacketHeader.GetEventCategoriesMessageEvent, "GetNavigatorFlatsEvent");
             this._packetNames.Add(ClientPacketHeader.InitializeNewNavigatorMessageEvent, "InitializeNewNavigatorEvent");
-            this._packetNames.Add(ClientPacketHeader.NewNavigatorSearchMessageEvent, "NewNavigatorSearchEvent");
+            this._packetNames.Add(ClientPacketHeader.NavigatorSearchMessageEvent, "NewNavigatorSearchEvent");
             this._packetNames.Add(ClientPacketHeader.FindRandomFriendingRoomMessageEvent, "FindRandomFriendingRoomEvent");
             this._packetNames.Add(ClientPacketHeader.GetQuestListMessageEvent, "GetQuestListEvent");
             this._packetNames.Add(ClientPacketHeader.StartQuestMessageEvent, "StartQuestEvent");
@@ -712,7 +710,6 @@ namespace Plus.Communication.Packets
             this._packetNames.Add(ClientPacketHeader.SetRelationshipMessageEvent, "SetRelationshipEvent");
             this._packetNames.Add(ClientPacketHeader.CheckValidNameMessageEvent, "CheckValidNameEvent");
             this._packetNames.Add(ClientPacketHeader.ChangeNameMessageEvent, "ChangeNameEvent");
-            this._packetNames.Add(ClientPacketHeader.SetUsernameMessageEvent, "SetUsernameEvent");
             this._packetNames.Add(ClientPacketHeader.GetHabboGroupBadgesMessageEvent, "GetHabboGroupBadgesEvent");
             this._packetNames.Add(ClientPacketHeader.GetUserTagsMessageEvent, "GetUserTagsEvent");
             this._packetNames.Add(ClientPacketHeader.SetSoundSettingsMessageEvent, "SetSoundSettingsEvent");

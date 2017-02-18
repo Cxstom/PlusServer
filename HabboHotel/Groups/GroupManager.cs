@@ -18,108 +18,98 @@ namespace Plus.HabboHotel.Groups
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Groups.GroupManager");
 
-        public Dictionary<int, GroupBackGroundColours> BackGroundColours;
-        public List<GroupBaseColours> BaseColours;
-        public List<GroupBases> Bases;
+        private readonly object _groupLoadingSync;
+        private readonly ConcurrentDictionary<int, Group> _groups;
 
-        public Dictionary<int, GroupSymbolColours> SymbolColours;
-        public List<GroupSymbols> Symbols;
-
-        private readonly Object _groupLoadingSync;
-        private ConcurrentDictionary<int, Group> _groups;
+        private readonly List<GroupBadgeParts> _bases;
+        private readonly List<GroupBadgeParts> _symbols;
+        private readonly List<GroupColours> _baseColours;
+        private readonly Dictionary<int, GroupColours> _symbolColours;
+        private readonly Dictionary<int, GroupColours> _backgroundColours;
 
         public GroupManager()
         {
-            this._groupLoadingSync = new Object();
+            this._groupLoadingSync = new object();
+            this._groups = new ConcurrentDictionary<int, Group>();
 
-            this.Init();
+            this._bases = new List<GroupBadgeParts>();
+            this._symbols = new List<GroupBadgeParts>();
+            this._baseColours = new List<GroupColours>();
+            this._symbolColours = new Dictionary<int, GroupColours>();
+            this._backgroundColours = new Dictionary<int, GroupColours>();         
         }
 
-        public bool TryGetGroup(int Id, out Group Group)
+        public void Init()
+        {
+            this._bases.Clear();
+            this._symbols.Clear();
+            this._baseColours.Clear();
+            this._symbolColours.Clear();
+            this._backgroundColours.Clear();
+
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT `id`,`type`,`firstvalue`,`secondvalue` FROM `groups_items` WHERE `enabled` = '1'");
+                DataTable dItems = dbClient.getTable();
+
+                foreach (DataRow dRow in dItems.Rows)
+                {
+                    switch (dRow["type"].ToString())
+                    {
+                        case "base":
+                            this._bases.Add(new GroupBadgeParts(Convert.ToInt32(dRow["id"]), dRow["firstvalue"].ToString(), dRow["secondvalue"].ToString()));
+                            break;
+
+                        case "symbol":
+                            this._symbols.Add(new GroupBadgeParts(Convert.ToInt32(dRow["id"]), dRow["firstvalue"].ToString(), dRow["secondvalue"].ToString()));
+                            break;
+
+                        case "color":
+                            this._baseColours.Add(new GroupColours(Convert.ToInt32(dRow["id"]), dRow["firstvalue"].ToString()));
+                            break;
+
+                        case "color2":
+                            this._symbolColours.Add(Convert.ToInt32(dRow["id"]), new GroupColours(Convert.ToInt32(dRow["id"]), dRow["firstvalue"].ToString()));
+                            break;
+
+                        case "color3":
+                            this._backgroundColours.Add(Convert.ToInt32(dRow["id"]), new GroupColours(Convert.ToInt32(dRow["id"]), dRow["firstvalue"].ToString()));
+                            break;
+                    }
+                }
+            }
+        }
+
+        public bool TryGetGroup(int id, out Group Group)
         {
             Group = null;
 
-            if (this._groups.ContainsKey(Id))
-                return this._groups.TryGetValue(Id, out Group);
+            if (this._groups.ContainsKey(id))
+                return this._groups.TryGetValue(id, out Group);
 
             lock (this._groupLoadingSync)
             {
-                if (this._groups.ContainsKey(Id))
-                    return this._groups.TryGetValue(Id, out Group);
+                if (this._groups.ContainsKey(id))
+                    return this._groups.TryGetValue(id, out Group);
 
                 DataRow Row = null;
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("SELECT * FROM `groups` WHERE `id` = @id LIMIT 1");
-                    dbClient.AddParameter("id", Id);
+                    dbClient.AddParameter("id", id);
                     Row = dbClient.getRow();
 
                     if (Row != null)
                     {
                         Group = new Group(
                             Convert.ToInt32(Row["id"]), Convert.ToString(Row["name"]), Convert.ToString(Row["desc"]), Convert.ToString(Row["badge"]), Convert.ToInt32(Row["room_id"]), Convert.ToInt32(Row["owner_id"]),
-                            Convert.ToInt32(Row["created"]), Convert.ToInt32(Row["state"]), Convert.ToInt32(Row["colour1"]), Convert.ToInt32(Row["colour2"]), Convert.ToInt32(Row["admindeco"]), Convert.ToInt32(Row["has_forum"]) == 1);
+                            Convert.ToInt32(Row["created"]), Convert.ToInt32(Row["state"]), Convert.ToInt32(Row["colour1"]), Convert.ToInt32(Row["colour2"]), Convert.ToInt32(Row["admindeco"]), Convert.ToInt32(Row["forum_enabled"]) == 1);
                         this._groups.TryAdd(Group.Id, Group);
                         return true;
                     }
                 }
             }
             return false;
-        }
-
-        public void Init()
-        {
-            Bases = new List<GroupBases>();
-            Symbols = new List<GroupSymbols>();
-            BaseColours = new List<GroupBaseColours>();
-            SymbolColours = new Dictionary<int, GroupSymbolColours>();
-            BackGroundColours = new Dictionary<int, GroupBackGroundColours>();
-            _groups = new ConcurrentDictionary<int, Group>();
-
-            ClearInfo();
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT * FROM groups_items WHERE enabled='1'");
-                DataTable dItems = dbClient.getTable();
-
-                foreach (DataRow dRow in dItems.Rows)
-                {
-                    switch (dRow[0].ToString())
-                    {
-                        case "base":
-                            Bases.Add(new GroupBases(Convert.ToInt32(dRow[1]), dRow[2].ToString(), dRow[3].ToString()));
-                            break;
-
-                        case "symbol":
-                            Symbols.Add(new GroupSymbols(Convert.ToInt32(dRow[1]), dRow[2].ToString(), dRow[3].ToString()));
-                            break;
-
-                        case "color":
-                            BaseColours.Add(new GroupBaseColours(Convert.ToInt32(dRow[1]), dRow[2].ToString()));
-                            break;
-
-                        case "color2":
-                            SymbolColours.Add(Convert.ToInt32(dRow[1]), new GroupSymbolColours(Convert.ToInt32(dRow[1]), dRow[2].ToString()));
-                            break;
-
-                        case "color3":
-                            BackGroundColours.Add(Convert.ToInt32(dRow[1]), new GroupBackGroundColours(Convert.ToInt32(dRow[1]), dRow[2].ToString()));
-                            break;
-                    }
-                }
-            }
-
-            log.Info("Group Manager -> LOADED");
-            log.Info("Group Forum Manager -> LOADED");
-        }
-
-        public void ClearInfo()
-        {
-            Bases.Clear();
-            Symbols.Clear();
-            BaseColours.Clear();
-            SymbolColours.Clear();
-            BackGroundColours.Clear();
         }
 
         public bool TryCreateGroup(Habbo Player, string Name, string Description, int RoomId, string Badge, int Colour1, int Colour2, out Group Group)
@@ -158,41 +148,31 @@ namespace Plus.HabboHotel.Groups
             return true;
         }
 
-
-        public string CheckActiveSymbol(string Symbol)
+        public string GetColourCode(int id, bool colourOne)
         {
-            if (Symbol == "s000" || Symbol == "s00000")
+            if (colourOne)
             {
-                return "";
-            }
-            return Symbol;
-        }
-
-        public string GetGroupColour(int Index, bool Colour1)
-        {
-            if (Colour1)
-            {
-                if (SymbolColours.ContainsKey(Index))
+                if (this._symbolColours.ContainsKey(id))
                 {
-                    return SymbolColours[Index].Colour;
+                    return this._symbolColours[id].Colour;
                 }
             }
             else
             {
-                if (BackGroundColours.ContainsKey(Index))
+                if (this._backgroundColours.ContainsKey(id))
                 {
-                    return BackGroundColours[Index].Colour;
+                    return this._backgroundColours[id].Colour;
                 }
             }
 
-            return "4f8a00";
+            return "";
         }
 
-        public void DeleteGroup(int Id)
+        public void DeleteGroup(int id)
         {
             Group Group = null;
-            if (this._groups.ContainsKey(Id))
-                this._groups.TryRemove(Id, out Group);
+            if (this._groups.ContainsKey(id))
+                this._groups.TryRemove(id, out Group);
 
             if (Group != null)
             {
@@ -200,13 +180,13 @@ namespace Plus.HabboHotel.Groups
             }
         }
 
-        public List<Group> GetGroupsForUser(int UserId)
+        public List<Group> GetGroupsForUser(int userId)
         {
             List<Group> Groups = new List<Group>();
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT g.id FROM `group_memberships` AS m RIGHT JOIN `groups` AS g ON m.group_id = g.id WHERE m.user_id = @user");
-                dbClient.AddParameter("user", UserId);
+                dbClient.AddParameter("user", userId);
                 DataTable GetGroups = dbClient.getTable();
 
                 if (GetGroups != null)
@@ -220,6 +200,32 @@ namespace Plus.HabboHotel.Groups
                 }
             }
             return Groups;
+        }
+
+
+        public ICollection<GroupBadgeParts> BadgeBases
+        {
+            get { return this._bases; }
+        }
+
+        public ICollection<GroupBadgeParts> BadgeSymbols
+        {
+            get { return this._symbols; }
+        }
+
+        public ICollection<GroupColours> BadgeBaseColours
+        {
+            get { return this._baseColours; }
+        }
+
+        public ICollection<GroupColours> BadgeSymbolColours
+        {
+            get { return this._symbolColours.Values; }
+        }
+
+        public ICollection<GroupColours> BadgeBackColours
+        {
+            get { return this._backgroundColours.Values; }
         }
     }
 }

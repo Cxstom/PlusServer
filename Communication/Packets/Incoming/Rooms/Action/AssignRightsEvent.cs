@@ -12,6 +12,7 @@ using Plus.HabboHotel.Users;
 
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Action
 {

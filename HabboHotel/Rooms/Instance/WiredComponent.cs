@@ -11,10 +11,9 @@ using Plus.HabboHotel.Items.Wired.Boxes.Triggers;
 
 using Plus.HabboHotel.Items.Wired.Boxes.Effects;
 using Plus.HabboHotel.Items.Wired.Boxes.Conditions;
-using Plus.HabboHotel.Items.Wired.Boxes.Add_ons;
-
 using Plus.Database.Interfaces;
 using System.Drawing;
+using Plus.HabboHotel.Items.Wired.Boxes;
 
 namespace Plus.HabboHotel.Rooms.Instance
 {

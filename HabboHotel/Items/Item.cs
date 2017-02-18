@@ -1,27 +1,20 @@
 ﻿using System;
 using System.Linq;
-using System.Data;
 using System.Drawing;
 using System.Collections.Generic;
 
 using Plus.Core;
-using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Pathfinding;
-using Plus.HabboHotel.Rooms.Games;
 using Plus.HabboHotel.Items.Interactor;
 
 
 using Plus.Utilities;
-using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Rooms.Games.Freeze;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
-using Plus.Communication.Packets.Outgoing.Rooms.Session;
-
 
 using Plus.HabboHotel.Rooms.Games.Teams;
 using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Items
 {
@@ -511,11 +504,6 @@ namespace Plus.HabboHotel.Items
             _affectedPoints = Tiles;
         }
 
-        public void Destroy()
-        {
-            _affectedPoints.Clear();
-        }
-
         public void ProcessUpdates()
         {
             if (this == null)
@@ -838,7 +826,7 @@ namespace Plus.HabboHotel.Items
                                                 if (true)
                                                 {
                                                     // Woop! No more delay.
-                                                    int TeleId = ItemTeleporterFinder.GetLinkedTele(Id, GetRoom());
+                                                    int TeleId = ItemTeleporterFinder.GetLinkedTele(Id);
                                                     int RoomId = ItemTeleporterFinder.GetTeleRoomId(TeleId, GetRoom());
 
                                                     // Do we need to tele to the same room or gtf to another?
@@ -1587,7 +1575,7 @@ namespace Plus.HabboHotel.Items
 
             if (GetBaseItem().InteractionType == InteractionType.TENT || GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
             {
-                GetRoom().AddUserToTent(Id, user, this);
+                GetRoom().AddUserToTent(Id, user);
             }
 
             GetRoom().GetWired().TriggerEvent(Wired.WiredBoxType.TriggerWalkOnFurni, user.GetClient().GetHabbo(), this);
@@ -1600,9 +1588,16 @@ namespace Plus.HabboHotel.Items
                 return;
 
             if (GetBaseItem().InteractionType == InteractionType.TENT || GetBaseItem().InteractionType == InteractionType.TENT_SMALL)
-                GetRoom().RemoveUserFromTent(Id, user, this);
+                GetRoom().RemoveUserFromTent(Id, user);
 
             GetRoom().GetWired().TriggerEvent(Wired.WiredBoxType.TriggerWalkOffFurni, user.GetClient().GetHabbo(), this);
+        }
+
+        public void Destroy()
+        {
+            this._room = null;
+            this._data = null;
+            _affectedPoints.Clear();
         }
     }
 }

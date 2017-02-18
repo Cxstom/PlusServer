@@ -46,7 +46,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
             RoomBot RoomBot = Bot.BotData;
             if (RoomBot == null)
                 return;
- 
+
             /* 1 = Copy looks
              * 2 = Setup Speech
              * 3 = Relax
@@ -86,12 +86,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                 #region Setup Speech (2)
                 case 2:
                     {
-             
+
                         string[] ConfigData = DataString.Split(new string[]
-						{
-							";#;"
-						}, StringSplitOptions.None);
-                 
+                        {
+                            ";#;"
+                        }, StringSplitOptions.None);
+
                         string[] SpeechData = ConfigData[0].Split(new char[]
                         {
                             '\r',
@@ -110,12 +110,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                         RoomBot.MixSentences = Convert.ToBoolean(MixChat);
 
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        { dbClient.RunQuery("DELETE FROM `bots_speech` WHERE `bot_id` = '" + Bot.BotData.Id + "'"); }
-                   
-                        #region Save Data - TODO: MAKE METHODS FOR THIS.
-                        for (int i = 0; i <= SpeechData.Length - 1; i++)
                         {
-                            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                            dbClient.RunQuery("DELETE FROM `bots_speech` WHERE `bot_id` = '" + Bot.BotData.Id + "'");
+
+                            #region Save Data - TODO: MAKE METHODS FOR THIS.  
+
+                            for (int i = 0; i <= SpeechData.Length - 1; i++)
                             {
                                 dbClient.SetQuery("INSERT INTO `bots_speech` (`bot_id`, `text`) VALUES (@id, @data)");
                                 dbClient.AddParameter("id", BotId);
@@ -129,13 +129,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                                 dbClient.AddParameter("MixChat", PlusEnvironment.BoolToEnum(Convert.ToBoolean(MixChat)));
                                 dbClient.RunQuery();
                             }
-                        }
-                        #endregion
+                            #endregion
 
-                        #region Handle Speech
-                        RoomBot.RandomSpeech.Clear();
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
+                            #region Handle Speech
+                            RoomBot.RandomSpeech.Clear();
+
                             dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = @id");
                             dbClient.AddParameter("id", BotId);
 
@@ -146,10 +144,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                             {
                                 RoomBot.RandomSpeech.Add(new RandomSpeech(Convert.ToString(Speech["text"]), BotId));
                             }
-                        }
-                        #endregion
 
-                        break; 
+                            #endregion
+                        }
+                        break;
                     }
                 #endregion
 

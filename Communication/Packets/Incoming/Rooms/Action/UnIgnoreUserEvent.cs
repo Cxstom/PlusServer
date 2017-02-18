@@ -6,28 +6,42 @@ using System.Collections.Generic;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users;
 using Plus.Communication.Packets.Outgoing.Rooms.Action;
+using Plus.Database.Interfaces;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Action
 {
     class UnIgnoreUserEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (!Session.GetHabbo().InRoom)
+            if (!session.GetHabbo().InRoom)
                 return;
 
-            Room Room = Session.GetHabbo().CurrentRoom;
+            Room Room = session.GetHabbo().CurrentRoom;
             if (Room == null)
                 return;
 
-            String Username = Packet.PopString();
+            string Username = packet.PopString();
 
-            Habbo User = PlusEnvironment.GetHabboByUsername(Username);
-            if (User == null || !Session.GetHabbo().MutedUsers.Contains(User.Id))
+            Habbo Player = PlusEnvironment.GetHabboByUsername(Username);
+            if (Player == null)
                 return;
 
-            Session.GetHabbo().MutedUsers.Remove(User.Id);
-            Session.SendMessage(new IgnoreStatusComposer(3, Username));
+            if (!session.GetHabbo().GetIgnores().TryGet(Player.Id))
+                return;
+
+            if (session.GetHabbo().GetIgnores().TryRemove(Player.Id))
+            {
+                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.SetQuery("DELETE FROM `user_ignores` WHERE `user_id` = @uid AND `ignore_id` = @ignoreId");
+                    dbClient.AddParameter("uid", session.GetHabbo().Id);
+                    dbClient.AddParameter("ignoreId", Player.Id);
+                    dbClient.RunQuery();
+                }
+
+                session.SendMessage(new IgnoreStatusComposer(3, Player.Username));
+            }
         }
     }
 }

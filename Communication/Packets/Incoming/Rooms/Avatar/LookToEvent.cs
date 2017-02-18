@@ -1,10 +1,10 @@
-﻿using Plus.HabboHotel.Pathfinding;
-using Plus.HabboHotel.Rooms;
+﻿using Plus.HabboHotel.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
 {

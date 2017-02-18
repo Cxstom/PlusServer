@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -8,7 +7,6 @@ using System.Collections.Concurrent;
 using log4net;
 
 using Plus.Database.Interfaces;
-
 
 namespace Plus.HabboHotel.Moderation
 {
@@ -26,9 +24,7 @@ namespace Plus.HabboHotel.Moderation
 
         public ModerationManager()
         {
-            this.Init();
 
-            log.Info("Moderation Manager -> LOADED");
         }
 
         public void Init()
@@ -249,6 +245,16 @@ namespace Plus.HabboHotel.Moderation
         public bool TryGetTicket(int TicketId, out ModerationTicket Ticket)
         {
             return this._modTickets.TryGetValue(TicketId, out Ticket);
+        }
+
+        public bool UserHasTickets(int userId)
+        {
+            return this._modTickets.Count(x => x.Value.Sender.Id == userId) > 0;
+        }
+
+        public ModerationTicket GetTicketBySenderId(int userId)
+        {
+            return this._modTickets.FirstOrDefault(x => x.Value.Sender.Id == userId).Value;
         }
 
         /// <summary>

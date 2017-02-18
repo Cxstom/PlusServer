@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 
@@ -13,15 +12,13 @@ namespace Plus.HabboHotel.Bots
 {
     public class BotManager
     {
-        private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Rooms.AI.BotManager");
+        private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Bots.BotManager");
 
-        private List<BotResponse> _responses;
+        private readonly List<BotResponse> _responses;
 
         public BotManager()
         {
             this._responses = new List<BotResponse>();
-
-            this.Init();
         }
 
         public void Init()

@@ -43,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
                 return;
             }
 
-            var modelData = Map.Split((char)13);
+            var modelData = Map.Split('\r');
 
             int SizeY = modelData.Length;
             int SizeX = modelData[0].Length;
@@ -111,6 +111,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
                 WallHeight = 15;
 
             string ModelName = "model_bc_" + Room.Id;
+
+            Map += '\r' + new string('x', SizeX);
 
             DataRow Row = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())

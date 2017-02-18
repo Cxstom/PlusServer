@@ -1,7 +1,6 @@
-﻿using Plus.Communication.Packets.Outgoing.Catalog;
-using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Rooms.AI;
-using Plus.Communication.Packets.Incoming;
+﻿using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Items;
+using Plus.Communication.Packets.Outgoing.Catalog;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {
@@ -10,10 +9,14 @@ namespace Plus.Communication.Packets.Incoming.Catalog
         public void Parse(GameClient Session, ClientPacket Packet)
         {
             string Type = Packet.PopString();
-            string PacketType = "";
-            int PetId = PlusEnvironment.GetGame().GetCatalog().GetPetRaceManager().GetPetId(Type, out PacketType);
 
-            Session.SendMessage(new SellablePetBreedsComposer(PacketType, PetId, PlusEnvironment.GetGame().GetCatalog().GetPetRaceManager().GetRacesForRaceId(PetId)));
+            ItemData Item = PlusEnvironment.GetGame().GetItemManager().GetItemByName(Type);
+            if (Item == null)
+                return;
+
+            int PetId = Item.BehaviourData;
+
+            Session.SendMessage(new SellablePetBreedsComposer(Type, PetId, PlusEnvironment.GetGame().GetCatalog().GetPetRaceManager().GetRacesForRaceId(PetId)));
         }
     }
 }

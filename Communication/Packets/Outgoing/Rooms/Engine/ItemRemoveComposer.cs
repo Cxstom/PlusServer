@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
         public ItemRemoveComposer(Item Item, int UserId)
             : base(ServerPacketHeader.ItemRemoveMessageComposer)
         {
-           base.WriteString(Item.Id.ToString());
+            base.WriteString(Item.Id.ToString());
             base.WriteBoolean(false);
             base.WriteInteger(UserId);
         }

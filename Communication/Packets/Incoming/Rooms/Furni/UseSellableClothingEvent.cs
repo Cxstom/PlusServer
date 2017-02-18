@@ -44,14 +44,14 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                 return;
             }
 
-            if (Item.Data.ClothingId == 0)
+            if (Item.Data.BehaviourData == 0)
             {
                 Session.SendNotification("Oops, this item doesn't have a linking clothing configuration, please report it!");
                 return;
             }
 
             ClothingItem Clothing = null;
-            if (!PlusEnvironment.GetGame().GetCatalog().GetClothingManager().TryGetClothing(Item.Data.ClothingId, out Clothing))
+            if (!PlusEnvironment.GetGame().GetCatalog().GetClothingManager().TryGetClothing(Item.Data.BehaviourData, out Clothing))
             {
                 Session.SendNotification("Oops, we couldn't find this clothing part!");
                 return;

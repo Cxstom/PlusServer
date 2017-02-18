@@ -24,7 +24,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
 
             User.UnIdle();
 
-            User.AddStatus("sign", Convert.ToString(SignId));
+            User.SetStatus("sign", Convert.ToString(SignId));
             User.UpdateNeeded = true;
             User.SignTime = PlusEnvironment.GetUnixTimestamp() + 5;
         }

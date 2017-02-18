@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ConnectionManager;
-
 using Plus.Core;
 using Plus.HabboHotel.Users.Messenger;
-
 
 using System.Linq;
 using System.Collections.Concurrent;
@@ -18,6 +15,7 @@ using Plus.Database.Interfaces;
 using System.Collections;
 using Plus.Communication.Packets.Outgoing.Handshake;
 using System.Diagnostics;
+using Plus.Core.ConnectionManager;
 
 namespace Plus.HabboHotel.GameClients
 {

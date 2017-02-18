@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Plus.HabboHotel.Users.UserDataManagement
+namespace Plus.HabboHotel.Users.UserData
 {
     public class UserDataNotFoundException : Exception
     {

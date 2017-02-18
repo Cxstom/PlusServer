@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Plus.HabboHotel.Pathfinding
+namespace Plus.HabboHotel.Rooms.PathFinding
 {
     sealed class MinHeap<T> where T : IComparable<T>
     {

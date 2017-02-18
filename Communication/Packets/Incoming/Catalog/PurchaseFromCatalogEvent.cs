@@ -3,13 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 
 using Plus.Core;
-using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Groups;
+using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users.Effects;
-using Plus.HabboHotel.Items.Utilities;
 using Plus.HabboHotel.Users.Inventory.Bots;
 
 using Plus.HabboHotel.Rooms.AI;
@@ -21,6 +19,8 @@ using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 using Plus.Communication.Packets.Outgoing.Inventory.AvatarEffects;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Moderation;
+using Plus.HabboHotel.Catalog.Utilities;
+using Plus.HabboHotel.Badges;
 
 namespace Plus.Communication.Packets.Incoming.Catalog
 {
@@ -88,32 +88,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                 #region Pet handling
 
-                case InteractionType.pet0:
-                case InteractionType.pet1:
-                case InteractionType.pet2:
-                case InteractionType.pet3:
-                case InteractionType.pet4:
-                case InteractionType.pet5:
-                case InteractionType.pet6:
-                case InteractionType.pet7:
-                case InteractionType.pet8:
-                case InteractionType.pet9:
-                case InteractionType.pet10:
-                case InteractionType.pet11:
-                case InteractionType.pet12:
-                case InteractionType.pet13: //Caballo
-                case InteractionType.pet14:
-                case InteractionType.pet15:
-                case InteractionType.pet16: //Mascota agregada
-                case InteractionType.pet17: //Mascota agregada
-                case InteractionType.pet18: //Mascota agregada
-                case InteractionType.pet19: //Mascota agregada
-                case InteractionType.pet20: //Mascota agregada
-                case InteractionType.pet21: //Mascota agregada
-                case InteractionType.pet22: //Mascota agregada
-                case InteractionType.pet28:
-                case InteractionType.pet29:
-                case InteractionType.pet30:
+                case InteractionType.PET:
                     try
                     {
                         string[] Bits = ExtraData.Split('\n');
@@ -371,14 +346,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                         case InteractionType.DEAL:
                             {
-                                //Fetch the deal where the ID is this items ID.
-                                var DealItems = (from d in Page.Deals.Values.ToList() where d.Id == Item.Id select d);
-
-                                //This bit, iterating ONE item? How can I make this simpler
-                                foreach (CatalogDeal DealItem in DealItems)
+                                CatalogDeal deal = null;
+                                if (PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))
                                 {
-                                    //Here I loop the DealItems ItemDataList.
-                                    foreach (CatalogItem CatalogItem in DealItem.ItemDataList.ToList())
+                                    foreach (CatalogItem CatalogItem in deal.ItemDataList.ToList())
                                     {
                                         List<Item> Items = ItemFactory.CreateMultipleItems(CatalogItem.Data, Session.GetHabbo(), "", AmountPurchase);
 
@@ -386,6 +357,67 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                         {
                                             GeneratedGenericItems.AddRange(Items);
                                         }
+                                    }
+                                }
+                                break;
+                            }
+
+                        case InteractionType.ROOMDEAL:
+                            {
+                                CatalogDeal deal = null;
+                                if (PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))
+                                {
+                                    Room room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(deal.RoomId);
+                                    if (room == null)
+                                        Session.SendNotification("There was an error loading this Room Bundle, if this happens again please contact hotel management!");
+
+                                    RoomData newRoom = PlusEnvironment.GetGame().GetRoomManager().CreateRoom(Session, room.Name, room.Description, room.ModelName, room.Category, 10, room.TradeSettings, room.Wallpaper, room.Floor, room.Landscape, room.WallThickness, room.FloorThickness);
+                                    if (newRoom == null)
+                                        return;
+
+                                    Room myRoom = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(newRoom.Id);
+                                    if (myRoom != null)
+                                    {
+                                        List<Item> Items = ItemLoader.GetItemsForRoom(deal.RoomId, room);
+                                        Item teleLink = null;
+
+                                        foreach (var furni in Items)
+                                        {
+                                            if (furni.Data.InteractionType == InteractionType.TELEPORT)
+                                            {
+                                                if (teleLink == null)
+                                                {
+                                                    List<Item> TeleItems = ItemFactory.CreateTeleporterItems(furni.Data, Session.GetHabbo());
+
+                                                    if (TeleItems != null && TeleItems.ToList().Count > 1)
+                                                    {
+                                                        myRoom.GetRoomItemHandler().SetFloorItem(Session, TeleItems[0], furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                        teleLink = TeleItems[1];
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    myRoom.GetRoomItemHandler().SetFloorItem(Session, teleLink, furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                    teleLink = null;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                NewItem = ItemFactory.CreateSingleItemNullable(furni.Data, Session.GetHabbo(), furni.ExtraData, "", furni.GroupId);
+
+                                                if (NewItem != null)
+                                                {
+                                                    if (NewItem.IsWallItem)
+                                                    {
+                                                        NewItem.wallCoord = furni.wallCoord;
+                                                        myRoom.GetRoomItemHandler().SetWallItem(Session, NewItem);
+                                                    }
+                                                    else
+                                                        myRoom.GetRoomItemHandler().SetFloorItem(Session, NewItem, furni.GetX, furni.GetY, furni.Rotation, true, true, true, false, furni.GetZ);
+                                                }
+                                            }
+                                        }
+                                        Session.GetHabbo().PrepareRoom(myRoom.Id, "");
                                     }
                                 }
                                 break;
@@ -445,263 +477,39 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                 case "p":
                     {
-                        switch (Item.Data.InteractionType)
+                        string[] PetData = ExtraData.Split('\n');
+
+                        Pet GeneratedPet = PetUtility.CreatePet(Session.GetHabbo().Id, PetData[0], Item.Data.BehaviourData, PetData[1], PetData[2]);
+                        if (GeneratedPet != null)
                         {
-                            #region Pets
-                            #region Pet 0
-                            case InteractionType.pet0:
-                                string[] PetData = ExtraData.Split('\n');
-                                Pet GeneratedPet = PetUtility.CreatePet(Session.GetHabbo().Id, PetData[0], 0, PetData[1], PetData[2]);
+                            Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet);
 
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet);
+                            Session.SendMessage(new FurniListNotificationComposer(GeneratedPet.PetId, 3));
+                            Session.SendMessage(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
 
-                                break;
-                            #endregion
-                            #region Pet 1
-                            case InteractionType.pet1:
-                                string[] PetData1 = ExtraData.Split('\n');
-                                Pet GeneratedPet1 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData1[0], 1, PetData1[1], PetData1[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet1);
-
-                                break;
-                            #endregion
-                            #region Pet 2
-                            case InteractionType.pet2:
-                                string[] PetData5 = ExtraData.Split('\n');
-                                Pet GeneratedPet5 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData5[0], 2, PetData5[1], PetData5[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet5);
-
-                                break;
-                            #endregion
-                            #region Pet 3
-                            case InteractionType.pet3:
-                                string[] PetData2 = ExtraData.Split('\n');
-                                Pet GeneratedPet2 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData2[0], 3, PetData2[1], PetData2[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet2);
-
-                                break;
-                            #endregion
-                            #region Pet 4
-                            case InteractionType.pet4:
-                                string[] PetData3 = ExtraData.Split('\n');
-                                Pet GeneratedPet3 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData3[0], 4, PetData3[1], PetData3[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet3);
-
-                                break;
-                            #endregion
-                            #region Pet 5
-                            case InteractionType.pet5:
-                                string[] PetData7 = ExtraData.Split('\n');
-                                Pet GeneratedPet7 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData7[0], 5, PetData7[1], PetData7[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet7);
-
-                                break;
-                            #endregion
-                            #region Pet 6 (wrong?)
-                            case InteractionType.pet6:
-                                string[] PetData4 = ExtraData.Split('\n');
-                                Pet GeneratedPet4 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData4[0], 6, PetData4[1], PetData4[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet4);
-
-                                break;
-                            #endregion
-                            #region Pet 7 (wrong?)
-                            case InteractionType.pet7:
-                                string[] PetData6 = ExtraData.Split('\n');
-                                Pet GeneratedPet6 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData6[0], 7, PetData6[1], PetData6[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet6);
-
-                                break;
-                            #endregion
-                            #region Pet 8
-                            case InteractionType.pet8:
-                                string[] PetData8 = ExtraData.Split('\n');
-                                Pet GeneratedPet8 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData8[0], 8, PetData8[1], PetData8[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet8);
-
-                                break;
-                            #endregion
-                            #region Pet 8
-                            case InteractionType.pet9:
-                                string[] PetData9 = ExtraData.Split('\n');
-                                Pet GeneratedPet9 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData9[0], 9, PetData9[1], PetData9[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet9);
-
-                                break;
-                            #endregion
-                            #region Pet 10
-                            case InteractionType.pet10:
-                                string[] PetData10 = ExtraData.Split('\n');
-                                Pet GeneratedPet10 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData10[0], 10, PetData10[1], PetData10[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet10);
-
-                                break;
-                            #endregion
-                            #region Pet 11
-                            case InteractionType.pet11:
-                                string[] PetData11 = ExtraData.Split('\n');
-                                Pet GeneratedPet11 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData11[0], 11, PetData11[1], PetData11[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet11);
-
-                                break;
-                            #endregion
-                            #region Pet 12
-                            case InteractionType.pet12:
-                                string[] PetData12 = ExtraData.Split('\n');
-                                Pet GeneratedPet12 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData12[0], 12, PetData12[1], PetData12[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet12);
-
-                                break;
-                            #endregion
-                            #region Pet 13
-                            case InteractionType.pet13: //Caballo - Horse
-                                string[] PetData13 = ExtraData.Split('\n');
-                                Pet GeneratedPet13 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData13[0], 13, PetData13[1], PetData13[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet13);
-
-                                break;
-                            #endregion
-                            #region Pet 14
-                            case InteractionType.pet14:
-                                string[] PetData14 = ExtraData.Split('\n');
-                                Pet GeneratedPet14 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData14[0], 14, PetData14[1], PetData14[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet14);
-
-                                break;
-                            #endregion
-                            #region Pet 15
-                            case InteractionType.pet15:
-                                string[] PetData15 = ExtraData.Split('\n');
-                                Pet GeneratedPet15 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData15[0], 15, PetData15[1], PetData15[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet15);
-
-                                break;
-                            #endregion
-                            #region Pet 16
-                            case InteractionType.pet16: // Mascota Agregada
-                                string[] PetData16 = ExtraData.Split('\n');
-                                Pet GeneratedPet16 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData16[0], 16, PetData16[1], PetData16[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet16);
-
-                                break;
-                            #endregion
-                            #region Pet 17
-                            case InteractionType.pet17: // Mascota Agregada
-                                string[] PetData17 = ExtraData.Split('\n');
-                                Pet GeneratedPet17 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData17[0], 17, PetData17[1], PetData17[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet17);
-
-                                break;
-                            #endregion
-                            #region Pet 18
-                            case InteractionType.pet18: // Mascota Agregada
-                                string[] PetData18 = ExtraData.Split('\n');
-                                Pet GeneratedPet18 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData18[0], 18, PetData18[1], PetData18[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet18);
-
-                                break;
-                            #endregion
-                            #region Pet 19
-                            case InteractionType.pet19: // Mascota Agregada
-                                string[] PetData19 = ExtraData.Split('\n');
-                                Pet GeneratedPet19 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData19[0], 19, PetData19[1], PetData19[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet19);
-
-                                break;
-                            #endregion
-                            #region Pet 20
-                            case InteractionType.pet20: // Mascota Agregada
-                                string[] PetData20 = ExtraData.Split('\n');
-                                Pet GeneratedPet20 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData20[0], 20, PetData20[1], PetData20[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet20);
-
-                                break;
-                            #endregion
-                            #region Pet 21
-                            case InteractionType.pet21: // Mascota Agregada
-                                string[] PetData21 = ExtraData.Split('\n');
-                                Pet GeneratedPet21 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData21[0], 21, PetData21[1], PetData21[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet21);
-
-                                break;
-                            #endregion
-                            #region Pet 22
-                            case InteractionType.pet22: // Mascota Agregada
-                                string[] PetData22 = ExtraData.Split('\n');
-                                Pet GeneratedPet22 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData22[0], 22, PetData22[1], PetData22[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet22);
-
-                                break;
-                            #endregion
-                            #region Pet 28
-                            case InteractionType.pet28: // Mascota Agregada
-                                string[] PetData28 = ExtraData.Split('\n');
-                                Pet GeneratedPet28 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData28[0], 28, PetData28[1], PetData28[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet28);
-
-                                break;
-                            #endregion
-                            #region Pet 29
-                            case InteractionType.pet29:
-                                string[] PetData29 = ExtraData.Split('\n');
-                                Pet GeneratedPet29 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData29[0], 29, PetData29[1], PetData29[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet29);
-
-                                break;
-                            #endregion
-                            #region Pet 30
-                            case InteractionType.pet30:
-                                string[] PetData30 = ExtraData.Split('\n');
-                                Pet GeneratedPet30 = PetUtility.CreatePet(Session.GetHabbo().Id, PetData30[0], 30, PetData30[1], PetData30[2]);
-
-                                Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet30);
-
-                                break;
-                            #endregion
-                            #endregion
-                        }
-
-                        Session.SendMessage(new FurniListNotificationComposer(0, 3));
-                        Session.SendMessage(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
-
-                        ItemData PetFood = null;
-                        if (PlusEnvironment.GetGame().GetItemManager().GetItem(320, out PetFood))
-                        {
-                            Item Food = ItemFactory.CreateSingleItemNullable(PetFood, Session.GetHabbo(), "", "");
-                            if (Food != null)
+                            ItemData PetFood = null;
+                            if (PlusEnvironment.GetGame().GetItemManager().GetItem(320, out PetFood))
                             {
-                                Session.GetHabbo().GetInventoryComponent().TryAddItem(Food);
-                                Session.SendMessage(new FurniListNotificationComposer(Food.Id, 1));
+                                Item Food = ItemFactory.CreateSingleItemNullable(PetFood, Session.GetHabbo(), "", "");
+                                if (Food != null)
+                                {
+                                    Session.GetHabbo().GetInventoryComponent().TryAddItem(Food);
+                                    Session.SendMessage(new FurniListNotificationComposer(Food.Id, 1));
+                                }
                             }
                         }
                         break;
                     }
             }
 
+            BadgeDefinition Badge;
+
+            if(!string.IsNullOrEmpty(Item.Badge) &&
+                PlusEnvironment.GetGame().GetBadgeManager().TryGetBadge(Item.Badge, out Badge) &&
+                (string.IsNullOrEmpty(Badge.RequiredRight) || Session.GetHabbo().GetPermissions().HasRight(Badge.RequiredRight)))
+            {
+                Session.GetHabbo().GetBadgeComponent().GiveBadge(Badge.Code, true, Session);
+            }
 
             Session.SendMessage(new PurchaseOKComposer(Item, Item.Data));
             Session.SendMessage(new FurniListUpdateComposer());

@@ -10,28 +10,28 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
 {
     class TradingUpdateComposer : ServerPacket
     {
-        public TradingUpdateComposer(Trade Trade)
+        public TradingUpdateComposer(Trade trade)
             : base(ServerPacketHeader.TradingUpdateMessageComposer)
         {
-            foreach (TradeUser User in Trade.Users.ToList())
+            foreach (TradeUser user in trade.Users.ToList())
             {
-                base.WriteInteger(User.GetClient().GetHabbo().Id);
-                base.WriteInteger(User.OfferedItems.Count);
+                base.WriteInteger(user.RoomUser.UserId);
+                base.WriteInteger(user.OfferedItems.Count);
 
-                foreach (Item Item in User.OfferedItems.ToList())
+                foreach (Item item in user.OfferedItems.Values)
                 {
-                    base.WriteInteger(Item.Id);
-                    base.WriteString(Item.GetBaseItem().Type.ToString().ToLower());
-                    base.WriteInteger(Item.Id);
-                    base.WriteInteger(Item.Data.SpriteId);
+                    base.WriteInteger(item.Id);
+                    base.WriteString(item.GetBaseItem().Type.ToString().ToLower());
+                    base.WriteInteger(item.Id);
+                    base.WriteInteger(item.Data.SpriteId);
                     base.WriteInteger(0);//Not sure.
-                    if (Item.LimitedNo > 0)
+                    if (item.LimitedNo > 0)
                     {
                         base.WriteBoolean(false);//Stackable
                         base.WriteInteger(256);
                         base.WriteString("");
-                        base.WriteInteger(Item.LimitedNo);
-                        base.WriteInteger(Item.LimitedTot);
+                        base.WriteInteger(item.LimitedNo);
+                        base.WriteInteger(item.LimitedTot);
                     }
                     else
                     {
@@ -44,12 +44,12 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.Trading
                     base.WriteInteger(0);
                     base.WriteInteger(0);
 
-                    if (Item.GetBaseItem().Type == 's')
+                    if (item.GetBaseItem().Type == 's')
                         base.WriteInteger(0);
                 }
 
-                base.WriteInteger(User.OfferedItems.Count);
-                base.WriteInteger(0);//Total Value
+                base.WriteInteger(user.OfferedItems.Count);//Item Count
+                base.WriteInteger(user.OfferedItems.Values.Where(x => x.Data.InteractionType == InteractionType.EXCHANGE).Sum(t => t.Data.BehaviourData));
             }
         }
     }

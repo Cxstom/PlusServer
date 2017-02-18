@@ -1,28 +1,16 @@
 ﻿using System;
-using System.Data;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
-using Plus.Core;
-using Plus.Utilities;
-using Plus.Communication.Packets.Incoming;
-
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Users.UserDataManagement;
 using Plus.HabboHotel.Users.Inventory.Pets;
 using Plus.HabboHotel.Users.Inventory.Bots;
-using Plus.Communication.Packets.Outgoing.Inventory.Bots;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
-using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
 using Plus.Database.Interfaces;
-
 
 namespace Plus.HabboHotel.Users.Inventory
 {
@@ -31,10 +19,10 @@ namespace Plus.HabboHotel.Users.Inventory
         private int _userId;
         private GameClient _client;
 
-        public ConcurrentDictionary<int, Bot> _botItems;
-        public ConcurrentDictionary<int, Pet> _petsItems;
-        public ConcurrentDictionary<int, Item> _floorItems;
-        public ConcurrentDictionary<int, Item> _wallItems;
+        private readonly ConcurrentDictionary<int, Bot> _botItems;
+        private readonly ConcurrentDictionary<int, Pet> _petsItems;
+        private readonly ConcurrentDictionary<int, Item> _floorItems;
+        private readonly ConcurrentDictionary<int, Item> _wallItems;
 
         public InventoryComponent(int UserId, GameClient Client)
         {
@@ -126,14 +114,8 @@ namespace Plus.HabboHotel.Users.Inventory
             if (_wallItems != null)
                 _wallItems.Clear();
 
-            _botItems = null;
-            _petsItems = null;
-            _floorItems = null;
-            _wallItems = null;
-
             _client = null;
         }
-
 
         public void UpdateItems(bool FromDatabase)
         {
@@ -344,6 +326,16 @@ namespace Plus.HabboHotel.Users.Inventory
             {
                 throw new InvalidOperationException("Item did not match neither floor or wall item");
             }
+        }
+
+        public bool TryAddFloorItem(int itemId, Item item)
+        {
+            return this._floorItems.TryAdd(itemId, item);
+        }
+
+        public bool TryAddWallItem(int itemId, Item item)
+        {
+            return this._floorItems.TryAdd(itemId, item);
         }
 
         public ICollection<Item> GetFloorItems()

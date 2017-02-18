@@ -39,8 +39,8 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
                     base.WriteString(UnixTimestamp.FromUnixTimestamp(Entry.Timestamp).ToShortTimeString());
                     base.WriteInteger(Entry.PlayerId); // UserId of message
                     base.WriteString(Username); // Username of message
-                    base.WriteString(Entry.Message); // Message        
-                    base.WriteBoolean(false);
+                    base.WriteString(!string.IsNullOrEmpty(Entry.Message) ? Entry.Message : "** user sent a blank message **"); // Message        
+                    base.WriteBoolean(habbo.Id == Entry.PlayerId);
                 }
             }
         }

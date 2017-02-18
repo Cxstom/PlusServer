@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.Trading;
+using Plus.Communication.Packets.Outgoing.Inventory.Trading;
 
 namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 {
@@ -16,23 +17,40 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             if (Session == null || Session.GetHabbo() == null || !Session.GetHabbo().InRoom)
                 return;
 
-            Room Room;
-
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Session.GetHabbo().CurrentRoomId, out Room))
+            Room Room = Session.GetHabbo().CurrentRoom;
+            if (Room == null)
                 return;
 
-            if (!Room.CanTradeInRoom)
+            RoomUser RoomUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            if (RoomUser == null)
                 return;
 
-            Trade Trade = Room.GetUserTrade(Session.GetHabbo().Id);
-            if (Trade == null)
-                return;
+            int ItemId = Packet.PopInt();
 
-            Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(Packet.PopInt());
+            Trade Trade = null;
+            if (!Room.GetTrading().TryGetTrade(RoomUser.TradeId, out Trade))
+            {
+                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                return;
+            }
+
+            Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(ItemId);
             if (Item == null)
                 return;
 
-            Trade.TakeBackItem(Session.GetHabbo().Id, Item);
+            if (!Trade.CanChange)
+                return;
+
+            TradeUser User = Trade.Users[0];
+            if (User.RoomUser != RoomUser)
+                User = Trade.Users[1];
+
+            if (!User.OfferedItems.ContainsKey(Item.Id))
+                return;
+
+            Trade.RemoveAccepted();
+            User.OfferedItems.Remove(Item.Id);
+            Trade.SendPacket(new TradingUpdateComposer(Trade));
         }
     }
 }

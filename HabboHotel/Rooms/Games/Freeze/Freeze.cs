@@ -649,12 +649,11 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
 
         public void Dispose()
         {
-            _freezeBlocks.Clear();
-            _freezeTiles.Clear();
+            this._room = null;
+            this._random = null;
             this._exitTeleports.Clear();
-
-            _room = null;
-            _random = null;
+            this._freezeTiles.Clear();
+            this._freezeBlocks.Clear();
         }
     }
 }

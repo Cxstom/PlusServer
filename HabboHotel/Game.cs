@@ -4,7 +4,6 @@ using log4net;
 using Plus.Communication.Packets;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Moderation;
-using Plus.HabboHotel.Support;
 using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Items.Televisions;
@@ -38,8 +37,7 @@ namespace Plus.HabboHotel
         
         private readonly PacketManager _packetManager;
         private readonly GameClientManager _clientManager;
-        private readonly ModerationManager _modManager;
-        private readonly ModerationTool _moderationTool;//TODO: Initialize from the moderation manager.
+        private readonly ModerationManager _moderationManager;
         private readonly ItemDataManager _itemDataManager;
         private readonly CatalogManager _catalogManager;
         private readonly TelevisionManager _televisionManager;//TODO: Initialize from the item manager.
@@ -71,8 +69,10 @@ namespace Plus.HabboHotel
         {
             this._packetManager = new PacketManager();
             this._clientManager = new GameClientManager();
-            this._modManager = new ModerationManager();
-            this._moderationTool = new ModerationTool();
+
+            this._moderationManager = new ModerationManager();
+            this._moderationManager.Init();
+
             this._itemDataManager = new ItemDataManager();
             this._itemDataManager.Init();
 
@@ -85,6 +85,7 @@ namespace Plus.HabboHotel
             this._roomManager = new RoomManager();
             this._chatManager = new ChatManager();
             this._groupManager = new GroupManager();
+            this._groupManager.Init();
             this._questManager = new QuestManager();
             this._achievementManager = new AchievementManager();
             this._talentTrackManager = new TalentTrackManager();
@@ -98,6 +99,7 @@ namespace Plus.HabboHotel
             this._languageLocale = new LanguageLocale();
             this._antiMutant = new AntiMutant();
             this._botManager = new BotManager();
+            this._botManager.Init();
 
             this._cacheManager = new CacheManager();
             this._rewardManager = new RewardManager();
@@ -185,14 +187,9 @@ namespace Plus.HabboHotel
             return _talentTrackManager;
         }
 
-        public ModerationTool GetModerationTool()
-        {
-            return _moderationTool;
-        }
-
         public ModerationManager GetModerationManager()
         {
-            return this._modManager;
+            return this._moderationManager;
         }
 
         public PermissionManager GetPermissionManager()

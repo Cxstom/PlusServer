@@ -1,12 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using Plus.HabboHotel.Groups;
-using Plus.Communication.Packets.Outgoing.Groups;
+﻿using Plus.HabboHotel.Groups;
 using Plus.Database.Interfaces;
-
+using Plus.Communication.Packets.Outgoing.Groups;
 
 namespace Plus.Communication.Packets.Incoming.Groups
 {
@@ -20,36 +14,27 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(GroupId, out Group))
                 return;
 
-             if (Group.CreatorId != Session.GetHabbo().Id)
+            if (Group.CreatorId != Session.GetHabbo().Id)
                 return;
 
             int Count = Packet.PopInt();
-            int Current = 1;
-        
-            string x;
-            string newBadge = "";
-            while (Current <= Count)
+
+            string Badge = "";
+            for (int i = 0; i < Count; i++)
             {
-                int Id = Packet.PopInt();
-                int Colour = Packet.PopInt();
-                int Pos = Packet.PopInt();
-                if (Current == 1)
-                    x = "b" + ((Id < 10) ? "0" + Id.ToString() : Id.ToString()) +     ((Colour < 10) ? "0" + Colour.ToString() : Colour.ToString()) + Pos;
-                else
-                    x = "s" + ((Id < 10) ? "0" + Id.ToString() : Id.ToString()) +   ((Colour < 10) ? "0" + Colour.ToString() : Colour.ToString()) + Pos;
-                newBadge += PlusEnvironment.GetGame().GetGroupManager().CheckActiveSymbol(x);
-                Current++;
+                Badge += BadgePartUtility.WorkBadgeParts(i == 0, Packet.PopInt().ToString(), Packet.PopInt().ToString(), Packet.PopInt().ToString());
             }
+
+            Group.Badge = (string.IsNullOrWhiteSpace(Badge) ? "b05114s06114" : Badge);
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("UPDATE `groups` SET `badge` = @badge WHERE `id` = @groupId LIMIT 1");
-                dbClient.AddParameter("badge", newBadge);
+                dbClient.AddParameter("badge", Group.Badge);
                 dbClient.AddParameter("groupId", Group.Id);
                 dbClient.RunQuery();
             }
 
-            Group.Badge = (string.IsNullOrWhiteSpace(newBadge) ? "b05114s06114" : newBadge);
             Session.SendMessage(new GroupInfoComposer(Group, Session));
         }
     }

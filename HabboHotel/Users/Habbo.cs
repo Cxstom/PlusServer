@@ -15,8 +15,6 @@ using Plus.HabboHotel.Users.Badges;
 using Plus.HabboHotel.Users.Inventory;
 using Plus.HabboHotel.Users.Messenger;
 using Plus.HabboHotel.Users.Relationships;
-using Plus.HabboHotel.Users.UserDataManagement;
-
 using Plus.HabboHotel.Users.Process;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
@@ -34,6 +32,7 @@ using Plus.HabboHotel.Rooms.Chat.Commands;
 using Plus.HabboHotel.Users.Permissions;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Users.Calendar;
+using Plus.HabboHotel.Users.Ignores;
 
 namespace Plus.HabboHotel.Users
 {
@@ -149,7 +148,6 @@ namespace Plus.HabboHotel.Users
         private bool _sessionClothingBlocked;
 
         public List<int> RatedRooms;
-        public List<int> MutedUsers;
         public List<RoomData> UsersRooms;
 
         private GameClient _client;
@@ -169,6 +167,7 @@ namespace Plus.HabboHotel.Users
         private EffectsComponent _fx;
         private ClothingComponent _clothing;
         private PermissionComponent _permissions;
+        private IgnoresComponent _ignores;
 
         private IChatCommand _iChatCommand;
 
@@ -293,7 +292,6 @@ namespace Plus.HabboHotel.Users
             this._sessionClothingBlocked = false;
 
             this.FavoriteRooms = new ArrayList();
-            this.MutedUsers = new List<int>();
             this.Achievements = new ConcurrentDictionary<string, UserAchievement>();
             this.Relationships = new Dictionary<int, Relationship>();
             this.RatedRooms = new List<int>();
@@ -903,50 +901,52 @@ namespace Plus.HabboHotel.Users
         public bool InitProcess()
         {
             this._process = new ProcessComponent();
-            if (this._process.Init(this))
-                return true;
-            return false;
+
+            return this._process.Init(this);
         }
 
         public bool InitSearches()
         {
             this._navigatorSearches = new SearchesComponent();
-            if (this._navigatorSearches.Init(this))
-                return true;        
-            return false;
+
+            return this._navigatorSearches.Init(this);
         }
 
         public bool InitFX()
         {
             this._fx = new EffectsComponent();
-            if (this._fx.Init(this))
-                return true;
-            return false;
+
+            return this._fx.Init(this);
         }
 
         public bool InitClothing()
         {
             this._clothing = new ClothingComponent();
-            if (this._clothing.Init(this))
-                return true;       
-            return false;
+
+            return this._clothing.Init(this);
+        }
+
+        public bool InitIgnores()
+        {
+            this._ignores = new IgnoresComponent();
+
+            return this._ignores.Init(this);
         }
 
         private bool InitPermissions()
         {
             this._permissions = new PermissionComponent();
-            if (this._permissions.Init(this))
-                return true;
-            return false;
+
+            return this._permissions.Init(this);
         }
 
-        public void InitInformation(UserData data)
+        public void InitInformation(UserData.UserData data)
         {
             BadgeComponent = new BadgeComponent(this   , data);
             Relationships = data.Relations;
         }
 
-        public void Init(GameClient client, UserData data)
+        public void Init(GameClient client, UserData.UserData data)
         {
             this.Achievements = data.achievements;
 
@@ -955,8 +955,6 @@ namespace Plus.HabboHotel.Users
             {
                 FavoriteRooms.Add(id);
             }
-
-            this.MutedUsers = data.ignores;
 
             this._client = client;
             BadgeComponent = new BadgeComponent(this, data);
@@ -974,12 +972,18 @@ namespace Plus.HabboHotel.Users
             this.InitSearches();
             this.InitFX();
             this.InitClothing();
+            this.InitIgnores();
         }
 
 
         public PermissionComponent GetPermissions()
         {
             return this._permissions;
+        }
+
+        public IgnoresComponent GetIgnores()
+        {
+            return this._ignores;
         }
 
         public void OnDisconnect()
@@ -1040,6 +1044,9 @@ namespace Plus.HabboHotel.Users
                 this._clothing.Dispose();
 
             if (this._permissions != null)
+                this._permissions.Dispose();
+
+            if (this._ignores != null)
                 this._permissions.Dispose();
         }
 
@@ -1188,17 +1195,14 @@ namespace Plus.HabboHotel.Users
                 return;
             }
 
-            if (!this.GetClient().GetHabbo().GetPermissions().HasRight("room_ban_override") && Room.UserIsBanned(this.GetClient().GetHabbo().Id))
+
+            if (!this.GetPermissions().HasRight("room_ban_override") && Room.GetBans().IsBanned(this.Id))
             {
-                if (Room.HasBanExpired(this.GetClient().GetHabbo().Id))
-                    Room.RemoveBan(this.GetClient().GetHabbo().Id);
-                else
-                {
-                    this.GetClient().GetHabbo().RoomAuthOk = false;
-                    this.GetClient().SendMessage(new CantConnectComposer(4));
-                    this.GetClient().SendMessage(new CloseConnectionComposer());
-                    return;
-                }
+                this.RoomAuthOk = false;
+                this.GetClient().GetHabbo().RoomAuthOk = false;
+                this.GetClient().SendMessage(new CantConnectComposer(4));
+                this.GetClient().SendMessage(new CloseConnectionComposer());
+                return;
             }
 
             this.GetClient().SendMessage(new OpenConnectionComposer());

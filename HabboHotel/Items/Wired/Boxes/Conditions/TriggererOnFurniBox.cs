@@ -8,7 +8,6 @@ using System.Collections.Concurrent;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Pathfinding;
 
 namespace Plus.HabboHotel.Items.Wired.Boxes.Conditions
 {

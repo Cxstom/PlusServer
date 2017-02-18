@@ -146,7 +146,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
                 string WallPos = string.Empty;
 
-                if (TrySetWallItem(Session.GetHabbo(), Item, CorrectedData, out WallPos))
+                if (TrySetWallItem( CorrectedData, out WallPos))
                 {
                     try
                     {
@@ -173,7 +173,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             }
         }
 
-        private static bool TrySetWallItem(Habbo Habbo, Item item, string[] data, out string position)
+        private static bool TrySetWallItem(string[] data, out string position)
         {
             if (data.Length != 3 || !data[0].StartsWith(":w=") || !data[1].StartsWith("l=") || (data[2] != "r" && data[2] != "l"))
             {

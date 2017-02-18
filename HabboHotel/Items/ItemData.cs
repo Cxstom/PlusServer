@@ -24,18 +24,18 @@ namespace Plus.HabboHotel.Items
         public bool AllowGift { get; set; }
         public bool AllowInventoryStack { get; set; }
         public InteractionType InteractionType { get; set; }
+        public int BehaviourData { get; set; }
         public int Modes { get; set; }
         public List<int> VendingIds { get; set; }
         public List<double> AdjustableHeights { get; set; }
         public int EffectId { get; set; }
         public WiredBoxType WiredType { get; set; }
         public bool IsRare { get; set; }
-        public int ClothingId { get; set; }
         public bool ExtraRot { get; set; }
 
         public ItemData(int Id, int Sprite, string Name, string PublicName, string Type, int Width, int Length, double Height, bool Stackable, bool Walkable, bool IsSeat,
-            bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int Modes,
-            string VendingIds, string AdjustableHeights, int EffectId, int WiredId, bool IsRare, int ClothingId, bool ExtraRot)
+            bool AllowRecycle, bool AllowTrade, bool AllowMarketplaceSell, bool AllowGift, bool AllowInventoryStack, InteractionType InteractionType, int behaviourData, int Modes,
+            string VendingIds, string AdjustableHeights, int EffectId, bool IsRare, bool ExtraRot)
         {
             this.Id = Id;
             this.SpriteId = Sprite;
@@ -54,6 +54,7 @@ namespace Plus.HabboHotel.Items
             this.AllowGift = AllowGift;
             this.AllowInventoryStack = AllowInventoryStack;
             this.InteractionType = InteractionType;
+            this.BehaviourData = behaviourData;
             this.Modes = Modes;
             this.VendingIds = new List<int>();
             if (VendingIds.Contains(","))
@@ -86,9 +87,14 @@ namespace Plus.HabboHotel.Items
                 this.AdjustableHeights.Add(double.Parse(AdjustableHeights));
 
             this.EffectId = EffectId;
-            this.WiredType = WiredBoxTypeUtility.FromWiredId(WiredId);
+
+            int wiredId = 0;
+            if (this.InteractionType == InteractionType.WIRED_CONDITION || this.InteractionType == InteractionType.WIRED_TRIGGER || this.InteractionType == InteractionType.WIRED_EFFECT)
+                wiredId = this.BehaviourData;
+
+            this.WiredType = WiredBoxTypeUtility.FromWiredId(wiredId);
+
             this.IsRare = IsRare;
-            this.ClothingId = ClothingId;
             this.ExtraRot = ExtraRot;
         }
     }

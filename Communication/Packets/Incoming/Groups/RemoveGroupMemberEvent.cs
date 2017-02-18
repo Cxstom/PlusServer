@@ -10,6 +10,7 @@ using Plus.Communication.Packets.Outgoing.Rooms.Permissions;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Incoming.Groups
 {
@@ -90,7 +91,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     {
                         RoomUser User = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                         if (User != null)
-                            Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer(Session.GetHabbo().Id, Group, User.VirtualId));
+                            Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer( Group, User.VirtualId));
                         Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
                     }
                     else

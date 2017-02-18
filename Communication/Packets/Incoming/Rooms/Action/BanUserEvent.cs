@@ -40,8 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             else if (R.ToLower().Contains("perm"))
                 Time = 78892200;
 
-            Room.AddBan(UserId, Time);
-            Room.GetRoomUserManager().RemoveUserFromRoom(User.GetClient(), true, true);
+            Room.GetBans().Ban(User, Time);
 
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModBanSeen", 1);
         }

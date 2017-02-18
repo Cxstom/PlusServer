@@ -4,7 +4,7 @@ using System.Text;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Pathfinding;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
 {

@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 using Plus.Database.Interfaces;
-
 
 namespace Plus.HabboHotel.Catalog.Clothing
 {
     public class ClothingManager
     {
-        private Dictionary<int, ClothingItem> _clothing;
+        private readonly Dictionary<int, ClothingItem> _clothing;
 
         public ClothingManager()
         {
             this._clothing = new Dictionary<int, ClothingItem>();
-           
-            this.Init();
         }
 
         public void Init()

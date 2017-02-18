@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms;
 using Plus.Communication.Packets.Incoming;
 
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Items.Interactor
 {

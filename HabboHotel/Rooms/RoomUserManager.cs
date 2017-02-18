@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Drawing;
@@ -9,16 +8,8 @@ using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.Core;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Global;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms.AI;
-using Plus.HabboHotel.Quests;
-using Plus.HabboHotel.Rooms.Games;
-
-using Plus.HabboHotel.Users;
-using Plus.HabboHotel.Users.Inventory;
-using Plus.Communication.Packets.Incoming;
-
+using Plus.HabboHotel.Rooms.Trading;
 using Plus.Utilities;
 
 using System.Data;
@@ -26,10 +17,10 @@ using Plus.Communication.Packets.Outgoing.Rooms.Session;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Rooms.Permissions;
 using Plus.Communication.Packets.Outgoing.Handshake;
-using System.Text.RegularExpressions;
 using Plus.HabboHotel.Rooms.Games.Teams;
 
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms
 {
@@ -59,17 +50,6 @@ namespace Plus.HabboHotel.Rooms
 
             this.petCount = 0;
             this.userCount = 0;
-        }
-
-        public void Dispose()
-        {
-            this._users.Clear();
-            this._pets.Clear();
-            this._bots.Clear();
-
-            this._users = null;
-            this._pets = null;
-            this._bots = null;
         }
 
         public RoomUser DeployBot(RoomBot Bot, Pet PetData)
@@ -354,10 +334,11 @@ namespace Plus.HabboHotel.Rooms
                             Session.GetHabbo().Effects().CurrentEffect = -1;
                     }
 
-                    if (_room != null)
+                    if (User.IsTrading)
                     {
-                        if (_room.HasActiveTrade(Session.GetHabbo().Id))
-                            _room.TryStopTrade(Session.GetHabbo().Id);
+                        Trade Trade = null;
+                        if (_room.GetTrading().TryGetTrade(User.TradeId, out Trade))
+                            Trade.EndTrade(User.TradeId);
                     }
 
                     //Session.GetHabbo().CurrentRoomId = 0;
@@ -544,8 +525,7 @@ namespace Plus.HabboHotel.Rooms
 
         public RoomUser GetRoomUserByHabbo(string pName)
         {
-            RoomUser User = this.GetUserList().Where(x => x != null && x.GetClient() != null && x.GetClient().GetHabbo() != null && x.GetClient().GetHabbo().Username.Equals(pName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
-
+            RoomUser User = this.GetUserList().FirstOrDefault(x => x != null && x.GetClient() != null && x.GetClient().GetHabbo() != null && x.GetClient().GetHabbo().Username.Equals(pName, StringComparison.OrdinalIgnoreCase));
             if (User != null)
                 return User;
 
@@ -554,13 +534,13 @@ namespace Plus.HabboHotel.Rooms
 
         public void UpdatePets()
         {
-            foreach (Pet Pet in GetPets().ToList())
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                if (Pet == null)
-                    continue;
-
-                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                foreach (Pet Pet in GetPets().ToList())
                 {
+                    if (Pet == null)
+                        continue;
+
                     if (Pet.DBState == DatabaseUpdateState.NeedsInsert)
                     {
                         dbClient.SetQuery("INSERT INTO `bots` (`id`,`user_id`,`room_id`,`name`,`x`,`y`,`z`) VALUES ('" + Pet.PetId + "','" + Pet.OwnerId + "','" + Pet.RoomId + "',@name,'0','0','0')");
@@ -574,7 +554,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                     else if (Pet.DBState == DatabaseUpdateState.NeedsUpdate)
                     {
-                        //Surely this can be *99 better?
+                        //Surely this can be *99 better? // TODO
                         RoomUser User = GetRoomUserByVirtualId(Pet.VirtualId);
 
                         dbClient.RunQuery("UPDATE `bots` SET room_id = " + Pet.RoomId + ", x = " + (User != null ? User.X : 0) + ", Y = " + (User != null ? User.Y : 0) + ", Z = " + (User != null ? User.Z : 0) + " WHERE `id` = '" + Pet.PetId + "' LIMIT 1");
@@ -585,6 +565,32 @@ namespace Plus.HabboHotel.Rooms
                 }
             }
         }
+
+        private void UpdateBots()
+        {
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                foreach (RoomUser User in this.GetRoomUsers().ToList())
+                {
+                    if (User == null || !User.IsBot)
+                        continue;
+
+                    if (User.IsBot)
+                    {
+                        dbClient.SetQuery("UPDATE bots SET x=@x, y=@y, z=@z, name=@name, look=@look, rotation=@rotation WHERE id=@id LIMIT 1;");
+                        dbClient.AddParameter("name", User.BotData.Name);
+                        dbClient.AddParameter("look", User.BotData.Look);
+                        dbClient.AddParameter("rotation", User.BotData.Rot);
+                        dbClient.AddParameter("x", User.X);
+                        dbClient.AddParameter("y", User.Y);
+                        dbClient.AddParameter("z", User.Z);
+                        dbClient.AddParameter("id", User.BotData.BotId);
+                        dbClient.RunQuery();
+                    }
+                }
+            }
+        }
+
 
         public List<Pet> GetPets()
         {
@@ -891,15 +897,16 @@ namespace Plus.HabboHotel.Rooms
                                 {
                                     RoomUser Horse = GetRoomUserByVirtualId(User.HorseID);
                                     if (Horse != null)
-                                        Horse.AddStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+                                        Horse.SetStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
 
-                                    User.AddStatus("mv", +nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
+                                    User.SetStatus("mv", +nextX + "," + nextY + "," + TextHandling.GetString(nextZ + 1));
 
                                     User.UpdateNeeded = true;
                                     Horse.UpdateNeeded = true;
                                 }
                                 else
-                                    User.AddStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+                                    User.SetStatus("mv", nextX + "," + nextY + "," + TextHandling.GetString(nextZ));
+
 
                                 int newRot = Rotation.Calculate(User.X, User.Y, nextX, nextY, User.moonwalkEnabled);
 
@@ -1251,7 +1258,7 @@ namespace Plus.HabboHotel.Rooms
                                         User.UnlockWalking();
                                     else
                                     {
-                                        int LinkedTele = ItemTeleporterFinder.GetLinkedTele(Item.Id, Room);
+                                        int LinkedTele = ItemTeleporterFinder.GetLinkedTele(Item.Id);
                                         int TeleRoomId = ItemTeleporterFinder.GetTeleRoomId(LinkedTele, Room);
 
                                         if (TeleRoomId == Room.RoomId)
@@ -1397,6 +1404,30 @@ namespace Plus.HabboHotel.Rooms
         public ICollection<RoomUser> GetUserList()
         {
             return this._users.Values;
+        }
+
+        public void Dispose()
+        {
+            this.UpdatePets();
+            this.UpdateBots();
+
+            this._room.RoomData.UsersNow = 0;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `id` = '" + this._room.Id + "' LIMIT 1");
+            }
+
+            this._users.Clear();
+            this._pets.Clear();
+            this._bots.Clear();
+
+            this.userCount = 0;
+            this.petCount = 0;
+
+            this._users = null;
+            this._pets = null;
+            this._bots = null;
+            this._room = null;
         }
     }
 }

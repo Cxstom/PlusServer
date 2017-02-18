@@ -20,8 +20,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             if (!Session.GetHabbo().InRoom)
                 return;
 
-            Room Room;
-
+            Room Room = null;
             if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Session.GetHabbo().CurrentRoomId, out Room))
                 return;
 
@@ -38,11 +37,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             if (Exchange == null)
                 return;
 
-            if (!Exchange.GetBaseItem().ItemName.StartsWith("CF_") && !Exchange.GetBaseItem().ItemName.StartsWith("CFC_"))
+            if (Exchange.Data.InteractionType != InteractionType.EXCHANGE)
                 return;
-            
-            string[] Split = Exchange.GetBaseItem().ItemName.Split('_');
-            int Value = int.Parse(Split[1]);
+
+
+            int Value = Exchange.Data.BehaviourData;
 
             if (Value > 0)
             {

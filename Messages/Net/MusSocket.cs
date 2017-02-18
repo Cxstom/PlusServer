@@ -1,11 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Collections.Generic;
 
-using Plus.Messages.Net;
-
-namespace Plus.Net
+namespace Plus.Messages.Net
 {
     public class MusSocket
     {

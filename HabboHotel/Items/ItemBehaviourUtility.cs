@@ -9,6 +9,7 @@ using Plus.HabboHotel.Items.Data.Toner;
 
 using Plus.Communication.Packets.Outgoing;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.HabboHotel.Items
 {
@@ -79,8 +80,8 @@ namespace Plus.HabboHotel.Items
                         Message.WriteString(Item.ExtraData);
                         Message.WriteString(Group.Id.ToString());
                         Message.WriteString(Group.Badge);
-                        Message.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetGroupColour(Group.Colour1, true)); // Group Colour 1
-                        Message.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetGroupColour(Group.Colour2, false)); // Group Colour 2
+                        Message.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetColourCode(Group.Colour1, true));
+                        Message.WriteString(PlusEnvironment.GetGame().GetGroupManager().GetColourCode(Group.Colour2, false));
                     }
                     break;
 

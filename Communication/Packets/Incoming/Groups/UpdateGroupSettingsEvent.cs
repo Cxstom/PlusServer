@@ -85,7 +85,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 }
                 else if (FurniOptions == 0 && !User.Statusses.ContainsKey("flatctrl 1"))
                 {
-                    User.AddStatus("flatctrl 1", "");
+                    User.SetStatus("flatctrl 1", "");
                     User.UpdateNeeded = true;
 
                     User.GetClient().SendMessage(new YouAreControllerComposer(1));

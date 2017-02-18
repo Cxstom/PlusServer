@@ -51,7 +51,6 @@ namespace Plus.HabboHotel.Rooms
         public TonerData TonerData;
         public MoodlightData MoodlightData;
 
-        public Dictionary<int, double> Bans;
         public Dictionary<int, double> MutedUsers;
 
 
@@ -77,11 +76,11 @@ namespace Plus.HabboHotel.Rooms
 
         private FilterComponent _filterComponent = null;
         private WiredComponent _wiredComponent = null;
+        private BansComponent _bansComponent = null;
+        private TradingComponent _tradingComponent = null;
 
         public int IsLagging { get; set; }
         public int IdleTime { get; set; }
-
-        //private ProcessComponent _process = null;
 
         public Room(RoomData Data)
         {
@@ -146,7 +145,6 @@ namespace Plus.HabboHotel.Rooms
             this.PetMorphsAllowed = Data.PetMorphsAllowed;
 
             this.ActiveTrades = new ArrayList();
-            this.Bans = new Dictionary<int, double>();
             this.MutedUsers = new Dictionary<int, double>();
             this.Tents = new Dictionary<int, List<RoomUser>>();
 
@@ -157,13 +155,14 @@ namespace Plus.HabboHotel.Rooms
 
             this._filterComponent = new FilterComponent(this);
             this._wiredComponent = new WiredComponent(this);
+            this._bansComponent = new BansComponent(this);
+            this._tradingComponent = new TradingComponent(this);
 
             GetRoomItemHandler().LoadFurniture();
             GetGameMap().GenerateMaps();
 
             this.LoadPromotions();
             this.LoadRights();
-            this.LoadBans();
             this.LoadFilter();
             this.InitBots();
             this.InitPets();
@@ -176,130 +175,6 @@ namespace Plus.HabboHotel.Rooms
             get { return this._wordFilterList; }
             set { this._wordFilterList = value; }
         }
-
-        #region Room Bans
-
-        public bool UserIsBanned(int pId)
-        {
-            return Bans.ContainsKey(pId);
-        }
-
-        public void RemoveBan(int pId)
-        {
-            Bans.Remove(pId);
-        }
-
-        public void AddBan(int pId, long Time)
-        {
-            if (!Bans.ContainsKey(Convert.ToInt32(pId)))
-                Bans.Add(pId, PlusEnvironment.GetUnixTimestamp() + Time);
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.RunQuery("REPLACE INTO `room_bans` VALUES (" + pId + ", " + Id + ", " + (PlusEnvironment.GetUnixTimestamp() + Time) + ")");
-            }
-        }
-
-        public List<int> BannedUsers()
-        {
-            var Bans = new List<int>();
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT user_id FROM room_bans WHERE expire > UNIX_TIMESTAMP() AND room_id=" + Id);
-                DataTable Table = dbClient.getTable();
-
-                foreach (DataRow Row in Table.Rows)
-                {
-                    Bans.Add(Convert.ToInt32(Row[0]));
-                }
-            }
-
-            return Bans;
-        }
-
-        public bool HasBanExpired(int pId)
-        {
-            if (!UserIsBanned(pId))
-                return true;
-
-            if (Bans[pId] < PlusEnvironment.GetUnixTimestamp())
-                return true;
-
-            return false;
-        }
-
-        public void Unban(int UserId)
-        {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.RunQuery("DELETE FROM `room_bans` WHERE `user_id` = '" + UserId + "' AND `room_id` = '" + Id + "' LIMIT 1");
-            }
-
-            if (Bans.ContainsKey(UserId))
-                Bans.Remove(UserId);
-        }
-
-        #endregion
-
-        #region Trading
-
-        public bool HasActiveTrade(RoomUser User)
-        {
-            if (User.IsBot)
-                return false;
-
-            return HasActiveTrade(User.GetClient().GetHabbo().Id);
-        }
-
-        public bool HasActiveTrade(int UserId)
-        {
-            if (ActiveTrades.Count == 0)
-                return false;
-
-            foreach (Trade Trade in ActiveTrades.ToArray())
-            {
-                if (Trade.ContainsUser(UserId))
-                    return true;
-            }
-            return false;
-        }
-
-        public Trade GetUserTrade(int UserId)
-        {
-            foreach (Trade Trade in ActiveTrades.ToArray())
-            {
-                if (Trade.ContainsUser(UserId))
-                {
-                    return Trade;
-                }
-            }
-
-            return null;
-        }
-
-        public void TryStartTrade(RoomUser UserOne, RoomUser UserTwo)
-        {
-            if (UserOne == null || UserTwo == null || UserOne.IsBot || UserTwo.IsBot || UserOne.IsTrading ||
-                UserTwo.IsTrading || HasActiveTrade(UserOne) || HasActiveTrade(UserTwo))
-                return;
-
-            ActiveTrades.Add(new Trade(UserOne.GetClient().GetHabbo().Id, UserTwo.GetClient().GetHabbo().Id, RoomId));
-        }
-
-        public void TryStopTrade(int UserId)
-        {
-            Trade Trade = GetUserTrade(UserId);
-
-            if (Trade == null)
-                return;
-
-            Trade.CloseTrade(UserId);
-            ActiveTrades.Remove(Trade);
-        }
-
-        #endregion
-
 
         public int UserCount
         {
@@ -479,6 +354,16 @@ namespace Plus.HabboHotel.Rooms
             return this._wiredComponent;
         }
 
+        public BansComponent GetBans()
+        {
+            return this._bansComponent;
+        }
+
+        public TradingComponent GetTrading()
+        {
+            return this._tradingComponent;
+        }
+
         public void LoadPromotions()
         {
             DataRow GetPromotion = null;
@@ -537,27 +422,6 @@ namespace Plus.HabboHotel.Rooms
             foreach (DataRow Row in Data.Rows)
             {
                 this._wordFilterList.Add(Convert.ToString(Row["word"]));
-            }
-        }
-
-        public void LoadBans()
-        {
-            this.Bans = new Dictionary<int, double>();
-
-            DataTable Bans;
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT user_id, expire FROM room_bans WHERE room_id = " + Id);
-                Bans = dbClient.getTable();
-            }
-
-            if (Bans == null)
-                return;
-
-            foreach (DataRow ban in Bans.Rows)
-            {
-                this.Bans.Add(Convert.ToInt32(ban[0]), Convert.ToDouble(ban[1]));
             }
         }
 
@@ -810,7 +674,7 @@ namespace Plus.HabboHotel.Rooms
             Tents.Add(TentId, new List<RoomUser>());
         }
 
-        public void RemoveTent(int TentId, Item Item)
+        public void RemoveTent(int TentId)
         {
             if (!Tents.ContainsKey(TentId))
                 return;
@@ -828,7 +692,7 @@ namespace Plus.HabboHotel.Rooms
                 Tents.Remove(TentId);
         }
 
-        public void AddUserToTent(int TentId, RoomUser User, Item Item)
+        public void AddUserToTent(int TentId, RoomUser User)
         {
             if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
             {
@@ -841,7 +705,7 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-        public void RemoveUserFromTent(int TentId, RoomUser User, Item Item)
+        public void RemoveUserFromTent(int TentId, RoomUser User)
         {
             if (User != null && User.GetClient() != null && User.GetClient().GetHabbo() != null)
             {
@@ -862,7 +726,7 @@ namespace Plus.HabboHotel.Rooms
 
             foreach (RoomUser User in Tents[TentId].ToList())
             {
-                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().MutedUsers.Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
+                if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
                     continue;
 
                 User.GetClient().SendMessage(Packet);
@@ -951,31 +815,6 @@ namespace Plus.HabboHotel.Rooms
         }
         #endregion
 
-        private void SaveAI()
-        {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                foreach (RoomUser User in GetRoomUserManager().GetRoomUsers().ToList())
-                {
-                    if (User == null || !User.IsBot)
-                        continue;
-
-                    if (User.IsBot)
-                    {
-                        dbClient.SetQuery("UPDATE bots SET x=@x, y=@y, z=@z, name=@name, look=@look, rotation=@rotation WHERE id=@id LIMIT 1;");
-                        dbClient.AddParameter("name", User.BotData.Name);
-                        dbClient.AddParameter("look", User.BotData.Look);
-                        dbClient.AddParameter("rotation", User.BotData.Rot);
-                        dbClient.AddParameter("x", User.X);
-                        dbClient.AddParameter("y", User.Y);
-                        dbClient.AddParameter("z", User.Z);
-                        dbClient.AddParameter("id", User.BotData.BotId);
-                        dbClient.RunQuery();
-                    }
-                }
-            }
-        }
-
         public void Dispose()
         {
             SendMessage(new CloseConnectionComposer());
@@ -985,6 +824,7 @@ namespace Plus.HabboHotel.Rooms
                 isCrashed = false;
                 mDisposed = true;
 
+                /* TODO: Needs reviewing */
                 try
                 {
                     if (ProcessTask != null && ProcessTask.IsCompleted)
@@ -992,60 +832,97 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch { }
 
-                GetRoomItemHandler().SaveFurniture();
-
-                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                {
-                    dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `id` = '" + Id + "' LIMIT 1");
-                }
-
-                if (this._roomUserManager.PetCount > 0)
-                    this._roomUserManager.UpdatePets();
-
-                this.SaveAI();
-
-                UsersNow = 0;
-                RoomData.UsersNow = 0;
-
-                UsersWithRights.Clear();
-                Bans.Clear();
-                MutedUsers.Clear();
-                Tents.Clear();
+                if (this.ActiveTrades.Count > 0)
+                    this.ActiveTrades.Clear();
 
                 this.TonerData = null;
                 this.MoodlightData = null;
 
-                this._filterComponent.Cleanup();
-                this._wiredComponent.Cleanup();
+                if (this.MutedUsers.Count > 0)
+                    this.MutedUsers.Clear();
 
-                if (this._gameItemHandler != null)
-                    this._gameItemHandler.Dispose();
+                if (this.Tents.Count > 0)
+                    this.Tents.Clear();
+
+                if (this.UsersWithRights.Count > 0)
+                    this.UsersWithRights.Clear();
 
                 if (this._gameManager != null)
+                {
                     this._gameManager.Dispose();
+                    this._gameManager = null;
+                }
 
                 if (this._freeze != null)
+                {
                     this._freeze.Dispose();
-
-                if (this._banzai != null)
-                    this._banzai.Dispose();
+                    this._freeze = null;
+                }
 
                 if (this._soccer != null)
+                {
                     this._soccer.Dispose();
+                    this._soccer = null;
+                }
+
+                if (this._banzai != null)
+                {
+                    this._banzai.Dispose();
+                    this._banzai = null;
+                }
 
                 if (this._gamemap != null)
+                {
                     this._gamemap.Dispose();
+                    this._gamemap = null;
+                }
+
+                if (this._gameItemHandler != null)
+                {
+                    this._gameItemHandler.Dispose();
+                    this._gameItemHandler = null;
+                }
+
+                // Room Data?
+
+                if (this.teambanzai != null)
+                {
+                    this.teambanzai.Dispose();
+                    this.teambanzai = null;
+                }
+
+                if (this.teamfreeze != null)
+                {
+                    this.teamfreeze.Dispose();
+                    this.teamfreeze = null;
+                }
 
                 if (this._roomUserManager != null)
+                {
                     this._roomUserManager.Dispose();
+                    this._roomUserManager = null;
+                }
 
                 if (this._roomItemHandling != null)
+                {
                     this._roomItemHandling.Dispose();
+                    this._roomItemHandling = null;
+                }
 
+                if (this._wordFilterList.Count > 0)
+                    this._wordFilterList.Clear();
 
+                if (this._filterComponent != null)
+                    this._filterComponent.Cleanup();
 
-                if (ActiveTrades.Count > 0)
-                    ActiveTrades.Clear();
+                if (this._wiredComponent != null)
+                    this._wiredComponent.Cleanup();
+
+                if (this._bansComponent != null)
+                    this._bansComponent.Cleanup();
+
+                if (this._tradingComponent != null)
+                    this._tradingComponent.Cleanup();
             }
         }
     }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Furni
             int page = 0;
             int pages = ((Items.Count() - 1) / 700) + 1;
 
-            if (Items.Count() == 0)
+            if (!Items.Any())
             {
                 Session.SendMessage(new FurniListComposer(Items.ToList(), 1, 0));
             }

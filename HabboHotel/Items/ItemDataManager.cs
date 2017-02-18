@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.Items
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `id`,`item_name`,`public_name`,`type`,`width`,`length`,`stack_height`,`can_stack`,`can_sit`,`is_walkable`,`sprite_id`,`allow_recycle`,`allow_trade`,`allow_marketplace_sell`,`allow_gift`,`allow_inventory_stack`,`interaction_type`,`interaction_modes_count`,`vending_ids`,`height_adjustable`,`effect_id`,`wired_id`,`is_rare`,`clothing_id`, `extra_rot` FROM `furniture`");
+                dbClient.SetQuery("SELECT * FROM `furniture`");
                 DataTable ItemData = dbClient.getTable();
 
                 if (ItemData != null)
@@ -56,20 +56,19 @@ namespace Plus.HabboHotel.Items
                             bool allowGift = Convert.ToInt32(Row["allow_gift"]) == 1;
                             bool allowInventoryStack = PlusEnvironment.EnumToBool(Row["allow_inventory_stack"].ToString());
                             InteractionType interactionType = InteractionTypes.GetTypeFromString(Convert.ToString(Row["interaction_type"]));
+                            int behaviourData = Convert.ToInt32(Row["behaviour_data"]);
                             int cycleCount = Convert.ToInt32(Row["interaction_modes_count"]);
                             string vendingIDS = Convert.ToString(Row["vending_ids"]);
                             string heightAdjustable = Convert.ToString(Row["height_adjustable"]);
                             int EffectId = Convert.ToInt32(Row["effect_id"]);
-                            int WiredId = Convert.ToInt32(Row["wired_id"]);
                             bool IsRare = PlusEnvironment.EnumToBool(Row["is_rare"].ToString());
-                            int ClothingId = Convert.ToInt32(Row["clothing_id"]);
                             bool ExtraRot = PlusEnvironment.EnumToBool(Row["extra_rot"].ToString());
 
                             if (!this._gifts.ContainsKey(spriteID))
-                                this._gifts.Add(spriteID, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, cycleCount, vendingIDS, heightAdjustable, EffectId, WiredId, IsRare, ClothingId, ExtraRot));
+                                this._gifts.Add(spriteID, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, IsRare, ExtraRot));
 
                             if (!this._items.ContainsKey(id))
-                                this._items.Add(id, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, cycleCount, vendingIDS, heightAdjustable, EffectId, WiredId, IsRare, ClothingId, ExtraRot));
+                                this._items.Add(id, new ItemData(id, spriteID, itemName, PublicName, type, width, length, height, allowStack, allowWalk, allowSit, allowRecycle, allowTrade, allowMarketplace, allowGift, allowInventoryStack, interactionType, behaviourData, cycleCount, vendingIDS, heightAdjustable, EffectId, IsRare, ExtraRot));
                         }
                         catch (Exception e)
                         {
@@ -89,6 +88,17 @@ namespace Plus.HabboHotel.Items
             if (this._items.TryGetValue(Id, out Item))
                 return true;
             return false;
+        }
+
+        public ItemData GetItemByName(string name)
+        {
+            foreach (var entry in _items)
+            {
+                ItemData item = entry.Value;
+                if (item.ItemName == name)
+                    return item;
+            }
+            return null;
         }
 
         public bool GetGift(int SpriteId, out ItemData Item)

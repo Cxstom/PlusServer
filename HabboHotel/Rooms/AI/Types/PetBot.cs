@@ -3,11 +3,11 @@ using System.Linq;
 using System.Drawing;
 using Plus.Core;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms;
 using Plus.Utilities;
 using System.Collections.Generic;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Rooms.AI.Types
 {

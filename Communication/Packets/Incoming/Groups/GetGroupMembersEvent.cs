@@ -7,8 +7,8 @@ using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Groups;
 using Plus.Communication.Packets.Outgoing.Groups;
 using Plus.HabboHotel.Users.Authenticator;
-using Plus.HabboHotel.Users.UserDataManagement;
 using Plus.HabboHotel.Cache;
+using Plus.HabboHotel.Cache.Type;
 
 namespace Plus.Communication.Packets.Incoming.Groups
 {

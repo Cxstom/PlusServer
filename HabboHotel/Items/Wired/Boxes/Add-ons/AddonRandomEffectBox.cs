@@ -1,14 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
-
+﻿using System.Collections.Concurrent;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms;
 
-namespace Plus.HabboHotel.Items.Wired.Boxes.Add_ons
+namespace Plus.HabboHotel.Items.Wired.Boxes
 {
     class AddonRandomEffectBox: IWiredItem
     {

@@ -1,37 +1,35 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Collections.Generic;
 
+using Plus.Utilities;
 using Plus.HabboHotel.Moderation;
-using Plus.HabboHotel.Support;
 
 namespace Plus.Communication.Packets.Outgoing.Moderation
 {
     class ModeratorInitComposer : ServerPacket
     {
-        public ModeratorInitComposer(ICollection<string> UserPresets, ICollection<string> RoomPresets, Dictionary<string, List<ModerationPresetActionMessages>> UserActionPresets, ICollection<SupportTicket> Tickets)
+        public ModeratorInitComposer(ICollection<string> UserPresets, ICollection<string> RoomPresets, Dictionary<string, List<ModerationPresetActionMessages>> UserActionPresets, ICollection<ModerationTicket> Tickets)
             : base(ServerPacketHeader.ModeratorInitMessageComposer)
         {
             base.WriteInteger(Tickets.Count);
-            foreach (SupportTicket ticket in Tickets.ToList())
+            foreach (ModerationTicket Ticket in Tickets)
             {
-                base.WriteInteger(ticket.Id);
-                base.WriteInteger(ticket.TabId);
-                base.WriteInteger(1); // Type
-                base.WriteInteger(114); // Category
-                base.WriteInteger(((int)PlusEnvironment.GetUnixTimestamp() - Convert.ToInt32(ticket.Timestamp)) * 1000);
-                base.WriteInteger(ticket.Score);
-                base.WriteInteger(0);
-                base.WriteInteger(ticket.SenderId);
-                base.WriteString(ticket.SenderName);
-                base.WriteInteger(ticket.ReportedId);
-                base.WriteString(ticket.ReportedName);
-                base.WriteInteger((ticket.Status == TicketStatus.PICKED) ? ticket.ModeratorId : 0);
-                base.WriteString(ticket.ModName);
-                base.WriteString(ticket.Message);
-                base.WriteInteger(0);
-                base.WriteInteger(0);
+                base.WriteInteger(Ticket.Id); // Id
+                base.WriteInteger(Ticket.GetStatus(Id)); // Tab ID
+                base.WriteInteger(Ticket.Type); // Type
+                base.WriteInteger(Ticket.Category); // Category
+                base.WriteInteger(Convert.ToInt32((DateTime.Now - UnixTimestamp.FromUnixTimestamp(Ticket.Timestamp)).TotalMilliseconds)); // This should fix the overflow?
+                base.WriteInteger(Ticket.Priority); // Priority
+                base.WriteInteger(Ticket.Sender == null ? 0 : Ticket.Sender.Id); // Sender ID
+                base.WriteInteger(1);
+                base.WriteString(Ticket.Sender == null ? string.Empty : Ticket.Sender.Username); // Sender Name
+                base.WriteInteger(Ticket.Reported == null ? 0 : Ticket.Reported.Id); // Reported ID
+                base.WriteString(Ticket.Reported == null ? string.Empty : Ticket.Reported.Username); // Reported Name
+                base.WriteInteger(Ticket.Moderator == null ? 0 : Ticket.Moderator.Id); // Moderator ID
+                base.WriteString(Ticket.Moderator == null ? string.Empty : Ticket.Moderator.Username); // Mod Name
+                base.WriteString(Ticket.Issue); // Issue
+                base.WriteInteger(Ticket.Room == null ? 0 : Ticket.Room.Id); // Room Id
+                base.WriteInteger(0);//LOOP
             }
 
             base.WriteInteger(UserPresets.Count);

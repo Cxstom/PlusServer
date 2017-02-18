@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -11,26 +10,19 @@ using Plus.Core;
 
 using Plus.HabboHotel;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Users;
-using Plus.HabboHotel.Users.Messenger;
-using Plus.HabboHotel.Users.UserDataManagement;
-using Plus.Communication.Packets.Incoming;
-
-using Plus.Net;
 using Plus.Utilities;
 using log4net;
-
-using System.Data;
-using System.Security.Cryptography;
 using System.Collections.Concurrent;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.Communication.Encryption.Keys;
 using Plus.Communication.Encryption;
 
 using Plus.Database.Interfaces;
-using Plus.HabboHotel.Cache;
 using Plus.Database;
+using Plus.HabboHotel.Cache.Type;
+using Plus.HabboHotel.Users.UserData;
+using Plus.Messages.Net;
 
 namespace Plus
 {

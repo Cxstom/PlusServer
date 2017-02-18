@@ -9,45 +9,45 @@ namespace Plus.Communication.Packets.Outgoing.Groups
 {
     class BadgeEditorPartsComposer : ServerPacket
     {
-        public BadgeEditorPartsComposer(ICollection<GroupBases> Bases, ICollection<GroupSymbols> Symbols, ICollection<GroupBaseColours> BaseColours, Dictionary<int, GroupSymbolColours> SymbolColours,
-            Dictionary<int, GroupBackGroundColours> BackgroundColours)
-            : base(ServerPacketHeader.BadgeEditorPartsMessageComposer)
+        public BadgeEditorPartsComposer(ICollection<GroupBadgeParts> bases, ICollection<GroupBadgeParts> symbols, ICollection<GroupColours> baseColours, ICollection<GroupColours> symbolColours,
+          ICollection<GroupColours> backgroundColours)
+          : base(ServerPacketHeader.BadgeEditorPartsMessageComposer)
         {
-            base.WriteInteger(Bases.Count);
-            foreach (GroupBases Item in Bases)
+            base.WriteInteger(bases.Count);
+            foreach (GroupBadgeParts part in bases)
             {
-                base.WriteInteger(Item.Id);
-               base.WriteString(Item.Value1);
-               base.WriteString(Item.Value2);
+                base.WriteInteger(part.Id);
+                base.WriteString(part.AssetOne);
+                base.WriteString(part.AssetTwo);
             }
 
-            base.WriteInteger(Symbols.Count);
-            foreach (GroupSymbols Item in Symbols)
+            base.WriteInteger(symbols.Count);
+            foreach (GroupBadgeParts part in symbols)
             {
-                base.WriteInteger(Item.Id);
-               base.WriteString(Item.Value1);
-               base.WriteString(Item.Value2);
+                base.WriteInteger(part.Id);
+                base.WriteString(part.AssetOne);
+                base.WriteString(part.AssetTwo);
             }
 
-            base.WriteInteger(BaseColours.Count);
-            foreach (GroupBaseColours Colour in BaseColours)
+            base.WriteInteger(baseColours.Count);
+            foreach (GroupColours colour in baseColours)
             {
-                base.WriteInteger(Colour.Id);
-               base.WriteString(Colour.Colour);
+                base.WriteInteger(colour.Id);
+                base.WriteString(colour.Colour);
             }
 
-            base.WriteInteger(SymbolColours.Count);
-            foreach (GroupSymbolColours Colour in SymbolColours.Values.ToList())
+            base.WriteInteger(symbolColours.Count);
+            foreach (GroupColours colour in symbolColours)
             {
-                base.WriteInteger(Colour.Id);
-               base.WriteString(Colour.Colour);
+                base.WriteInteger(colour.Id);
+                base.WriteString(colour.Colour);
             }
 
-            base.WriteInteger(BackgroundColours.Count);
-            foreach (GroupBackGroundColours Colour in BackgroundColours.Values.ToList())
+            base.WriteInteger(backgroundColours.Count);
+            foreach (GroupColours colour in backgroundColours)
             {
-                base.WriteInteger(Colour.Id);
-               base.WriteString(Colour.Colour);
+                base.WriteInteger(colour.Id);
+                base.WriteString(colour.Colour);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Plus.Utilities
 {
-    public class TextHandling
+    public static class TextHandling
     {
         public static int Parse(string a)
         {

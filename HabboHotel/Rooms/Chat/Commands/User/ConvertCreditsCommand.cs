@@ -45,35 +45,30 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                     Session.SendWhisper("You currently have no items in your inventory!");
                     return;
                 }
-
-                foreach (DataRow Row in Table.Rows)
+                if (Table.Rows.Count > 0)
                 {
-                    Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(Convert.ToInt32(Row[0]));
-                    if (Item == null)
-                        continue;
-
-                    if (!Item.GetBaseItem().ItemName.StartsWith("CF_") && !Item.GetBaseItem().ItemName.StartsWith("CFC_"))
-                        continue;
-
-                    if (Item.RoomId > 0)
-                        continue;
-
-                    string[] Split = Item.GetBaseItem().ItemName.Split('_');
-                    int Value = int.Parse(Split[1]);
-                    
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                     {
-                        dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Item.Id + "' LIMIT 1");
-                    }
+                        foreach (DataRow Row in Table.Rows)
+                        {
+                            Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(Convert.ToInt32(Row[0]));
+                            if (Item == null || Item.RoomId > 0 || Item.Data.InteractionType != InteractionType.EXCHANGE)
+                                continue;
+                            
+                            int Value = Item.Data.BehaviourData;
 
-                    Session.GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
+                            dbClient.RunQuery("DELETE FROM `items` WHERE `id` = '" + Item.Id + "' LIMIT 1");
 
-                    TotalValue += Value;
+                            Session.GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
 
-                    if (Value > 0)
-                    {
-                        Session.GetHabbo().Credits += Value;
-                        Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                            TotalValue += Value;
+
+                            if (Value > 0)
+                            {
+                                Session.GetHabbo().Credits += Value;
+                                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                            }
+                        }
                     }
                 }
 

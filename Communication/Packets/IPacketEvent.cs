@@ -5,6 +5,6 @@ namespace Plus.Communication.Packets
 {
     public interface IPacketEvent
     {
-        void Parse(GameClient Session, ClientPacket Packet);
+        void Parse(GameClient session, ClientPacket packet);
     }
 }

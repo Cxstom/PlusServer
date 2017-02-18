@@ -100,7 +100,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 
             if (User2 != null && !User2.IsBot && User2.UserId != User.UserId)
             {
-                if (!User2.GetClient().GetHabbo().MutedUsers.Contains(Session.GetHabbo().Id))
+                if (!User2.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Session.GetHabbo().Id))
                 {
                     User2.GetClient().SendMessage(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
                 }

@@ -1,15 +1,9 @@
 ﻿using System;
-
-using Plus.Net;
 using Plus.Core;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users;
 using Plus.Communication.Interfaces;
-using Plus.HabboHotel.Users.UserDataManagement;
-
-using ConnectionManager;
-
 using Plus.Communication.Packets.Outgoing.Sound;
 using Plus.Communication.Packets.Outgoing.Rooms.Chat;
 using Plus.Communication.Packets.Outgoing.Handshake;
@@ -25,14 +19,12 @@ using Plus.Communication.Packets.Outgoing.BuildersClub;
 using Plus.HabboHotel.Moderation;
 
 using Plus.Database.Interfaces;
-using Plus.Utilities;
-using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Permissions;
 using Plus.Communication.Packets.Outgoing.Notifications;
-using Plus.Communication.Packets.Outgoing.Rooms.Session;
-using Plus.Communication.Packets.Outgoing.Campaigns;
-using Plus.Communication.Packets.Outgoing.Inventory.Purse;
+using Plus.Core.ConnectionManager;
+using Plus.HabboHotel.Users.UserData;
+using Plus.Messages.Net;
 
 namespace Plus.HabboHotel.GameClients
 {
@@ -217,7 +209,7 @@ namespace Plus.HabboHotel.GameClients
                           PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
-                          PlusEnvironment.GetGame().GetModerationTool().GetTickets));
+                          PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
                
                     if (!string.IsNullOrWhiteSpace(PlusEnvironment.GetDBConfig().DBData["welcome_message"]))

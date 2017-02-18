@@ -1,6 +1,6 @@
 ﻿using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Pathfinding;
 using Plus.HabboHotel.Rooms;
+using Plus.HabboHotel.Rooms.PathFinding;
 
 namespace Plus.HabboHotel.Items.Interactor
 {

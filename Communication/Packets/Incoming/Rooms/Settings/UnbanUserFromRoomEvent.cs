@@ -5,27 +5,29 @@ using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
 using Plus.Communication.Packets.Outgoing.Rooms.Settings;
+using Plus.HabboHotel.GameClients;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 {
     class UnbanUserFromRoomEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(GameClient session, ClientPacket packet)
         {
-            if (!Session.GetHabbo().InRoom)
+            if (!session.GetHabbo().InRoom)
                 return;
 
-            Room Instance = Session.GetHabbo().CurrentRoom;
-            if (Instance == null || !Instance.CheckRights(Session, true))
+            Room Instance = session.GetHabbo().CurrentRoom;
+            if (Instance == null || !Instance.CheckRights(session, true))
                 return;
 
-            int UserId = Packet.PopInt();
-            int RoomId = Packet.PopInt();
+            int UserId = packet.PopInt();
+            int RoomId = packet.PopInt();
 
-            if (Instance.BannedUsers().Contains(UserId))
+            if (Instance.GetBans().IsBanned(UserId))
             {
-                Instance.Unban(UserId);
-                Session.SendMessage(new UnbanUserFromRoomComposer(RoomId, UserId));
+                Instance.GetBans().Unban(UserId);
+
+                session.SendMessage(new UnbanUserFromRoomComposer(RoomId, UserId));
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Plus.HabboHotel.Pathfinding
+﻿namespace Plus.HabboHotel.Rooms.PathFinding
 {
     public static class Rotation
     {

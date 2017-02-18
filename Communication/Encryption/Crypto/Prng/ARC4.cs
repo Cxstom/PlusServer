@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Plus.Communication.Encryption.Crypto.Prng
+﻿namespace Plus.Communication.Encryption.Crypto.Prng
 {
     public class ARC4
     {

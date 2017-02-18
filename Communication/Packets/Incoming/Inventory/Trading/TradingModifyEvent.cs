@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using Plus.HabboHotel.Rooms;
+﻿using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Rooms.Trading;
+using Plus.Communication.Packets.Outgoing.Inventory.Trading;
 
 namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 {
@@ -15,19 +11,31 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             if (Session == null || Session.GetHabbo() == null || !Session.GetHabbo().InRoom)
                 return;
 
-            Room Room;
-
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Session.GetHabbo().CurrentRoomId, out Room))
-                return;
-            
-            if (!Room.CanTradeInRoom)
+            Room Room = Session.GetHabbo().CurrentRoom;
+            if (Room == null)
                 return;
 
-            Trade Trade = Room.GetUserTrade(Session.GetHabbo().Id);
-            if (Trade == null)
+            RoomUser RoomUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
+            if (RoomUser == null)
                 return;
 
-            Trade.Unaccept(Session.GetHabbo().Id);
+            Trade Trade = null;
+            if (!Room.GetTrading().TryGetTrade(RoomUser.TradeId, out Trade))
+            {
+                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                return;
+            }
+
+            if (!Trade.CanChange)
+                return;
+
+            TradeUser User = Trade.Users[0];
+
+            if (User.RoomUser != RoomUser)
+                User = Trade.Users[1];
+
+            User.HasAccepted = false;
+            Trade.SendPacket(new TradingAcceptComposer(Session.GetHabbo().Id, false));
         }
     }
 }

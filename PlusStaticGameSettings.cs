@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-namespace Plus
+﻿namespace Plus
 {
-    class PlusStaticGameSettings
+    static class PlusStaticGameSettings
     {
         /// <summary>
         ///     The amount of credits a user will recieve every x minutes

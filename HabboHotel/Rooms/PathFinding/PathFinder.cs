@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Plus.HabboHotel.Rooms;
 
-namespace Plus.HabboHotel.Pathfinding
+namespace Plus.HabboHotel.Rooms.PathFinding
 {
     public class PathFinder
     {

@@ -7,346 +7,228 @@ using Plus.HabboHotel.Items;
 using Plus.Communication.Packets.Outgoing.Inventory.Trading;
 using Plus.Communication.Packets.Outgoing;
 using Plus.Database.Interfaces;
+using Plus.Communication.Packets.Outgoing.Moderation;
+using Plus.Communication.Packets.Outgoing.Inventory.Furni;
+using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
 namespace Plus.HabboHotel.Rooms.Trading
 {
-    public class Trade
+    public sealed class Trade
     {
-        private readonly int RoomId;
-        public TradeUser[] Users;
+        public int Id { get; set; }
+        public TradeUser[] Users { get; set; }
+        public bool CanChange { get; set; }
 
-        private readonly int oneId;
-        private readonly int twoId;
-        private int TradeStage;
+        private Room Instance = null;
 
-        public Trade(int UserOneId, int UserTwoId, int RoomId)
+        public Trade(int Id, RoomUser Player1, RoomUser Player2, Room Instance)
         {
-            oneId = UserOneId;
-            twoId = UserTwoId;
+            this.Id = Id;
+            this.CanChange = true;
+            this.Instance = Instance;
+            this.Users = new TradeUser[2];
+            this.Users[0] = new TradeUser(Player1);
+            this.Users[1] = new TradeUser(Player2);
 
-            Users = new TradeUser[2];
-            Users[0] = new TradeUser(UserOneId, RoomId);
-            Users[1] = new TradeUser(UserTwoId, RoomId);
-            TradeStage = 1;
-            this.RoomId = RoomId;
-
-            foreach (TradeUser User in Users.ToList())
-            {
-                if (!User.GetRoomUser().Statusses.ContainsKey("trd"))
-                {
-                    User.GetRoomUser().AddStatus("trd", "");
-                    User.GetRoomUser().UpdateNeeded = true;
-                }
-            }
-
-            SendMessageToUsers(new TradingStartComposer(UserOneId, UserTwoId));
+            Player1.IsTrading = true;
+            Player1.TradeId = this.Id;
+            Player1.TradePartner = Player2.UserId;
+            Player2.IsTrading = true;
+            Player2.TradeId = this.Id;
+            Player2.TradePartner = Player1.UserId;
         }
 
-        public bool AllUsersAccepted
+        public void SendPacket(ServerPacket Packet)
+        {
+            foreach (TradeUser TradeUser in this.Users)
+            {
+                if (TradeUser == null || TradeUser.RoomUser == null || TradeUser.RoomUser.GetClient() == null)
+                    continue;
+
+                TradeUser.RoomUser.GetClient().SendMessage(Packet);
+            }
+        }
+
+        public void RemoveAccepted()
+        {
+            foreach (TradeUser User in this.Users)
+            {
+                if (User == null)
+                    continue;
+
+                User.HasAccepted = false;
+            }
+        }
+
+        public bool AllAccepted
         {
             get
             {
-                for (int i = 0; i < Users.Length; i++)
+                foreach (TradeUser User in this.Users)
                 {
-                    if (Users[i] == null)
+                    if (User == null)
                         continue;
-                    if (!Users[i].HasAccepted)
+
+                    if (!User.HasAccepted)
+                    {
                         return false;
+                    }
                 }
 
                 return true;
             }
         }
 
-        public bool ContainsUser(int Id)
+        public void EndTrade(int UserId)
         {
-            for (int i = 0; i < Users.Length; i++)
+            foreach (TradeUser TradeUser in this.Users)
             {
-                if (Users[i] == null)
-                    continue;
-                if (Users[i].UserId == Id)
-                    return true;
-            }
-
-            return false;
-        }
-
-        public TradeUser GetTradeUser(int Id)
-        {
-            for (int i = 0; i < Users.Length; i++)
-            {
-                if (Users[i] == null)
-                    continue;
-                if (Users[i].UserId == Id)
-                    return Users[i];
-            }
-
-            return null;
-        }
-
-        public void OfferItem(int UserId, Item Item)
-        {
-            TradeUser User = GetTradeUser(UserId);
-
-            if (User == null || Item == null || !Item.GetBaseItem().AllowTrade || User.HasAccepted || TradeStage != 1)
-            {
-                return;
-            }
-
-            ClearAccepted();
-
-            if (!User.OfferedItems.Contains(Item))
-                User.OfferedItems.Add(Item);
-
-            UpdateTradeWindow();
-        }
-
-        public void TakeBackItem(int UserId, Item Item)
-        {
-            TradeUser User = GetTradeUser(UserId);
-
-            if (User == null || Item == null || User.HasAccepted || TradeStage != 1)
-            {
-                return;
-            }
-
-            ClearAccepted();
-
-            User.OfferedItems.Remove(Item);
-            UpdateTradeWindow();
-        }
-
-        public void Accept(int UserId)
-        {
-            TradeUser User = GetTradeUser(UserId);
-
-            if (User == null || TradeStage != 1)
-            {
-                return;
-            }
-
-            User.HasAccepted = true;
-
-            SendMessageToUsers(new TradingAcceptComposer(UserId, true));
-
-
-            if (AllUsersAccepted)
-            {
-                SendMessageToUsers(new TradingCompleteComposer());
-                TradeStage++;
-                ClearAccepted();
-            }
-        }
-
-        public void Unaccept(int UserId)
-        {
-            TradeUser User = GetTradeUser(UserId);
-
-            if (User == null || TradeStage != 1 || AllUsersAccepted)
-            {
-                return;
-            }
-
-            User.HasAccepted = false;
-
-            SendMessageToUsers(new TradingAcceptComposer(UserId, false));
-        }
-
-        public void CompleteTrade(int UserId)
-        {
-            TradeUser User = GetTradeUser(UserId);
-
-            if (User == null || TradeStage != 2)
-            {
-                return;
-            }
-
-            User.HasAccepted = true;
-
-            SendMessageToUsers(new TradingConfirmedComposer(UserId, true));
-
-            if (AllUsersAccepted)
-            {
-                TradeStage = 999;
-                Finnito();
-            }
-        }
-
-        private void Finnito()
-        {
-            try
-            {
-                DeliverItems();
-                CloseTradeClean();
-            }
-            catch (Exception e)
-            {
-                Logging.LogThreadException(e.ToString(), "Trade task");
-            }
-        }
-
-        public void ClearAccepted()
-        {
-            foreach (TradeUser User in Users.ToList())
-            {
-                User.HasAccepted = false;
-            }
-        }
-
-        public void UpdateTradeWindow()
-        {
-            foreach (TradeUser User in this.Users.ToList())
-            {
-                if (User == null)
+                if (TradeUser == null || TradeUser.RoomUser == null)
                     continue;
 
-                SendMessageToUsers(new TradingUpdateComposer(this));
+                this.RemoveTrade(TradeUser.RoomUser.UserId);
             }
+
+            this.SendPacket(new TradingClosedComposer(UserId));
+            Instance.GetTrading().RemoveTrade(this.Id);
         }
 
-        public void DeliverItems()
+        public void Finish()
         {
-            // List items
-            List<Item> ItemsOne = GetTradeUser(oneId).OfferedItems;
-            List<Item> ItemsTwo = GetTradeUser(twoId).OfferedItems;
-
-            string User1 = "";
-            string User2 = "";
-
-            // Verify they are still in user inventory
-            foreach (Item I in ItemsOne.ToList())
+            foreach (TradeUser TradeUser in this.Users)
             {
+                if (TradeUser == null)
+                    continue;
+
+                this.RemoveTrade(TradeUser.RoomUser.UserId);
+            }
+
+            this.ProcessItems();
+            this.SendPacket(new TradingFinishComposer());
+
+            Instance.GetTrading().RemoveTrade(this.Id);
+        }
+
+        public void RemoveTrade(int UserId)
+        {
+            TradeUser TradeUser = this.Users[0];
+
+            if (TradeUser.RoomUser.UserId != UserId)
+            {
+                TradeUser = this.Users[1];
+            }
+
+            TradeUser.RoomUser.RemoveStatus("trd");
+            TradeUser.RoomUser.UpdateNeeded = true;
+            TradeUser.RoomUser.IsTrading = false;
+            TradeUser.RoomUser.TradeId = 0;
+            TradeUser.RoomUser.TradePartner = 0;
+        }
+
+        public void ProcessItems()
+        {
+            List<Item> UserOne = this.Users[0].OfferedItems.Values.ToList();
+            List<Item> UserTwo = this.Users[1].OfferedItems.Values.ToList();
+
+            RoomUser RoomUserOne = this.Users[0].RoomUser;
+            RoomUser RoomUserTwo = this.Users[1].RoomUser;
+
+            string logUserOne = "";
+            string logUserTwo = "";
+
+            if (RoomUserOne == null || RoomUserOne.GetClient() == null || RoomUserOne.GetClient().GetHabbo() == null || RoomUserOne.GetClient().GetHabbo().GetInventoryComponent() == null)
+                return;
+
+            if (RoomUserTwo == null || RoomUserTwo.GetClient() == null || RoomUserTwo.GetClient().GetHabbo() == null || RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent() == null)
+                return;
+
+            foreach (Item Item in UserOne)
+            {
+                Item I = RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().GetItem(Item.Id);
+
                 if (I == null)
-                    continue;
-
-                if (GetTradeUser(oneId).GetClient().GetHabbo().GetInventoryComponent().GetItem(I.Id) == null)
                 {
-                    GetTradeUser(oneId).GetClient().SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("trade_failed"));
-                    GetTradeUser(twoId).GetClient().SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("trade_failed"));
+                    this.SendPacket(new BroadcastMessageAlertComposer("Error! Trading Failed!"));
                     return;
                 }
-                User1 += I.Id + ";";
             }
 
-            foreach (Item I in ItemsTwo.ToList())
+            foreach (Item Item in UserTwo)
             {
+                Item I = RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().GetItem(Item.Id);
+
                 if (I == null)
-                    continue;
-
-                if (GetTradeUser(twoId).GetClient().GetHabbo().GetInventoryComponent().GetItem(I.Id) == null)
                 {
-                    GetTradeUser(oneId).GetClient().SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("trade_failed"));
-                    GetTradeUser(twoId).GetClient().SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("trade_failed"));
-
+                    this.SendPacket(new BroadcastMessageAlertComposer("Error! Trading Failed!"));
                     return;
-                }
-                User2 += I.Id + ";";
-            }
-
-
-            // Deliver them
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                foreach (Item I in ItemsOne.ToList())
-                {
-                    if (I == null)
-                        continue;
-
-                    GetTradeUser(oneId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(I.Id);
-
-                    dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE `id` = @id LIMIT 1");
-                    dbClient.AddParameter("user", twoId);
-                    dbClient.AddParameter("id", I.Id);
-                    dbClient.RunQuery();
-
-                    GetTradeUser(twoId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(I.Id, I.BaseItem, I.ExtraData, I.GroupId, false, false, I.LimitedNo, I.LimitedTot);
-                }
-
-                foreach (Item I in ItemsTwo.ToList())
-                {
-                    if (I == null)
-                        continue;
-
-                    GetTradeUser(twoId).GetClient().GetHabbo().GetInventoryComponent().RemoveItem(I.Id);
-
-                    dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE `id` = @id LIMIT 1");
-                    dbClient.AddParameter("user", oneId);
-                    dbClient.AddParameter("id", I.Id);
-                    dbClient.RunQuery();
-
-                    GetTradeUser(oneId).GetClient().GetHabbo().GetInventoryComponent().AddNewItem(I.Id, I.BaseItem, I.ExtraData, I.GroupId, false, false, I.LimitedNo, I.LimitedTot);
                 }
             }
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
+                foreach (Item Item in UserOne)
+                {
+                    logUserOne += Item.Id + ";";
+                    RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    {
+                        RoomUserTwo.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
+                        RoomUserTwo.GetClient().SendMessage(new CreditBalanceComposer(RoomUserTwo.GetClient().GetHabbo().Credits));
+
+                        dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @id LIMIT 1");
+                        dbClient.AddParameter("id", Item.Id);
+                        dbClient.RunQuery();
+                    }
+                    else
+                    {
+                        if (RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().TryAddItem(Item))
+                        {
+                            RoomUserTwo.GetClient().SendMessage(new FurniListAddComposer(Item));
+                            RoomUserTwo.GetClient().SendMessage(new FurniListNotificationComposer(Item.Id, 1));
+
+                            dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE id=@id LIMIT 1");
+                            dbClient.AddParameter("user", RoomUserTwo.UserId);
+                            dbClient.AddParameter("id", Item.Id);
+                            dbClient.RunQuery();
+                        }
+                    }
+                }
+
+                foreach (Item Item in UserTwo)
+                {
+                    logUserTwo += Item.Id + ";";
+                    RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    {
+                        RoomUserOne.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
+                        RoomUserOne.GetClient().SendMessage(new CreditBalanceComposer(RoomUserOne.GetClient().GetHabbo().Credits));
+
+                        dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @id LIMIT 1");
+                        dbClient.AddParameter("id", Item.Id);
+                        dbClient.RunQuery();
+                    }
+                    else
+                    {
+                        if (RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().TryAddItem(Item))
+                        {
+                            RoomUserOne.GetClient().SendMessage(new FurniListAddComposer(Item));
+                            RoomUserOne.GetClient().SendMessage(new FurniListNotificationComposer(Item.Id, 1));
+
+                            dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE id=@id LIMIT 1");
+                            dbClient.AddParameter("user", RoomUserOne.UserId);
+                            dbClient.AddParameter("id", Item.Id);
+                            dbClient.RunQuery();
+                        }
+                    }
+                }
+
                 dbClient.SetQuery("INSERT INTO `logs_client_trade` VALUES(null, @1id, @2id, @1items, @2items, UNIX_TIMESTAMP())");
-                dbClient.AddParameter("1id", oneId);
-                dbClient.AddParameter("2id", twoId);
-                dbClient.AddParameter("1items", User1);
-                dbClient.AddParameter("2items", User2);
+                dbClient.AddParameter("1id", RoomUserOne.UserId);
+                dbClient.AddParameter("2id", RoomUserTwo.UserId);
+                dbClient.AddParameter("1items", logUserOne);
+                dbClient.AddParameter("2items", logUserTwo);
                 dbClient.RunQuery();
             }
-
-
-            // Update inventories
-            GetTradeUser(oneId).GetClient().GetHabbo().GetInventoryComponent().UpdateItems(false);
-            GetTradeUser(twoId).GetClient().GetHabbo().GetInventoryComponent().UpdateItems(false);
-        }
-
-        public void CloseTradeClean()
-        {
-            foreach (TradeUser User in this.Users.ToList())
-            {
-                if (User == null || User.GetRoomUser() == null)
-                    continue;
-
-                if (User.GetRoomUser().Statusses.ContainsKey("trd"))
-                {
-                    User.GetRoomUser().RemoveStatus("trd");
-                    User.GetRoomUser().UpdateNeeded = true;
-                }
-            }
-
-            SendMessageToUsers(new TradingFinishComposer());
-            GetRoom().ActiveTrades.Remove(this);
-        }
-
-        public void CloseTrade(int UserId)
-        {
-            foreach (TradeUser User in this.Users.ToList())
-            {
-                if (User == null || User.GetRoomUser() == null)
-                    continue;
-
-                if (User.GetRoomUser().Statusses.ContainsKey("trd"))
-                {
-                    User.GetRoomUser().RemoveStatus("trd");
-                    User.GetRoomUser().UpdateNeeded = true;
-                }
-            }
-
-            SendMessageToUsers(new TradingClosedComposer(UserId));
-        }
-
-        public void SendMessageToUsers(ServerPacket Message)
-        {
-            foreach (TradeUser User in this.Users.ToList())
-            {
-                if (User == null || User.GetClient() == null)
-                    continue;
-
-                User.GetClient().SendMessage(Message);
-            }
-        }
-
-        private Room GetRoom()
-        {
-            Room Room;
-            if (PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
-                return Room;
-
-            return null;
         }
     }
 }

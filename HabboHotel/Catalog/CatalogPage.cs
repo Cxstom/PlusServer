@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Plus.HabboHotel.Catalog
 {
@@ -21,11 +19,10 @@ namespace Plus.HabboHotel.Catalog
         private List<string> _pageStrings2;
 
         private Dictionary<int, CatalogItem> _items;
-        private Dictionary<int, CatalogDeal> _deals;
         private Dictionary<int, CatalogItem> _itemOffers;
 
         public CatalogPage(int Id, int ParentId, string Enabled, string Caption, string PageLink, int Icon, int MinRank, int MinVIP,
-              string Visible, string Template, string PageStrings1, string PageStrings2, Dictionary<int, CatalogItem> Items, Dictionary<int, CatalogDeal> Deals, ref Dictionary<int, int> flatOffers)
+              string Visible, string Template, string PageStrings1, string PageStrings2, Dictionary<int, CatalogItem> Items, ref Dictionary<int, int> flatOffers)
         {
             this._id = Id;
             this._parentId = ParentId;
@@ -51,7 +48,6 @@ namespace Plus.HabboHotel.Catalog
             }
 
             this._items = Items;
-            this._deals = Deals;
 
             this._itemOffers = new Dictionary<int, CatalogItem>();
             foreach (int i in flatOffers.Keys)
@@ -147,13 +143,7 @@ namespace Plus.HabboHotel.Catalog
             get { return this._items; }
             private set { this._items = value; }
         }
-
-        public Dictionary<int, CatalogDeal> Deals
-        {
-            get { return this._deals; }
-            private set { this._deals = value; }
-        }
-
+        
         public Dictionary<int, CatalogItem> ItemOffers
         {
             get { return this._itemOffers; }

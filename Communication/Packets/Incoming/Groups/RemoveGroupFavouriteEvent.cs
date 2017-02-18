@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             {
                 RoomUser User = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                 if (User != null)
-                    Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer(Session.GetHabbo().Id, null, User.VirtualId));
+                    Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer(null, User.VirtualId));
                 Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
             }
             else

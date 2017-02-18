@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Collections.Generic;
 using Plus.Database.Interfaces;
-using Plus.HabboHotel.Catalog;
-using Plus.HabboHotel.Users.Inventory.Bots;
+using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.AI;
+using Plus.HabboHotel.Users.Inventory.Bots;
 
-
-
-namespace Plus.HabboHotel.Items.Utilities
+namespace Plus.HabboHotel.Catalog.Utilities
 {
     public static class BotUtility
     {

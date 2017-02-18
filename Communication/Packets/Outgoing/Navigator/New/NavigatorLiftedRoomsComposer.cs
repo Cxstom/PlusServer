@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-namespace Plus.Communication.Packets.Outgoing.Navigator
+﻿namespace Plus.Communication.Packets.Outgoing.Navigator.New
 {
     class NavigatorLiftedRoomsComposer : ServerPacket
     {

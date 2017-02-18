@@ -1,4 +1,4 @@
-﻿namespace Enclosure.Algorithm
+﻿namespace Plus.Utilities.Enclosure.Algorithm
 {
     public class GametileUpdate
     {

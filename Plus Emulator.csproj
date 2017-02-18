@@ -224,9 +224,9 @@
     <Compile Include="Communication\Packets\Incoming\Moderation\SubmitNewTicketEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\EditRoomEventEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\GetNavigatorFlatsEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\FindRandomFriendingRoomEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\InitializeNewNavigatorEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Navigator\New\NewNavigatorSearchEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\FindRandomFriendingRoomEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\InitializeNewNavigatorEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\NavigatorSearchEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Quests\GetDailyQuestEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Action\RemoveMyRightsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\LoveLocks\ConfirmLoveLockEvent.cs" />
@@ -237,6 +237,7 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Settings\SaveEnforcedCategorySettingsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Sound\GetSongInfoEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Talents\GetTalentTrackEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Users\GetIgnoredUsersEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\GetUserTagsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\SetUserFocusPreferenceEvent.cs" />
     <Compile Include="Communication\Packets\Outgoing\Availability\MaintenanceStatusComposer.cs" />
@@ -344,7 +345,6 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Settings\UnbanUserFromRoomEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\ChangeNameEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\CheckValidNameEvent.cs" />
-    <Compile Include="Communication\Packets\Incoming\Users\SetUsernameEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Users\SetMessengerInviteStatusEvent.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\CatalogOfferComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\CatalogUpdatedComposer.cs" />
@@ -385,6 +385,7 @@
     <Compile Include="Communication\Packets\Outgoing\Messenger\NewBuddyRequestComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Messenger\RoomInviteComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\BroadcastMessageAlertComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Moderation\CallForHelpPendingCallsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\CfhTopicsInitComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\ModeratorInitComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\ModeratorRoomChatlogComposer.cs" />
@@ -598,6 +599,7 @@
     <Compile Include="Communication\Packets\Outgoing\Users\GetRelationshipsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\HabboGroupBadgesComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\HabboUserBadgesComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Users\IgnoredUsersComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\NameChangeUpdateComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\ProfileInformationComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\RespectNotificationComposer.cs" />
@@ -624,6 +626,9 @@
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherManager.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherType.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherUtility.cs" />
+    <Compile Include="HabboHotel\Groups\BadgePartUtility.cs" />
+    <Compile Include="HabboHotel\Groups\GroupColours.cs" />
+    <Compile Include="HabboHotel\Groups\GroupBadgeParts.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorCounter.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorLoveLock.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\ActorHasHandItemBox.cs" />
@@ -818,7 +823,9 @@
     <Compile Include="HabboHotel\Rooms\Chat\Styles\ChatStyleManager.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Freeze\FreezePowerUp.cs" />
     <Compile Include="HabboHotel\Rooms\Games\Teams\Team.cs" />
+    <Compile Include="HabboHotel\Rooms\Instance\BansComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\FilterComponent.cs" />
+    <Compile Include="HabboHotel\Rooms\Instance\TradingComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\WiredComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Polls\RoomPollManager.cs" />
     <Compile Include="HabboHotel\Rooms\RoomAccess.cs" />
@@ -826,10 +833,8 @@
     <Compile Include="HabboHotel\Rooms\RoomAppender.cs" />
     <Compile Include="HabboHotel\Rooms\RoomPromotion.cs" />
     <Compile Include="HabboHotel\Rooms\Trading\TradeUser.cs" />
-    <Compile Include="HabboHotel\Rooms\Chat\Moderation\ModerationRoomChatLog.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionData.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionManager.cs" />
-    <Compile Include="HabboHotel\Support\TicketStatus.cs" />
     <Compile Include="HabboHotel\Surveys\Question.cs" />
     <Compile Include="HabboHotel\Surveys\SurveyManager.cs" />
     <Compile Include="HabboHotel\Talents\TalentTrackSubLevel.cs" />
@@ -842,6 +847,7 @@
     <Compile Include="HabboHotel\Users\Effects\AvatarEffect.cs" />
     <Compile Include="HabboHotel\Users\Effects\AvatarEffectFactory.cs" />
     <Compile Include="HabboHotel\Users\Effects\EffectsComponent.cs" />
+    <Compile Include="HabboHotel\Users\Ignores\IgnoresComponent.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Bots\Bot.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Bots\BotLoader.cs" />
     <Compile Include="HabboHotel\Users\Inventory\Pets\PetLoader.cs" />
@@ -859,7 +865,6 @@
     <Compile Include="HabboHotel\Catalog\CatalogBot.cs" />
     <Compile Include="HabboHotel\Groups\Group.cs" />
     <Compile Include="HabboHotel\Groups\GroupManager.cs" />
-    <Compile Include="HabboHotel\Groups\GroupParts.cs" />
     <Compile Include="HabboHotel\Items\ItemHopperFinder.cs" />
     <Compile Include="HabboHotel\Items\Interactor\IFurniInteractor.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorAlert.cs" />
@@ -962,14 +967,11 @@
     <Compile Include="HabboHotel\Rooms\Trading\Trade.cs" />
     <Compile Include="HabboHotel\Rooms\RoomUserManager.cs" />
     <Compile Include="HabboHotel\Moderation\ModerationBan.cs" />
-    <Compile Include="HabboHotel\Support\ModerationTool.cs" />
-    <Compile Include="HabboHotel\Support\SupportTicket.cs" />
     <Compile Include="HabboHotel\Users\Authenticator\Authenticator.cs" />
     <Compile Include="HabboHotel\Users\Authenticator\IncorrectLoginException.cs" />
     <Compile Include="HabboHotel\Users\Badges\Badge.cs" />
     <Compile Include="HabboHotel\Users\Badges\BadgeComponent.cs" />
     <Compile Include="HabboHotel\Users\Habbo.cs" />
-    <Compile Include="HabboHotel\Users\Inventory\Effects\AvatarEffectsInventoryComponent.cs" />
     <Compile Include="HabboHotel\Users\Inventory\InventoryComponent.cs" />
     <Compile Include="HabboHotel\Users\Messenger\HabboMessenger.cs" />
     <Compile Include="HabboHotel\Users\Messenger\MessengerBuddy.cs" />
@@ -1047,6 +1049,7 @@
   <ItemGroup>
     <Folder Include="Communication\Packets\Incoming\Rooms\Groups\" />
     <Folder Include="HabboHotel\Rooms\Chat\Commands\Roleplay\Generic\" />
+    <Folder Include="HabboHotel\Rooms\Chat\Moderation\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

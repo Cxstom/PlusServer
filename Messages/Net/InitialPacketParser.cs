@@ -1,7 +1,7 @@
-﻿using SharedPacketLib;
-using System;
+﻿using System;
+using Plus.Core.ConnectionManager;
 
-namespace Plus.Net
+namespace Plus.Messages.Net
 {
     public class InitialPacketParser : IDataParser
     {

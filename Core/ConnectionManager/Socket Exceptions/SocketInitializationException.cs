@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConnectionManager.Socket_Exceptions
+namespace Plus.Core.ConnectionManager.Socket_Exceptions
 {
     public class SocketInitializationException : Exception
     {
