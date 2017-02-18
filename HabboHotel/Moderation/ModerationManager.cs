@@ -24,9 +24,7 @@ namespace Plus.HabboHotel.Moderation
 
         public ModerationManager()
         {
-            this.Init();
 
-            log.Info("Moderation Manager -> LOADED");
         }
 
         public void Init()

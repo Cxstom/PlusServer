@@ -37,7 +37,7 @@ namespace Plus.HabboHotel
         
         private readonly PacketManager _packetManager;
         private readonly GameClientManager _clientManager;
-        private readonly ModerationManager _modManager;
+        private readonly ModerationManager _moderationManager;
         private readonly ItemDataManager _itemDataManager;
         private readonly CatalogManager _catalogManager;
         private readonly TelevisionManager _televisionManager;//TODO: Initialize from the item manager.
@@ -69,7 +69,10 @@ namespace Plus.HabboHotel
         {
             this._packetManager = new PacketManager();
             this._clientManager = new GameClientManager();
-            this._modManager = new ModerationManager();
+
+            this._moderationManager = new ModerationManager();
+            this._moderationManager.Init();
+
             this._itemDataManager = new ItemDataManager();
             this._itemDataManager.Init();
 
@@ -186,7 +189,7 @@ namespace Plus.HabboHotel
 
         public ModerationManager GetModerationManager()
         {
-            return this._modManager;
+            return this._moderationManager;
         }
 
         public PermissionManager GetPermissionManager()
