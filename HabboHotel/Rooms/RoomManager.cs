@@ -67,7 +67,7 @@ namespace Plus.HabboHotel.Rooms
                             {
                                 Room.isCrashed = true;
                                 UnloadRoom(Room);
-                                Logging.WriteLine("[RoomMgr] Room crashed (task didn't complete within 30 seconds): " + Room.RoomId);
+                               // Logging.WriteLine("[RoomMgr] Room crashed (task didn't complete within 30 seconds): " + Room.RoomId);
                             }
                         }
                     }
@@ -75,7 +75,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Issue with the RoomManager: " + e);
+                Logger.LogException(e);
             }
         }
 

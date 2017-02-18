@@ -22,9 +22,9 @@ using Plus.Database.Interfaces;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Permissions;
 using Plus.Communication.Packets.Outgoing.Notifications;
-using Plus.Core.ConnectionManager;
+using Plus.Communication.ConnectionManager;
 using Plus.HabboHotel.Users.UserData;
-using Plus.Messages.Net;
+using Plus.Communication;
 
 namespace Plus.HabboHotel.GameClients
 {
@@ -66,7 +66,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogPacketException(Message.ToString(), e.ToString());
+                Logger.LogException(e);
             }
         }
 
@@ -221,7 +221,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Bug during user login: " + e);
+                Logger.LogException(e);
             }
             return false;
         }
@@ -287,9 +287,8 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                Logger.LogException(e);
             }
-
 
             if (!_disconnected)
             {

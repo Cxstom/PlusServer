@@ -40,14 +40,14 @@ namespace Plus.Database
             try
             {
                 IDatabaseClient DbConnection = new DatabaseConnection(this._connectionStr);
-
+              
                 DbConnection.connect();
 
                 return DbConnection.GetQueryReactor();
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                Logger.LogException(e);
                 return null;
             }
         }

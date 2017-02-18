@@ -1472,7 +1472,10 @@ namespace Plus.HabboHotel.Items
                     }
                 }
             }
-            catch (Exception e) { Logging.LogException(e.ToString()); }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
         public static string[] RandomizeStrings(string[] arr)

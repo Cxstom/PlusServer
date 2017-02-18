@@ -42,21 +42,25 @@ namespace Plus
 
             while (true)
             {
-                Console.CursorVisible = true;
-                if (Logging.DisabledState)
+                if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+                {
                     Console.Write("plus> ");
+                    string Input = Console.ReadLine();
 
-                ConsoleCommandHandler.InvokeCommand(Console.ReadLine());
-                continue;
+                    if (Input.Length > 0)
+                    {
+                        string s = Input.Split(' ')[0];
+
+                        ConsoleCommands.InvokeCommand(s);
+                    }
+                }
             }
         }
 
-
         private static void MyHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            Logging.DisablePrimaryWriting(true);
             var e = (Exception) args.ExceptionObject;
-            Logging.LogCriticalException("SYSTEM CRITICAL EXCEPTION: " + e);
+            //Logger.LogCriticalException("SYSTEM CRITICAL EXCEPTION: " + e);
             PlusEnvironment.PerformShutDown();
         }
 

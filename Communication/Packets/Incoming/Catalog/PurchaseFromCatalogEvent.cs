@@ -111,7 +111,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     }
                     catch (Exception e)
                     {
-                        Logging.LogException(e.ToString());
+                        Logger.LogException(e);
                         return;
                     }
 
@@ -134,7 +134,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     }
                     catch (Exception e)
                     {
-                        Logging.HandleException(e, "Catalog.HandlePurchase: " + ExtraData);
+                        Logger.LogException(e);
                     }
 
                     ExtraData = Number.ToString().Replace(',', '.');

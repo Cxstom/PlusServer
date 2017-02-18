@@ -467,7 +467,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                 }
             }
-            catch (Exception e) { Logging.HandleException(e, "Room.CheckRights"); }
+            catch (Exception e) { Logger.LogException(e); }
             return false;
         }
 
@@ -537,13 +537,13 @@ namespace Plus.HabboHotel.Rooms
                 try { GetRoomItemHandler().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room items." + e.ToString());
+                    Logger.LogException(e);
                 }
 
                 try { GetRoomUserManager().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room users." + e.ToString());
+                    Logger.LogException(e);
                 }
 
                 #region Status Updates
@@ -553,7 +553,7 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room user statuses." + e.ToString());
+                    Logger.LogException(e);
                 }
                 #endregion
 
@@ -565,29 +565,26 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the game items." + e.ToString());
+                    Logger.LogException(e);
                 }
                 #endregion
 
                 try { GetWired().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling wired." + e.ToString());
+                    Logger.LogException(e);
                 }
 
             }
             catch (Exception e)
             {
-                Logging.WriteLine("Room ID [" + RoomId + "] has crashed.");
-                Logging.LogException("Room ID [" + RoomId + "] has crashed." + e.ToString());
+                Logger.LogException(e);
                 OnRoomCrash(e);
             }
         }
 
         private void OnRoomCrash(Exception e)
         {
-            Logging.LogThreadException(e.ToString(), "Room cycle task for room " + RoomId);
-
             try
             {
                 foreach (RoomUser user in _roomUserManager.GetRoomUsers().ToList())
@@ -601,10 +598,15 @@ namespace Plus.HabboHotel.Rooms
                     {
                         GetRoomUserManager().RemoveUserFromRoom(user.GetClient(), true, false);
                     }
-                    catch (Exception e2) { Logging.LogException(e2.ToString()); }
+                    catch (Exception e2)
+                    {
+                        Logger.LogException(e2); }
                 }
             }
-            catch (Exception e3) { Logging.LogException(e3.ToString()); }
+            catch (Exception e3)
+            {
+                Logger.LogException(e3);
+            }
 
             isCrashed = true;
             PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(this, true);
@@ -764,7 +766,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.HandleException(e, "Room.SendMessage");
+                Logger.LogException(e);
             }
         }
 
@@ -810,7 +812,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.HandleException(e, "Room.SendMessage List<ServerPacket>");
+                Logger.LogException(e);
             }
         }
         #endregion

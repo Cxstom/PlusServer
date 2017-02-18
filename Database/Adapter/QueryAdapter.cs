@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using MySql.Data.MySqlClient;
-using Plus.Core.ConsoleWriter;
 using Plus.Database.Interfaces;
+using Plus.Core;
 
 namespace Plus.Database.Adapter
 {
@@ -11,17 +11,12 @@ namespace Plus.Database.Adapter
         protected IDatabaseClient client;
         protected MySqlCommand command;
 
-
         public bool dbEnabled = true;
+
         public QueryAdapter(IDatabaseClient Client)
         {
             client = Client;
         }
-
-        /*private static bool dbEnabled
-        {
-            get { return DatabaseManager.dbEnabled; }
-        }*/
 
         public void AddParameter(string parameterName, object val)
         {
@@ -40,7 +35,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
 
             return hasRows;
@@ -59,7 +54,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                Logger.LogQueryError(command.CommandText, exception);
             }
 
             return result;
@@ -82,7 +77,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
 
             return row;
@@ -101,7 +96,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
 
             return str;
@@ -122,7 +117,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
 
             return dataTable;
@@ -161,7 +156,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
             return lastInsertedId;
         }
@@ -177,7 +172,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+Logger.LogQueryError(command.CommandText, exception);
             }
         }
     }

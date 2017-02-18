@@ -98,39 +98,39 @@ namespace Plus.HabboHotel.Cache.Process
                         }
                         catch (Exception e)
                         {
-                            Logging.LogCacheException(e.ToString());
+                            Logger.LogException(e);
                         }
                     }
                 }
 
                 CacheList = null;
 
-                    List<Habbo> CachedUsers = PlusEnvironment.GetUsersCached().ToList();
-                    if (CachedUsers.Count > 0)
+                List<Habbo> CachedUsers = PlusEnvironment.GetUsersCached().ToList();
+                if (CachedUsers.Count > 0)
+                {
+                    foreach (Habbo Data in CachedUsers)
                     {
-                        foreach (Habbo Data in CachedUsers)
+                        try
                         {
-                            try
-                            {
-                                if (Data == null)
-                                    continue;
+                            if (Data == null)
+                                continue;
 
-                                Habbo Temp = null;
+                            Habbo Temp = null;
 
-                                if (Data.CacheExpired())
-                                    PlusEnvironment.RemoveFromCache(Data.Id, out Temp);
+                            if (Data.CacheExpired())
+                                PlusEnvironment.RemoveFromCache(Data.Id, out Temp);
 
-                                if (Temp != null)
-                                    Temp.Dispose();
+                            if (Temp != null)
+                                Temp.Dispose();
 
-                                Temp = null;
-                            }
-                            catch (Exception e)
-                            {
-                                Logging.LogCacheException(e.ToString());
-                            }
+                            Temp = null;
+                        }
+                        catch (Exception e)
+                        {
+                            Logger.LogException(e);
                         }
                     }
+                }
 
                 CachedUsers = null;
                 // END CODE
@@ -141,7 +141,10 @@ namespace Plus.HabboHotel.Cache.Process
 
                 this._resetEvent.Set();
             }
-            catch (Exception e) { Logging.LogCacheException(e.ToString()); }
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+            }
         }
 
         /// <summary>

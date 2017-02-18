@@ -15,7 +15,7 @@ using Plus.Database.Interfaces;
 using System.Collections;
 using Plus.Communication.Packets.Outgoing.Handshake;
 using System.Diagnostics;
-using Plus.Core.ConnectionManager;
+using Plus.Communication.ConnectionManager;
 
 namespace Plus.HabboHotel.GameClients
 {
@@ -285,7 +285,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException(e.ToString());
+                Logger.LogException(e);
             }
 
             if (this._clients.Count > 0)

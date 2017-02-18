@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Plus.Core.ConnectionManager
+namespace Plus.Communication.ConnectionManager
 {
     public interface IDataParser : IDisposable, ICloneable
     {

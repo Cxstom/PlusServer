@@ -23,6 +23,7 @@ using Plus.Database;
 using Plus.HabboHotel.Cache.Type;
 using Plus.HabboHotel.Users.UserData;
 using Plus.Communication.RCON;
+using Plus.Communication.ConnectionManager;
 
 namespace Plus
 {
@@ -147,26 +148,26 @@ namespace Plus
                 log.Info("EMULATOR -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
             }
             catch (KeyNotFoundException e)
-            {
-                Logging.WriteLine("Please check your configuration file - some values appear to be missing.", ConsoleColor.Red);
-                Logging.WriteLine("Press any key to shut down ...");
-                Logging.WriteLine(e.ToString());
+            { 
+                log.Error("Please check your configuration file - some values appear to be missing.");
+                log.Error("Press any key to shut down ...");
+         
                 Console.ReadKey(true);
                 Environment.Exit(1);
                 return;
             }
             catch (InvalidOperationException e)
             {
-                Logging.WriteLine("Failed to initialize PlusEmulator: " + e.Message, ConsoleColor.Red);
-                Logging.WriteLine("Press any key to shut down ...");
+                log.Error("Failed to initialize PlusEmulator: " + e.Message);
+                log.Error("Press any key to shut down ...");
                 Console.ReadKey(true);
                 Environment.Exit(1);
                 return;
             }
             catch (Exception e)
             {
-                Logging.WriteLine("Fatal error during startup: " + e, ConsoleColor.Red);
-                Logging.WriteLine("Press a key to exit");
+                log.Error("Fatal error during startup: " + e);
+                log.Error("Press a key to exit");
 
                 Console.ReadKey();
                 Environment.Exit(1);

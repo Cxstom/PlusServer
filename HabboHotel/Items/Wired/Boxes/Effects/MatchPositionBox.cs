@@ -123,21 +123,21 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
                                 this.SetState(II, "1");
                         }
                     }
-                    catch (Exception e) { Logging.LogWiredException(e.ToString()); }
+                    catch (Exception e) { Logger.LogWiredException(e); }
 
                     try
                     {
                         if (int.Parse(this.StringData.Split(';')[1]) == 1)//Direction
                             this.SetRotation(II, Convert.ToInt32(part[3]));
                     }
-                    catch (Exception e) { Logging.LogWiredException(e.ToString()); }
+                    catch (Exception e) { Logger.LogWiredException(e); }
 
                     try
                     {
                         if (int.Parse(this.StringData.Split(';')[2]) == 1)//Position
                             this.SetPosition(II, Convert.ToInt32(part[0].ToString()), Convert.ToInt32(part[1].ToString()), Convert.ToDouble(part[2].ToString()), Convert.ToInt32(part[3].ToString()));
                     }
-                    catch (Exception e) { Logging.LogWiredException(e.ToString()); }
+                    catch (Exception e) { Logger.LogWiredException(e); }
                 }
             }
             this.Requested = false;

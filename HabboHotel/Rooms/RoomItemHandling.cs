@@ -500,7 +500,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Error during saving furniture for room " + _room.RoomId + ". Stack: " + e);
+                Logger.LogCriticalException(e);
             }
         }
 

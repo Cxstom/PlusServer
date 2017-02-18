@@ -1,4 +1,4 @@
-﻿namespace Plus.Core.ConnectionManager
+﻿namespace Plus.Communication.ConnectionManager
 {
     public enum ConnectionState
     {

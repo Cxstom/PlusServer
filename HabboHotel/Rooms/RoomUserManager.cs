@@ -358,7 +358,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                Logger.LogException(e);
             }
         }
 
@@ -420,7 +420,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException(e.ToString());
+                Logger.LogCriticalException(e);
             }
         }
 
@@ -1001,11 +1001,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                int rId = 0;
-                if (_room != null)
-                    rId = _room.Id;
-
-                Logging.LogCriticalException("Affected Room - ID: " + rId + " - " + e.ToString());
+                Logger.LogCriticalException(e);
             }
         }
 
@@ -1322,7 +1318,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                Logger.LogException(e);
             }
         }
 
