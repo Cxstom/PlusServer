@@ -95,7 +95,7 @@ namespace Plus.HabboHotel.Users.Badges
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
-                    dbClient.SetQuery("INSERT INTO user_badges (user_id,badge_id,badge_slot) VALUES (" + _player.Id + ",@badge," + 0 + ")");
+                    dbClient.SetQuery("REPLACE INTO `user_badges` (`user_id`,`badge_id`,`badge_slot`) VALUES ('" + _player.Id + "', @badge, '" + 0 + "')");
                     dbClient.AddParameter("badge", Badge);
                     dbClient.RunQuery();
                 }

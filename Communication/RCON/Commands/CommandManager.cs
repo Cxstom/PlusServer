@@ -69,6 +69,8 @@ namespace Plus.Communication.RCON.Commands
             this.Register("reload_user_rank", new ReloadUserRankCommand());
             this.Register("reload_user_vip_rank", new ReloadUserVIPRankCommand());
             this.Register("progress_user_achievement", new ProgressUserAchievementCommand());
+            this.Register("give_user_badge", new GiveUserBadgeCommand());
+            this.Register("take_user_badge", new TakeUserBadgeCommand());
         }   
 
         /// <summary>
