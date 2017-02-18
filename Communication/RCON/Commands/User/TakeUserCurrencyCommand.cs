@@ -5,16 +5,16 @@ using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
 namespace Plus.Communication.RCON.Commands.User
 {
-    class ReloadUserCurrencyCommand : IRCONCommand
+    class TakeUserCurrencyCommand : IRCONCommand
     {
         public string Description
         {
-            get { return "This command is used to update the users currency from the database."; }
+            get { return "This command is used to take a specified amount of a specified currency from a user."; }
         }
 
         public string Parameters
         {
-            get { return "%userId% %currency%"; }
+            get { return "%userId% %currency% %amount%"; }
         }
 
         public bool TryExecute(string[] parameters)
@@ -33,6 +33,10 @@ namespace Plus.Communication.RCON.Commands.User
 
             string currency = Convert.ToString(parameters[1]);
 
+            int amount = 0;
+            if (!int.TryParse(parameters[2].ToString(), out amount))
+                return false;
+
             switch (currency)
             {
                 default:
@@ -41,15 +45,16 @@ namespace Plus.Communication.RCON.Commands.User
                 case "coins":
                 case "credits":
                     {
-                        int credits = 0;
+                        client.GetHabbo().Credits -= amount;
+
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.SetQuery("SELECT `credits` FROM `users` WHERE `id` = @id LIMIT 1");
+                            dbClient.SetQuery("UPDATE `users` SET `credits` = @credits WHERE `id` = @id LIMIT 1");
+                            dbClient.AddParameter("credits", client.GetHabbo().Credits);
                             dbClient.AddParameter("id", userId);
-                            credits = dbClient.getInteger();
+                            dbClient.RunQuery();
                         }
 
-                        client.GetHabbo().Credits = credits;
                         client.SendMessage(new CreditBalanceComposer(client.GetHabbo().Credits));
                         break;
                     }
@@ -57,46 +62,49 @@ namespace Plus.Communication.RCON.Commands.User
                 case "pixels":
                 case "duckets":
                     {
-                        int duckets = 0;
+                        client.GetHabbo().Duckets -= amount;
+
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.SetQuery("SELECT `activity_points` FROM `users` WHERE `id` = @id LIMIT 1");
+                            dbClient.SetQuery("UPDATE `users` SET `activity_points` = @duckets WHERE `id` = @id LIMIT 1");
+                            dbClient.AddParameter("duckets", client.GetHabbo().Duckets);
                             dbClient.AddParameter("id", userId);
-                            duckets = dbClient.getInteger();
+                            dbClient.RunQuery();
                         }
 
-                        client.GetHabbo().Duckets = duckets;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, duckets));
+                        client.SendMessage(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, amount));
                         break;
                     }
 
                 case "diamonds":
                     {
-                        int diamonds = 0;
+                        client.GetHabbo().Diamonds -= amount;
+
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.SetQuery("SELECT `vip_points` FROM `users` WHERE `id` = @id LIMIT 1");
+                            dbClient.SetQuery("UPDATE `users` SET `vip_points` = @diamonds WHERE `id` = @id LIMIT 1");
+                            dbClient.AddParameter("diamonds", client.GetHabbo().Diamonds);
                             dbClient.AddParameter("id", userId);
-                            diamonds = dbClient.getInteger();
+                            dbClient.RunQuery();
                         }
 
-                        client.GetHabbo().Diamonds = diamonds;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(diamonds, 0, 5));
+                        client.SendMessage(new HabboActivityPointNotificationComposer(client.GetHabbo().Diamonds, 0, 5));
                         break;
                     }
 
                 case "gotw":
                     {
-                        int gotw = 0;
+                        client.GetHabbo().GOTWPoints -= amount;
+
                         using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                         {
-                            dbClient.SetQuery("SELECT `gotw_points` FROM `users` WHERE `id` = @id LIMIT 1");
+                            dbClient.SetQuery("UPDATE `users` SET `gotw_points` = @gotw WHERE `id` = @id LIMIT 1");
+                            dbClient.AddParameter("gotw", client.GetHabbo().GOTWPoints);
                             dbClient.AddParameter("id", userId);
-                            gotw = dbClient.getInteger();
+                            dbClient.RunQuery();
                         }
 
-                        client.GetHabbo().GOTWPoints = gotw;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(gotw, 0, 103));
+                        client.SendMessage(new HabboActivityPointNotificationComposer(client.GetHabbo().GOTWPoints, 0, 103));
                         break;
                     }
             }
