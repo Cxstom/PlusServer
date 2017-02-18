@@ -609,6 +609,11 @@
     <Compile Include="Communication\Packets\PacketManager.cs" />
     <Compile Include="Communication\RCON\Commands\CommandManager.cs" />
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadBansCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadCatalogCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadFilterCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadItemsCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadNavigatorCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\Hotel\ReloadRanksCommand.cs" />
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadServerSettingsCommand.cs" />
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadQuestsCommand.cs" />
     <Compile Include="Communication\RCON\Commands\Hotel\ReloadVouchersCommand.cs" />

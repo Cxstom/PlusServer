@@ -71,6 +71,11 @@ namespace Plus.Communication.RCON.Commands
             this.Register("reload_quests", new ReloadQuestsCommand());
             this.Register("reload_server_settings", new ReloadServerSettingsCommand());
             this.Register("reload_vouchers", new ReloadVouchersCommand());
+            this.Register("reload_ranks", new ReloadRanksCommand());
+            this.Register("reload_navigator", new ReloadNavigatorCommand());
+            this.Register("reload_items", new ReloadItemsCommand());
+            this.Register("reload_catalog", new ReloadCatalogCommand());
+            this.Register("reload_filter", new ReloadFilterCommand());
         }
 
         /// <summary>
