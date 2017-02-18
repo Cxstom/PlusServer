@@ -41,7 +41,7 @@ namespace Plus.Core.Settings
 
         public string TryGetValue(string value)
         {
-            return this._settings.ContainsKey(value) ? this._settings[value] : "No language locale found for [" + value + "]";
+            return this._settings.ContainsKey(value) ? this._settings[value] : "0";
         }
     }
 }
