@@ -36,7 +36,7 @@ namespace Plus.Core
                         {
                             string Notice = inputData.Substring(6);
 
-                            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("console.noticefromadmin") + "\n\n" + Notice));
+                            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("console.noticefromadmin") + "\n\n" + Notice));
 
                             log.Info("Alert successfully sent.");
                             break;

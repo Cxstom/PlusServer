@@ -342,7 +342,7 @@ namespace Plus.HabboHotel.Users
                 }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
             }
 

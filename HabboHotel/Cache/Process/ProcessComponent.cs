@@ -98,7 +98,7 @@ namespace Plus.HabboHotel.Cache.Process
                         }
                         catch (Exception e)
                         {
-                            Logger.LogException(e);
+                            ExceptionLogger.LogException(e);
                         }
                     }
                 }
@@ -127,7 +127,7 @@ namespace Plus.HabboHotel.Cache.Process
                         }
                         catch (Exception e)
                         {
-                            Logger.LogException(e);
+                            ExceptionLogger.LogException(e);
                         }
                     }
                 }
@@ -143,7 +143,7 @@ namespace Plus.HabboHotel.Cache.Process
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
         }
 

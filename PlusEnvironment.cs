@@ -333,7 +333,7 @@ namespace Plus
             log.Info("Server shutting down...");
             Console.Title = "PLUS EMULATOR: SHUTTING DOWN!";
 
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("shutdown_alert")));
+            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("shutdown_alert")));
             GetGame().StopGameLoop();
             Thread.Sleep(2500);
             GetConnectionManager().Destroy();//Stop listening.

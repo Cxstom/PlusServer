@@ -475,7 +475,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
             return true;
         }
@@ -1252,7 +1252,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
                 return 0;
             }
         }

@@ -285,7 +285,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
 
             if (this._clients.Count > 0)

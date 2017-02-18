@@ -632,7 +632,8 @@
     <Compile Include="Communication\RCON\Commands\User\TakeUserCurrencyCommand.cs" />
     <Compile Include="Communication\RCON\RCONConnection.cs" />
     <Compile Include="Communication\RCON\RCONSocket.cs" />
-    <Compile Include="Core\Logger.cs" />
+    <Compile Include="Core\Language\LanguageManager.cs" />
+    <Compile Include="Core\ExceptionLogger.cs" />
     <Compile Include="Database\Adapter\NormalQueryReactor.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
@@ -935,7 +936,6 @@
     <Compile Include="Core\ConfigurationData.cs" />
     <Compile Include="Communication\ConnectionManager\ConnectionHandling.cs" />
     <Compile Include="Core\ConsoleCommands.cs" />
-    <Compile Include="HabboHotel\Global\LanguageLocale.cs" />
     <Compile Include="HabboHotel\Achievements\Achievement.cs" />
     <Compile Include="HabboHotel\Achievements\AchievementLevel.cs" />
     <Compile Include="HabboHotel\Achievements\AchievementLevelFactory.cs" />

@@ -274,7 +274,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.GetGame().GetLanguageLocale().Init();
+                        PlusEnvironment.GetGame().GetLanguageManager().Init();
                         Session.SendWhisper("Locale cache successfully updated.");
                         break;
                     }

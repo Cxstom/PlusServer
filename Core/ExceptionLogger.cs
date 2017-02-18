@@ -3,7 +3,7 @@ using System;
 
 namespace Plus.Core
 {
-    public static class Logger
+    public static class ExceptionLogger
     {
         private static readonly ILog _sqlLogger = LogManager.GetLogger("MySQL");
         private static readonly ILog _threadLogger = LogManager.GetLogger("Thread");

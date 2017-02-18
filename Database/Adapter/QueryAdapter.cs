@@ -35,7 +35,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return hasRows;
@@ -54,7 +54,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-                Logger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return result;
@@ -77,7 +77,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return row;
@@ -96,7 +96,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return str;
@@ -117,7 +117,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return dataTable;
@@ -156,7 +156,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             return lastInsertedId;
         }
@@ -172,7 +172,7 @@ Logger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-Logger.LogQueryError(command.CommandText, exception);
+ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
         }
     }

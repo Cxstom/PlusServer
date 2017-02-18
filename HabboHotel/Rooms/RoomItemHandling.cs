@@ -500,7 +500,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logger.LogCriticalException(e);
+                ExceptionLogger.LogCriticalException(e);
             }
         }
 
@@ -679,7 +679,7 @@ namespace Plus.HabboHotel.Rooms
                 if (_floorItems.ContainsKey(Item.Id))
                 {
                     if (Session != null)
-                        Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("room_item_placed"));
+                        Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_item_placed"));
                     _room.GetGameMap().RemoveFromMap(Item);
                     return true;
                 }
@@ -754,7 +754,7 @@ namespace Plus.HabboHotel.Rooms
 
             if (_floorItems.ContainsKey(Item.Id))
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("room_item_placed"));
+                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_item_placed"));
                 return true;
             }
 

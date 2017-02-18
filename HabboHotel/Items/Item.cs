@@ -1474,7 +1474,7 @@ namespace Plus.HabboHotel.Items
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
         }
 

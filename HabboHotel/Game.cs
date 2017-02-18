@@ -28,6 +28,7 @@ using Plus.HabboHotel.Subscriptions;
 using System.Threading;
 using System.Threading.Tasks;
 using Plus.Core;
+using Plus.Core.Language;
 
 namespace Plus.HabboHotel
 {
@@ -51,7 +52,7 @@ namespace Plus.HabboHotel
         private readonly LandingViewManager _landingViewManager;//TODO: Rename class
         private readonly GameDataManager _gameDataManager;
         private readonly ServerStatusUpdater _globalUpdater;
-        private readonly LanguageLocale _languageLocale;
+        private readonly LanguageManager _languageManager;
         private readonly AntiMutant _antiMutant;
         private readonly BotManager _botManager;
         private readonly CacheManager _cacheManager;
@@ -96,7 +97,9 @@ namespace Plus.HabboHotel
             this._globalUpdater = new ServerStatusUpdater();
             this._globalUpdater.Init();
 
-            this._languageLocale = new LanguageLocale();
+            this._languageManager = new LanguageManager();
+            this._languageManager.Init();
+
             this._antiMutant = new AntiMutant();
             this._botManager = new BotManager();
             this._botManager.Init();
@@ -232,9 +235,9 @@ namespace Plus.HabboHotel
             return this._gameDataManager;
         }
 
-        public LanguageLocale GetLanguageLocale()
+        public LanguageManager GetLanguageManager()
         {
-            return this._languageLocale;
+            return this._languageManager;
         }
 
         public AntiMutant GetAntiMutant()

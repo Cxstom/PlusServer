@@ -43,7 +43,7 @@ namespace Plus.Communication.ConnectionManager
             }
             catch (Exception e)
             {
-                Core.Logger.LogException(e);
+                Core.ExceptionLogger.LogException(e);
             }
         }
 

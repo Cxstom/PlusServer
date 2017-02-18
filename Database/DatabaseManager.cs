@@ -47,7 +47,7 @@ namespace Plus.Database
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
                 return null;
             }
         }

@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
 
             if (Room.UsersWithRights.Contains(UserId))
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("room_rights_has_rights_error"));
+                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageManager().TryGetValue("room_rights_has_rights_error"));
                 return;
             }
 

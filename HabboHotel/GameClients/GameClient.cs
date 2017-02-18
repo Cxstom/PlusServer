@@ -66,7 +66,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -221,7 +221,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
             return false;
         }
@@ -287,7 +287,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
 
             if (!_disconnected)

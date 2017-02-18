@@ -467,7 +467,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                 }
             }
-            catch (Exception e) { Logger.LogException(e); }
+            catch (Exception e) { ExceptionLogger.LogException(e); }
             return false;
         }
 
@@ -537,13 +537,13 @@ namespace Plus.HabboHotel.Rooms
                 try { GetRoomItemHandler().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
 
                 try { GetRoomUserManager().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
 
                 #region Status Updates
@@ -553,7 +553,7 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
                 #endregion
 
@@ -565,20 +565,20 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
                 #endregion
 
                 try { GetWired().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logger.LogException(e);
+                    ExceptionLogger.LogException(e);
                 }
 
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
                 OnRoomCrash(e);
             }
         }
@@ -600,12 +600,12 @@ namespace Plus.HabboHotel.Rooms
                     }
                     catch (Exception e2)
                     {
-                        Logger.LogException(e2); }
+                        ExceptionLogger.LogException(e2); }
                 }
             }
             catch (Exception e3)
             {
-                Logger.LogException(e3);
+                ExceptionLogger.LogException(e3);
             }
 
             isCrashed = true;
@@ -766,7 +766,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -812,7 +812,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logger.LogException(e);
+                ExceptionLogger.LogException(e);
             }
         }
         #endregion
