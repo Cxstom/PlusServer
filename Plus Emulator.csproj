@@ -607,6 +607,11 @@
     <Compile Include="Communication\Packets\Outgoing\Users\UpdateUsernameComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Users\UserTagsComposer.cs" />
     <Compile Include="Communication\Packets\PacketManager.cs" />
+    <Compile Include="Communication\RCON\Commands\CommandManager.cs" />
+    <Compile Include="Communication\RCON\Commands\IRCONCommand.cs" />
+    <Compile Include="Communication\RCON\Commands\User\ReloadUserMottoCommand.cs" />
+    <Compile Include="Communication\RCON\RCONConnection.cs" />
+    <Compile Include="Communication\RCON\RCONSocket.cs" />
     <Compile Include="Database\Adapter\NormalQueryReactor.cs" />
     <Compile Include="Database\DatabaseConnection.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
@@ -906,7 +911,6 @@
     <Compile Include="HabboHotel\Users\Process\ProcessComponent.cs" />
     <Compile Include="HabboHotel\Users\Relationships\Relationship.cs" />
     <Compile Include="HabboHotel\Users\HabboStats.cs" />
-    <Compile Include="Messages\Net\MusConnection.cs" />
     <Compile Include="PlusEnvironment.cs" />
     <Compile Include="Core\ConfigurationData.cs" />
     <Compile Include="Core\ConnectionHandling.cs" />
@@ -984,7 +988,6 @@
     <Compile Include="Communication\Packets\Incoming\ClientPacket.cs" />
     <Compile Include="Messages\Net\GamePacketParser.cs" />
     <Compile Include="Messages\Net\InitialPacketParser.cs" />
-    <Compile Include="Messages\Net\MusSocket.cs" />
     <Compile Include="PlusStaticGameSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1048,6 +1051,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Communication\Packets\Incoming\Rooms\Groups\" />
+    <Folder Include="Communication\RCON\Commands\Hotel\" />
     <Folder Include="HabboHotel\Rooms\Chat\Commands\Roleplay\Generic\" />
     <Folder Include="HabboHotel\Rooms\Chat\Moderation\" />
   </ItemGroup>

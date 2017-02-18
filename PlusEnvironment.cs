@@ -22,7 +22,7 @@ using Plus.Database.Interfaces;
 using Plus.Database;
 using Plus.HabboHotel.Cache.Type;
 using Plus.HabboHotel.Users.UserData;
-using Plus.Messages.Net;
+using Plus.Communication.RCON;
 
 namespace Plus
 {
@@ -39,7 +39,7 @@ namespace Plus
         private static Game _game;
         private static DatabaseManager _manager;
         public static ConfigData ConfigData;
-        public static MusSocket MusSystem;
+        public static RCONSocket _rcon;
         public static CultureInfo CultureInfo;
 
         public static bool Event = false;
@@ -82,10 +82,8 @@ namespace Plus
 
             CultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
 
-
             try
             {
-
                 _configuration = new ConfigurationData(Path.Combine(Application.StartupPath, @"config.ini"));
 
                 var connectionString = new MySqlConnectionStringBuilder
@@ -133,8 +131,8 @@ namespace Plus
                 //Have our encryption ready.
                 HabboEncryptionV2.Initialize(new RSAKeys());
 
-                //Make sure MUS is working.
-                MusSystem = new MusSocket(GetConfig().data["mus.tcp.bindip"], int.Parse(GetConfig().data["mus.tcp.port"]), GetConfig().data["mus.tcp.allowedaddr"].Split(Convert.ToChar(";")), 0);
+                //Make sure RCON is connected before we allow clients to connect.
+                _rcon = new RCONSocket(GetConfig().data["rcon.tcp.bindip"], int.Parse(GetConfig().data["rcon.tcp.port"]), GetConfig().data["rcon.tcp.allowedaddr"].Split(Convert.ToChar(";")));
 
                 //Accept connections.
                 _connectionManager = new ConnectionHandling(int.Parse(GetConfig().data["game.tcp.port"]), int.Parse(GetConfig().data["game.tcp.conlimit"]), int.Parse(GetConfig().data["game.tcp.conperip"]), GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
@@ -380,6 +378,11 @@ namespace Plus
         public static Game GetGame()
         {
             return _game;
+        }
+
+        public static RCONSocket GetRCONSocket()
+        {
+            return _rcon;
         }
 
         public static DatabaseManager GetDatabaseManager()
