@@ -47,11 +47,11 @@ namespace Plus.Communication.Packets.Incoming.Groups
                         User.RemoveStatus("flatctrl 3");
                     User.UpdateNeeded = true;
                     if (User.GetClient() != null)
-                        User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                        User.GetClient().SendPacket(new YouAreControllerComposer(0));
                 }
             }
 
-            Session.SendMessage(new GroupMemberUpdatedComposer(GroupId, Habbo, 2));
+            Session.SendPacket(new GroupMemberUpdatedComposer(GroupId, Habbo, 2));
         }
     }
 }

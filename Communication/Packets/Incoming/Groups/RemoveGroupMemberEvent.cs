@@ -47,7 +47,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                         User.UpdateNeeded = true;
 
                         if (User.GetClient() != null)
-                            User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                            User.GetClient().SendPacket(new YouAreControllerComposer(0));
                     }
                 }
 
@@ -59,7 +59,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     dbClient.RunQuery();
                 }
 
-                Session.SendMessage(new GroupInfoComposer(Group, Session));
+                Session.SendPacket(new GroupInfoComposer(Group, Session));
                 if (Session.GetHabbo().GetStats().FavouriteGroupId == GroupId)
                 {
                     Session.GetHabbo().GetStats().FavouriteGroupId = 0;
@@ -83,7 +83,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                             User.UpdateNeeded = true;
 
                             if (User.GetClient() != null)
-                                User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                                User.GetClient().SendPacket(new YouAreControllerComposer(0));
                         }
                     }
 
@@ -95,7 +95,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                         Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
                     }
                     else
-                        Session.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                        Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
                 }
                 return;
             }
@@ -134,7 +134,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     int FinishIndex = 14 < Members.Count ? 14 : Members.Count;
                     int MembersCount = Members.Count;
 
-                    Session.SendMessage(new GroupMembersComposer(Group, Members.Take(FinishIndex).ToList(), MembersCount, 1, (Group.CreatorId == Session.GetHabbo().Id || Group.IsAdmin(Session.GetHabbo().Id)), 0, ""));
+                    Session.SendPacket(new GroupMembersComposer(Group, Members.Take(FinishIndex).ToList(), MembersCount, 1, (Group.CreatorId == Session.GetHabbo().Id || Group.IsAdmin(Session.GetHabbo().Id)), 0, ""));
                 }
             }
         }

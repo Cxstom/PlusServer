@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             if (!HasRights)
             {
-                Session.SendMessage(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_not_owner}"));
+                Session.SendPacket(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_not_owner}"));
                 return;
             }
 
@@ -131,7 +131,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 }
                 else
                 {
-                    Session.SendMessage(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
+                    Session.SendPacket(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
                     return;
                 }
             }
@@ -161,13 +161,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                     }
                     catch
                     {
-                        Session.SendMessage(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
+                        Session.SendPacket(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
                         return;
                     }
                 }
                 else
                 {
-                    Session.SendMessage(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
+                    Session.SendPacket(new RoomNotificationComposer("furni_placement_error", "message", "${room.error.cant_set_item}"));
                     return;
                 }
             }

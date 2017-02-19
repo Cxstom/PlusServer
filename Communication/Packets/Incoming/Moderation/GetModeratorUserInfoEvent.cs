@@ -44,7 +44,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             }
 
 
-            Session.SendMessage(new ModeratorUserInfoComposer(User, Info));
+            Session.SendPacket(new ModeratorUserInfoComposer(User, Info));
         }
     }
 }

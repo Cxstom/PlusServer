@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Handshake
 
             Session.MachineId = MachineId;
 
-            Session.SendMessage(new SetUniqueIdComposer(MachineId));
+            Session.SendPacket(new SetUniqueIdComposer(MachineId));
         }
     }
 }

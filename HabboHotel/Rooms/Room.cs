@@ -637,34 +637,34 @@ namespace Plus.HabboHotel.Rooms
         {
             Room Room = Session.GetHabbo().CurrentRoom;
 
-            Session.SendMessage(new HeightMapComposer(Room.GetGameMap().Model.Heightmap));
-            Session.SendMessage(new FloorHeightMapComposer(Room.GetGameMap().Model.GetRelativeHeightmap(), Room.GetGameMap().StaticModel.WallHeight));
+            Session.SendPacket(new HeightMapComposer(Room.GetGameMap().Model.Heightmap));
+            Session.SendPacket(new FloorHeightMapComposer(Room.GetGameMap().Model.GetRelativeHeightmap(), Room.GetGameMap().StaticModel.WallHeight));
 
             foreach (RoomUser RoomUser in _roomUserManager.GetUserList().ToList())
             {
                 if (RoomUser == null)
                     continue;
 
-                Session.SendMessage(new UsersComposer(RoomUser));
+                Session.SendPacket(new UsersComposer(RoomUser));
 
                 if (RoomUser.IsBot && RoomUser.BotData.DanceId > 0)
-                    Session.SendMessage(new DanceComposer(RoomUser, RoomUser.BotData.DanceId));
+                    Session.SendPacket(new DanceComposer(RoomUser, RoomUser.BotData.DanceId));
                 else if (!RoomUser.IsBot && !RoomUser.IsPet && RoomUser.IsDancing)
-                    Session.SendMessage(new DanceComposer(RoomUser, RoomUser.DanceId));
+                    Session.SendPacket(new DanceComposer(RoomUser, RoomUser.DanceId));
 
                 if (RoomUser.IsAsleep)
-                    Session.SendMessage(new SleepComposer(RoomUser, true));
+                    Session.SendPacket(new SleepComposer(RoomUser, true));
 
                 if (RoomUser.CarryItemID > 0 && RoomUser.CarryTimer > 0)
-                    Session.SendMessage(new CarryObjectComposer(RoomUser.VirtualId, RoomUser.CarryItemID));
+                    Session.SendPacket(new CarryObjectComposer(RoomUser.VirtualId, RoomUser.CarryItemID));
 
                 if (!RoomUser.IsBot && !RoomUser.IsPet && RoomUser.CurrentEffect > 0)
-                    Session.SendMessage(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
+                    Session.SendPacket(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
             }
 
-            Session.SendMessage(new UserUpdateComposer(_roomUserManager.GetUserList().ToList()));
-            Session.SendMessage(new ObjectsComposer(Room.GetRoomItemHandler().GetFloor.ToArray(), this));
-            Session.SendMessage(new ItemsComposer(Room.GetRoomItemHandler().GetWall.ToArray(), this));
+            Session.SendPacket(new UserUpdateComposer(_roomUserManager.GetUserList().ToList()));
+            Session.SendPacket(new ObjectsComposer(Room.GetRoomItemHandler().GetFloor.ToArray(), this));
+            Session.SendPacket(new ItemsComposer(Room.GetRoomItemHandler().GetWall.ToArray(), this));
         }
 
         #region Tents
@@ -731,7 +731,7 @@ namespace Plus.HabboHotel.Rooms
                 if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
                     continue;
 
-                User.GetClient().SendMessage(Packet);
+                User.GetClient().SendPacket(Packet);
             }
         }
         #endregion
@@ -761,7 +761,7 @@ namespace Plus.HabboHotel.Rooms
                     if (UsersWithRightsOnly && !this.CheckRights(User.GetClient()))
                         continue;
 
-                    User.GetClient().SendMessage(Message);
+                    User.GetClient().SendPacket(Message);
                 }
             }
             catch (Exception e)

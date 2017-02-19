@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.AvatarEffects
 
             if (Effect.Activate())
             {
-                Session.SendMessage(new AvatarEffectActivatedComposer(Effect));
+                Session.SendPacket(new AvatarEffectActivatedComposer(Effect));
             }
         }
     }

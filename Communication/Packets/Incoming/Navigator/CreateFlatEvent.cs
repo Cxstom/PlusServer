@@ -19,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             
             if (Session.GetHabbo().UsersRooms.Count >= 500)
             {
-                Session.SendMessage(new CanCreateRoomComposer(true, 500));
+                Session.SendPacket(new CanCreateRoomComposer(true, 500));
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             RoomData NewRoom = PlusEnvironment.GetGame().GetRoomManager().CreateRoom(Session, Name, Description, ModelName, Category, MaxVisitors, TradeSettings);
             if (NewRoom != null)
             {
-                Session.SendMessage(new FlatCreatedComposer(NewRoom.Id, Name));
+                Session.SendPacket(new FlatCreatedComposer(NewRoom.Id, Name));
             }
         }
     }

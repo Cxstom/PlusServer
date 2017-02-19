@@ -58,7 +58,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                 dbClient.RunQuery("UPDATE `users` SET `look` = '" + Session.GetHabbo().Look + "' WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
             }
 
-            Session.SendMessage(new UserChangeComposer(User, true));
+            Session.SendPacket(new UserChangeComposer(User, true));
             Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(User, false));
             return;
         }

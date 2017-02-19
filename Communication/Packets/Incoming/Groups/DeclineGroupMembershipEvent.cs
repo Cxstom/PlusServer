@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 return;
 
             Group.HandleRequest(UserId, false);
-            Session.SendMessage(new UnknownGroupComposer(Group.Id, UserId));
+            Session.SendPacket(new UnknownGroupComposer(Group.Id, UserId));
         }
     }
 }

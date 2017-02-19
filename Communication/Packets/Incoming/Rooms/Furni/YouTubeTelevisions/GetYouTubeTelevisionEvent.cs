@@ -28,10 +28,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
             Dictionary<int, TelevisionItem> dict = PlusEnvironment.GetGame().GetTelevisionManager()._televisions;
             foreach (TelevisionItem value in RandomValues(dict).Take(1))
             {
-                Session.SendMessage(new GetYouTubeVideoComposer(ItemId, value.YouTubeId));
+                Session.SendPacket(new GetYouTubeVideoComposer(ItemId, value.YouTubeId));
             }
 
-            Session.SendMessage(new GetYouTubePlaylistComposer(ItemId, Videos));
+            Session.SendPacket(new GetYouTubePlaylistComposer(ItemId, Videos));
         }
 
         public IEnumerable<TValue> RandomValues<TKey, TValue>(IDictionary<TKey, TValue> dict)

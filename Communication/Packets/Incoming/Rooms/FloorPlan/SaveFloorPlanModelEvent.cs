@@ -33,13 +33,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
 
             if (Map.Length > 4159) //4096 + New Lines = 4159
             {
-                Session.SendMessage(new RoomNotificationComposer("floorplan_editor.error", "errors", "(%%%general%%%): %%%too_large_area%%% (%%%max%%% 2048 %%%tiles%%%)"));
+                Session.SendPacket(new RoomNotificationComposer("floorplan_editor.error", "errors", "(%%%general%%%): %%%too_large_area%%% (%%%max%%% 2048 %%%tiles%%%)"));
                 return;
             }
 
             if(Map.Any(letter => !validLetters.Contains(letter)) || String.IsNullOrEmpty(Map))
             {
-                Session.SendMessage(new RoomNotificationComposer("floorplan_editor.error", "errors", "Oops, it appears that you have entered an invalid floor map!"));
+                Session.SendPacket(new RoomNotificationComposer("floorplan_editor.error", "errors", "Oops, it appears that you have entered an invalid floor map!"));
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
 
             if (SizeY > 64 || SizeX > 64)
             {
-                Session.SendMessage(new RoomNotificationComposer("floorplan_editor.error", "errors", "The maximum height and width of a model is 64x64!"));
+                Session.SendPacket(new RoomNotificationComposer("floorplan_editor.error", "errors", "The maximum height and width of a model is 64x64!"));
                 return;
             }
 
@@ -73,7 +73,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
 
             if (!isValid)
             {
-                Session.SendMessage(new RoomNotificationComposer("floorplan_editor.error", "errors", "Oops, it appears that you have entered an invalid floor map!"));
+                Session.SendPacket(new RoomNotificationComposer("floorplan_editor.error", "errors", "Oops, it appears that you have entered an invalid floor map!"));
                 return;
             }
 
@@ -169,7 +169,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
                 if (User == null || User.GetClient() == null)
                     continue;
 
-                User.GetClient().SendMessage(new RoomForwardComposer(Room.Id));
+                User.GetClient().SendPacket(new RoomForwardComposer(Room.Id));
             }
         }
 

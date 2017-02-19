@@ -159,7 +159,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 case InteractionType.BADGE_DISPLAY:
                     if (!Session.GetHabbo().GetBadgeComponent().HasBadge(ExtraData))
                     {
-                        Session.SendMessage(new BroadcastMessageAlertComposer("Oops, it appears that you do not own this badge."));
+                        Session.SendPacket(new BroadcastMessageAlertComposer("Oops, it appears that you do not own this badge."));
                         return;
                     }
 
@@ -170,7 +170,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     {
                         if (Session.GetHabbo().GetBadgeComponent().HasBadge(Item.Data.ItemName))
                         {
-                            Session.SendMessage(new PurchaseErrorComposer(1));
+                            Session.SendPacket(new PurchaseErrorComposer(1));
                             return;
                         }
                         break;
@@ -187,8 +187,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 if (Item.LimitedEditionStack <= Item.LimitedEditionSells)
                 {
                     Session.SendNotification("This item has sold out!\n\n" + "Please note, you have not recieved another item (You have also not been charged for it!)");
-                    Session.SendMessage(new CatalogUpdatedComposer());
-                    Session.SendMessage(new PurchaseOKComposer());
+                    Session.SendPacket(new CatalogUpdatedComposer());
+                    Session.SendPacket(new PurchaseOKComposer());
                     return;
                 }
 
@@ -208,19 +208,19 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             if (Item.CostCredits > 0)
             {
                 Session.GetHabbo().Credits -= TotalCreditsCost;
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
 
             if (Item.CostPixels > 0)
             {
                 Session.GetHabbo().Duckets -= TotalPixelCost;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));//Love you, Tom.
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));//Love you, Tom.
             }
 
             if (Item.CostDiamonds > 0)
             {
                 Session.GetHabbo().Diamonds -= TotalDiamondCost;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, 0, 5));
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, 0, 5));
             }
 
             Item NewItem = null;
@@ -430,7 +430,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         if (Session.GetHabbo().GetInventoryComponent().TryAddItem(PurchasedItem))
                         {
                             //Session.SendMessage(new FurniListAddComposer(PurchasedItem));
-                            Session.SendMessage(new FurniListNotificationComposer(PurchasedItem.Id, 1));
+                            Session.SendPacket(new FurniListNotificationComposer(PurchasedItem.Id, 1));
                         }
                     }
                     break;
@@ -452,7 +452,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                     if (Effect != null)// && Session.GetHabbo().Effects().TryAdd(Effect))
                     {
-                        Session.SendMessage(new AvatarEffectAddedComposer(Item.Data.SpriteId, 3600));
+                        Session.SendPacket(new AvatarEffectAddedComposer(Item.Data.SpriteId, 3600));
                     }
                     break;
 
@@ -461,8 +461,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     if (Bot != null)
                     {
                         Session.GetHabbo().GetInventoryComponent().TryAddBot(Bot);
-                        Session.SendMessage(new BotInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetBots()));
-                        Session.SendMessage(new FurniListNotificationComposer(Bot.Id, 5));
+                        Session.SendPacket(new BotInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetBots()));
+                        Session.SendPacket(new FurniListNotificationComposer(Bot.Id, 5));
                     }
                     else
                         Session.SendNotification("Oops! There was an error whilst purchasing this bot. It seems that there is no bot data for the bot!");
@@ -471,7 +471,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 case "b":
                     {
                         Session.GetHabbo().GetBadgeComponent().GiveBadge(Item.Data.ItemName, true, Session);
-                        Session.SendMessage(new FurniListNotificationComposer(0, 4));
+                        Session.SendPacket(new FurniListNotificationComposer(0, 4));
                         break;
                     }
 
@@ -484,8 +484,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                         {
                             Session.GetHabbo().GetInventoryComponent().TryAddPet(GeneratedPet);
 
-                            Session.SendMessage(new FurniListNotificationComposer(GeneratedPet.PetId, 3));
-                            Session.SendMessage(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
+                            Session.SendPacket(new FurniListNotificationComposer(GeneratedPet.PetId, 3));
+                            Session.SendPacket(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
 
                             ItemData PetFood = null;
                             if (PlusEnvironment.GetGame().GetItemManager().GetItem(320, out PetFood))
@@ -494,7 +494,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                 if (Food != null)
                                 {
                                     Session.GetHabbo().GetInventoryComponent().TryAddItem(Food);
-                                    Session.SendMessage(new FurniListNotificationComposer(Food.Id, 1));
+                                    Session.SendPacket(new FurniListNotificationComposer(Food.Id, 1));
                                 }
                             }
                         }
@@ -511,8 +511,8 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 Session.GetHabbo().GetBadgeComponent().GiveBadge(Badge.Code, true, Session);
             }
 
-            Session.SendMessage(new PurchaseOKComposer(Item, Item.Data));
-            Session.SendMessage(new FurniListUpdateComposer());
+            Session.SendPacket(new PurchaseOKComposer(Item, Item.Data));
+            Session.SendPacket(new FurniListUpdateComposer());
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
             if (Pet.RoomId != Session.GetHabbo().CurrentRoomId || Pet.PetData == null)
                 return;
 
-            Session.SendMessage(new PetTrainingPanelComposer(Pet.PetData.PetId, Pet.PetData.Level));
+            Session.SendPacket(new PetTrainingPanelComposer(Pet.PetData.PetId, Pet.PetData.Level));
         }
     }
 }

@@ -116,7 +116,7 @@ namespace Plus.HabboHotel.GameClients
                 if (client.GetHabbo().Rank < 2 || client.GetHabbo().Id == Exclude)
                     continue;
 
-                client.SendMessage(Message);
+                client.SendPacket(Message);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Plus.HabboHotel.GameClients
                     continue;
 
                 if (Client.GetHabbo().GetPermissions().HasRight("mod_tool") && !Client.GetHabbo().GetPermissions().HasRight("staff_ignore_advertisement_reports"))
-                    Client.SendMessage(new MOTDNotificationComposer(Builder.ToString()));
+                    Client.SendPacket(new MOTDNotificationComposer(Builder.ToString()));
             }
         }
 
@@ -187,7 +187,7 @@ namespace Plus.HabboHotel.GameClients
                         continue;
                 }
 
-                Client.SendMessage(Packet);
+                Client.SendPacket(Packet);
             }
         }
 
@@ -327,7 +327,7 @@ namespace Plus.HabboHotel.GameClients
                     {
                         try
                         {
-                            Client.SendMessage(new PongComposer());
+                            Client.SendPacket(new PongComposer());
                         }
                         catch
                         {

@@ -18,9 +18,9 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 Sub = Session.GetHabbo().GetSubscriptionManager().GetSubscription().SubscriptionId;
             }*/
 
-            Session.SendMessage(new CatalogIndexComposer(Session, PlusEnvironment.GetGame().GetCatalog().GetPages()));//, Sub));
-            Session.SendMessage(new CatalogItemDiscountComposer());
-            Session.SendMessage(new BCBorrowedItemsComposer());
+            Session.SendPacket(new CatalogIndexComposer(Session, PlusEnvironment.GetGame().GetCatalog().GetPages()));//, Sub));
+            Session.SendPacket(new CatalogItemDiscountComposer());
+            Session.SendPacket(new BCBorrowedItemsComposer());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Misc
                 return;
 
             Session.GetHabbo().FriendbarState = FriendBarStateUtility.GetEnum(Packet.PopInt());
-            Session.SendMessage(new SoundSettingsComposer(Session.GetHabbo().ClientVolume, Session.GetHabbo().ChatPreference, Session.GetHabbo().AllowMessengerInvites, Session.GetHabbo().FocusPreference, FriendBarStateUtility.GetInt(Session.GetHabbo().FriendbarState)));
+            Session.SendPacket(new SoundSettingsComposer(Session.GetHabbo().ClientVolume, Session.GetHabbo().ChatPreference, Session.GetHabbo().AllowMessengerInvites, Session.GetHabbo().FocusPreference, FriendBarStateUtility.GetInt(Session.GetHabbo().FriendbarState)));
         }
     }
 }

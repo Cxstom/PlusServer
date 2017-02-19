@@ -106,7 +106,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
             }
 
-            Session.SendMessage(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
+            Session.SendPacket(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
         }
     }
 }

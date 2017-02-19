@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new ClubGiftsComposer());
+            Session.SendPacket(new ClubGiftsComposer());
         }
     }
 }

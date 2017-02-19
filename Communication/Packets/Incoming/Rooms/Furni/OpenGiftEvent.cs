@@ -176,7 +176,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     ItemIsInRoom = false;
                 }
 
-                Session.SendMessage(new OpenGiftComposer(Present.Data, Present.ExtraData, Present, ItemIsInRoom));
+                Session.SendPacket(new OpenGiftComposer(Present.Data, Present.ExtraData, Present, ItemIsInRoom));
 
                 Session.GetHabbo().GetInventoryComponent().UpdateItems(true);
             }

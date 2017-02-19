@@ -46,7 +46,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             if (Value > 0)
             {
                 Session.GetHabbo().Credits += Value;
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -56,7 +56,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                 dbClient.RunQuery();
             }
 
-            Session.SendMessage(new FurniListUpdateComposer());
+            Session.SendPacket(new FurniListUpdateComposer());
             Room.GetRoomItemHandler().RemoveFurniture(null, Exchange.Id, false);
             Session.GetHabbo().GetInventoryComponent().RemoveItem(Exchange.Id);
 

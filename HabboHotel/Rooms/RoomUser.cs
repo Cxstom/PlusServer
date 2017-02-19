@@ -303,7 +303,7 @@ namespace Plus.HabboHotel.Rooms
                         return;
 
                     if (!User.GetClient().GetHabbo().AllowPetSpeech)
-                        User.GetClient().SendMessage(new ChatComposer(VirtualId, Message, 0, 0));
+                        User.GetClient().SendPacket(new ChatComposer(VirtualId, Message, 0, 0));
                 }
             }
             else
@@ -317,7 +317,7 @@ namespace Plus.HabboHotel.Rooms
                         return;
 
                     if (!User.GetClient().GetHabbo().AllowBotSpeech)
-                        User.GetClient().SendMessage(new ChatComposer(VirtualId, Message, 0, (colour == 0 ? 2 : colour)));
+                        User.GetClient().SendPacket(new ChatComposer(VirtualId, Message, 0, (colour == 0 ? 2 : colour)));
                 }
             }
         }
@@ -402,7 +402,7 @@ namespace Plus.HabboHotel.Rooms
                             continue;
                         }
 
-                        user.GetClient().SendMessage(Packet);
+                        user.GetClient().SendPacket(Packet);
                     }
                 }
             }
@@ -416,7 +416,7 @@ namespace Plus.HabboHotel.Rooms
                     if (mRoom.chatDistance > 0 && Gamemap.TileDistance(this.X, this.Y, User.X, User.Y) > mRoom.chatDistance)
                         continue;
 
-                    User.GetClient().SendMessage(Packet);
+                    User.GetClient().SendPacket(Packet);
                 }
             }
 

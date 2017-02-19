@@ -81,18 +81,18 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     User.RemoveStatus("flatctrl 1");
                     User.UpdateNeeded = true;
 
-                    User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                    User.GetClient().SendPacket(new YouAreControllerComposer(0));
                 }
                 else if (FurniOptions == 0 && !User.Statusses.ContainsKey("flatctrl 1"))
                 {
                     User.SetStatus("flatctrl 1", "");
                     User.UpdateNeeded = true;
 
-                    User.GetClient().SendMessage(new YouAreControllerComposer(1));
+                    User.GetClient().SendPacket(new YouAreControllerComposer(1));
                 }
             }
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session));
+            Session.SendPacket(new GroupInfoComposer(Group, Session));
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 
             if (Session.GetHabbo().TimeMuted > 0)
             {
-                Session.SendMessage(new MutedComposer(Session.GetHabbo().TimeMuted));
+                Session.SendPacket(new MutedComposer(Session.GetHabbo().TimeMuted));
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 int MuteTime;
                 if (User.IncrementAndCheckFlood(out MuteTime))
                 {
-                    Session.SendMessage(new FloodControlComposer(MuteTime));
+                    Session.SendPacket(new FloodControlComposer(MuteTime));
                     return;
                 }
             }
@@ -77,7 +77,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                     Session.Disconnect();
                     return;
                 }
-                Session.SendMessage(new ShoutComposer(User.VirtualId, Message, 0, Colour));
+                Session.SendPacket(new ShoutComposer(User.VirtualId, Message, 0, Colour));
                 return;
             }
 

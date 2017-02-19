@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Quests
         {
             int UsersOnline = PlusEnvironment.GetGame().GetClientManager().Count;
 
-            Session.SendMessage(new ConcurrentUsersGoalProgressComposer(UsersOnline));
+            Session.SendPacket(new ConcurrentUsersGoalProgressComposer(UsersOnline));
         }
     }
 }

@@ -26,13 +26,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 
             if ((Room.AllowPets == 0 && !Room.CheckRights(Session, true)) || !Room.CheckRights(Session, true))
             {
-                Session.SendMessage(new RoomErrorNotifComposer(1));
+                Session.SendPacket(new RoomErrorNotifComposer(1));
                 return;
             }
 
             if (Room.GetRoomUserManager().PetCount > Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.pets.placement_limit")))
             {
-                Session.SendMessage(new RoomErrorNotifComposer(2));//5 = I have too many.
+                Session.SendPacket(new RoomErrorNotifComposer(2));//5 = I have too many.
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 
             if (!Room.GetGameMap().CanWalk(X, Y, false))
             {
-                Session.SendMessage(new RoomErrorNotifComposer(4));
+                Session.SendPacket(new RoomErrorNotifComposer(4));
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 return;
             }
 
-            Session.SendMessage(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
+            Session.SendPacket(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
         }
     }
 }

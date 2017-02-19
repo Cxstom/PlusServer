@@ -51,15 +51,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 RoomUser.SetStatus("flatctrl 1", "");
                 RoomUser.UpdateNeeded = true;
                 if (RoomUser.GetClient() != null)
-                    RoomUser.GetClient().SendMessage(new YouAreControllerComposer(1));
+                    RoomUser.GetClient().SendPacket(new YouAreControllerComposer(1));
 
-                Session.SendMessage(new FlatControllerAddedComposer(Room.RoomId, RoomUser.GetClient().GetHabbo().Id, RoomUser.GetClient().GetHabbo().Username));
+                Session.SendPacket(new FlatControllerAddedComposer(Room.RoomId, RoomUser.GetClient().GetHabbo().Id, RoomUser.GetClient().GetHabbo().Username));
             }
             else
             {
                 UserCache User =  PlusEnvironment.GetGame().GetCacheManager().GenerateUser(UserId);
                 if (User != null)
-                    Session.SendMessage(new FlatControllerAddedComposer(Room.RoomId, User.Id, User.Username));
+                    Session.SendPacket(new FlatControllerAddedComposer(Room.RoomId, User.Id, User.Username));
             }
         }
     }

@@ -247,21 +247,21 @@ namespace Plus.HabboHotel.Rooms
             if (_room.CheckRights(Session, true))
             {
                 User.SetStatus("flatctrl", "useradmin");
-                Session.SendMessage(new YouAreOwnerComposer());
-                Session.SendMessage(new YouAreControllerComposer(4));
+                Session.SendPacket(new YouAreOwnerComposer());
+                Session.SendPacket(new YouAreControllerComposer(4));
             }
             else if (_room.CheckRights(Session, false) && _room.Group == null)
             {
                 User.SetStatus("flatctrl", "1");
-                Session.SendMessage(new YouAreControllerComposer(1));
+                Session.SendPacket(new YouAreControllerComposer(1));
             }
             else if (_room.Group != null && _room.CheckRights(Session, false, true))
             {
                 User.SetStatus("flatctrl", "3");
-                Session.SendMessage(new YouAreControllerComposer(3));
+                Session.SendPacket(new YouAreControllerComposer(3));
             }
             else
-                Session.SendMessage(new YouAreNotControllerComposer());
+                Session.SendPacket(new YouAreNotControllerComposer());
 
             User.UpdateNeeded = true;
 
@@ -289,10 +289,10 @@ namespace Plus.HabboHotel.Rooms
                     return;
 
                 if (NotifyKick)
-                    Session.SendMessage(new GenericErrorComposer(4008));
+                    Session.SendPacket(new GenericErrorComposer(4008));
 
                 if (NotifyClient)
-                    Session.SendMessage(new CloseConnectionComposer());
+                    Session.SendPacket(new CloseConnectionComposer());
 
                 if (Session.GetHabbo().TentId > 0)
                     Session.GetHabbo().TentId = 0;

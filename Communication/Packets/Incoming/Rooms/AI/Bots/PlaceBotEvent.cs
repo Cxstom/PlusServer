@@ -101,7 +101,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                 Console.WriteLine("Error whilst removing Bot: " + ToRemove.Id);
                 return;
             }
-            Session.SendMessage(new BotInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetBots()));
+            Session.SendPacket(new BotInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetBots()));
         }
     }
 }

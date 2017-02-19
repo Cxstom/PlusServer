@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             string[] AllowedGenders = { "M", "F" };
             if (!AllowedGenders.Contains(Gender))
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("Sorry, you chose an invalid gender."));
+                Session.SendPacket(new BroadcastMessageAlertComposer("Sorry, you chose an invalid gender."));
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             }
 
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_AvatarLooks", 1);
-            Session.SendMessage(new AvatarAspectUpdateComposer(Look, Gender));
+            Session.SendPacket(new AvatarAspectUpdateComposer(Look, Gender));
             if (Session.GetHabbo().Look.Contains("ha-1006"))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.WEAR_HAT);
 
@@ -67,7 +67,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 RoomUser RoomUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                 if (RoomUser != null)
                 {
-                    Session.SendMessage(new UserChangeComposer(RoomUser, true));
+                    Session.SendPacket(new UserChangeComposer(RoomUser, true));
                     Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(RoomUser, false));
                 }
             }

@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     dbClient.RunQuery();
                 }
 
-                session.SendMessage(new IgnoreStatusComposer(3, Player.Username));
+                session.SendPacket(new IgnoreStatusComposer(3, Player.Username));
             }
         }
     }

@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             int Likes = Habbo.Relationships.Count(x => x.Value.Type == 2);
             int Hates = Habbo.Relationships.Count(x => x.Value.Type == 3);
 
-            Session.SendMessage(new GetRelationshipsComposer(Habbo, Loves, Likes, Hates));
+            Session.SendPacket(new GetRelationshipsComposer(Habbo, Loves, Likes, Hates));
         }
     }
 }

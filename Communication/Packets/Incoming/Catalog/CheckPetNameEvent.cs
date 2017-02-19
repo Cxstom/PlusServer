@@ -12,26 +12,26 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             if (PetName.Length < 2)
             {
-                Session.SendMessage(new CheckPetNameComposer(2, "2"));
+                Session.SendPacket(new CheckPetNameComposer(2, "2"));
                 return;
             }
             else if (PetName.Length > 15)
             {
-                Session.SendMessage(new CheckPetNameComposer(1, "15"));
+                Session.SendPacket(new CheckPetNameComposer(1, "15"));
                 return;
             }
             else if (!PlusEnvironment.IsValidAlphaNumeric(PetName))
             {
-                Session.SendMessage(new CheckPetNameComposer(3, ""));
+                Session.SendPacket(new CheckPetNameComposer(3, ""));
                 return;
             }
             else if (PlusEnvironment.GetGame().GetChatManager().GetFilter().IsFiltered(PetName))
             {
-                Session.SendMessage(new CheckPetNameComposer(4, ""));
+                Session.SendPacket(new CheckPetNameComposer(4, ""));
                 return;
             }
 
-            Session.SendMessage(new CheckPetNameComposer(0, ""));
+            Session.SendPacket(new CheckPetNameComposer(0, ""));
         }
     }
 }

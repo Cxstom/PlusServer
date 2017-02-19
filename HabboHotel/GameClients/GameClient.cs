@@ -140,19 +140,19 @@ namespace Plus.HabboHotel.GameClients
                 {
                     userData.user.Init(this, userData);
 
-                    SendMessage(new AuthenticationOKComposer());
-                    SendMessage(new AvatarEffectsComposer(_habbo.Effects().GetAllEffects));
-                    SendMessage(new NavigatorSettingsComposer(_habbo.HomeRoom));
-                    SendMessage(new FavouritesComposer(userData.user.FavoriteRooms));
-                    SendMessage(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingParts));
-                    SendMessage(new UserRightsComposer(_habbo.Rank));
-                    SendMessage(new AvailabilityStatusComposer());
-                    SendMessage(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
-                    SendMessage(new BuildersClubMembershipComposer());
-                    SendMessage(new CfhTopicsInitComposer(PlusEnvironment.GetGame().GetModerationManager().UserActionPresets));
+                    SendPacket(new AuthenticationOKComposer());
+                    SendPacket(new AvatarEffectsComposer(_habbo.Effects().GetAllEffects));
+                    SendPacket(new NavigatorSettingsComposer(_habbo.HomeRoom));
+                    SendPacket(new FavouritesComposer(userData.user.FavoriteRooms));
+                    SendPacket(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingParts));
+                    SendPacket(new UserRightsComposer(_habbo.Rank));
+                    SendPacket(new AvailabilityStatusComposer());
+                    SendPacket(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
+                    SendPacket(new BuildersClubMembershipComposer());
+                    SendPacket(new CfhTopicsInitComposer(PlusEnvironment.GetGame().GetModerationManager().UserActionPresets));
 
-                    SendMessage(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
-                    SendMessage(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
+                    SendPacket(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
+                    SendPacket(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
                     //SendMessage(new TalentTrackLevelComposer());
 
                     if (GetHabbo().GetMessenger() != null)
@@ -200,14 +200,14 @@ namespace Plus.HabboHotel.GameClients
           
                     if (userData.user.GetPermissions().HasRight("mod_tickets"))
                     {
-                        SendMessage(new ModeratorInitComposer(
+                        SendPacket(new ModeratorInitComposer(
                           PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
 
                     if (PlusEnvironment.GetSettingsManager().TryGetValue("user.login.message.enabled") == "1")
-                        SendMessage(new MOTDNotificationComposer(PlusEnvironment.GetLanguageManager().TryGetValue("user.login.message")));
+                        SendPacket(new MOTDNotificationComposer(PlusEnvironment.GetLanguageManager().TryGetValue("user.login.message")));
 
                     PlusEnvironment.GetGame().GetRewardManager().CheckRewards(this);
                     return true;
@@ -229,15 +229,15 @@ namespace Plus.HabboHotel.GameClients
             if (User == null)
                 return;
 
-            SendMessage(new WhisperComposer(User.VirtualId, Message, 0, (Colour == 0 ? User.LastBubble : Colour)));
+            SendPacket(new WhisperComposer(User.VirtualId, Message, 0, (Colour == 0 ? User.LastBubble : Colour)));
         }
 
         public void SendNotification(string Message)
         {
-            SendMessage(new BroadcastMessageAlertComposer(Message));
+            SendPacket(new BroadcastMessageAlertComposer(Message));
         }
 
-        public void SendMessage(IServerPacket Message)
+        public void SendPacket(IServerPacket Message)
         {
             byte[] bytes = Message.GetBytes();
 

@@ -92,12 +92,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks
             {
                 if(UserOneId == Session.GetHabbo().Id)
                 {
-                    Session.SendMessage(new LoveLockDialogueSetLockedMessageComposer(pId));
+                    Session.SendPacket(new LoveLockDialogueSetLockedMessageComposer(pId));
                     UserOne.LLPartner = UserTwoId;
                 }
                 else if(UserTwoId == Session.GetHabbo().Id)
                 {
-                    Session.SendMessage(new LoveLockDialogueSetLockedMessageComposer(pId));
+                    Session.SendPacket(new LoveLockDialogueSetLockedMessageComposer(pId));
                     UserTwo.LLPartner = UserOneId;
                 }
 
@@ -123,8 +123,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks
                         dbClient.RunQuery();
                     }
 
-                    UserOne.GetClient().SendMessage(new LoveLockDialogueCloseMessageComposer(pId));
-                    UserTwo.GetClient().SendMessage(new LoveLockDialogueCloseMessageComposer(pId));
+                    UserOne.GetClient().SendPacket(new LoveLockDialogueCloseMessageComposer(pId));
+                    UserTwo.GetClient().SendPacket(new LoveLockDialogueCloseMessageComposer(pId));
 
                     UserOne.CanWalk = true;
                     UserTwo.CanWalk = true;

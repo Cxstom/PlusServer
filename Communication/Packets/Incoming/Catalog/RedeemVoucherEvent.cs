@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             Voucher Voucher = null;
             if (!PlusEnvironment.GetGame().GetCatalog().GetVoucherManager().TryGetVoucher(VoucherCode, out Voucher))
             {
-                Session.SendMessage(new VoucherRedeemErrorComposer(0));
+                Session.SendPacket(new VoucherRedeemErrorComposer(0));
                 return;
             }
 
@@ -63,15 +63,15 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             if (Voucher.Type == VoucherType.CREDIT)
             {
                 Session.GetHabbo().Credits += Voucher.Value;
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
             else if (Voucher.Type == VoucherType.DUCKET)
             {
                 Session.GetHabbo().Duckets += Voucher.Value;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Voucher.Value));
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Voucher.Value));
             }
 
-            Session.SendMessage(new VoucherRedeemOkComposer());
+            Session.SendPacket(new VoucherRedeemOkComposer());
         }
     }
 }

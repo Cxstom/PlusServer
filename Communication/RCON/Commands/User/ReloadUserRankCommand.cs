@@ -37,7 +37,7 @@ namespace Plus.Communication.RCON.Commands.User
 
             if (client.GetHabbo().GetPermissions().HasRight("mod_tickets"))
             {
-                client.SendMessage(new ModeratorInitComposer(
+                client.SendPacket(new ModeratorInitComposer(
                   PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                   PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
                   PlusEnvironment.GetGame().GetModerationManager().GetTickets));

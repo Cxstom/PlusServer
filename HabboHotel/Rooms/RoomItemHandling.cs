@@ -869,7 +869,7 @@ namespace Plus.HabboHotel.Rooms
                     this._room.SendMessage(new ItemRemoveComposer(Item, Item.UserID));
                 }
                 
-                Session.SendMessage(new FurniListAddComposer(Item));
+                Session.SendPacket(new FurniListAddComposer(Item));
             }
 
             this._rollers.Clear();

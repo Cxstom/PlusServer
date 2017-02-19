@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 
             if (Session.GetHabbo().TimeMuted > 0)
             {
-                Session.SendMessage(new MutedComposer(Session.GetHabbo().TimeMuted));
+                Session.SendPacket(new MutedComposer(Session.GetHabbo().TimeMuted));
                 return;
             }
 
@@ -66,7 +66,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 int MuteTime;
                 if (User.IncrementAndCheckFlood(out MuteTime))
                 {
-                    Session.SendMessage(new FloodControlComposer(MuteTime));
+                    Session.SendPacket(new FloodControlComposer(MuteTime));
                     return;
                 }
             }
@@ -88,7 +88,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                     Session.Disconnect();
                     return;
                 }
-                Session.SendMessage(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
+                Session.SendPacket(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
                 return;
             }
 
@@ -96,13 +96,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.SOCIAL_CHAT);
 
             User.UnIdle();
-            User.GetClient().SendMessage(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
+            User.GetClient().SendPacket(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
 
             if (User2 != null && !User2.IsBot && User2.UserId != User.UserId)
             {
                 if (!User2.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Session.GetHabbo().Id))
                 {
-                    User2.GetClient().SendMessage(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
+                    User2.GetClient().SendPacket(new WhisperComposer(User.VirtualId, Message, 0, User.LastBubble));
                 }
             }
  
@@ -115,7 +115,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                     {
                         if (user.GetClient() != null && user.GetClient().GetHabbo() != null && !user.GetClient().GetHabbo().IgnorePublicWhispers)
                         {
-                            user.GetClient().SendMessage(new WhisperComposer(User.VirtualId, "[Whisper to " + ToUser + "] " + Message, 0, User.LastBubble));
+                            user.GetClient().SendPacket(new WhisperComposer(User.VirtualId, "[Whisper to " + ToUser + "] " + Message, 0, User.LastBubble));
                         }
                     }
                 }

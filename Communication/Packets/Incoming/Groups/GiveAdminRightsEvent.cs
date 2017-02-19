@@ -45,11 +45,11 @@ namespace Plus.Communication.Packets.Incoming.Groups
                         User.SetStatus("flatctrl 3", "");
                     User.UpdateNeeded = true;
                     if (User.GetClient() != null)
-                        User.GetClient().SendMessage(new YouAreControllerComposer(3));
+                        User.GetClient().SendPacket(new YouAreControllerComposer(3));
                 }
             }
 
-            Session.SendMessage(new GroupMemberUpdatedComposer(GroupId, Habbo, 1));
+            Session.SendPacket(new GroupMemberUpdatedComposer(GroupId, Habbo, 1));
         }
     }
 }

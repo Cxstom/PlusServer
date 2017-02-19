@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.RentableSpaces
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
             int Something = Packet.PopInt();
-            Session.SendMessage(new RentableSpaceComposer());
+            Session.SendPacket(new RentableSpaceComposer());
         }
     }
 }

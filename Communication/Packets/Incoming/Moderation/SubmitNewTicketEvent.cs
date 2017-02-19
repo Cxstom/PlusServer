@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 ModerationTicket PendingTicket = PlusEnvironment.GetGame().GetModerationManager().GetTicketBySenderId(Session.GetHabbo().Id);
                 if (PendingTicket != null)
                 {
-                    Session.SendMessage(new CallForHelpPendingCallsComposer(PendingTicket));
+                    Session.SendPacket(new CallForHelpPendingCallsComposer(PendingTicket));
                     return;
                 }
             }

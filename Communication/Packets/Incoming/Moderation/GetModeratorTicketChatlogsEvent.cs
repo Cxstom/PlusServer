@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             if (Data == null)
                 return;
 
-            Session.SendMessage(new ModeratorTicketChatlogComposer(Ticket, Data, Ticket.Timestamp));
+            Session.SendPacket(new ModeratorTicketChatlogComposer(Ticket, Data, Ticket.Timestamp));
         }
     }
 }
