@@ -54,17 +54,12 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
             Session.SendPacket(new RoomNotificationComposer("Powered by PlusEmulator",
                  "<b>Credits</b>:\n" +
-                 "Sledmore (Developer)\n" +
-                 "123 (Developer)\n" +
-                 "Joopie (Encryption)\n" +
-                 "Tweeney (PlusEMU)\n" +
-                 "Butterfly Emulator developers\n\n" +
+                 "DevBest Community\n\n" +
                  "<b>Current run time information</b>:\n" +
                  "Online Users: " + OnlineUsers + "\n" +
                  "Rooms Loaded: " + RoomCount + "\n" +
                  "Uptime: " + Uptime.Days + " day(s), " + Uptime.Hours + " hours and " + Uptime.Minutes + " minutes.\n\n" +
                  "<b>SWF Revision</b>:\n" + PlusEnvironment.SWFRevision, "plus", ""));
-
         }
     }
 }
