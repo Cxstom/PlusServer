@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 
-using Plus.HabboHotel.Global;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Quests;
 
@@ -22,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
 
             string Gender = Packet.PopString().ToUpper();
-            string Look = PlusEnvironment.GetGame().GetAntiMutant().RunLook(Packet.PopString());
+            string Look = PlusEnvironment.GetFigureManager().ProcessFigure(Packet.PopString(), Gender, Session.GetHabbo().GetClothing().GetClothingParts, true);
 
             if (Look == Session.GetHabbo().Look)
                 return;

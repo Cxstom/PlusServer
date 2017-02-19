@@ -13,7 +13,6 @@ using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Achievements;
 using Plus.HabboHotel.LandingView;
-using Plus.HabboHotel.Global;
 
 using Plus.HabboHotel.Games;
 
@@ -52,7 +51,6 @@ namespace Plus.HabboHotel
         private readonly LandingViewManager _landingViewManager;//TODO: Rename class
         private readonly GameDataManager _gameDataManager;
         private readonly ServerStatusUpdater _globalUpdater;
-        private readonly AntiMutant _antiMutant;
         private readonly BotManager _botManager;
         private readonly CacheManager _cacheManager;
         private readonly RewardManager _rewardManager;
@@ -95,8 +93,7 @@ namespace Plus.HabboHotel
 
             this._globalUpdater = new ServerStatusUpdater();
             this._globalUpdater.Init();
-
-            this._antiMutant = new AntiMutant();
+            
             this._botManager = new BotManager();
             this._botManager.Init();
 
@@ -229,11 +226,6 @@ namespace Plus.HabboHotel
         public GameDataManager GetGameDataManager()
         {
             return this._gameDataManager;
-        }
-
-        public AntiMutant GetAntiMutant()
-        {
-            return this._antiMutant;
         }
 
         public BotManager GetBotManager()

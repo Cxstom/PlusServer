@@ -632,6 +632,14 @@
     <Compile Include="Communication\RCON\Commands\User\TakeUserCurrencyCommand.cs" />
     <Compile Include="Communication\RCON\RCONConnection.cs" />
     <Compile Include="Communication\RCON\RCONSocket.cs" />
+    <Compile Include="Core\FigureData\Types\Color.cs" />
+    <Compile Include="Core\FigureData\FigureDataManager.cs" />
+    <Compile Include="Core\FigureData\Types\FigureSet.cs" />
+    <Compile Include="Core\FigureData\Types\Palette.cs" />
+    <Compile Include="Core\FigureData\Types\Part.cs" />
+    <Compile Include="Core\FigureData\Types\Set.cs" />
+    <Compile Include="Core\FigureData\Types\SetType.cs" />
+    <Compile Include="Core\FigureData\Types\SetTypeUtility.cs" />
     <Compile Include="Core\Language\LanguageManager.cs" />
     <Compile Include="Core\ExceptionLogger.cs" />
     <Compile Include="Core\Settings\SettingsManager.cs" />
@@ -955,7 +963,6 @@
     <Compile Include="HabboHotel\Items\Data\Moodlight\MoodlightData.cs" />
     <Compile Include="HabboHotel\Items\Item.cs" />
     <Compile Include="HabboHotel\Items\ItemTeleporterFinder.cs" />
-    <Compile Include="HabboHotel\Global\AntiMutant.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorManager.cs" />
     <Compile Include="HabboHotel\Navigator\FeaturedRoom.cs" />
     <Compile Include="HabboHotel\Rooms\PathFinding\Coord.cs" />

@@ -170,7 +170,7 @@ namespace Plus.HabboHotel.Rooms.Trading
                 {
                     logUserOne += Item.Id + ";";
                     RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
-                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE && PlusEnvironment.GetSettingsManager().TryGetValue("trading.auto_exchange_redeemables") == "1")
                     {
                         RoomUserTwo.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
                         RoomUserTwo.GetClient().SendMessage(new CreditBalanceComposer(RoomUserTwo.GetClient().GetHabbo().Credits));
@@ -198,7 +198,7 @@ namespace Plus.HabboHotel.Rooms.Trading
                 {
                     logUserTwo += Item.Id + ";";
                     RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
-                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE && PlusEnvironment.GetSettingsManager().TryGetValue("trading.auto_exchange_redeemables") == "1")
                     {
                         RoomUserOne.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
                         RoomUserOne.GetClient().SendMessage(new CreditBalanceComposer(RoomUserOne.GetClient().GetHabbo().Credits));

@@ -142,18 +142,12 @@ namespace Plus.HabboHotel.GameClients
 
                     SendMessage(new AuthenticationOKComposer());
                     SendMessage(new AvatarEffectsComposer(_habbo.Effects().GetAllEffects));
-                    //FurniListNotification -> why?
                     SendMessage(new NavigatorSettingsComposer(_habbo.HomeRoom));
                     SendMessage(new FavouritesComposer(userData.user.FavoriteRooms));
-                    SendMessage(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingAllParts));
-                    //1984
-                    //2102
+                    SendMessage(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingParts));
                     SendMessage(new UserRightsComposer(_habbo.Rank));
                     SendMessage(new AvailabilityStatusComposer());
-                    //1044
                     SendMessage(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
-                    //3674
-                    //3437
                     SendMessage(new BuildersClubMembershipComposer());
                     SendMessage(new CfhTopicsInitComposer());
 
@@ -201,6 +195,7 @@ namespace Plus.HabboHotel.GameClients
                     if (!PlusEnvironment.GetGame().GetCacheManager().ContainsUser(_habbo.Id))
                         PlusEnvironment.GetGame().GetCacheManager().GenerateUser(_habbo.Id);
 
+                    _habbo.Look = PlusEnvironment.GetFigureManager().ProcessFigure(this._habbo.Look, this._habbo.Gender, this._habbo.GetClothing().GetClothingParts, true);
                     _habbo.InitProcess();
           
                     if (userData.user.GetPermissions().HasRight("mod_tickets"))
@@ -228,7 +223,7 @@ namespace Plus.HabboHotel.GameClients
 
         public void SendWhisper(string Message, int Colour = 0)
         {
-            if (this == null || GetHabbo() == null || GetHabbo().CurrentRoom == null)
+            if (GetHabbo() == null || GetHabbo().CurrentRoom == null)
                 return;
 
             RoomUser User = GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(GetHabbo().Username);

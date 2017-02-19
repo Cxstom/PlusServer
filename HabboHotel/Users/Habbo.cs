@@ -180,7 +180,7 @@ namespace Plus.HabboHotel.Users
             this._username = Username;
             this._rank = Rank;
             this._motto = Motto;
-            this._look = PlusEnvironment.GetGame().GetAntiMutant().RunLook(Look);
+            this._look = Look;
             this._gender = Gender.ToLower();
             this._footballLook = PlusEnvironment.FilterFigure(Look.ToLower());
             this._footballGender = Gender.ToLower();

@@ -287,8 +287,8 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.GetGame().GetAntiMutant().Init();
-                        Session.SendWhisper("Anti mutant successfully reloaded.");
+                        PlusEnvironment.GetFigureManager().Init();
+                        Session.SendWhisper("FigureData manager successfully reloaded.");
                         break;
                     }
 

@@ -24,6 +24,7 @@ using Plus.HabboHotel.Cache.Type;
 using Plus.HabboHotel.Users.UserData;
 using Plus.Communication.RCON;
 using Plus.Communication.ConnectionManager;
+using Plus.Core.FigureData;
 using Plus.Core.Language;
 using Plus.Core.Settings;
 
@@ -46,6 +47,7 @@ namespace Plus
         private static SettingsManager _settingsManager;
         private static DatabaseManager _manager;
         private static RCONSocket _rcon;
+        private static FigureDataManager _figureManager;
 
         // TODO: Get rid?
         public static bool Event = false;
@@ -136,6 +138,9 @@ namespace Plus
 
                 _settingsManager = new SettingsManager();
                 _settingsManager.Init();
+
+                _figureManager = new FigureDataManager();
+                _figureManager.Init();
 
                 //Have our encryption ready.
                 HabboEncryptionV2.Initialize(new RSAKeys());
@@ -388,6 +393,11 @@ namespace Plus
         public static RCONSocket GetRCONSocket()
         {
             return _rcon;
+        }
+
+        public static FigureDataManager GetFigureManager()
+        {
+            return _figureManager;
         }
 
         public static DatabaseManager GetDatabaseManager()

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-using Plus.Database.Interfaces;
-using Plus.HabboHotel.Global;
-
+﻿using Plus.Database.Interfaces;
 
 
 namespace Plus.Communication.Packets.Incoming.Avatar
@@ -14,8 +8,10 @@ namespace Plus.Communication.Packets.Incoming.Avatar
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
             int SlotId = Packet.PopInt();
-            string Look = PlusEnvironment.GetGame().GetAntiMutant().RunLook(Packet.PopString()); 
+            string Look = Packet.PopString();
             string Gender = Packet.PopString();
+
+            Look = PlusEnvironment.GetFigureManager().ProcessFigure(Look, Gender, Session.GetHabbo().GetClothing().GetClothingParts, true);
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {

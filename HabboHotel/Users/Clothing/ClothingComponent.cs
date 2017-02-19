@@ -83,7 +83,7 @@ namespace Plus.HabboHotel.Users.Clothing
             return this._allClothing.TryGetValue(PartId, out ClothingPart);
         }
 
-        public ICollection<ClothingParts> GetClothingAllParts
+        public ICollection<ClothingParts> GetClothingParts
         {
             get { return this._allClothing.Values; }
         }

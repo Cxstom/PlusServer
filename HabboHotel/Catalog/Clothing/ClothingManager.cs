@@ -41,5 +41,10 @@ namespace Plus.HabboHotel.Catalog.Clothing
                 return true;
             return false;
         }
+
+        public ICollection<ClothingItem> GetClothingAllParts
+        {
+            get { return this._clothing.Values; }
+        }
     }
 }

@@ -69,7 +69,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             Room.GetRoomItemHandler().RemoveFurniture(Session, Item.Id);
 
             Session.GetHabbo().GetClothing().AddClothing(Clothing.ClothingName, Clothing.PartIds);
-            Session.SendMessage(new FigureSetIdsComposer(Session.GetHabbo().GetClothing().GetClothingAllParts));
+            Session.SendMessage(new FigureSetIdsComposer(Session.GetHabbo().GetClothing().GetClothingParts));
             Session.SendMessage(new RoomNotificationComposer("figureset.redeemed.success"));
             Session.SendWhisper("If for some reason cannot see your new clothing, reload the hotel!");
         }
