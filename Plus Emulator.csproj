@@ -229,6 +229,7 @@
     <Compile Include="Communication\Packets\Incoming\Navigator\FindRandomFriendingRoomEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\InitializeNewNavigatorEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Navigator\NavigatorSearchEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Navigator\ToggleStaffPickEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Quests\GetDailyQuestEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Action\RemoveMyRightsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\LoveLocks\ConfirmLoveLockEvent.cs" />
@@ -401,11 +402,11 @@
     <Compile Include="Communication\Packets\Outgoing\Moderation\MutedComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Moderation\OpenHelpToolComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\GuestRoomSearchResultComposer.cs" />
-    <Compile Include="Communication\Packets\Outgoing\Navigator\New\NavigatorCollapsedCategoriesComposer.cs" />
-    <Compile Include="Communication\Packets\Outgoing\Navigator\New\NavigatorLiftedRoomsComposer.cs" />
-    <Compile Include="Communication\Packets\Outgoing\Navigator\New\NavigatorMetaDataParserComposer.cs" />
-    <Compile Include="Communication\Packets\Outgoing\Navigator\New\NavigatorPreferencesComposer.cs" />
-    <Compile Include="Communication\Packets\Outgoing\Navigator\New\NavigatorSearchResultSetComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorCollapsedCategoriesComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorLiftedRoomsComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorMetaDataParserComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorPreferencesComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorSearchResultSetComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\PopularRoomTagsResultComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\UserFlatCatsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorFlatCatsComposer.cs" />
@@ -698,6 +699,7 @@
     <Compile Include="HabboHotel\Navigator\NavigatorViewMode.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorViewModeUtility.cs" />
     <Compile Include="HabboHotel\Navigator\SearchResultList.cs" />
+    <Compile Include="HabboHotel\Navigator\StaffPick.cs" />
     <Compile Include="HabboHotel\Navigator\TopLevelItem.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorHandler.cs" />
     <Compile Include="HabboHotel\Permissions\Permission.cs" />

@@ -13,8 +13,9 @@ namespace Plus.HabboHotel.Navigator
     public sealed class NavigatorManager
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Navigator.NavigatorManager");
-        
+
         private readonly Dictionary<int, FeaturedRoom> _featuredRooms;
+        private readonly Dictionary<int, StaffPick> _staffPicks;
 
         private readonly Dictionary<int, TopLevelItem> _topLevelItems;
         private readonly Dictionary<int, SearchResultList> _searchResultLists;
@@ -31,7 +32,7 @@ namespace Plus.HabboHotel.Navigator
             this._topLevelItems.Add(4, new TopLevelItem(4, "myworld_view", "", ""));
 
             this._featuredRooms = new Dictionary<int, FeaturedRoom>();
-
+            this._staffPicks = new Dictionary<int, StaffPick>();
             this.Init();
         }
 
@@ -42,6 +43,9 @@ namespace Plus.HabboHotel.Navigator
 
             if (this._featuredRooms.Count > 0)
                 this._featuredRooms.Clear();
+
+            if (this._staffPicks.Count > 0)
+                this._staffPicks.Clear();
 
             DataTable Table = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -60,7 +64,7 @@ namespace Plus.HabboHotel.Navigator
                         }
                     }
                 }
-           
+
                 dbClient.SetQuery("SELECT `room_id`,`caption`,`description`,`image_url`,`enabled` FROM `navigator_publics` ORDER BY `order_num` ASC");
                 DataTable GetPublics = dbClient.GetTable();
 
@@ -73,6 +77,18 @@ namespace Plus.HabboHotel.Navigator
                             if (!this._featuredRooms.ContainsKey(Convert.ToInt32(Row["room_id"])))
                                 this._featuredRooms.Add(Convert.ToInt32(Row["room_id"]), new FeaturedRoom(Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["caption"]), Convert.ToString(Row["description"]), Convert.ToString(Row["image_url"])));
                         }
+                    }
+                }
+
+                dbClient.SetQuery("SELECT `room_id`,`image` FROM `navigator_staff_picks`");
+                DataTable GetPicks = dbClient.GetTable();
+
+                if (GetPicks != null)
+                {
+                    foreach (DataRow Row in GetPicks.Rows)
+                    {
+                        if (!this._staffPicks.ContainsKey(Convert.ToInt32(Row["room_id"])))
+                            this._staffPicks.Add(Convert.ToInt32(Row["room_id"]), new StaffPick(Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["image"])));
                     }
                 }
             }
@@ -145,9 +161,36 @@ namespace Plus.HabboHotel.Navigator
             return this._featuredRooms.TryGetValue(RoomId, out PublicRoom);
         }
 
+        public bool TryGetStaffPickedRoom(int roomId, out StaffPick room)
+        {
+            return this._staffPicks.TryGetValue(roomId, out room);
+        }
+
+        public bool TryAddStaffPickedRoom(int roomId)
+        {
+            if (this._staffPicks.ContainsKey(roomId))
+                return false;
+
+            this._staffPicks.Add(roomId, new StaffPick(roomId, ""));
+            return true;
+        }
+
+        public bool TryRemoveStaffPickedRoom(int roomId)
+        {
+            if (!this._staffPicks.ContainsKey(roomId))
+                return false;
+
+            return this._staffPicks.Remove(roomId);
+        }
+
         public ICollection<FeaturedRoom> GetFeaturedRooms()
         {
             return this._featuredRooms.Values;
+        }
+
+        public ICollection<StaffPick> GetStaffPicks()
+        {
+            return this._staffPicks.Values;
         }
     }
 }

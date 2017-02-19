@@ -283,6 +283,7 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.GetGuestRoomMessageEvent, new GetGuestRoomEvent());
             this._incomingPackets.Add(ClientPacketHeader.EditRoomPromotionMessageEvent, new EditRoomEventEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetEventCategoriesMessageEvent, new GetNavigatorFlatsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.ToggleStaffPickEvent, new ToggleStaffPickEvent());
         }
 
         public void RegisterNewNavigator()

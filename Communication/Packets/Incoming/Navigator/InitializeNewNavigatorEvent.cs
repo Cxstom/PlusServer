@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Plus.Communication.Packets.Outgoing.Navigator.New;
 using Plus.HabboHotel.Navigator;
+using Plus.Communication.Packets.Outgoing.Navigator;
 
 namespace Plus.Communication.Packets.Incoming.Navigator
 {

@@ -17,6 +17,8 @@ namespace Plus.HabboHotel.Navigator
                     return NavigatorCategoryType.CATEGORY;
                 case "featured":
                     return NavigatorCategoryType.FEATURED;
+                case "staff_picks":
+                    return NavigatorCategoryType.STAFF_PICKS;
                 case "popular":
                     return NavigatorCategoryType.POPULAR;
                 case "recommended":

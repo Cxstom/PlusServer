@@ -123,29 +123,60 @@ namespace Plus.HabboHotel.Navigator
                     }
 
                 case NavigatorCategoryType.FEATURED:
-                    #region Featured
-                    List<RoomData> Rooms = new List<RoomData>();
-                    ICollection<FeaturedRoom> Featured = PlusEnvironment.GetGame().GetNavigator().GetFeaturedRooms();
-                    foreach (FeaturedRoom FeaturedItem in Featured.ToList())
                     {
-                        if (FeaturedItem == null)
-                            continue;
+                        #region Featured
+                        List<RoomData> Rooms = new List<RoomData>();
+                        ICollection<FeaturedRoom> Featured = PlusEnvironment.GetGame().GetNavigator().GetFeaturedRooms();
+                        foreach (FeaturedRoom FeaturedItem in Featured.ToList())
+                        {
+                            if (FeaturedItem == null)
+                                continue;
 
-                        RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(FeaturedItem.RoomId);
-                        if (Data == null)
-                            continue;
+                            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(FeaturedItem.RoomId);
+                            if (Data == null)
+                                continue;
 
-                        if (!Rooms.Contains(Data))
-                            Rooms.Add(Data);
+                            if (!Rooms.Contains(Data))
+                                Rooms.Add(Data);
+                        }
+
+                        Message.WriteInteger(Rooms.Count);
+                        foreach (RoomData Data in Rooms.ToList())
+                        {
+                            RoomAppender.WriteRoom(Message, Data, Data.Promotion);
+                        }
+                        #endregion
+
+                        break;
                     }
 
-                    Message.WriteInteger(Rooms.Count);
-                    foreach (RoomData Data in Rooms.ToList())
+                case NavigatorCategoryType.STAFF_PICKS:
                     {
-                        RoomAppender.WriteRoom(Message, Data, Data.Promotion);
+                        #region Featured
+                        List<RoomData> rooms = new List<RoomData>();
+
+                        ICollection<StaffPick> picks = PlusEnvironment.GetGame().GetNavigator().GetStaffPicks();
+                        foreach (StaffPick pick in picks.ToList())
+                        {
+                            if (pick == null)
+                                continue;
+
+                            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(pick.RoomId);
+                            if (Data == null)
+                                continue;
+
+                            if (!rooms.Contains(Data))
+                                rooms.Add(Data);
+                        }
+
+                        Message.WriteInteger(rooms.Count);
+                        foreach (RoomData data in rooms.ToList())
+                        {
+                            RoomAppender.WriteRoom(Message, data, data.Promotion);
+                        }
+                        #endregion
+                        break;
                     }
-                    #endregion
-                    break;
 
                 case NavigatorCategoryType.POPULAR:
                     {
