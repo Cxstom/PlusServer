@@ -96,6 +96,8 @@
         public const int NavigatorFlatCatsMessageComposer = 1265;//1109
         public const int NavigatorMetaDataParserMessageComposer = 1071;//371
         public const int NavigatorCollapsedCategoriesMessageComposer = 232;//1263
+        public const int NavigatorSettingsMessageComposer = 2477;//3175
+        public const int NavigatorSearchResultSetMessageComposer = 1089;//815
 
         // Messenger
         public const int BuddyListMessageComposer = 2900;//3394
@@ -258,7 +260,6 @@
         public const int GnomeBoxMessageComposer = 1694;//1778
         public const int IgnoreStatusMessageComposer = 2485;//3882
         public const int PetInformationMessageComposer = 3380;//3913
-        public const int NavigatorSearchResultSetMessageComposer = 1089;//815
         public const int ConcurrentUsersGoalProgressMessageComposer = 3782;//2955
         public const int VideoOffersRewardsMessageComposer = 1806;//1896
         public const int SanctionStatusMessageComposer = 3525;//193
@@ -307,7 +308,6 @@
         public const int LoveLockDialogueSetLockedMessageComposer = 1767;//1534
         public const int BroadcastMessageAlertMessageComposer = 1751;//1279
         public const int MarketplaceCancelOfferResultMessageComposer = 1892;//202
-        public const int NavigatorSettingsMessageComposer = 2477;//3175
 
         public const int MessengerInitMessageComposer = 1329;//391
     }

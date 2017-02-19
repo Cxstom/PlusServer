@@ -20,6 +20,7 @@
         public const int PurchaseFromCatalogAsGiftMessageEvent = 1555;//21
 
         // Navigator
+        public const int ToggleStaffPickEvent = 2282;
 
         // Messenger
         public const int GetBuddyRequestsMessageEvent = 1646;//2485

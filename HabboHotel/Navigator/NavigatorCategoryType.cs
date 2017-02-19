@@ -4,6 +4,7 @@
     {
         CATEGORY,
         FEATURED,
+        STAFF_PICKS,
         POPULAR,
         RECOMMENDED,
         QUERY,

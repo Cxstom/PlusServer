@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Navigator;
 
 namespace Plus.Communication.Packets.Outgoing.Navigator
 {
@@ -65,9 +62,15 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
                 base.WriteInteger(56);//What?
             }
 
-
             base.WriteBoolean(checkEntry);
-            base.WriteBoolean(false);
+
+            StaffPick staffPick = null;
+            if (!PlusEnvironment.GetGame().GetNavigator().TryGetStaffPickedRoom(Data.Id, out staffPick))
+            {
+                base.WriteBoolean(true);
+            }
+            else
+                base.WriteBoolean(true);
             base.WriteBoolean(false);
             base.WriteBoolean(false);
 
