@@ -48,7 +48,7 @@ namespace Plus.Communication.RCON.Commands.User
                     RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(client.GetHabbo().Id);
                     if (User != null)
                     {
-                        Room.SendMessage(new UserChangeComposer(User, false));
+                        Room.SendPacket(new UserChangeComposer(User, false));
                         return true;
                     }
                 }

@@ -1213,7 +1213,7 @@ namespace Plus.HabboHotel.Users
                     if (Room.UserCount > 0)
                     {
                         this.GetClient().SendPacket(new DoorbellComposer(""));
-                        Room.SendMessage(new DoorbellComposer(this.GetClient().GetHabbo().Username), true);
+                        Room.SendPacket(new DoorbellComposer(this.GetClient().GetHabbo().Username), true);
                         return;
                     }
                     else

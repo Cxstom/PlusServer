@@ -78,7 +78,7 @@ namespace Plus.HabboHotel.Items.Interactor
                     mMessage.AppendInt32(0);
                     Room.SendMessage(mMessage);*/
 
-                    Room.SendMessage(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, NewPoint.X, NewPoint.Y, NewZ, 0, 0, Item.Id));
+                    Room.SendPacket(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, NewPoint.X, NewPoint.Y, NewZ, 0, 0, Item.Id));
 
                     Item.GetRoom()  .GetRoomItemHandler() .SetFloorItem(User.GetClient(), Item, NewPoint.X, NewPoint.Y, Item.Rotation, false, false, false);
                 }

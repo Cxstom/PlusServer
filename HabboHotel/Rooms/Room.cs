@@ -486,7 +486,7 @@ namespace Plus.HabboHotel.Rooms
 
                     PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_FootballGoalScored", 1);
 
-                    SendMessage(new ActionComposer(User.VirtualId, 1));
+                    SendPacket(new ActionComposer(User.VirtualId, 1));
                 }
             }
 
@@ -737,7 +737,7 @@ namespace Plus.HabboHotel.Rooms
         #endregion
 
         #region Communication (Packets)
-        public void SendMessage(IServerPacket Message, bool UsersWithRightsOnly = false)
+        public void SendPacket(IServerPacket Message, bool UsersWithRightsOnly = false)
         {
             if (Message == null)
                 return;
@@ -784,7 +784,7 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-        public void SendMessage(List<ServerPacket> Messages)
+        public void SendPacket(List<ServerPacket> Messages)
         {
             if (Messages.Count == 0)
                 return;
@@ -819,7 +819,7 @@ namespace Plus.HabboHotel.Rooms
 
         public void Dispose()
         {
-            SendMessage(new CloseConnectionComposer());
+            SendPacket(new CloseConnectionComposer());
 
             if (!mDisposed)
             {

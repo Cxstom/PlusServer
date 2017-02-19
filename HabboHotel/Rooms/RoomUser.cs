@@ -272,7 +272,7 @@ namespace Plus.HabboHotel.Rooms
             if (IsAsleep)
             {
                 IsAsleep = false;
-                GetRoom().SendMessage(new SleepComposer(this, false));
+                GetRoom().SendPacket(new SleepComposer(this, false));
             }
         }
 
@@ -474,7 +474,7 @@ namespace Plus.HabboHotel.Rooms
             if (TeleportEnabled)
             {
                 UnIdle();
-                GetRoom().SendMessage(GetRoom().GetRoomItemHandler().UpdateUserOnRoller(this, new Point(pX, pY), 0, GetRoom().GetGameMap().SqAbsoluteHeight(GoalX, GoalY)));
+                GetRoom().SendPacket(GetRoom().GetRoomItemHandler().UpdateUserOnRoller(this, new Point(pX, pY), 0, GetRoom().GetGameMap().SqAbsoluteHeight(GoalX, GoalY)));
                 if (Statusses.ContainsKey("sit"))
                     Z -= 0.35;
                 UpdateNeeded = true;
@@ -520,7 +520,7 @@ namespace Plus.HabboHotel.Rooms
             else
                 CarryTimer = 0;
 
-            GetRoom().SendMessage(new CarryObjectComposer(VirtualId, Item));
+            GetRoom().SendPacket(new CarryObjectComposer(VirtualId, Item));
         }
 
 
@@ -602,7 +602,7 @@ namespace Plus.HabboHotel.Rooms
         {
             if (IsBot)
             {
-                this.mRoom.SendMessage(new AvatarEffectComposer(VirtualId, effectID));
+                this.mRoom.SendPacket(new AvatarEffectComposer(VirtualId, effectID));
                 return;
             }
 

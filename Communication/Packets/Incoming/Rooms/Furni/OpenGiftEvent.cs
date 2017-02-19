@@ -113,7 +113,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
 
             Present.MagicRemove = true;
-            Room.SendMessage(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
+            Room.SendPacket(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
 
             Thread thread = new Thread(() => FinishOpenGift(Session, BaseItem, Present, Room, Data));
             thread.Start();

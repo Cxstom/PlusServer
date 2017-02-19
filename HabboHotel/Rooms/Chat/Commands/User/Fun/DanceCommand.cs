@@ -46,7 +46,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     return;
                 }
 
-                Session.GetHabbo().CurrentRoom.SendMessage(new DanceComposer(ThisUser, DanceId));
+                Session.GetHabbo().CurrentRoom.SendPacket(new DanceComposer(ThisUser, DanceId));
             }
             else
                 Session.SendWhisper("Please enter a valid dance ID.");

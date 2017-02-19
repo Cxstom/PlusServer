@@ -35,11 +35,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
                 User.CarryItem(0);
 
             if (Session.GetHabbo().Effects().CurrentEffect > 0)
-                Room.SendMessage(new AvatarEffectComposer(User.VirtualId, 0));
+                Room.SendPacket(new AvatarEffectComposer(User.VirtualId, 0));
 
             User.DanceId = DanceId;
 
-            Room.SendMessage(new DanceComposer(User, DanceId));
+            Room.SendPacket(new DanceComposer(User, DanceId));
 
             PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.SOCIAL_DANCE);
             if (Room.GetRoomUserManager().GetRoomUsers().Count > 19)

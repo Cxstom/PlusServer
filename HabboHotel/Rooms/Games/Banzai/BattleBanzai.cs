@@ -299,7 +299,7 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
                         {
                             if (PlusEnvironment.GetUnixTimestamp() - timestarted > 5)
                                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_BattleBallWinner", 1);
-                            _room.SendMessage(new ActionComposer(User.VirtualId, 1));
+                            _room.SendPacket(new ActionComposer(User.VirtualId, 1));
                         }
                     }
                     else if (winners == TEAM.RED)
@@ -308,7 +308,7 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
                         {
                             if (PlusEnvironment.GetUnixTimestamp() - timestarted > 5)
                                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_BattleBallWinner", 1);
-                            _room.SendMessage(new ActionComposer(User.VirtualId, 1));
+                            _room.SendPacket(new ActionComposer(User.VirtualId, 1));
                         }
                     }
                     else if (winners == TEAM.GREEN)
@@ -317,7 +317,7 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
                         {
                             if (PlusEnvironment.GetUnixTimestamp() - timestarted > 5)
                                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_BattleBallWinner", 1);
-                            _room.SendMessage(new ActionComposer(User.VirtualId, 1));
+                            _room.SendPacket(new ActionComposer(User.VirtualId, 1));
                         }
                     }
                     else if (winners == TEAM.YELLOW)
@@ -326,7 +326,7 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
                         {
                             if (PlusEnvironment.GetUnixTimestamp() - timestarted > 5)
                                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_BattleBallWinner", 1);
-                            _room.SendMessage(new ActionComposer(User.VirtualId, 1));
+                            _room.SendPacket(new ActionComposer(User.VirtualId, 1));
                         }
                     }
                 }
@@ -352,7 +352,7 @@ namespace Plus.HabboHotel.Rooms.Games.Banzai
 
             Double NewZ = _room.GetGameMap().Model.SqFloorHeight[newX, newY];
 
-            _room.SendMessage(new SlideObjectBundleComposer(item.GetX, item.GetY, item.GetZ, newX, newY, NewZ, 0, 0, item.Id));
+            _room.SendPacket(new SlideObjectBundleComposer(item.GetX, item.GetY, item.GetZ, newX, newY, NewZ, 0, 0, item.Id));
 
             _room.GetRoomItemHandler().SetFloorItem(mover, item, newX, newY, item.Rotation, false, false, false, false);
 

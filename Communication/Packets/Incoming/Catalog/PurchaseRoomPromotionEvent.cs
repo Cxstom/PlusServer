@@ -61,7 +61,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             Session.SendPacket(new PurchaseOKComposer());
             if (Session.GetHabbo().InRoom && Session.GetHabbo().CurrentRoomId == RoomId)
-                Session.GetHabbo().CurrentRoom.SendMessage(new RoomEventComposer(Data, Data.Promotion));
+                Session.GetHabbo().CurrentRoom.SendPacket(new RoomEventComposer(Data, Data.Promotion));
 
             Session.GetHabbo().GetMessenger().BroadcastAchievement(Session.GetHabbo().Id, HabboHotel.Users.Messenger.MessengerEventTypes.EVENT_STARTED, Name);
         }

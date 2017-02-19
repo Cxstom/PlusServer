@@ -73,7 +73,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             {
                 Session.SendPacket(new AvatarAspectUpdateComposer(Session.GetHabbo().Look, Session.GetHabbo().Gender));
                 Session.SendPacket(new UserChangeComposer(User, true));
-                Room.SendMessage(new UserChangeComposer(User, false));
+                Room.SendPacket(new UserChangeComposer(User, false));
             }
         }
     }

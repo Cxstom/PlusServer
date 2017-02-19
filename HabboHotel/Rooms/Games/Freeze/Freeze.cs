@@ -107,7 +107,7 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
                 {
                     User.UnIdle();
                     User.DanceId = 0;
-                    this._room.SendMessage(new ActionComposer(User.VirtualId, 1));
+                    this._room.SendPacket(new ActionComposer(User.VirtualId, 1));
                 }
 
                 if (ExitTeleports.Count > 0)

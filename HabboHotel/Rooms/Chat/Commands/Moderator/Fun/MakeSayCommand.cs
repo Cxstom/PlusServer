@@ -40,7 +40,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
                 {
                     if (TargetUser.GetClient() != null && TargetUser.GetClient().GetHabbo() != null)
                         if (!TargetUser.GetClient().GetHabbo().GetPermissions().HasRight("mod_make_say_any"))
-                            Room.SendMessage(new ChatComposer(TargetUser.VirtualId, Message, 0, TargetUser.LastBubble));
+                            Room.SendPacket(new ChatComposer(TargetUser.VirtualId, Message, 0, TargetUser.LastBubble));
                         else
                             Session.SendWhisper("You cannot use makesay on this user.");
                 }

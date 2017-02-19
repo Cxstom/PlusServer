@@ -50,7 +50,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 }
             }
 
-            Room.SendMessage(new HabboGroupBadgesComposer(Badges));
+            Room.SendPacket(new HabboGroupBadgesComposer(Badges));
             Session.SendPacket(new HabboGroupBadgesComposer(Badges));
         }
     }

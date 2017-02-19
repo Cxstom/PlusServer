@@ -52,7 +52,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
                         U.CarryItemID = 0;
 
                     U.DanceId = DanceId;
-                    Room.SendMessage(new DanceComposer(U, DanceId));
+                    Room.SendPacket(new DanceComposer(U, DanceId));
                 }
             }
         }

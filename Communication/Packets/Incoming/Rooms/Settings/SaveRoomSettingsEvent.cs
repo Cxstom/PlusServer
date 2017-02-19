@@ -246,9 +246,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             }
             else
             {
-                Room.SendMessage(new RoomSettingsSavedComposer(Room.RoomId));
-                Room.SendMessage(new RoomInfoUpdatedComposer(Room.RoomId));
-                Room.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                Room.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
+                Room.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
+                Room.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
             }
             
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModDoorModeSeen", 1);

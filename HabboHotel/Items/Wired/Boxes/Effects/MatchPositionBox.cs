@@ -167,7 +167,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
         private void SetPosition(Item Item, int CoordX, int CoordY, double CoordZ, int Rotation)
         {
-            Instance.SendMessage(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, CoordX, CoordY, CoordZ, 0, 0, Item.Id));
+            Instance.SendPacket(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, CoordX, CoordY, CoordZ, 0, 0, Item.Id));
 
             Instance.GetRoomItemHandler().SetFloorItem(Item, CoordX, CoordY, CoordZ);
             //Instance.GetGameMap().GenerateMaps();

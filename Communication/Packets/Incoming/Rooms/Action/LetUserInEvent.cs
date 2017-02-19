@@ -34,12 +34,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             {
                 Client.GetHabbo().RoomAuthOk = true;
                 Client.SendPacket(new FlatAccessibleComposer(""));
-                Room.SendMessage(new FlatAccessibleComposer(Client.GetHabbo().Username), true);
+                Room.SendPacket(new FlatAccessibleComposer(Client.GetHabbo().Username), true);
             }
             else
             {
                 Client.SendPacket(new FlatAccessDeniedComposer(""));
-                Room.SendMessage(new FlatAccessDeniedComposer(Client.GetHabbo().Username), true);
+                Room.SendPacket(new FlatAccessDeniedComposer(Client.GetHabbo().Username), true);
             }
         }
     }

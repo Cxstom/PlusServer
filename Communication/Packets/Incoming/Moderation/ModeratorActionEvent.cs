@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             bool IsCaution = AlertMode != 3;
 
             AlertMessage = IsCaution ? "Caution from Moderator:\n\n" + AlertMessage : "Message from Moderator:\n\n" + AlertMessage;
-            Session.GetHabbo().CurrentRoom.SendMessage(new BroadcastMessageAlertComposer(AlertMessage));
+            Session.GetHabbo().CurrentRoom.SendPacket(new BroadcastMessageAlertComposer(AlertMessage));
         }
     }
 }

@@ -279,9 +279,9 @@ namespace Plus.HabboHotel.Rooms
         private void RemoveRoomItem(Item Item)
         {
             if (Item.IsFloorItem)
-                _room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));
+                _room.SendPacket(new ObjectRemoveComposer(Item, Item.UserID));
             else if (Item.IsWallItem)
-                _room.SendMessage(new ItemRemoveComposer(Item, Item.UserID));
+                _room.SendPacket(new ItemRemoveComposer(Item, Item.UserID));
 
             //TODO: Recode this specific part
             if (Item.IsWallItem)
@@ -690,13 +690,13 @@ namespace Plus.HabboHotel.Rooms
                     _wallItems.TryAdd(Item.Id, Item);
 
                 if (sendMessage)
-                    _room.SendMessage(new ObjectAddComposer(Item));
+                    _room.SendPacket(new ObjectAddComposer(Item));
             }
             else
             {
                 UpdateItem(Item);
                 if (!OnRoller && sendMessage)
-                    _room.SendMessage(new ObjectUpdateComposer(Item, _room.OwnerId));
+                    _room.SendPacket(new ObjectUpdateComposer(Item, _room.OwnerId));
             }
             _room.GetGameMap().AddToMap(Item);
 
@@ -777,7 +777,7 @@ namespace Plus.HabboHotel.Rooms
 
             _wallItems.TryAdd(Item.Id, Item);
 
-            _room.SendMessage(new ItemAddComposer(Item));
+            _room.SendPacket(new ItemAddComposer(Item));
 
             return true;
         }
@@ -808,7 +808,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 try
                 {
-                    _room.SendMessage(CycleRollers());
+                    _room.SendPacket(CycleRollers());
                 }
                 catch //(Exception e)
                 {
@@ -859,14 +859,14 @@ namespace Plus.HabboHotel.Rooms
                     Item I = null;
                     this._floorItems.TryRemove(Item.Id, out I);
                     Session.GetHabbo().GetInventoryComponent().TryAddFloorItem(Item.Id, I);
-                    this._room.SendMessage(new ObjectRemoveComposer(Item, Item.UserID));                    
+                    this._room.SendPacket(new ObjectRemoveComposer(Item, Item.UserID));                    
                 }
                 else if (Item.IsWallItem)
                 {
                     Item I = null;
                     this._wallItems.TryRemove(Item.Id, out I);
                     Session.GetHabbo().GetInventoryComponent().TryAddWallItem(Item.Id, I);
-                    this._room.SendMessage(new ItemRemoveComposer(Item, Item.UserID));
+                    this._room.SendPacket(new ItemRemoveComposer(Item, Item.UserID));
                 }
                 
                 Session.SendPacket(new FurniListAddComposer(Item));

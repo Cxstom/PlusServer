@@ -80,7 +80,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             string PushDirection = "down";
             if (TargetClient.GetHabbo().CurrentRoomId == Session.GetHabbo().CurrentRoomId && (Math.Abs(ThisUser.X - TargetUser.X) < 3 && Math.Abs(ThisUser.Y - TargetUser.Y) < 3))
             {
-                Room.SendMessage(new ChatComposer(ThisUser.VirtualId, "*pulls " + Params[1] + " to them*", 0, ThisUser.LastBubble));
+                Room.SendPacket(new ChatComposer(ThisUser.VirtualId, "*pulls " + Params[1] + " to them*", 0, ThisUser.LastBubble));
 
                 if (ThisUser.RotBody == 0)
                     PushDirection = "up";

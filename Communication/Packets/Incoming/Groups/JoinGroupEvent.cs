@@ -51,7 +51,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 Session.SendPacket(new GroupInfoComposer(Group, Session));
 
                 if (Session.GetHabbo().CurrentRoom != null)
-                    Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
                 else
                     Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
             }

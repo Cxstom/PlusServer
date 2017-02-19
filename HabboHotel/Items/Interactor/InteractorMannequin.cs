@@ -79,7 +79,7 @@ namespace Plus.HabboHotel.Items.Interactor
                     if (User != null)
                     {
                         Session.SendPacket(new UserChangeComposer(User, true));
-                        Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(User, false));
+                        Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(User, false));
                     }
                 }
             }

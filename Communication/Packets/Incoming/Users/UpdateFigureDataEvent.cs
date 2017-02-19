@@ -68,7 +68,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 if (RoomUser != null)
                 {
                     Session.SendPacket(new UserChangeComposer(RoomUser, true));
-                    Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(RoomUser, false));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(RoomUser, false));
                 }
             }
         }

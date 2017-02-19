@@ -147,7 +147,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
                         if (CanBePlaced && Point != Item.Coordinate)
                         {
-                            Instance.SendMessage(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, Point.X,
+                            Instance.SendPacket(new SlideObjectBundleComposer(Item.GetX, Item.GetY, Item.GetZ, Point.X,
                                 Point.Y, NewZ, 0, 0, Item.Id));
                             Instance.GetRoomItemHandler().SetFloorItem(Item, Point.X, Point.Y, NewZ);
                         }

@@ -66,7 +66,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             if (!Room.GetRoomItemHandler().SetFloorItem(Session, Item, x, y, Rotation, false, false, true))
             {
-                Room.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                Room.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
                 return;
             }
 

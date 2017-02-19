@@ -51,8 +51,8 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                     dbClient.RunQuery("UPDATE `rooms` SET `state` = '1', `tags` = '' WHERE `id` = '" + Room.RoomId + "' LIMIT 1");
             }
 
-            Room.SendMessage(new RoomSettingsSavedComposer(Room.RoomId));
-            Room.SendMessage(new RoomInfoUpdatedComposer(Room.RoomId));
+            Room.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
+            Room.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
 
             if (KickAll)
             {

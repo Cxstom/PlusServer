@@ -86,7 +86,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             }
 
             Session.GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
-            Room.SendMessage(new RoomPropertyComposer(DecorationKey, Item.ExtraData));
+            Room.SendPacket(new RoomPropertyComposer(DecorationKey, Item.ExtraData));
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Username);
 
             if (ThisUser != null && Session.GetHabbo().PetId == 0)
-                Room.SendMessage(new UserChangeComposer(ThisUser, false));
+                Room.SendPacket(new UserChangeComposer(ThisUser, false));
 
             Session.SendPacket(new RoomEventComposer(Room.RoomData, Room.RoomData.Promotion));
 

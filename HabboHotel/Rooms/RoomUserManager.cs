@@ -92,7 +92,7 @@ namespace Plus.HabboHotel.Rooms
             //UpdateUserStatus(BotUser, false);
             BotUser.UpdateNeeded = true;
 
-            _room.SendMessage(new UsersComposer(BotUser));
+            _room.SendPacket(new UsersComposer(BotUser));
 
             if (BotUser.IsPet)
             {
@@ -109,7 +109,7 @@ namespace Plus.HabboHotel.Rooms
                     _bots[BotUser.BotData.BotId] = BotUser;
                 else
                     _bots.TryAdd(BotUser.BotData.Id, BotUser);
-                _room.SendMessage(new DanceComposer(BotUser, BotUser.BotData.DanceId));
+                _room.SendPacket(new DanceComposer(BotUser, BotUser.BotData.DanceId));
             }
             return BotUser;
         }
@@ -137,7 +137,7 @@ namespace Plus.HabboHotel.Rooms
 
             User.BotAI.OnSelfLeaveRoom(Kicked);
 
-            _room.SendMessage(new UserRemoveComposer(User.VirtualId));
+            _room.SendPacket(new UserRemoveComposer(User.VirtualId));
 
             RoomUser toRemove;
 
@@ -241,7 +241,7 @@ namespace Plus.HabboHotel.Rooms
                 }
             }
 
-            _room.SendMessage(new UsersComposer(User));
+            _room.SendPacket(new UsersComposer(User));
 
             //Below = done
             if (_room.CheckRights(Session, true))
@@ -432,7 +432,7 @@ namespace Plus.HabboHotel.Rooms
                 _room.GetGameMap().GameMap[user.X, user.Y] = user.SqState;
 
             _room.GetGameMap().RemoveUserFromMap(user, new Point(user.X, user.Y));
-            _room.SendMessage(new UserRemoveComposer(user.VirtualId));
+            _room.SendPacket(new UserRemoveComposer(user.VirtualId));
 
             RoomUser toRemove = null;
             if (this._users.TryRemove(user.InternalRoomID, out toRemove))
@@ -624,7 +624,7 @@ namespace Plus.HabboHotel.Rooms
             }
 
             if (Users.Count > 0)
-                _room.SendMessage(new UserUpdateComposer(Users));
+                _room.SendPacket(new UserUpdateComposer(Users));
         }
 
         public void UpdateUserStatusses()
@@ -687,7 +687,7 @@ namespace Plus.HabboHotel.Rooms
                     if (!User.IsBot && !User.IsAsleep && User.IdleTime >= 600)
                     {
                         User.IsAsleep = true;
-                        _room.SendMessage(new SleepComposer(User, true));
+                        _room.SendPacket(new SleepComposer(User, true));
                     }
 
                     if (User.CarryItemID > 0)

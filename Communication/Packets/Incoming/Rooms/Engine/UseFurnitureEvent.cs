@@ -49,7 +49,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 else
                     Room.TonerData.Enabled = 0;
 
-                Room.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                Room.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
 
                 Item.UpdateState();
 

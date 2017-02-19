@@ -122,7 +122,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     TargetUser.MoveTo(TargetUser.X, TargetUser.Y + 1);
                 }
 
-                Room.SendMessage(new ChatComposer(ThisUser.VirtualId, "*pushes " + Params[1] + "*", 0, ThisUser.LastBubble));
+                Room.SendPacket(new ChatComposer(ThisUser.VirtualId, "*pushes " + Params[1] + "*", 0, ThisUser.LastBubble));
             }
             else
             {

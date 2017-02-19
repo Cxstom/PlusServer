@@ -1527,9 +1527,9 @@ namespace Plus.HabboHotel.Items
             if (inRoom)
             {
                 if (IsFloorItem)
-                    GetRoom().SendMessage(new ObjectUpdateComposer(this, GetRoom().OwnerId));
+                    GetRoom().SendPacket(new ObjectUpdateComposer(this, GetRoom().OwnerId));
                 else
-                    GetRoom().SendMessage(new ItemUpdateComposer(this, GetRoom().OwnerId));
+                    GetRoom().SendPacket(new ItemUpdateComposer(this, GetRoom().OwnerId));
             }
         }
 

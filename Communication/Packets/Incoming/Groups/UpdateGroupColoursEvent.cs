@@ -51,7 +51,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     if (Item.GetBaseItem().InteractionType != InteractionType.GUILD_ITEM && Item.GetBaseItem().InteractionType != InteractionType.GUILD_GATE || Item.GetBaseItem().InteractionType != InteractionType.GUILD_FORUM)
                         continue;
 
-                    Session.GetHabbo().CurrentRoom.SendMessage(new ObjectUpdateComposer(Item, Convert.ToInt32(Item.UserID)));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new ObjectUpdateComposer(Item, Convert.ToInt32(Item.UserID)));
                 }
             }
         }

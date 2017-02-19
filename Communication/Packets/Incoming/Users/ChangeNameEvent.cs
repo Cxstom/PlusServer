@@ -91,7 +91,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 Session.GetHabbo().GetMessenger().OnStatusChanged(true);
 
                 Session.SendPacket(new UpdateUsernameComposer(NewName));
-                Room.SendMessage(new UserNameChangeComposer(Room.Id, User.VirtualId, NewName));
+                Room.SendPacket(new UserNameChangeComposer(Room.Id, User.VirtualId, NewName));
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
@@ -117,7 +117,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                     UserRoom.OwnerName = NewName;
                     UserRoom.RoomData.OwnerName = NewName;
 
-                    UserRoom.SendMessage(new RoomInfoUpdatedComposer(UserRoom.RoomId));
+                    UserRoom.SendPacket(new RoomInfoUpdatedComposer(UserRoom.RoomId));
                 }
 
                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_Name", 1);
