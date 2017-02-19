@@ -23,7 +23,7 @@ namespace Plus.HabboHotel.Catalog.Clothing
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`clothing_name`,`clothing_parts` FROM `catalog_clothing`");
-                GetClothing = dbClient.getTable();
+                GetClothing = dbClient.GetTable();
             }
 
             if (GetClothing != null)
@@ -40,6 +40,11 @@ namespace Plus.HabboHotel.Catalog.Clothing
             if (this._clothing.TryGetValue(ItemId, out Clothing))
                 return true;
             return false;
+        }
+
+        public ICollection<ClothingItem> GetClothingAllParts
+        {
+            get { return this._clothing.Values; }
         }
     }
 }

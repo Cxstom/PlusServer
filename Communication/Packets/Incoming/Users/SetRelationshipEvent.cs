@@ -26,19 +26,19 @@ namespace Plus.Communication.Packets.Incoming.Users
 
             if (!Session.GetHabbo().GetMessenger().FriendshipExists(User))
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("Oops, you can only set a relationship where a friendship exists."));
+                Session.SendPacket(new BroadcastMessageAlertComposer("Oops, you can only set a relationship where a friendship exists."));
                 return;
             }
 
             if (Type < 0 || Type > 3)
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("Oops, you've chosen an invalid relationship type."));
+                Session.SendPacket(new BroadcastMessageAlertComposer("Oops, you've chosen an invalid relationship type."));
                 return;
             }
 
             if (Session.GetHabbo().Relationships.Count > 2000)
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("Sorry, you're limited to a total of 2000 relationships."));
+                Session.SendPacket(new BroadcastMessageAlertComposer("Sorry, you're limited to a total of 2000 relationships."));
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 {
                     dbClient.SetQuery("SELECT `id` FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
-                    int Id = dbClient.getInteger();
+                    int Id = dbClient.GetInteger();
 
                     dbClient.SetQuery("DELETE FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
@@ -61,7 +61,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 {
                     dbClient.SetQuery("SELECT `id` FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
-                    int Id = dbClient.getInteger();
+                    int Id = dbClient.GetInteger();
 
                     if (Id > 0)
                     {
@@ -92,7 +92,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                     {
                         MessengerBuddy Buddy = null;
                         if (Session.GetHabbo().GetMessenger().TryGetFriend(User, out Buddy))
-                            Session.SendMessage(new FriendListUpdateComposer(Session, Buddy));
+                            Session.SendPacket(new FriendListUpdateComposer(Session, Buddy));
                     }
                 }
             }

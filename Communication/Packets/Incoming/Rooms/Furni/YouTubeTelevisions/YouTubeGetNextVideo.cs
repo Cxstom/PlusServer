@@ -41,7 +41,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
                 return;
             }
 
-            Session.SendMessage(new GetYouTubeVideoComposer(ItemId, Item.YouTubeId));
+            Session.SendPacket(new GetYouTubeVideoComposer(ItemId, Item.YouTubeId));
         }
 
         public IEnumerable<TValue> RandomValues<TKey, TValue>(IDictionary<TKey, TValue> dict)

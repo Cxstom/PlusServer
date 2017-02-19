@@ -240,15 +240,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 
             if (Session.GetHabbo().CurrentRoom == null)
             {
-                Session.SendMessage(new RoomSettingsSavedComposer(Room.RoomId));
-                Session.SendMessage(new RoomInfoUpdatedComposer(Room.RoomId));
-                Session.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                Session.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
+                Session.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
+                Session.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
             }
             else
             {
-                Room.SendMessage(new RoomSettingsSavedComposer(Room.RoomId));
-                Room.SendMessage(new RoomInfoUpdatedComposer(Room.RoomId));
-                Room.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                Room.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
+                Room.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
+                Room.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
             }
             
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModDoorModeSeen", 1);

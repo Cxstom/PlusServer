@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     dbClient.RunQuery();
                 }
 
-                session.SendMessage(new IgnoreStatusComposer(1, Player.Username));
+                session.SendPacket(new IgnoreStatusComposer(1, Player.Username));
 
                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModIgnoreSeen", 1);
             }

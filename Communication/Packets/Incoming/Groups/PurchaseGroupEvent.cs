@@ -24,15 +24,17 @@ namespace Plus.Communication.Packets.Incoming.Groups
             int Colour2 = packet.PopInt();
             int Unknown = packet.PopInt();
 
-            if (session.GetHabbo().Credits < PlusStaticGameSettings.GroupPurchaseAmount)
+            int groupCost = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("catalog.group.purchase.cost"));
+
+            if (session.GetHabbo().Credits < groupCost)
             {
-                session.SendMessage(new BroadcastMessageAlertComposer("A group costs " + PlusStaticGameSettings.GroupPurchaseAmount + " credits! You only have " + session.GetHabbo().Credits + "!"));
+                session.SendPacket(new BroadcastMessageAlertComposer("A group costs " + groupCost + " credits! You only have " + session.GetHabbo().Credits + "!"));
                 return;
             }
             else
             {
-                session.GetHabbo().Credits -= PlusStaticGameSettings.GroupPurchaseAmount;
-                session.SendMessage(new CreditBalanceComposer(session.GetHabbo().Credits));
+                session.GetHabbo().Credits -= groupCost;
+                session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
             }
 
             RoomData Room = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
@@ -53,14 +55,14 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 return;
             }
 
-            session.SendMessage(new PurchaseOKComposer());
+            session.SendPacket(new PurchaseOKComposer());
 
             Room.Group = Group;
 
             if (session.GetHabbo().CurrentRoomId != Room.Id)
-                session.SendMessage(new RoomForwardComposer(Room.Id));
+                session.SendPacket(new RoomForwardComposer(Room.Id));
 
-            session.SendMessage(new NewGroupInfoComposer(RoomId, Group.Id));
+            session.SendPacket(new NewGroupInfoComposer(RoomId, Group.Id));
         }
     }
 }

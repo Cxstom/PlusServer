@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                 if (Client == null || Client.GetHabbo() == null || Client.GetHabbo().AllowMessengerInvites == true || Client.GetHabbo().AllowConsoleMessages == false)
                     continue;
 
-                Client.SendMessage(new RoomInviteComposer(Session.GetHabbo().Id, Message));
+                Client.SendPacket(new RoomInviteComposer(Session.GetHabbo().Id, Message));
             }
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())

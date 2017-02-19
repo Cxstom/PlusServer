@@ -66,7 +66,7 @@ namespace Plus.HabboHotel.Rooms.AI
         public void OnRespect()
         {
             Respect++;
-            Room.SendMessage(new RespectPetNotificationMessageComposer(this));
+            Room.SendPacket(new RespectPetNotificationMessageComposer(this));
 
             if (DBState != DatabaseUpdateState.NeedsInsert)
                 DBState = DatabaseUpdateState.NeedsUpdate;
@@ -84,7 +84,7 @@ namespace Plus.HabboHotel.Rooms.AI
                 experience = 150000;
 
                 if (Room != null)
-                    Room.SendMessage(new AddExperiencePointsComposer(PetId, VirtualId, Amount));
+                    Room.SendPacket(new AddExperiencePointsComposer(PetId, VirtualId, Amount));
 
                 return;
             }
@@ -94,10 +94,10 @@ namespace Plus.HabboHotel.Rooms.AI
 
             if (Room != null)
             {
-                Room.SendMessage(new AddExperiencePointsComposer(PetId, VirtualId, Amount));
+                Room.SendPacket(new AddExperiencePointsComposer(PetId, VirtualId, Amount));
 
                 if (experience >= experienceGoal)
-                    Room.SendMessage(new ChatComposer(VirtualId, "*leveled up to level " + Level + " *", 0, 0));
+                    Room.SendPacket(new ChatComposer(VirtualId, "*leveled up to level " + Level + " *", 0, 0));
             }
         }
 

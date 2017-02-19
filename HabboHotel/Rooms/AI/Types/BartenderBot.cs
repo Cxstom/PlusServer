@@ -61,7 +61,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
                     break;
 
                 case "whisper":
-                    User.GetClient().SendMessage(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
+                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
                     break;
             }
 
@@ -94,7 +94,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
                     break;
 
                 case "whisper":
-                    User.GetClient().SendMessage(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
+                    User.GetClient().SendPacket(new WhisperComposer(GetRoomUser().VirtualId, Response.ResponseText.Replace("{username}", User.GetClient().GetHabbo().Username), 0, 0));
                     break;
             }
 

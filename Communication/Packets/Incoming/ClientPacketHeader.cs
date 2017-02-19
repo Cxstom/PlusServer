@@ -60,8 +60,24 @@
         public const int GetIgnoredUsersMessageEvent = 198;
 
         // Moderation
-
         public const int OpenHelpToolMessageEvent = 1282;//1839
+        public const int CallForHelpPendingCallsDeletedMessageEvent = 3643;
+        public const int ModeratorActionMessageEvent = 760;//781
+        public const int ModerationMsgMessageEvent = 2348;//2375        
+        public const int ModerationMuteMessageEvent = 2474;//1940
+        public const int ModerationTradeLockMessageEvent = 3955;//1160
+        public const int GetModeratorUserRoomVisitsMessageEvent = 3848;//730
+        public const int ModerationKickMessageEvent = 1011;//3589
+        public const int GetModeratorRoomInfoMessageEvent = 1997;//182
+        public const int GetModeratorUserInfoMessageEvent = 2677;//2984
+        public const int GetModeratorRoomChatlogMessageEvent = 3216;//2312
+        public const int ModerateRoomMessageEvent = 500;//3458
+        public const int GetModeratorUserChatlogMessageEvent = 63;//695
+        public const int GetModeratorTicketChatlogsMessageEvent = 1449;//3484
+        public const int ModerationCautionMessageEvent = 2223;//505
+        public const int ModerationBanMessageEvent = 2473;//2595
+        public const int SubmitNewTicketMessageEvent = 1046;//963
+        public const int CloseIssueDefaultActionEvent = 1921;
 
         // Inventory
         public const int GetCreditsInfoMessageEvent = 1051;//3697
@@ -125,7 +141,6 @@
         public const int InitializeGameCenterMessageEvent = 1825;//751
         public const int RedeemOfferCreditsMessageEvent = 2879;//1207
         public const int FriendListUpdateMessageEvent = 1166;//2664
-        public const int ModerateRoomMessageEvent = 500;//3458
         public const int ConfirmLoveLockMessageEvent = 3873;//2082
         public const int UseHabboWheelMessageEvent = 2148;//2651
         public const int SaveRoomSettingsMessageEvent = 3023;//2074
@@ -151,15 +166,11 @@
         public const int SaveWiredEffectConfigMessageEvent = 2234;//3431
         public const int GetRoomEntryDataMessageEvent = 1747;//2768
         public const int JoinPlayerQueueMessageEvent = 167;//951
-        public const int GetModeratorUserChatlogMessageEvent = 63;//695
         public const int CanCreateRoomMessageEvent = 2411;//361
         public const int SetTonerMessageEvent = 1389;//1061
-        public const int GetModeratorTicketChatlogsMessageEvent = 1449;//3484
-        public const int ModerationCautionMessageEvent = 2223;//505
         public const int SaveWiredTriggerConfigMessageEvent = 3877;//1897
         public const int PlaceBotMessageEvent = 3770;//2321
         public const int GetRelationshipsMessageEvent = 3046;//866
-        public const int ModerationBanMessageEvent = 2473;//2595
         public const int SetMessengerInviteStatusMessageEvent = 1663;//1379
         public const int UseFurnitureMessageEvent = 3249;//3846
         public const int GetUserFlatCatsMessageEvent = 493;//3672
@@ -179,7 +190,6 @@
         public const int ModifyRoomFilterListMessageEvent = 87;//256
         public const int MoodlightUpdateMessageEvent = 2913;//856
         public const int GetPetTrainingPanelMessageEvent = 3915;//2088
-        public const int GetModeratorRoomChatlogMessageEvent = 3216;//2312
         public const int GetSongInfoMessageEvent = 3916;//3418
         public const int UseWallItemMessageEvent = 3674;//3396
         public const int GetTalentTrackMessageEvent = 680;//1284
@@ -187,19 +197,14 @@
         public const int GetCatalogModeMessageEvent = 951;//2267
         public const int SendBullyReportMessageEvent = 3540;//2973
         public const int CancelOfferMessageEvent = 195;//1862
-        public const int GetModeratorUserInfoMessageEvent = 2677;//2984
         public const int SaveWiredConditionConfigMessageEvent = 2370;//488
-        public const int GetModeratorRoomInfoMessageEvent = 1997;//182
         public const int RedeemVoucherMessageEvent = 1384;//489
         public const int ThrowDiceMessageEvent = 3427;//1182
-        public const int ModerationKickMessageEvent = 1011;//3589
         public const int CraftSecretMessageEvent = 3623;//1622
         public const int GetGameListingMessageEvent = 705;//2993
-        public const int GetModeratorUserRoomVisitsMessageEvent = 3848;//730
         public const int SetRelationshipMessageEvent = 1514;//2112
         public const int RequestBuddyMessageEvent = 1706;//3775
         public const int MemoryPerformanceMessageEvent = 124;//731
-        public const int SubmitNewTicketMessageEvent = 1046;//963
         public const int ToggleYouTubeVideoMessageEvent = 1956;//890
         public const int SetMannequinFigureMessageEvent = 1909;//3936
         public const int GetEventCategoriesMessageEvent = 597;//1086
@@ -246,13 +251,11 @@
         public const int OpenBotActionMessageEvent = 3236;//2544
         public const int OpenCalendarBoxMessageEvent = 1229;//724
         public const int DeleteGroupPostMessageEvent = 1991;//317
-        public const int ModerationMuteMessageEvent = 2474;//1940
         public const int CheckValidNameMessageEvent = 2507;//8
         public const int UpdateGroupBadgeMessageEvent = 1589;//2959
         public const int PlaceObjectMessageEvent = 1809;//579
         public const int RemoveGroupFavouriteMessageEvent = 226;//1412
         public const int UpdateNavigatorSettingsMessageEvent = 1824;//2501
-        public const int ModerationTradeLockMessageEvent = 3955;//1160
         public const int CheckGnomeNameMessageEvent = 1179;//2281
         public const int NavigatorSearchMessageEvent = 618;//2722
         public const int GetPetInformationMessageEvent = 2986;//2853
@@ -292,7 +295,6 @@
         public const int GetHabboGroupBadgesMessageEvent = 3925;//301
         public const int GetUserTagsMessageEvent = 84;//1722
         public const int GetPlayableGamesMessageEvent = 1418;//482
-        public const int ModeratorActionMessageEvent = 760;//781
         public const int GetCatalogRoomPromotionMessageEvent = 2757;//538
         public const int MoveAvatarMessageEvent = 2121;//1737
         public const int SaveBrandingItemMessageEvent = 2208;//3156
@@ -304,7 +306,6 @@
         public const int IgnoreUserMessageEvent = 2374;//2394
         public const int BanUserMessageEvent = 3009;//3940
         public const int UpdateForumSettingsMessageEvent = 3295;//931
-        public const int ModerationMsgMessageEvent = 2348;//2375
         public const int GetRoomRightsMessageEvent = 3937;//2734
         public const int SendMsgMessageEvent = 2409;//1981
         public const int CloseTicketMesageEvent = 1080;//50

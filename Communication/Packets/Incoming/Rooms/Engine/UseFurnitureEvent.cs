@@ -49,7 +49,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                 else
                     Room.TonerData.Enabled = 0;
 
-                Room.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                Room.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
 
                 Item.UpdateState();
 
@@ -62,7 +62,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             if (Item.Data.InteractionType == InteractionType.GNOME_BOX && Item.UserID == Session.GetHabbo().Id)
             {
-                Session.SendMessage(new GnomeBoxComposer(Item.Id));
+                Session.SendPacket(new GnomeBoxComposer(Item.Id));
             }
 
             Boolean Toggle = true;

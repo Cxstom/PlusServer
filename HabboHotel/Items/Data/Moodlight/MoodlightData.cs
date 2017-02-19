@@ -26,7 +26,7 @@ namespace Plus.HabboHotel.Items.Data.Moodlight
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT enabled,current_preset,preset_one,preset_two,preset_three FROM room_items_moodlight WHERE item_id = '" + ItemId + "' LIMIT 1");
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
             if (Row == null)
@@ -35,7 +35,7 @@ namespace Plus.HabboHotel.Items.Data.Moodlight
                 {
                     dbClient.RunQuery("INSERT INTO `room_items_moodlight` (item_id,enabled,current_preset,preset_one,preset_two,preset_three) VALUES (" + ItemId + ",0,1,'#000000,255,0','#000000,255,0','#000000,255,0')");
                     dbClient.SetQuery("SELECT enabled,current_preset,preset_one,preset_two,preset_three FROM room_items_moodlight WHERE item_id=" + ItemId + " LIMIT 1");
-                    Row = dbClient.getRow();
+                    Row = dbClient.GetRow();
                 }
             }
 

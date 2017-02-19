@@ -17,12 +17,12 @@ namespace Plus.Communication.Packets.Incoming.Messenger
 
             if (Instance != null)
             {
-                Session.SendMessage(new FindFriendsProcessResultComposer(true));
-                Session.SendMessage(new RoomForwardComposer(Instance.Id));
+                Session.SendPacket(new FindFriendsProcessResultComposer(true));
+                Session.SendPacket(new RoomForwardComposer(Instance.Id));
             }
             else
             {
-                Session.SendMessage(new FindFriendsProcessResultComposer(false));
+                Session.SendPacket(new FindFriendsProcessResultComposer(false));
             }
         }
     }

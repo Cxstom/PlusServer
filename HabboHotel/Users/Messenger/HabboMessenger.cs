@@ -55,7 +55,7 @@ namespace Plus.HabboHotel.Users.Messenger
             {
                 dbClient.SetQuery("SELECT * FROM `messenger_offline_messages` WHERE `to_id` = @id;");
                 dbClient.AddParameter("id", this._userId);
-                GetMessages = dbClient.getTable();
+                GetMessages = dbClient.GetTable();
 
                 if (GetMessages != null)
                 {
@@ -65,7 +65,7 @@ namespace Plus.HabboHotel.Users.Messenger
 
                     foreach (DataRow Row in GetMessages.Rows)
                     {
-                        Client.SendMessage(new NewConsoleMessageComposer(Convert.ToInt32(Row["from_id"]), Convert.ToString(Row["message"]), (int)(UnixTimestamp.GetNow() - Convert.ToInt32(Row["timestamp"]))));
+                        Client.SendPacket(new NewConsoleMessageComposer(Convert.ToInt32(Row["from_id"]), Convert.ToString(Row["message"]), (int)(UnixTimestamp.GetNow() - Convert.ToInt32(Row["timestamp"]))));
                     }
 
                     dbClient.SetQuery("DELETE FROM `messenger_offline_messages` WHERE `to_id` = @id");
@@ -131,7 +131,7 @@ namespace Plus.HabboHotel.Users.Messenger
                 {
                     GameClient Userclient = GetClient();
                     if (Userclient != null)
-                        Userclient.SendMessage(SerializeUpdate(_friends[userid]));
+                        Userclient.SendPacket(SerializeUpdate(_friends[userid]));
                 }
             }
         }
@@ -208,7 +208,7 @@ namespace Plus.HabboHotel.Users.Messenger
                 {
                     dbClient.SetQuery("SELECT id,username,motto,look,last_online,hide_inroom,hide_online FROM users WHERE `id` = @friendid LIMIT 1");
                     dbClient.AddParameter("friendid", friendID);
-                    dRow = dbClient.getRow();
+                    dRow = dbClient.GetRow();
                 }
 
                 newFriend = new MessengerBuddy(friendID, Convert.ToString(dRow["username"]), Convert.ToString(dRow["look"]), Convert.ToString(dRow["motto"]), Convert.ToInt32(dRow["last_online"]),
@@ -226,7 +226,7 @@ namespace Plus.HabboHotel.Users.Messenger
             if (!_friends.ContainsKey(friendID))
                 _friends.Add(friendID, newFriend);
 
-            GetClient().SendMessage(SerializeUpdate(newFriend));
+            GetClient().SendPacket(SerializeUpdate(newFriend));
         }
 
         public bool RequestExists(int requestID)
@@ -240,7 +240,7 @@ namespace Plus.HabboHotel.Users.Messenger
                     "SELECT user_one_id FROM messenger_friendships WHERE user_one_id = @myID AND user_two_id = @friendID");
                 dbClient.AddParameter("myID", Convert.ToInt32(_userId));
                 dbClient.AddParameter("friendID", Convert.ToInt32(requestID));
-                return dbClient.findsResult();
+                return dbClient.FindsResult();
             }
         }
 
@@ -254,7 +254,7 @@ namespace Plus.HabboHotel.Users.Messenger
             if (_friends.ContainsKey(Friend))
                 _friends.Remove(Friend);
 
-            GetClient().SendMessage(new FriendListUpdateComposer(Friend));
+            GetClient().SendPacket(new FriendListUpdateComposer(Friend));
         }
 
         public bool RequestBuddy(string UserQuery)
@@ -270,7 +270,7 @@ namespace Plus.HabboHotel.Users.Messenger
                 {
                     dbClient.SetQuery("SELECT `id`,`block_newfriends` FROM `users` WHERE `username` = @query LIMIT 1");
                     dbClient.AddParameter("query", UserQuery.ToLower());
-                    Row = dbClient.getRow();
+                    Row = dbClient.GetRow();
                 }
 
                 if (Row == null)
@@ -287,7 +287,7 @@ namespace Plus.HabboHotel.Users.Messenger
 
             if (hasFQDisabled)
             {
-                GetClient().SendMessage(new MessengerErrorComposer(39, 3));
+                GetClient().SendPacket(new MessengerErrorComposer(39, 3));
                 return false;
             }
 
@@ -313,7 +313,7 @@ namespace Plus.HabboHotel.Users.Messenger
             UserCache ThisUser = PlusEnvironment.GetGame().GetCacheManager().GenerateUser(_userId);
 
             if (ThisUser != null)
-                ToUser.SendMessage(new NewBuddyRequestComposer(ThisUser));
+                ToUser.SendPacket(new NewBuddyRequestComposer(ThisUser));
 
             _requests.Add(ToId, Request);
             return true;
@@ -338,7 +338,7 @@ namespace Plus.HabboHotel.Users.Messenger
 
             if (!FriendshipExists(ToId))
             {
-                GetClient().SendMessage(new InstantMessageErrorComposer(MessengerMessageErrors.YOUR_NOT_FRIENDS, ToId));
+                GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.YOUR_NOT_FRIENDS, ToId));
                 return;
             }
 
@@ -375,25 +375,25 @@ namespace Plus.HabboHotel.Users.Messenger
 
             if (!Client.GetHabbo().AllowConsoleMessages || Client.GetHabbo().GetIgnores().IgnoredUserIds().Contains(GetClient().GetHabbo().Id))
             {
-                GetClient().SendMessage(new InstantMessageErrorComposer(MessengerMessageErrors.FRIEND_BUSY, ToId));
+                GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.FRIEND_BUSY, ToId));
                 return;
             }
 
             if (GetClient().GetHabbo().TimeMuted > 0)
             {
-                GetClient().SendMessage(new InstantMessageErrorComposer(MessengerMessageErrors.YOUR_MUTED, ToId));
+                GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.YOUR_MUTED, ToId));
                 return;
             }
 
             if (Client.GetHabbo().TimeMuted > 0)
             {
-                GetClient().SendMessage(new InstantMessageErrorComposer(MessengerMessageErrors.FRIEND_MUTED, ToId));
+                GetClient().SendPacket(new InstantMessageErrorComposer(MessengerMessageErrors.FRIEND_MUTED, ToId));
             }
 
             if (String.IsNullOrEmpty(Message))
                 return;
 
-            Client.SendMessage(new NewConsoleMessageComposer(_userId, Message));
+            Client.SendPacket(new NewConsoleMessageComposer(_userId, Message));
             LogPM(_userId, ToId, Message);
         }
 
@@ -426,7 +426,7 @@ namespace Plus.HabboHotel.Users.Messenger
             {
                 if (Client.GetHabbo() != null && Client.GetHabbo().GetMessenger() != null)
                 {
-                    Client.SendMessage(new FriendNotificationComposer(UserId, Type, Data));
+                    Client.SendPacket(new FriendNotificationComposer(UserId, Type, Data));
                     Client.GetHabbo().GetMessenger().OnStatusChanged(true);
                 }
             }

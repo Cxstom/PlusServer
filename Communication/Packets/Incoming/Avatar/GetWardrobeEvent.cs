@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Avatar
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new WardrobeComposer(Session));
+            Session.SendPacket(new WardrobeComposer(Session));
         }
     }
 }

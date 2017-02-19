@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             Group.Colour1 = Colour1;
             Group.Colour2 = Colour2;
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session));
+            Session.SendPacket(new GroupInfoComposer(Group, Session));
             if (Session.GetHabbo().CurrentRoom != null)
             {
                 foreach (Item Item in Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetFloor.ToList())
@@ -51,7 +51,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     if (Item.GetBaseItem().InteractionType != InteractionType.GUILD_ITEM && Item.GetBaseItem().InteractionType != InteractionType.GUILD_GATE || Item.GetBaseItem().InteractionType != InteractionType.GUILD_FORUM)
                         continue;
 
-                    Session.GetHabbo().CurrentRoom.SendMessage(new ObjectUpdateComposer(Item, Convert.ToInt32(Item.UserID)));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new ObjectUpdateComposer(Item, Convert.ToInt32(Item.UserID)));
                 }
             }
         }

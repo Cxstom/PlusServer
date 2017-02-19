@@ -52,9 +52,9 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Badges
             Room Room;
 
             if (Session.GetHabbo().InRoom && PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Session.GetHabbo().CurrentRoomId, out Room))
-                Session.GetHabbo().CurrentRoom.SendMessage(new HabboUserBadgesComposer(Session.GetHabbo()));
+                Session.GetHabbo().CurrentRoom.SendPacket(new HabboUserBadgesComposer(Session.GetHabbo()));
             else
-                Session.SendMessage(new HabboUserBadgesComposer(Session.GetHabbo()));
+                Session.SendPacket(new HabboUserBadgesComposer(Session.GetHabbo()));
         }
     }
 }

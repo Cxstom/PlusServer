@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             GameClient Client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(Ticket.Sender.Id);
             if (Client != null)
             {
-                Client.SendMessage(new ModeratorSupportTicketResponseComposer(Result));
+                Client.SendPacket(new ModeratorSupportTicketResponseComposer(Result));
             }
 
             if (Result == 2)
@@ -39,7 +39,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             }
 
             Ticket.Answered = true;
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
         }
     }
 }

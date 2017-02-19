@@ -54,7 +54,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
 
             TargetClient.SendNotification("You have been summoned to " + Session.GetHabbo().Username + "!");
             if (!TargetClient.GetHabbo().InRoom)
-                TargetClient.SendMessage(new RoomForwardComposer(Session.GetHabbo().CurrentRoomId));
+                TargetClient.SendPacket(new RoomForwardComposer(Session.GetHabbo().CurrentRoomId));
             else
                 TargetClient.GetHabbo().PrepareRoom(Session.GetHabbo().CurrentRoomId, "");
         }

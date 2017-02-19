@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Polls
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new PollContentsComposer());
+            Session.SendPacket(new PollContentsComposer());
         }
     }
 }

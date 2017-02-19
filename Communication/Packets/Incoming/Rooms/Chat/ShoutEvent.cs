@@ -2,10 +2,8 @@
 using Plus.Communication.Packets.Outgoing.Rooms.Chat;
 using Plus.Core;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Global;
 using Plus.HabboHotel.Quests;
 using Plus.HabboHotel.Rooms;
-using Plus.Communication.Packets.Incoming;
 using Plus.Utilities;
 using Plus.Communication.Packets.Outgoing.Moderation;
 using Plus.HabboHotel.Rooms.Chat.Styles;
@@ -45,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
 
             if (Session.GetHabbo().TimeMuted > 0)
             {
-                Session.SendMessage(new MutedComposer(Session.GetHabbo().TimeMuted));
+                Session.SendPacket(new MutedComposer(Session.GetHabbo().TimeMuted));
                 return;
             }
 
@@ -60,7 +58,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
                 int MuteTime;
                 if (User.IncrementAndCheckFlood(out MuteTime))
                 {
-                    Session.SendMessage(new FloodControlComposer(MuteTime));
+                    Session.SendPacket(new FloodControlComposer(MuteTime));
                     return;
                 }
             }
@@ -73,13 +71,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
             if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(Message))
             {
                 Session.GetHabbo().BannedPhraseCount++;
-                if (Session.GetHabbo().BannedPhraseCount >= PlusStaticGameSettings.BannedPhrasesAmount)
+                if (Session.GetHabbo().BannedPhraseCount >= (Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.chat.filter.banned_phrases.chances"))))
                 {
                     PlusEnvironment.GetGame().GetModerationManager().BanUser("System", HabboHotel.Moderation.ModerationBanType.USERNAME, Session.GetHabbo().Username, "Spamming banned phrases (" + Message + ")", (PlusEnvironment.GetUnixTimestamp() + 78892200));
                     Session.Disconnect();
                     return;
                 }
-                Session.SendMessage(new ShoutComposer(User.VirtualId, Message, 0, Colour));
+                Session.SendPacket(new ShoutComposer(User.VirtualId, Message, 0, Colour));
                 return;
             }
 

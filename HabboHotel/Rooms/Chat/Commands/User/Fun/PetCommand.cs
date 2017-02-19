@@ -40,10 +40,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     Session.GetHabbo().PetId = 0;
 
                     //Quickly remove the old user instance.
-                    Room.SendMessage(new UserRemoveComposer(RoomUser.VirtualId));
+                    Room.SendPacket(new UserRemoveComposer(RoomUser.VirtualId));
 
                     //Add the new one, they won't even notice a thing!!11 8-)
-                    Room.SendMessage(new UsersComposer(RoomUser));
+                    Room.SendPacket(new UsersComposer(RoomUser));
                 }
                 return;
             }
@@ -71,10 +71,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
             Session.GetHabbo().PetId = (TargetPetId == -1 ? 0 : TargetPetId);
 
             //Quickly remove the old user instance.
-            Room.SendMessage(new UserRemoveComposer(RoomUser.VirtualId));
+            Room.SendPacket(new UserRemoveComposer(RoomUser.VirtualId));
 
             //Add the new one, they won't even notice a thing!!11 8-)
-            Room.SendMessage(new UsersComposer(RoomUser));
+            Room.SendPacket(new UsersComposer(RoomUser));
 
             //Tell them a quick message.
             if (Session.GetHabbo().PetId > 0)

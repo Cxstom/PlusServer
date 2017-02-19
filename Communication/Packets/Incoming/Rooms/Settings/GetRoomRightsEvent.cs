@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                 return;
 
 
-            Session.SendMessage(new RoomRightsListComposer(Instance));
+            Session.SendPacket(new RoomRightsListComposer(Instance));
         }
     }
 }

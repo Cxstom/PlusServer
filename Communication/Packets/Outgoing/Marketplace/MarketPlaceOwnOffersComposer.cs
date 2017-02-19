@@ -19,10 +19,10 @@ namespace Plus.Communication.Packets.Outgoing.Marketplace
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT timestamp, state, offer_id, item_type, sprite_id, total_price, limited_number, limited_stack FROM catalog_marketplace_offers WHERE user_id = '" + UserId + "'");
-                table = dbClient.getTable();
+                table = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT SUM(asking_price) FROM catalog_marketplace_offers WHERE state = '2' AND user_id = '" + UserId + "'");
-                i = dbClient.getInteger();
+                i = dbClient.GetInteger();
 
                 base.WriteInteger(i);
                 if (table != null)

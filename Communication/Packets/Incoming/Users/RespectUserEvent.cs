@@ -41,8 +41,8 @@ namespace Plus.Communication.Packets.Incoming.Users
             User.GetClient().GetHabbo().GetStats().Respect += 1;
 
             if (Room.RespectNotificationsEnabled)
-                Room.SendMessage(new RespectNotificationComposer(User.GetClient().GetHabbo().Id, User.GetClient().GetHabbo().GetStats().Respect));
-            Room.SendMessage(new ActionComposer(ThisUser.VirtualId, 7));
+                Room.SendPacket(new RespectNotificationComposer(User.GetClient().GetHabbo().Id, User.GetClient().GetHabbo().GetStats().Respect));
+            Room.SendPacket(new ActionComposer(ThisUser.VirtualId, 7));
         }
     }
 }

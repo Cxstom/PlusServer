@@ -57,7 +57,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                             if (int.TryParse(Params[3], out Amount))
                             {
                                 Target.GetHabbo().Credits = Target.GetHabbo().Credits += Amount;
-                                Target.SendMessage(new CreditBalanceComposer(Target.GetHabbo().Credits));
+                                Target.SendPacket(new CreditBalanceComposer(Target.GetHabbo().Credits));
 
                                 if (Target.GetHabbo().Id != Session.GetHabbo().Id)
                                     Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Credit(s)!");
@@ -86,7 +86,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                             if (int.TryParse(Params[3], out Amount))
                             {
                                 Target.GetHabbo().Duckets += Amount;
-                                Target.SendMessage(new HabboActivityPointNotificationComposer(Target.GetHabbo().Duckets, Amount));
+                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().Duckets, Amount));
 
                                 if (Target.GetHabbo().Id != Session.GetHabbo().Id)
                                     Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Ducket(s)!");
@@ -114,7 +114,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                             if (int.TryParse(Params[3], out Amount))
                             {
                                 Target.GetHabbo().Diamonds += Amount;
-                                Target.SendMessage(new HabboActivityPointNotificationComposer(Target.GetHabbo().Diamonds, Amount, 5));
+                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().Diamonds, Amount, 5));
 
                                 if (Target.GetHabbo().Id != Session.GetHabbo().Id)
                                     Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Diamond(s)!");
@@ -143,7 +143,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                             if (int.TryParse(Params[3], out Amount))
                             {
                                 Target.GetHabbo().GOTWPoints = Target.GetHabbo().GOTWPoints + Amount;
-                                Target.SendMessage(new HabboActivityPointNotificationComposer(Target.GetHabbo().GOTWPoints, Amount, 103));
+                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().GOTWPoints, Amount, 103));
 
                                 if (Target.GetHabbo().Id != Session.GetHabbo().Id)
                                     Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " GOTW Point(s)!");

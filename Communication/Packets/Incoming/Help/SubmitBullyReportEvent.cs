@@ -22,14 +22,14 @@ namespace Plus.Communication.Packets.Incoming.Help
 
             if (Session.GetHabbo().AdvertisingReportedBlocked)
             {
-                Session.SendMessage(new SubmitBullyReportComposer(1));//This user is blocked from reporting.
+                Session.SendPacket(new SubmitBullyReportComposer(1));//This user is blocked from reporting.
                 return;
             }
 
             GameClient Client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(Convert.ToInt32(UserId));
             if (Client == null)
             {
-                Session.SendMessage(new SubmitBullyReportComposer(0));//Just say it's sent, the user isn't found.
+                Session.SendPacket(new SubmitBullyReportComposer(0));//Just say it's sent, the user isn't found.
                 return;
             }
 
@@ -48,14 +48,14 @@ namespace Plus.Communication.Packets.Incoming.Help
             //This user hasn't even said a word, nope!
             if (!Client.GetHabbo().HasSpoken)
             {
-                Session.SendMessage(new SubmitBullyReportComposer(2));
+                Session.SendPacket(new SubmitBullyReportComposer(2));
                 return;
             }
 
             //Already reported, nope.
             if (Client.GetHabbo().AdvertisingReported && Session.GetHabbo().Rank < 2)
             {
-                Session.SendMessage(new SubmitBullyReportComposer(3));
+                Session.SendPacket(new SubmitBullyReportComposer(3));
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace Plus.Communication.Packets.Incoming.Help
                 Session.GetHabbo().LastAdvertiseReport = PlusEnvironment.GetUnixTimestamp();
 
             Client.GetHabbo().AdvertisingReported = true;
-            Session.SendMessage(new SubmitBullyReportComposer(0));
+            Session.SendPacket(new SubmitBullyReportComposer(0));
             //PlusEnvironment.GetGame().GetClientManager().ModAlert("New advertising report! " + Client.GetHabbo().Username + " has been reported for advertising by " + Session.GetHabbo().Username +".");
             PlusEnvironment.GetGame().GetClientManager().DoAdvertisingReport(Session, Client);     
             return;

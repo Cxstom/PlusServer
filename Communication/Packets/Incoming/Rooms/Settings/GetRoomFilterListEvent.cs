@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (!Instance.CheckRights(Session))
                 return;
 
-            Session.SendMessage(new GetRoomFilterListComposer(Instance));
+            Session.SendPacket(new GetRoomFilterListComposer(Instance));
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModRoomFilterSeen", 1);
         }
     }

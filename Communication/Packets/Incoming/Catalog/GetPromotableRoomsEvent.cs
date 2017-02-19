@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
         {
             List<RoomData> Rooms = Session.GetHabbo().UsersRooms;
             Rooms = Rooms.Where(x => (x.Promotion == null || x.Promotion.TimestampExpires < PlusEnvironment.GetUnixTimestamp())).ToList();
-            Session.SendMessage(new PromotableRoomsComposer(Rooms));
+            Session.SendPacket(new PromotableRoomsComposer(Rooms));
         }
     }
 }

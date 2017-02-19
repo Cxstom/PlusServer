@@ -31,7 +31,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             Item = (CatalogItem)Page.ItemOffers[OfferId];
             if (Item != null)
-                Session.SendMessage(new CatalogOfferComposer(Item));
+                Session.SendPacket(new CatalogOfferComposer(Item));
         }
     }
 }

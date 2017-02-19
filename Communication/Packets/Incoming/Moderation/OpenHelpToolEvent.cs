@@ -12,7 +12,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new OpenHelpToolComposer());
+            Session.SendPacket(new OpenHelpToolComposer());
         }
     }
 }

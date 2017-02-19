@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             {
                 dbClient.SetQuery("SELECT `state`,`timestamp`,`total_price`,`extra_data`,`item_id`,`furni_id`,`user_id`,`limited_number`,`limited_stack` FROM `catalog_marketplace_offers` WHERE `offer_id` = @OfferId LIMIT 1");
                 dbClient.AddParameter("OfferId", OfferId);
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
             if (Row == null)
@@ -73,18 +73,18 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
 
                 Session.GetHabbo().Credits -= Convert.ToInt32(Row["total_price"]);
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
 
 
                 Item GiveItem = ItemFactory.CreateSingleItem(Item, Session.GetHabbo(), Convert.ToString(Row["extra_data"]), Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["furni_id"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]));
                 if (GiveItem != null)
                 {
                     Session.GetHabbo().GetInventoryComponent().TryAddItem(GiveItem);
-                    Session.SendMessage(new FurniListNotificationComposer(GiveItem.Id, 1));
+                    Session.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
 
-                    Session.SendMessage(new Plus.Communication.Packets.Outgoing.Catalog.PurchaseOKComposer());
-                    Session.SendMessage(new FurniListAddComposer(GiveItem));            
-                    Session.SendMessage(new FurniListUpdateComposer());
+                    Session.SendPacket(new Plus.Communication.Packets.Outgoing.Catalog.PurchaseOKComposer());
+                    Session.SendPacket(new FurniListAddComposer(GiveItem));            
+                    Session.SendPacket(new FurniListUpdateComposer());
                 }
 
 
@@ -94,7 +94,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
 
                     int Id = 0;
                     dbClient.SetQuery("SELECT `id` FROM `catalog_marketplace_data` WHERE `sprite` = " + Item.SpriteId + " LIMIT 1;");
-                    Id = dbClient.getInteger();
+                    Id = dbClient.GetInteger();
 
                     if (Id > 0)
                         dbClient.RunQuery("UPDATE `catalog_marketplace_data` SET `sold` = `sold` + 1, `avgprice` = (avgprice + " + Convert.ToInt32(Row["total_price"]) + ") WHERE `id` = " + Id + " LIMIT 1;");
@@ -167,7 +167,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 {
                     builder.Append(" AND `public_name` LIKE @search_query");
                 }
-                table = dbClient.getTable();
+                table = dbClient.GetTable();
             }
 
             PlusEnvironment.GetGame().GetCatalog().GetMarketplace().MarketItems.Clear();
@@ -209,7 +209,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
             }
 
-            Session.SendMessage(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
+            Session.SendPacket(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
         }
     }
 }

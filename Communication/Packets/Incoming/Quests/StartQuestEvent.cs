@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Quests
 
             Session.GetHabbo().GetStats().QuestID = Quest.Id;
             PlusEnvironment.GetGame().GetQuestManager().GetList(Session, null);
-            Session.SendMessage(new QuestStartedComposer(Session, Quest));
+            Session.SendPacket(new QuestStartedComposer(Session, Quest));
         }
     }
 }

@@ -4,7 +4,6 @@ namespace Plus.HabboHotel.Rooms
 {
     public class RoomPromotion
     {
-
         private string _name;
         private string _description;
         private double _timestampExpires;
@@ -16,7 +15,7 @@ namespace Plus.HabboHotel.Rooms
             this._name = Name;
             this._description = Desc;
             this._timestampStarted = PlusEnvironment.GetUnixTimestamp();
-            this._timestampExpires = (PlusEnvironment.GetUnixTimestamp()) + (PlusStaticGameSettings.RoomPromotionLifeTime * 60);
+            this._timestampExpires = (PlusEnvironment.GetUnixTimestamp()) + (Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("room.promotion.lifespan")) * 60);
             this._categoryId = CategoryId;
         }
 

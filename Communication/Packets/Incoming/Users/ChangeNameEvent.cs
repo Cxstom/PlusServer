@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             if (NewName == OldName)
             {
                 Session.GetHabbo().ChangeName(OldName);
-                Session.SendMessage(new UpdateUsernameComposer(NewName));
+                Session.SendPacket(new UpdateUsernameComposer(NewName));
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             {
                 dbClient.SetQuery("SELECT COUNT(0) FROM `users` WHERE `username` = @name LIMIT 1");
                 dbClient.AddParameter("name", NewName);
-                InUse = dbClient.getInteger() == 1;
+                InUse = dbClient.GetInteger() == 1;
             }
 
             char[] Letters = NewName.ToLower().ToCharArray();
@@ -90,8 +90,8 @@ namespace Plus.Communication.Packets.Incoming.Users
                 Session.GetHabbo().ChangeName(NewName);
                 Session.GetHabbo().GetMessenger().OnStatusChanged(true);
 
-                Session.SendMessage(new UpdateUsernameComposer(NewName));
-                Room.SendMessage(new UserNameChangeComposer(Room.Id, User.VirtualId, NewName));
+                Session.SendPacket(new UpdateUsernameComposer(NewName));
+                Room.SendPacket(new UserNameChangeComposer(Room.Id, User.VirtualId, NewName));
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
@@ -117,12 +117,12 @@ namespace Plus.Communication.Packets.Incoming.Users
                     UserRoom.OwnerName = NewName;
                     UserRoom.RoomData.OwnerName = NewName;
 
-                    UserRoom.SendMessage(new RoomInfoUpdatedComposer(UserRoom.RoomId));
+                    UserRoom.SendPacket(new RoomInfoUpdatedComposer(UserRoom.RoomId));
                 }
 
                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_Name", 1);
 
-               Session.SendMessage(new RoomForwardComposer(Room.Id));
+               Session.SendPacket(new RoomForwardComposer(Room.Id));
             }
         }
 

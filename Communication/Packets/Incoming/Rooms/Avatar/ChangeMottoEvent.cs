@@ -73,7 +73,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Avatar
                 if (User == null || User.GetClient() == null)
                     return;
 
-                Room.SendMessage(new UserChangeComposer(User, false));
+                Room.SendPacket(new UserChangeComposer(User, false));
             }
         }
     }

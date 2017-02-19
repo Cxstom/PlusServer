@@ -18,13 +18,13 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Furni
 
             if (!Items.Any())
             {
-                Session.SendMessage(new FurniListComposer(Items.ToList(), 1, 0));
+                Session.SendPacket(new FurniListComposer(Items.ToList(), 1, 0));
             }
             else
             {
                 foreach (ICollection<Item> batch in Items.Batch(700))
                 {
-                    Session.SendMessage(new FurniListComposer(batch.ToList(), pages, page));
+                    Session.SendPacket(new FurniListComposer(batch.ToList(), pages, page));
 
                     page++;
                 }

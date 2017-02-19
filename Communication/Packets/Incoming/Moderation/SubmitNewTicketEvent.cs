@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 ModerationTicket PendingTicket = PlusEnvironment.GetGame().GetModerationManager().GetTicketBySenderId(Session.GetHabbo().Id);
                 if (PendingTicket != null)
                 {
-                    Session.SendMessage(new CallForHelpPendingCallsComposer(PendingTicket));
+                    Session.SendPacket(new CallForHelpPendingCallsComposer(PendingTicket));
                     return;
                 }
             }
@@ -62,7 +62,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             }
 
             PlusEnvironment.GetGame().GetClientManager().ModAlert("A new support ticket has been submitted!");
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
         }
     }
 }

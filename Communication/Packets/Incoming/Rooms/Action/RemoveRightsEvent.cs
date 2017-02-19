@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                         User.UpdateNeeded = true;
 
 
-                        User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                        User.GetClient().SendPacket(new YouAreControllerComposer(0));
                     }
 
                     using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     if (Room.UsersWithRights.Contains(UserId))
                         Room.UsersWithRights.Remove(UserId);
 
-                    Session.SendMessage(new FlatControllerRemovedComposer(Room, UserId));
+                    Session.SendPacket(new FlatControllerRemovedComposer(Room, UserId));
                 }
             }
         }

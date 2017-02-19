@@ -67,7 +67,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Triggers
                     Instance.GetWired().OnEvent(Condition.Item);
                 }
 
-                Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, Message, 0, 0));
+                Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, Message, 0, 0));
                 //Check the ICollection to find the random addon effect.
                 bool HasRandomEffectAddon = Effects.Count(x => x.Type == WiredBoxType.AddonRandomEffect) > 0;
                 if (HasRandomEffectAddon)

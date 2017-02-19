@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
             int ItemId = Packet.PopInt();//Item Id
             string VideoId = Packet.PopString(); //Video ID
 
-            Session.SendMessage(new GetYouTubeVideoComposer(ItemId, VideoId));
+            Session.SendPacket(new GetYouTubeVideoComposer(ItemId, VideoId));
         }
     }
 }

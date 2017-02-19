@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data;
 using MySql.Data.MySqlClient;
-using Plus.Core.ConsoleWriter;
 using Plus.Database.Interfaces;
+using Plus.Core;
 
 namespace Plus.Database.Adapter
 {
@@ -11,24 +11,19 @@ namespace Plus.Database.Adapter
         protected IDatabaseClient client;
         protected MySqlCommand command;
 
-
         public bool dbEnabled = true;
+
         public QueryAdapter(IDatabaseClient Client)
         {
             client = Client;
         }
-
-        /*private static bool dbEnabled
-        {
-            get { return DatabaseManager.dbEnabled; }
-        }*/
 
         public void AddParameter(string parameterName, object val)
         {
             command.Parameters.AddWithValue(parameterName, val);
         }
 
-        public bool findsResult()
+        public bool FindsResult()
         {
             bool hasRows = false;
             try
@@ -40,13 +35,13 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return hasRows;
         }
 
-        public int getInteger()
+        public int GetInteger()
         {
             int result = 0;
             try
@@ -59,13 +54,14 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return result;
         }
 
-        public DataRow getRow()
+        public DataRow GetRow
+            ()
         {
             DataRow row = null;
             try
@@ -82,13 +78,13 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return row;
         }
 
-        public string getString()
+        public string GetString()
         {
             string str = string.Empty;
             try
@@ -101,13 +97,13 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return str;
         }
 
-        public DataTable getTable()
+        public DataTable GetTable()
         {
             var dataTable = new DataTable();
             if (!dbEnabled)
@@ -122,7 +118,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return dataTable;
@@ -143,11 +139,6 @@ namespace Plus.Database.Adapter
             command.CommandText = query;
         }
 
-        public void addParameter(string name, byte[] data)
-        {
-            command.Parameters.Add(new MySqlParameter(name, MySqlDbType.Blob, data.Length));
-        }
-
         public long InsertQuery()
         {
             if (!dbEnabled)
@@ -161,7 +152,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             return lastInsertedId;
         }
@@ -177,7 +168,7 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-                Writer.LogQueryError(exception, command.CommandText);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             Item Item = Session.GetHabbo().GetInventoryComponent().GetItem(ItemId);
             if (Item == null)
             {
-                Session.SendMessage(new MarketplaceMakeOfferResultComposer(0));
+                Session.SendPacket(new MarketplaceMakeOfferResultComposer(0));
                 return;
             }
 
@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
 
             if (SellingPrice > 70000000 || SellingPrice == 0)
             {
-                Session.SendMessage(new MarketplaceMakeOfferResultComposer(0));
+                Session.SendPacket(new MarketplaceMakeOfferResultComposer(0));
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             }
 
             Session.GetHabbo().GetInventoryComponent().RemoveItem(ItemId);
-            Session.SendMessage(new MarketplaceMakeOfferResultComposer(1));
+            Session.SendPacket(new MarketplaceMakeOfferResultComposer(1));
         }
     }
 }

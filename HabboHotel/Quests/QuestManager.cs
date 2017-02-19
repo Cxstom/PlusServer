@@ -36,7 +36,7 @@ namespace Plus.HabboHotel.Quests
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`type`,`level_num`,`goal_type`,`goal_data`,`action`,`pixel_reward`,`data_bit`,`reward_type`,`timestamp_unlock`,`timestamp_lock` FROM `quests`");
-                DataTable dTable = dbClient.getTable();
+                DataTable dTable = dbClient.GetTable();
 
                 if (dTable != null)
                 {
@@ -164,7 +164,7 @@ namespace Plus.HabboHotel.Quests
             }
 
             Session.GetHabbo().quests[Session.GetHabbo().GetStats().QuestID] = NewProgress;
-            Session.SendMessage(new QuestStartedComposer(Session, UserQuest));
+            Session.SendPacket(new QuestStartedComposer(Session, UserQuest));
 
             if (PassQuest)
             {
@@ -172,9 +172,9 @@ namespace Plus.HabboHotel.Quests
 
                 Session.GetHabbo().GetStats().QuestID = 0;
                 Session.GetHabbo().QuestLastCompleted = UserQuest.Id;
-                Session.SendMessage(new QuestCompletedComposer(Session, UserQuest));
+                Session.SendPacket(new QuestCompletedComposer(Session, UserQuest));
                 Session.GetHabbo().Duckets += UserQuest.Reward;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, UserQuest.Reward));
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, UserQuest.Reward));
                 GetList(Session, null);
             }
         }
@@ -234,7 +234,7 @@ namespace Plus.HabboHotel.Quests
                 }
             }
 
-            Session.SendMessage(new QuestListComposer(Session, (Message != null), UserQuests));
+            Session.SendPacket(new QuestListComposer(Session, (Message != null), UserQuests));
         }
 
         public void QuestReminder(GameClient Session, int QuestId)
@@ -243,7 +243,7 @@ namespace Plus.HabboHotel.Quests
             if (Quest == null)
                 return;
 
-            Session.SendMessage(new QuestStartedComposer(Session, Quest));
+            Session.SendPacket(new QuestStartedComposer(Session, Quest));
         }
     }
 }

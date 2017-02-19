@@ -42,7 +42,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
             BotSpeech += BotUser.BotData.MixSentences;
 
             if (ActionId == 2 || ActionId == 5)
-                Session.SendMessage(new OpenBotActionComposer(BotUser, ActionId, BotSpeech));
+                Session.SendPacket(new OpenBotActionComposer(BotUser, ActionId, BotSpeech));
         }
     }
 }

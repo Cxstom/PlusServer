@@ -36,13 +36,13 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             string PetName = Packet.PopString();
             if (string.IsNullOrEmpty(PetName))
             {
-                Session.SendMessage(new CheckGnomeNameComposer(PetName, 1));
+                Session.SendPacket(new CheckGnomeNameComposer(PetName, 1));
                 return;
             }
 
             if (!PlusEnvironment.IsValidAlphaNumeric(PetName))
             {
-                Session.SendMessage(new CheckGnomeNameComposer(PetName, 1));
+                Session.SendPacket(new CheckGnomeNameComposer(PetName, 1));
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             Room.GetRoomItemHandler().RemoveFurniture(Session, Item.Id);
 
             //Apparently we need this for success.
-            Session.SendMessage(new CheckGnomeNameComposer(PetName, 0));
+            Session.SendPacket(new CheckGnomeNameComposer(PetName, 0));
 
             //Create the pet here.
             Pet Pet = PetUtility.CreatePet(Session.GetHabbo().Id, PetName, 26, "30", "ffffff");
@@ -101,7 +101,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 if (Food != null)
                 {
                     Session.GetHabbo().GetInventoryComponent().TryAddItem(Food);
-                    Session.SendMessage(new FurniListNotificationComposer(Food.Id, 1));
+                    Session.SendPacket(new FurniListNotificationComposer(Food.Id, 1));
                 }
             }
         }

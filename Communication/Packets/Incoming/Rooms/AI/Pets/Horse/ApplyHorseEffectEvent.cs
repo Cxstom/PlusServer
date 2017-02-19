@@ -125,8 +125,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
             }
 
             //Update the Pet and the Pet figure information.
-            Room.SendMessage(new UsersComposer(PetUser));
-            Room.SendMessage(new PetHorseFigureInformationComposer(PetUser));
+            Room.SendPacket(new UsersComposer(PetUser));
+            Room.SendPacket(new PetHorseFigureInformationComposer(PetUser));
         }
     }
 }

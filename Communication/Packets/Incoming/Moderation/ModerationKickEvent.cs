@@ -19,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
 
             if (Client.GetHabbo().Rank >= Session.GetHabbo().Rank)
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("moderation_kick_permissions"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("moderation.kick.disallowed"));
                 return;
             }
 

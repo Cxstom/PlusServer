@@ -68,7 +68,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
             UserChangeComposer.WriteString("M");
             UserChangeComposer.WriteString(User.BotData.Motto);
             UserChangeComposer.WriteInteger(0);
-            this.Instance.SendMessage(UserChangeComposer);
+            this.Instance.SendPacket(UserChangeComposer);
 
             User.BotData.Look = Figure;
             User.BotData.Gender = "M";

@@ -28,7 +28,7 @@ namespace Plus.HabboHotel.Users.Navigator.SavedSearches
             {
                 dbClient.SetQuery("SELECT `id`,`filter`,`search_code` FROM `user_saved_searches` WHERE `user_id` = @UserId");
                 dbClient.AddParameter("UserId", Player.Id);
-                GetSearches = dbClient.getTable();
+                GetSearches = dbClient.GetTable();
 
                 if (GetSearches != null)
                 {

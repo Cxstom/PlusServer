@@ -92,7 +92,7 @@ namespace Plus.HabboHotel.Rooms
             //UpdateUserStatus(BotUser, false);
             BotUser.UpdateNeeded = true;
 
-            _room.SendMessage(new UsersComposer(BotUser));
+            _room.SendPacket(new UsersComposer(BotUser));
 
             if (BotUser.IsPet)
             {
@@ -109,7 +109,7 @@ namespace Plus.HabboHotel.Rooms
                     _bots[BotUser.BotData.BotId] = BotUser;
                 else
                     _bots.TryAdd(BotUser.BotData.Id, BotUser);
-                _room.SendMessage(new DanceComposer(BotUser, BotUser.BotData.DanceId));
+                _room.SendPacket(new DanceComposer(BotUser, BotUser.BotData.DanceId));
             }
             return BotUser;
         }
@@ -137,7 +137,7 @@ namespace Plus.HabboHotel.Rooms
 
             User.BotAI.OnSelfLeaveRoom(Kicked);
 
-            _room.SendMessage(new UserRemoveComposer(User.VirtualId));
+            _room.SendPacket(new UserRemoveComposer(User.VirtualId));
 
             RoomUser toRemove;
 
@@ -241,27 +241,27 @@ namespace Plus.HabboHotel.Rooms
                 }
             }
 
-            _room.SendMessage(new UsersComposer(User));
+            _room.SendPacket(new UsersComposer(User));
 
             //Below = done
             if (_room.CheckRights(Session, true))
             {
                 User.SetStatus("flatctrl", "useradmin");
-                Session.SendMessage(new YouAreOwnerComposer());
-                Session.SendMessage(new YouAreControllerComposer(4));
+                Session.SendPacket(new YouAreOwnerComposer());
+                Session.SendPacket(new YouAreControllerComposer(4));
             }
             else if (_room.CheckRights(Session, false) && _room.Group == null)
             {
                 User.SetStatus("flatctrl", "1");
-                Session.SendMessage(new YouAreControllerComposer(1));
+                Session.SendPacket(new YouAreControllerComposer(1));
             }
             else if (_room.Group != null && _room.CheckRights(Session, false, true))
             {
                 User.SetStatus("flatctrl", "3");
-                Session.SendMessage(new YouAreControllerComposer(3));
+                Session.SendPacket(new YouAreControllerComposer(3));
             }
             else
-                Session.SendMessage(new YouAreNotControllerComposer());
+                Session.SendPacket(new YouAreNotControllerComposer());
 
             User.UpdateNeeded = true;
 
@@ -289,10 +289,10 @@ namespace Plus.HabboHotel.Rooms
                     return;
 
                 if (NotifyKick)
-                    Session.SendMessage(new GenericErrorComposer(4008));
+                    Session.SendPacket(new GenericErrorComposer(4008));
 
                 if (NotifyClient)
-                    Session.SendMessage(new CloseConnectionComposer());
+                    Session.SendPacket(new CloseConnectionComposer());
 
                 if (Session.GetHabbo().TentId > 0)
                     Session.GetHabbo().TentId = 0;
@@ -358,7 +358,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -420,7 +420,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException(e.ToString());
+                ExceptionLogger.LogCriticalException(e);
             }
         }
 
@@ -432,7 +432,7 @@ namespace Plus.HabboHotel.Rooms
                 _room.GetGameMap().GameMap[user.X, user.Y] = user.SqState;
 
             _room.GetGameMap().RemoveUserFromMap(user, new Point(user.X, user.Y));
-            _room.SendMessage(new UserRemoveComposer(user.VirtualId));
+            _room.SendPacket(new UserRemoveComposer(user.VirtualId));
 
             RoomUser toRemove = null;
             if (this._users.TryRemove(user.InternalRoomID, out toRemove))
@@ -624,7 +624,7 @@ namespace Plus.HabboHotel.Rooms
             }
 
             if (Users.Count > 0)
-                _room.SendMessage(new UserUpdateComposer(Users));
+                _room.SendPacket(new UserUpdateComposer(Users));
         }
 
         public void UpdateUserStatusses()
@@ -687,7 +687,7 @@ namespace Plus.HabboHotel.Rooms
                     if (!User.IsBot && !User.IsAsleep && User.IdleTime >= 600)
                     {
                         User.IsAsleep = true;
-                        _room.SendMessage(new SleepComposer(User, true));
+                        _room.SendPacket(new SleepComposer(User, true));
                     }
 
                     if (User.CarryItemID > 0)
@@ -1001,11 +1001,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                int rId = 0;
-                if (_room != null)
-                    rId = _room.Id;
-
-                Logging.LogCriticalException("Affected Room - ID: " + rId + " - " + e.ToString());
+                ExceptionLogger.LogCriticalException(e);
             }
         }
 
@@ -1322,7 +1318,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                ExceptionLogger.LogException(e);
             }
         }
 

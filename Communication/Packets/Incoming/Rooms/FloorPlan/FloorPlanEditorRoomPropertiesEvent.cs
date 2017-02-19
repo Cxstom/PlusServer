@@ -27,9 +27,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
 
             ICollection<Item> FloorItems = Room.GetRoomItemHandler().GetFloor;
 
-            Session.SendMessage(new FloorPlanFloorMapComposer(FloorItems));
-            Session.SendMessage(new FloorPlanSendDoorComposer(Model.DoorX, Model.DoorY, Model.DoorOrientation));
-            Session.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+            Session.SendPacket(new FloorPlanFloorMapComposer(FloorItems));
+            Session.SendPacket(new FloorPlanSendDoorComposer(Model.DoorX, Model.DoorY, Model.DoorOrientation));
+            Session.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
         }
     }
 }

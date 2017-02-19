@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 
-using Plus.HabboHotel.Global;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Quests;
 
@@ -22,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
 
             string Gender = Packet.PopString().ToUpper();
-            string Look = PlusEnvironment.GetGame().GetAntiMutant().RunLook(Packet.PopString());
+            string Look = PlusEnvironment.GetFigureManager().ProcessFigure(Packet.PopString(), Gender, Session.GetHabbo().GetClothing().GetClothingParts, true);
 
             if (Look == Session.GetHabbo().Look)
                 return;
@@ -43,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             string[] AllowedGenders = { "M", "F" };
             if (!AllowedGenders.Contains(Gender))
             {
-                Session.SendMessage(new BroadcastMessageAlertComposer("Sorry, you chose an invalid gender."));
+                Session.SendPacket(new BroadcastMessageAlertComposer("Sorry, you chose an invalid gender."));
                 return;
             }
 
@@ -61,7 +58,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             }
 
             PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_AvatarLooks", 1);
-            Session.SendMessage(new AvatarAspectUpdateComposer(Look, Gender));
+            Session.SendPacket(new AvatarAspectUpdateComposer(Look, Gender));
             if (Session.GetHabbo().Look.Contains("ha-1006"))
                 PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.WEAR_HAT);
 
@@ -70,8 +67,8 @@ namespace Plus.Communication.Packets.Incoming.Users
                 RoomUser RoomUser = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                 if (RoomUser != null)
                 {
-                    Session.SendMessage(new UserChangeComposer(RoomUser, true));
-                    Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(RoomUser, false));
+                    Session.SendPacket(new UserChangeComposer(RoomUser, true));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(RoomUser, false));
                 }
             }
         }

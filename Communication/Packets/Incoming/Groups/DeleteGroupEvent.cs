@@ -26,9 +26,9 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 return;
             }
 
-            if (Group.MemberCount >= PlusStaticGameSettings.GroupMemberDeletionLimit && !Session.GetHabbo().GetPermissions().HasRight("group_delete_limit_override"))
+            if (Group.MemberCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) && !Session.GetHabbo().GetPermissions().HasRight("group_delete_limit_override"))
             {
-                Session.SendNotification("Oops, your group exceeds the maximum amount of members (" + PlusStaticGameSettings.GroupMemberDeletionLimit + ") a group can exceed before being eligible for deletion. Seek assistance from a staff member.");
+                Session.SendNotification("Oops, your group exceeds the maximum amount of members (" + Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) + ") a group can exceed before being eligible for deletion. Seek assistance from a staff member.");
                 return;
             }
 

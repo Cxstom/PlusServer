@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new FurnitureAliasesComposer());
+            Session.SendPacket(new FurnitureAliasesComposer());
         }
     }
 }

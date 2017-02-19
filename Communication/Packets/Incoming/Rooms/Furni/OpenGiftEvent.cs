@@ -45,7 +45,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             {
                 dbClient.SetQuery("SELECT `base_id`,`extra_data` FROM `user_presents` WHERE `item_id` = @presentId LIMIT 1");
                 dbClient.AddParameter("presentId", Present.Id);
-                Data = dbClient.getRow();
+                Data = dbClient.GetRow();
             }
 
             if (Data == null)
@@ -113,7 +113,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
 
             Present.MagicRemove = true;
-            Room.SendMessage(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
+            Room.SendPacket(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
 
             Thread thread = new Thread(() => FinishOpenGift(Session, BaseItem, Present, Room, Data));
             thread.Start();
@@ -176,7 +176,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                     ItemIsInRoom = false;
                 }
 
-                Session.SendMessage(new OpenGiftComposer(Present.Data, Present.ExtraData, Present, ItemIsInRoom));
+                Session.SendPacket(new OpenGiftComposer(Present.Data, Present.ExtraData, Present, ItemIsInRoom));
 
                 Session.GetHabbo().GetInventoryComponent().UpdateItems(true);
             }

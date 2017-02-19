@@ -62,8 +62,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
 
                 //Send the magic out.
                 if (Room.RespectNotificationsEnabled)
-                    Room.SendMessage(new RespectPetNotificationMessageComposer(TargetUser.GetClient().GetHabbo(), TargetUser));
-                Room.SendMessage(new CarryObjectComposer(ThisUser.VirtualId, ThisUser.CarryItemID));
+                    Room.SendPacket(new RespectPetNotificationMessageComposer(TargetUser.GetClient().GetHabbo(), TargetUser));
+                Room.SendPacket(new CarryObjectComposer(ThisUser.VirtualId, ThisUser.CarryItemID));
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
             ThisUser.CarryItemID = 999999999;
             ThisUser.CarryTimer = 5;
             Pet.PetData.OnRespect();
-            Room.SendMessage(new CarryObjectComposer(ThisUser.VirtualId, ThisUser.CarryItemID));
+            Room.SendPacket(new CarryObjectComposer(ThisUser.VirtualId, ThisUser.CarryItemID));
         }
     }
 }

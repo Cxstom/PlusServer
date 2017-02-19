@@ -18,11 +18,11 @@ namespace Plus.Communication.Packets.Incoming.Groups
             {
                 RoomUser User = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                 if (User != null)
-                    Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer(null, User.VirtualId));
-                Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(null, User.VirtualId));
+                Session.GetHabbo().CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
             }
             else
-                Session.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
         }
     }
 }

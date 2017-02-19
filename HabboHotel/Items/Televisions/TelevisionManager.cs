@@ -32,7 +32,7 @@ namespace Plus.HabboHotel.Items.Televisions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor()) 
             {
                 dbClient.SetQuery("SELECT * FROM `items_youtube` ORDER BY `id` DESC");
-                getData = dbClient.getTable();
+                getData = dbClient.GetTable();
 
                 if (getData != null)
                 {

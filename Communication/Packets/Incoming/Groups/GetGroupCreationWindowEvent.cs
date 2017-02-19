@@ -23,7 +23,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                     ValidRooms.Add(Data);
             }
 
-            Session.SendMessage(new GroupCreationWindowComposer(ValidRooms));
+            Session.SendPacket(new GroupCreationWindowComposer(ValidRooms));
         }
     }
 }

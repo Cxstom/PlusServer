@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                     roomUser.GetClient().SendWhisper("This room has been unmuted");
             }
 
-            Room.SendMessage(new RoomMuteSettingsComposer(Room.RoomMuted));
+            Room.SendPacket(new RoomMuteSettingsComposer(Room.RoomMuted));
         }
     }
 }

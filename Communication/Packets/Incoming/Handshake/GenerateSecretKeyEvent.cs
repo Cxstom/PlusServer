@@ -20,7 +20,7 @@ namespace Plus.Communication.Packets.Incoming.Handshake
             if (SharedKey != 0)
             {
                 Session.RC4Client = new ARC4(SharedKey.getBytes());
-                Session.SendMessage(new SecretKeyComposer(HabboEncryptionV2.GetRsaDiffieHellmanPublicKey()));
+                Session.SendPacket(new SecretKeyComposer(HabboEncryptionV2.GetRsaDiffieHellmanPublicKey()));
             }
             else 
             {

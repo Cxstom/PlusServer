@@ -13,9 +13,9 @@ namespace Plus.Communication.Packets.Incoming.GameCenter
         {
             int GameId = Packet.PopInt();
 
-            Session.SendMessage(new GameAccountStatusComposer(GameId));
-            Session.SendMessage(new PlayableGamesComposer(GameId));
-            Session.SendMessage(new GameAchievementListComposer(Session, PlusEnvironment.GetGame().GetAchievementManager().GetGameAchievements(GameId), GameId));
+            Session.SendPacket(new GameAccountStatusComposer(GameId));
+            Session.SendPacket(new PlayableGamesComposer(GameId));
+            Session.SendPacket(new GameAchievementListComposer(Session, PlusEnvironment.GetGame().GetAchievementManager().GetGameAchievements(GameId), GameId));
         }
     }
 }

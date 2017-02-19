@@ -31,7 +31,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Pets.Commands
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `bots_pet_commands`");
-                Table = dbClient.getTable();
+                Table = dbClient.GetTable();
 
                 if (Table != null)
                 {

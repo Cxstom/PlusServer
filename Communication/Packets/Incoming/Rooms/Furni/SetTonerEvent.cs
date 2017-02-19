@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             Room.TonerData.Lightness = Int3;
             Room.TonerData.Enabled = 1;
 
-            Room.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+            Room.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
             Item.UpdateState();
         }
     }

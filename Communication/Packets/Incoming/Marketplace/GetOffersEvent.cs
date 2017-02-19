@@ -53,7 +53,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 {
                     builder.Append(" AND `public_name` LIKE @search_query");
                 }
-                table = dbClient.getTable();
+                table = dbClient.GetTable();
             }
 
             PlusEnvironment.GetGame().GetCatalog().GetMarketplace().MarketItems.Clear();
@@ -106,7 +106,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
             }
 
-            Session.SendMessage(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
+            Session.SendPacket(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
         }
     }
 }

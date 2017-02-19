@@ -29,7 +29,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Styles
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `room_chat_styles`;");
-                Table = dbClient.getTable();
+                Table = dbClient.GetTable();
 
                 if (Table != null)
                 {

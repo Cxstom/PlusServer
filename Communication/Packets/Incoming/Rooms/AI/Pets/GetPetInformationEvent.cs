@@ -30,7 +30,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                     return;
 
                 //And boom! Let us send the information composer 8-).
-                Session.SendMessage(new PetInformationComposer(User.GetClient().GetHabbo()));
+                Session.SendPacket(new PetInformationComposer(User.GetClient().GetHabbo()));
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
             if (Pet.RoomId != Session.GetHabbo().CurrentRoomId || Pet.PetData == null)
                 return;
 
-            Session.SendMessage(new PetInformationComposer(Pet.PetData));
+            Session.SendPacket(new PetInformationComposer(Pet.PetData));
         }
     }
 }

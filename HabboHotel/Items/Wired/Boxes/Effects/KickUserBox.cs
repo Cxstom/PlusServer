@@ -68,12 +68,12 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
                 if (Player.GetPermissions().HasRight("mod_tool")  || this.Instance.OwnerId == Player.Id)
                 {
-                    Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, "Wired Kick Exception: Unkickable Player", 0, 0));
+                    Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, "Wired Kick Exception: Unkickable Player", 0, 0));
                     return false;
                 }
 
                 this._toKick.Enqueue(Player);
-                Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, this.StringData, 0, 0));
+                Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, this.StringData, 0, 0));
             }
             return true;
         }

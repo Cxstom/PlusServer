@@ -15,7 +15,7 @@ using Plus.Database.Interfaces;
 using System.Collections;
 using Plus.Communication.Packets.Outgoing.Handshake;
 using System.Diagnostics;
-using Plus.Core.ConnectionManager;
+using Plus.Communication.ConnectionManager;
 
 namespace Plus.HabboHotel.GameClients
 {
@@ -90,7 +90,7 @@ namespace Plus.HabboHotel.GameClients
             {
                 dbClient.SetQuery("SELECT username FROM users WHERE id = @id LIMIT 1");
                 dbClient.AddParameter("id", Id);
-                username = dbClient.getString();
+                username = dbClient.GetString();
             }
 
             return username;
@@ -116,7 +116,7 @@ namespace Plus.HabboHotel.GameClients
                 if (client.GetHabbo().Rank < 2 || client.GetHabbo().Id == Exclude)
                     continue;
 
-                client.SendMessage(Message);
+                client.SendPacket(Message);
             }
         }
 
@@ -150,7 +150,7 @@ namespace Plus.HabboHotel.GameClients
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `message` FROM `chatlogs` WHERE `user_id` = '" + Target.GetHabbo().Id + "' ORDER BY `id` DESC LIMIT 10");
-                GetLogs = dbClient.getTable();
+                GetLogs = dbClient.GetTable();
 
                 if (GetLogs != null)
                 {
@@ -169,12 +169,12 @@ namespace Plus.HabboHotel.GameClients
                     continue;
 
                 if (Client.GetHabbo().GetPermissions().HasRight("mod_tool") && !Client.GetHabbo().GetPermissions().HasRight("staff_ignore_advertisement_reports"))
-                    Client.SendMessage(new MOTDNotificationComposer(Builder.ToString()));
+                    Client.SendPacket(new MOTDNotificationComposer(Builder.ToString()));
             }
         }
 
 
-        public void SendMessage(ServerPacket Packet, string fuse = "")
+        public void SendPacket(ServerPacket Packet, string fuse = "")
         {
             foreach (GameClient Client in this._clients.Values.ToList())
             {
@@ -187,7 +187,7 @@ namespace Plus.HabboHotel.GameClients
                         continue;
                 }
 
-                Client.SendMessage(Packet);
+                Client.SendPacket(Packet);
             }
         }
 
@@ -285,7 +285,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException(e.ToString());
+                ExceptionLogger.LogException(e);
             }
 
             if (this._clients.Count > 0)
@@ -327,7 +327,7 @@ namespace Plus.HabboHotel.GameClients
                     {
                         try
                         {
-                            Client.SendMessage(new PongComposer());
+                            Client.SendPacket(new PongComposer());
                         }
                         catch
                         {

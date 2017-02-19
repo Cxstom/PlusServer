@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             if (!Page.Enabled || !Page.Visible || Page.MinimumRank > Session.GetHabbo().Rank || (Page.MinimumVIP > Session.GetHabbo().VIPRank && Session.GetHabbo().Rank == 1))
                 return;
 
-           Session.SendMessage(new CatalogPageComposer(Page, CataMode));
+           Session.SendPacket(new CatalogPageComposer(Page, CataMode));
         }
     }
 }

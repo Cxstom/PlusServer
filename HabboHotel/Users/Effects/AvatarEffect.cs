@@ -150,7 +150,7 @@ namespace Plus.HabboHotel.Users.Effects
                 }
             }
 
-            Habbo.GetClient().SendMessage(new AvatarEffectExpiredComposer(this));
+            Habbo.GetClient().SendPacket(new AvatarEffectExpiredComposer(this));
             // reset fx if in room?
         }
 

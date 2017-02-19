@@ -47,7 +47,7 @@ namespace Plus.HabboHotel.Navigator
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `navigator_categories` ORDER BY `id` ASC");
-                Table = dbClient.getTable();
+                Table = dbClient.GetTable();
 
                 if (Table != null)
                 {
@@ -62,7 +62,7 @@ namespace Plus.HabboHotel.Navigator
                 }
            
                 dbClient.SetQuery("SELECT `room_id`,`caption`,`description`,`image_url`,`enabled` FROM `navigator_publics` ORDER BY `order_num` ASC");
-                DataTable GetPublics = dbClient.getTable();
+                DataTable GetPublics = dbClient.GetTable();
 
                 if (GetPublics != null)
                 {

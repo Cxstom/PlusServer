@@ -37,18 +37,18 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             if (Session.GetHabbo().InRoom && Session.GetHabbo().CurrentRoom != null)
             {
-                Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                Session.GetHabbo().CurrentRoom.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
                 if (Group != null)
                 {
-                    Session.GetHabbo().CurrentRoom.SendMessage(new HabboGroupBadgesComposer(Group));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new HabboGroupBadgesComposer(Group));
 
                     RoomUser User = Session.GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
                     if (User != null)
-                    Session.GetHabbo().CurrentRoom.SendMessage(new UpdateFavouriteGroupComposer(Group, User.VirtualId));
+                    Session.GetHabbo().CurrentRoom.SendPacket(new UpdateFavouriteGroupComposer(Group, User.VirtualId));
                 }
             }
             else
-                Session.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
         }
     }
 }

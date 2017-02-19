@@ -280,7 +280,7 @@ namespace Plus.HabboHotel.Rooms.Games.Football
 
             double NewZ = _room.GetGameMap().Model.SqFloorHeight[newX, newY];
 
-            _room.SendMessage(new SlideObjectBundleComposer(item.Coordinate.X, item.Coordinate.Y, item.GetZ, newX, newY, NewZ, item.Id, item.Id, item.Id));
+            _room.SendPacket(new SlideObjectBundleComposer(item.Coordinate.X, item.Coordinate.Y, item.GetZ, newX, newY, NewZ, item.Id, item.Id, item.Id));
 
             item.ExtraData = "11";
             item.UpdateNeeded = true;

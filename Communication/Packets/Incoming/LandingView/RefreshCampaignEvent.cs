@@ -28,7 +28,7 @@ namespace Plus.Communication.Packets.Incoming.LandingView
                     String[] data = parser[i].Split(',');
                     campaingName = data[1];
                 }
-                Session.SendMessage(new CampaignComposer(parseCampaings, campaingName));
+                Session.SendPacket(new CampaignComposer(parseCampaings, campaingName));
             }
             catch {  }
         }

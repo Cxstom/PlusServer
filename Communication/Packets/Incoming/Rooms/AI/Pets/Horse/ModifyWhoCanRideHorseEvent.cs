@@ -38,7 +38,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
                 dbClient.RunQuery("UPDATE `bots_petdata` SET `anyone_ride` = '" + Pet.PetData.AnyoneCanRide + "' WHERE `id` = '" + PetId + "' LIMIT 1");
             }
 
-            Room.SendMessage(new PetInformationComposer(Pet.PetData));
+            Room.SendPacket(new PetInformationComposer(Pet.PetData));
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                         }
 
                         PlusEnvironment.GetGame().GetCatalog().Init(PlusEnvironment.GetGame().GetItemManager());
-                        PlusEnvironment.GetGame().GetClientManager().SendMessage(new CatalogUpdatedComposer());
+                        PlusEnvironment.GetGame().GetClientManager().SendPacket(new CatalogUpdatedComposer());
                         Session.SendWhisper("Catalogue successfully updated.");
                         break;
                     }
@@ -166,7 +166,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.ConfigData = new ConfigData();
+                        PlusEnvironment.GetSettingsManager().Init();
                         Session.SendWhisper("Server configuration successfully updated.");
                         break;
                     }
@@ -274,7 +274,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.GetGame().GetLanguageLocale().Init();
+                        PlusEnvironment.GetLanguageManager().Init();
                         Session.SendWhisper("Locale cache successfully updated.");
                         break;
                     }
@@ -287,8 +287,8 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                             break;
                         }
 
-                        PlusEnvironment.GetGame().GetAntiMutant().Init();
-                        Session.SendWhisper("Anti mutant successfully reloaded.");
+                        PlusEnvironment.GetFigureManager().Init();
+                        Session.SendWhisper("FigureData manager successfully reloaded.");
                         break;
                     }
 

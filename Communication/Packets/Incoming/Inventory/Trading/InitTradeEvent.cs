@@ -56,34 +56,34 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             {
                 if (Room.TradeSettings == 0)
                 {
-                    Session.SendMessage(new TradingErrorComposer(6, TargetUser.GetUsername()));
+                    Session.SendPacket(new TradingErrorComposer(6, TargetUser.GetUsername()));
                     return;
                 }
                 else if (Room.TradeSettings == 1 && Room.OwnerId != Session.GetHabbo().Id)
                 {
-                    Session.SendMessage(new TradingErrorComposer(6, TargetUser.GetUsername()));
+                    Session.SendPacket(new TradingErrorComposer(6, TargetUser.GetUsername()));
                     return;
                 }
             }
 
             if (RoomUser.IsTrading && RoomUser.TradePartner != TargetUser.UserId)
             {
-                Session.SendMessage(new TradingErrorComposer(7, TargetUser.GetUsername()));
+                Session.SendPacket(new TradingErrorComposer(7, TargetUser.GetUsername()));
                 return;
             }
             else if (TargetUser.IsTrading && TargetUser.TradePartner != RoomUser.UserId)
             {
-                Session.SendMessage(new TradingErrorComposer(8, TargetUser.GetUsername()));
+                Session.SendPacket(new TradingErrorComposer(8, TargetUser.GetUsername()));
                 return;
             }
             else if (!TargetUser.GetClient().GetHabbo().AllowTradingRequests)
             {
-                Session.SendMessage(new TradingErrorComposer(4, TargetUser.GetUsername()));
+                Session.SendPacket(new TradingErrorComposer(4, TargetUser.GetUsername()));
                 return;
             }
             else if (TargetUser.GetClient().GetHabbo().TradingLockExpiry > 0)
             {
-                Session.SendMessage(new TradingErrorComposer(4, TargetUser.GetUsername()));
+                Session.SendPacket(new TradingErrorComposer(4, TargetUser.GetUsername()));
                 return;
             }
 

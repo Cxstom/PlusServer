@@ -15,7 +15,7 @@ namespace Plus.HabboHotel.Items
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `tele_two_id` FROM `room_items_tele_links` WHERE `tele_one_id` = '" + TeleId + "' LIMIT 1");
-                DataRow Row = dbClient.getRow();
+                DataRow Row = dbClient.GetRow();
 
                 if (Row == null)
                 {
@@ -34,7 +34,7 @@ namespace Plus.HabboHotel.Items
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `room_id` FROM `items` WHERE `id` = " + TeleId + " LIMIT 1");
-                DataRow Row = dbClient.getRow();
+                DataRow Row = dbClient.GetRow();
 
                 if (Row == null)
                 {

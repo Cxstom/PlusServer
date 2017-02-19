@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Chat
             if (User == null)
                 return;
 
-            Session.GetHabbo().CurrentRoom.SendMessage(new UserTypingComposer(User.VirtualId, true));
+            Session.GetHabbo().CurrentRoom.SendPacket(new UserTypingComposer(User.VirtualId, true));
         }
     }
 }

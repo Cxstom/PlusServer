@@ -25,26 +25,26 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`username`,`online`,`mail`,`ip_last`,`look`,`account_created`,`last_online` FROM `users` WHERE `id` = '" + UserId + "' LIMIT 1");
-                User = dbClient.getRow();
+                User = dbClient.GetRow();
 
                 if (User == null)
                 {
-                    Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("user_not_found"));
+                    Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("user.not_found"));
                     return;
                 }
 
                 dbClient.SetQuery("SELECT `cfhs`,`cfhs_abusive`,`cautions`,`bans`,`trading_locked`,`trading_locks_count` FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                Info = dbClient.getRow();
+                Info = dbClient.GetRow();
                 if (Info == null)
                 {
                     dbClient.RunQuery("INSERT INTO `user_info` (`user_id`) VALUES ('" + UserId + "')");
                     dbClient.SetQuery("SELECT `cfhs`,`cfhs_abusive`,`cautions`,`bans`,`trading_locked`,`trading_locks_count` FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                    Info = dbClient.getRow();
+                    Info = dbClient.GetRow();
                 }
             }
 
 
-            Session.SendMessage(new ModeratorUserInfoComposer(User, Info));
+            Session.SendPacket(new ModeratorUserInfoComposer(User, Info));
         }
     }
 }

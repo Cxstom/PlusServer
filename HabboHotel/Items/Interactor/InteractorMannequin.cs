@@ -78,8 +78,8 @@ namespace Plus.HabboHotel.Items.Interactor
                     RoomUser User = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Username);
                     if (User != null)
                     {
-                        Session.SendMessage(new UserChangeComposer(User, true));
-                        Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(User, false));
+                        Session.SendPacket(new UserChangeComposer(User, true));
+                        Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(User, false));
                     }
                 }
             }

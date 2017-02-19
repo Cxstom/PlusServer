@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             int Colour = Packet.PopInt();
             bool dnow = Packet.PopBoolean();
 
-            if (PlusEnvironment.GetDBConfig().DBData["gifts_enabled"] != "1")
+            if (PlusEnvironment.GetSettingsManager().TryGetValue("room.item.gifts.enabled") != "1")
             {
                 Session.SendNotification("The hotel managers have disabled gifting");
                 return;
@@ -77,20 +77,20 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             if (Session.GetHabbo().Credits < Item.CostCredits)
             {
-                Session.SendMessage(new PresentDeliverErrorMessageComposer(true, false));
+                Session.SendPacket(new PresentDeliverErrorMessageComposer(true, false));
                 return;
             }
 
             if (Session.GetHabbo().Duckets < Item.CostPixels)
             {
-                Session.SendMessage(new PresentDeliverErrorMessageComposer(false, true));
+                Session.SendPacket(new PresentDeliverErrorMessageComposer(false, true));
                 return;
             }
 
             Habbo Habbo = PlusEnvironment.GetHabboByUsername(GiftUser);
             if (Habbo == null)
             {
-                Session.SendMessage(new GiftWrappingErrorComposer());
+                Session.SendPacket(new GiftWrappingErrorComposer());
                 return;
             }
 
@@ -205,7 +205,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                     case InteractionType.BADGE_DISPLAY:
                         if (!Session.GetHabbo().GetBadgeComponent().HasBadge(Data))
                         {
-                            Session.SendMessage(new BroadcastMessageAlertComposer("Oops, it appears that you do not own this badge."));
+                            Session.SendPacket(new BroadcastMessageAlertComposer("Oops, it appears that you do not own this badge."));
                             return;
                         }
 
@@ -238,10 +238,10 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 if (Receiver != null)
                 {
                     Receiver.GetHabbo().GetInventoryComponent().TryAddItem(GiveItem);
-                    Receiver.SendMessage(new FurniListNotificationComposer(GiveItem.Id, 1));
-                    Receiver.SendMessage(new PurchaseOKComposer());
-                    Receiver.SendMessage(new FurniListAddComposer(GiveItem));
-                    Receiver.SendMessage(new FurniListUpdateComposer());
+                    Receiver.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
+                    Receiver.SendPacket(new PurchaseOKComposer());
+                    Receiver.SendPacket(new FurniListAddComposer(GiveItem));
+                    Receiver.SendPacket(new FurniListUpdateComposer());
                 }
 
                 if (Habbo.Id != Session.GetHabbo().Id && !string.IsNullOrWhiteSpace(GiftMessage))
@@ -253,18 +253,18 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 }
             }
        
-            Session.SendMessage(new PurchaseOKComposer(Item, PresentData));
+            Session.SendPacket(new PurchaseOKComposer(Item, PresentData));
 
             if (Item.CostCredits > 0)
             {
                 Session.GetHabbo().Credits -= Item.CostCredits;
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
 
             if (Item.CostPixels > 0)
             {
                 Session.GetHabbo().Duckets -= Item.CostPixels;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));
             }
 
             Session.GetHabbo().LastGiftPurchaseTime = DateTime.Now;

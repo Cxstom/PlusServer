@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             Room Instance = PlusEnvironment.GetGame().GetRoomManager().TryGetRandomLoadedRoom();
 
             if (Instance != null)
-                Session.SendMessage(new RoomForwardComposer(Instance.Id));
+                Session.SendPacket(new RoomForwardComposer(Instance.Id));
         }
     }
 }

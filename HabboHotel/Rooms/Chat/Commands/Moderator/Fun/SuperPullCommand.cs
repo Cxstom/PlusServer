@@ -87,7 +87,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator.Fun
             else if (ThisUser.RotBody == 6)
                 TargetUser.MoveTo(ThisUser.X - 1, ThisUser.Y);
 
-            Room.SendMessage(new ChatComposer(ThisUser.VirtualId, "*super pulls " + Params[1] + " to them*", 0, ThisUser.LastBubble));
+            Room.SendPacket(new ChatComposer(ThisUser.VirtualId, "*super pulls " + Params[1] + " to them*", 0, ThisUser.LastBubble));
             return;
         }
     }

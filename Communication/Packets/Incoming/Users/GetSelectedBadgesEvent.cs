@@ -17,7 +17,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             if (Habbo == null)
                 return;
 
-            Session.SendMessage(new HabboUserBadgesComposer(Habbo));
+            Session.SendPacket(new HabboUserBadgesComposer(Habbo));
         }
     }
 }

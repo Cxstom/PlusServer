@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             {
                 Instance.GetBans().Unban(UserId);
 
-                session.SendMessage(new UnbanUserFromRoomComposer(RoomId, UserId));
+                session.SendPacket(new UnbanUserFromRoomComposer(RoomId, UserId));
             }
         }
     }

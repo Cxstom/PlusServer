@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(GroupId, out Group))
                 return;
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session, NewWindow));     
+            Session.SendPacket(new GroupInfoComposer(Group, Session, NewWindow));     
         }
     }
 }

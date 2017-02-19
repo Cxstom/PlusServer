@@ -50,14 +50,16 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User.Fun
                     break;
                 }
             }
-            Session.GetHabbo().Look = PlusEnvironment.GetGame().GetAntiMutant().RunLook(Session.GetHabbo().Look);
+
+            Session.GetHabbo().Look = PlusEnvironment.GetFigureManager().ProcessFigure(Session.GetHabbo().Look, Session.GetHabbo().Gender, Session.GetHabbo().GetClothing().GetClothingParts, true);
+
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.RunQuery("UPDATE `users` SET `look` = '" + Session.GetHabbo().Look + "' WHERE `id` = '" + Session.GetHabbo().Id + "' LIMIT 1");
             }
 
-            Session.SendMessage(new UserChangeComposer(User, true));
-            Session.GetHabbo().CurrentRoom.SendMessage(new UserChangeComposer(User, false));
+            Session.SendPacket(new UserChangeComposer(User, true));
+            Session.GetHabbo().CurrentRoom.SendPacket(new UserChangeComposer(User, false));
             return;
         }
     }

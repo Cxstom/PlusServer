@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Talents
 
             ICollection<TalentTrackLevel> Levels = PlusEnvironment.GetGame().GetTalentTrackManager().GetLevels();
 
-            Session.SendMessage(new TalentTrackComposer(Levels, Type));
+            Session.SendPacket(new TalentTrackComposer(Levels, Type));
         }
     }
 }

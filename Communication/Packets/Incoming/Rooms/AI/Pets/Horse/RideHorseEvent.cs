@@ -66,8 +66,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
 
                     int NewX2 = User.X;
                     int NewY2 = User.Y;
-                    Room.SendMessage(Room.GetRoomItemHandler() .UpdateUserOnRoller(Pet, new Point(NewX2, NewY2), 0, Room.GetGameMap().SqAbsoluteHeight(NewX2, NewY2)));
-                    Room.SendMessage(Room.GetRoomItemHandler() .UpdateUserOnRoller(User, new Point(NewX2, NewY2), 0, Room.GetGameMap().SqAbsoluteHeight(NewX2, NewY2) + 1));
+                    Room.SendPacket(Room.GetRoomItemHandler() .UpdateUserOnRoller(Pet, new Point(NewX2, NewY2), 0, Room.GetGameMap().SqAbsoluteHeight(NewX2, NewY2)));
+                    Room.SendPacket(Room.GetRoomItemHandler() .UpdateUserOnRoller(User, new Point(NewX2, NewY2), 0, Room.GetGameMap().SqAbsoluteHeight(NewX2, NewY2) + 1));
 
                     User.MoveTo(NewX2, NewY2);
                     
@@ -115,7 +115,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
                 }
             }
 
-            Room.SendMessage(new PetHorseFigureInformationComposer(Pet));
+            Room.SendPacket(new PetHorseFigureInformationComposer(Pet));
         }
     }
 }

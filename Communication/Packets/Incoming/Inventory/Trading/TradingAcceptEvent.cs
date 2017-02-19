@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
             Trade Trade = null;
             if (!Room.GetTrading().TryGetTrade(RoomUser.TradeId, out Trade))
             {
-                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new TradingClosedComposer(Session.GetHabbo().Id));
                 return;
             }
 

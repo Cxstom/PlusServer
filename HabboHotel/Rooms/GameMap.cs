@@ -475,7 +475,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogException("Error during map generation for room " + _room.RoomId + ". Exception: " + e);
+                ExceptionLogger.LogException(e);
             }
             return true;
         }
@@ -1252,7 +1252,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.HandleException(e, "Room.SqAbsoluteHeight");
+                ExceptionLogger.LogException(e);
                 return 0;
             }
         }

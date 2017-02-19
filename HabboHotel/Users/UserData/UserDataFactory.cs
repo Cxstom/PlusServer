@@ -32,7 +32,7 @@ namespace Plus.HabboHotel.Users.UserData
             {
                 dbClient.SetQuery("SELECT `id`,`username`,`rank`,`motto`,`look`,`gender`,`last_online`,`credits`,`activity_points`,`home_room`,`block_newfriends`,`hide_online`,`hide_inroom`,`vip`,`account_created`,`vip_points`,`machine_id`,`volume`,`chat_preference`,`focus_preference`, `pets_muted`,`bots_muted`,`advertising_report_blocked`,`last_change`,`gotw_points`,`ignore_invites`,`time_muted`,`allow_gifts`,`friend_bar_state`,`disable_forced_effects`,`allow_mimic`,`rank_vip` FROM `users` WHERE `auth_ticket` = @sso LIMIT 1");
                 dbClient.AddParameter("sso", SessionTicket);
-                dUserInfo = dbClient.getRow();
+                dUserInfo = dbClient.GetRow();
 
                 if (dUserInfo == null)
                 {
@@ -49,13 +49,13 @@ namespace Plus.HabboHotel.Users.UserData
                 }
 
                 dbClient.SetQuery("SELECT `group`,`level`,`progress` FROM `user_achievements` WHERE `userid` = '" + UserId + "'");
-                dAchievements = dbClient.getTable();
+                dAchievements = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT room_id FROM user_favorites WHERE `user_id` = '" + UserId + "'");
-                dFavouriteRooms = dbClient.getTable();
+                dFavouriteRooms = dbClient.GetTable();
                 
                 dbClient.SetQuery("SELECT `badge_id`,`badge_slot` FROM user_badges WHERE `user_id` = '" + UserId + "'");
-                dBadges = dbClient.getTable();
+                dBadges = dbClient.GetTable();
 
                 dbClient.SetQuery(
                     "SELECT users.id,users.username,users.motto,users.look,users.last_online,users.hide_inroom,users.hide_online " +
@@ -69,28 +69,28 @@ namespace Plus.HabboHotel.Users.UserData
                     "JOIN messenger_friendships " +
                     "ON users.id = messenger_friendships.user_two_id " +
                     "WHERE messenger_friendships.user_one_id = " + UserId);
-                dFriends = dbClient.getTable();
+                dFriends = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT messenger_requests.from_id,messenger_requests.to_id,users.username FROM users JOIN messenger_requests ON users.id = messenger_requests.from_id WHERE messenger_requests.to_id = " + UserId);
-                dRequests = dbClient.getTable();
+                dRequests = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT * FROM rooms WHERE `owner` = '" + UserId + "' LIMIT 150");
-                dRooms = dbClient.getTable();
+                dRooms = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT `quest_id`,`progress` FROM user_quests WHERE `user_id` = '" + UserId + "'");
-                dQuests = dbClient.getTable();
+                dQuests = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT `id`,`user_id`,`target`,`type` FROM `user_relationships` WHERE `user_id` = '" + UserId + "'");
-                dRelations = dbClient.getTable();
+                dRelations = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                UserInfo = dbClient.getRow();
+                UserInfo = dbClient.GetRow();
                 if (UserInfo == null)
                 {
                     dbClient.RunQuery("INSERT INTO `user_info` (`user_id`) VALUES ('" + UserId + "')");
 
                     dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                    UserInfo = dbClient.getRow();
+                    UserInfo = dbClient.GetRow();
                 }
 
                 dbClient.RunQuery("UPDATE `users` SET `online` = '1', `auth_ticket` = '' WHERE `id` = '" + UserId + "' LIMIT 1");
@@ -202,7 +202,7 @@ namespace Plus.HabboHotel.Users.UserData
             {
                 dbClient.SetQuery("SELECT `id`,`username`,`rank`,`motto`,`look`,`gender`,`last_online`,`credits`,`activity_points`,`home_room`,`block_newfriends`,`hide_online`,`hide_inroom`,`vip`,`account_created`,`vip_points`,`machine_id`,`volume`,`chat_preference`, `focus_preference`, `pets_muted`,`bots_muted`,`advertising_report_blocked`,`last_change`,`gotw_points`,`ignore_invites`,`time_muted`,`allow_gifts`,`friend_bar_state`,`disable_forced_effects`,`allow_mimic`,`rank_vip` FROM `users` WHERE `id` = @id LIMIT 1");
                 dbClient.AddParameter("id", UserId);
-                dUserInfo = dbClient.getRow();
+                dUserInfo = dbClient.GetRow();
 
                 PlusEnvironment.GetGame().GetClientManager().LogClonesOut(Convert.ToInt32(UserId));
 
@@ -214,22 +214,22 @@ namespace Plus.HabboHotel.Users.UserData
 
 
                 dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                UserInfo = dbClient.getRow();
+                UserInfo = dbClient.GetRow();
                 if (UserInfo == null)
                 {
                     dbClient.RunQuery("INSERT INTO `user_info` (`user_id`) VALUES ('" + UserId + "')");
 
                     dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + UserId + "' LIMIT 1");
-                    UserInfo = dbClient.getRow();
+                    UserInfo = dbClient.GetRow();
                 }
 
                 dbClient.SetQuery("SELECT group_id,rank FROM group_memberships WHERE user_id=@id");
                 dbClient.AddParameter("id", UserId);
-                dGroups = dbClient.getTable();
+                dGroups = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT `id`,`target`,`type` FROM user_relationships WHERE user_id=@id");
                 dbClient.AddParameter("id", UserId);
-                dRelations = dbClient.getTable();
+                dRelations = dbClient.GetTable();
             }
 
             ConcurrentDictionary<string, UserAchievement> Achievements = new ConcurrentDictionary<string, UserAchievement>();

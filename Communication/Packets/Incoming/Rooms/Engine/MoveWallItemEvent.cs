@@ -36,7 +36,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             catch { return; }
 
             Room.GetRoomItemHandler().UpdateItem(Item);
-            Room.SendMessage(new ItemUpdateComposer(Item, Room.OwnerId));
+            Room.SendPacket(new ItemUpdateComposer(Item, Room.OwnerId));
         }
     }
 }

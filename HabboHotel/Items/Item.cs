@@ -1457,7 +1457,7 @@ namespace Plus.HabboHotel.Items
                                                 continue;
 
                                             Target.ApplyEffect(4);
-                                            Target.GetClient().SendMessage(new RoomNotificationComposer("Kicked from room", "You were hit by a cannonball!", "room_kick_cannonball", ""));
+                                            Target.GetClient().SendPacket(new RoomNotificationComposer("Kicked from room", "You were hit by a cannonball!", "room_kick_cannonball", ""));
                                             Target.ApplyEffect(0);
                                             _room.GetRoomUserManager().RemoveUserFromRoom(Target.GetClient(), true);
                                         }
@@ -1472,7 +1472,10 @@ namespace Plus.HabboHotel.Items
                     }
                 }
             }
-            catch (Exception e) { Logging.LogException(e.ToString()); }
+            catch (Exception e)
+            {
+                ExceptionLogger.LogException(e);
+            }
         }
 
         public static string[] RandomizeStrings(string[] arr)
@@ -1524,9 +1527,9 @@ namespace Plus.HabboHotel.Items
             if (inRoom)
             {
                 if (IsFloorItem)
-                    GetRoom().SendMessage(new ObjectUpdateComposer(this, GetRoom().OwnerId));
+                    GetRoom().SendPacket(new ObjectUpdateComposer(this, GetRoom().OwnerId));
                 else
-                    GetRoom().SendMessage(new ItemUpdateComposer(this, GetRoom().OwnerId));
+                    GetRoom().SendPacket(new ItemUpdateComposer(this, GetRoom().OwnerId));
             }
         }
 

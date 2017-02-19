@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Help
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new SendBullyReportComposer());
+            Session.SendPacket(new SendBullyReportComposer());
         }
     }
 }

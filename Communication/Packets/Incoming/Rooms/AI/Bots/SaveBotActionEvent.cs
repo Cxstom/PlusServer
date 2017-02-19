@@ -65,7 +65,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                         UserChangeComposer.WriteString(Session.GetHabbo().Gender);
                         UserChangeComposer.WriteString(Bot.BotData.Motto);
                         UserChangeComposer.WriteInteger(0);
-                        Room.SendMessage(UserChangeComposer);
+                        Room.SendPacket(UserChangeComposer);
 
                         //Change the defaults
                         Bot.BotData.Look = Session.GetHabbo().Look;
@@ -137,7 +137,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                             dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = @id");
                             dbClient.AddParameter("id", BotId);
 
-                            DataTable BotSpeech = dbClient.getTable();
+                            DataTable BotSpeech = dbClient.GetTable();
 
                             List<RandomSpeech> Speeches = new List<RandomSpeech>();
                             foreach (DataRow Speech in BotSpeech.Rows)
@@ -178,7 +178,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                             Bot.BotData.DanceId = RandomDance.Next(1, 4);
                         }
 
-                        Room.SendMessage(new DanceComposer(Bot, Bot.BotData.DanceId));
+                        Room.SendPacket(new DanceComposer(Bot, Bot.BotData.DanceId));
                         break;
                     }
                 #endregion
@@ -210,7 +210,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                             dbClient.AddParameter("name", DataString);
                             dbClient.RunQuery();
                         }
-                        Room.SendMessage(new UsersComposer(Bot));
+                        Room.SendPacket(new UsersComposer(Bot));
                         break;
                     }
                 #endregion

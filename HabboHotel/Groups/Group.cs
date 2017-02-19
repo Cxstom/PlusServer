@@ -68,7 +68,7 @@ namespace Plus.HabboHotel.Groups
                 DataTable GetMembers = null;
                 dbClient.SetQuery("SELECT `user_id`, `rank` FROM `group_memberships` WHERE `group_id` = @id");
                 dbClient.AddParameter("id", this.Id);
-                GetMembers = dbClient.getTable();
+                GetMembers = dbClient.GetTable();
 
                 if (GetMembers != null)
                 {
@@ -93,7 +93,7 @@ namespace Plus.HabboHotel.Groups
                 DataTable GetRequests = null;
                 dbClient.SetQuery("SELECT `user_id` FROM `group_requests` WHERE `group_id` = @id");
                 dbClient.AddParameter("id", this.Id);
-                GetRequests = dbClient.getTable();
+                GetRequests = dbClient.GetTable();
 
                 if (GetRequests != null)
                 {

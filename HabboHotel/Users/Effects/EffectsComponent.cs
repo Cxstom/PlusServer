@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Users.Effects
             {
                 dbClient.SetQuery("SELECT * FROM `user_effects` WHERE `user_id` = @id;");
                 dbClient.AddParameter("id", habbo.Id);
-                DataTable getEffects = dbClient.getTable();
+                DataTable getEffects = dbClient.GetTable();
 
                 if (getEffects != null)
                 {
@@ -121,8 +121,8 @@ namespace Plus.HabboHotel.Users.Effects
             this._currentEffect = EffectId;
 
             if (User.IsDancing)
-                this._habbo.CurrentRoom.SendMessage(new DanceComposer(User, 0));
-            this._habbo.CurrentRoom.SendMessage(new AvatarEffectComposer(User.VirtualId, EffectId));
+                this._habbo.CurrentRoom.SendPacket(new DanceComposer(User, 0));
+            this._habbo.CurrentRoom.SendPacket(new AvatarEffectComposer(User.VirtualId, EffectId));
         }
 
         public ICollection<AvatarEffect> GetAllEffects

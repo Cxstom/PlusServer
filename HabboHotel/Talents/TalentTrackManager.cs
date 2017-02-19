@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.Talents
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `type`,`level`,`data_actions`,`data_gifts` FROM `talents`");
-                GetTable = dbClient.getTable();
+                GetTable = dbClient.GetTable();
             }
 
             if (GetTable != null)

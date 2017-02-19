@@ -23,7 +23,7 @@ namespace Plus.HabboHotel.Badges
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `badge_definitions`;");
-                DataTable GetBadges = dbClient.getTable();
+                DataTable GetBadges = dbClient.GetTable();
 
                 foreach (DataRow Row in GetBadges.Rows)
                 {

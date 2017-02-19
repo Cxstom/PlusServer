@@ -27,33 +27,33 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             {
                 dbClient.SetQuery("SELECT `furni_id`, `item_id`, `user_id`, `extra_data`, `offer_id`, `state`, `timestamp`, `limited_number`, `limited_stack` FROM `catalog_marketplace_offers` WHERE `offer_id` = @OfferId LIMIT 1");
                 dbClient.AddParameter("OfferId", OfferId);
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
             if (Row == null)
             {
-                Session.SendMessage(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
             if (Convert.ToInt32(Row["user_id"]) != Session.GetHabbo().Id)
             {
-                Session.SendMessage(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
             ItemData Item = null;
             if (!PlusEnvironment.GetGame().GetItemManager().GetItem(Convert.ToInt32(Row["item_id"]), out Item))
             {
-                Session.SendMessage(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
             //PlusEnvironment.GetGame().GetCatalog().DeliverItems(Session, Item, 1, Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]), Convert.ToInt32(Row["furni_id"]));
 
             Item GiveItem = ItemFactory.CreateSingleItem(Item, Session.GetHabbo(), Convert.ToString(Row["extra_data"]), Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["furni_id"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]));
-            Session.SendMessage(new FurniListNotificationComposer(GiveItem.Id, 1));
-            Session.SendMessage(new FurniListUpdateComposer());
+            Session.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
+            Session.SendPacket(new FurniListUpdateComposer());
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -64,7 +64,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             }
 
             Session.GetHabbo().GetInventoryComponent().UpdateItems(true);
-            Session.SendMessage(new MarketplaceCancelOfferResultComposer(OfferId, true));
+            Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, true));
         }
     }
 }

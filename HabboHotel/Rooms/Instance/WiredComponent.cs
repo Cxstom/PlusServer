@@ -68,7 +68,7 @@ namespace Plus.HabboHotel.Rooms.Instance
             {
                 dbClient.SetQuery("SELECT * FROM wired_items WHERE id=@id LIMIT 1");
                 dbClient.AddParameter("id", Item.Id);
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
 
                 if (Row != null)
                 {

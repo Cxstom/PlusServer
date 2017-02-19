@@ -29,7 +29,7 @@ namespace Plus.HabboHotel.Bots
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `bot_ai`,`chat_keywords`,`response_text`,`response_mode`,`response_beverage` FROM `bots_responses`");
-                DataTable BotResponses = dbClient.getTable();
+                DataTable BotResponses = dbClient.GetTable();
 
                 if (BotResponses != null)
                 {

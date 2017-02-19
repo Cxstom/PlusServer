@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.GameCenter
         {
             ICollection<GameData> Games = PlusEnvironment.GetGame().GetGameDataManager().GameData;
 
-            Session.SendMessage(new GameListComposer(Games));
+            Session.SendPacket(new GameListComposer(Games));
         }
     }
 }

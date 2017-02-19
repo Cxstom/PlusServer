@@ -54,15 +54,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets.Horse
             if (Item != null)
             {
                 Session.GetHabbo().GetInventoryComponent().TryAddItem(Item);
-                Session.SendMessage(new FurniListNotificationComposer(Item.Id, 1));
-                Session.SendMessage(new PurchaseOKComposer());
-                Session.SendMessage(new FurniListAddComposer(Item));
-                Session.SendMessage(new FurniListUpdateComposer());
+                Session.SendPacket(new FurniListNotificationComposer(Item.Id, 1));
+                Session.SendPacket(new PurchaseOKComposer());
+                Session.SendPacket(new FurniListAddComposer(Item));
+                Session.SendPacket(new FurniListUpdateComposer());
             }
 
             //Update the Pet and the Pet figure information.
-            Room.SendMessage(new UsersComposer(PetUser));
-            Room.SendMessage(new PetHorseFigureInformationComposer(PetUser));
+            Room.SendPacket(new UsersComposer(PetUser));
+            Room.SendPacket(new PetHorseFigureInformationComposer(PetUser));
         }
     }
 }

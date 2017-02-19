@@ -38,7 +38,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             {
                 dbClient.SetQuery("SELECT * FROM `chatlogs` WHERE `room_id` = @id ORDER BY `id` DESC LIMIT 100");
                 dbClient.AddParameter("id", RoomId);
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
 
                 if (Data != null)
                 {
@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 }
             }
 
-            Session.SendMessage(new ModeratorRoomChatlogComposer(Room, Chats));
+            Session.SendPacket(new ModeratorRoomChatlogComposer(Room, Chats));
         }
     }
 }

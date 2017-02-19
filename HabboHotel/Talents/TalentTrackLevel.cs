@@ -59,7 +59,7 @@ namespace Plus.HabboHotel.Talents
             {
                 dbClient.SetQuery("SELECT `sub_level`,`badge_code`,`required_progress` FROM `talents_sub_levels` WHERE `talent_level` = @TalentLevel");
                 dbClient.AddParameter("TalentLevel", this.Level);
-                GetTable = dbClient.getTable();
+                GetTable = dbClient.GetTable();
             }
 
             if (GetTable != null)

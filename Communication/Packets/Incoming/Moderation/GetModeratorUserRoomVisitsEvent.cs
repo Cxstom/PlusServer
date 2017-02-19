@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             {
                 dbClient.SetQuery("SELECT `room_id`, `entry_timestamp` FROM `user_roomvisits` WHERE `user_id` = @id ORDER BY `entry_timestamp` DESC LIMIT 50");
                 dbClient.AddParameter("id", UserId);
-                Table = dbClient.getTable();
+                Table = dbClient.GetTable();
 
                 if (Table != null)
                 {
@@ -43,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 }
             }
 
-            Session.SendMessage(new ModeratorUserRoomVisitsComposer(Target.GetHabbo(), Visits));
+            Session.SendPacket(new ModeratorUserRoomVisitsComposer(Target.GetHabbo(), Visits));
         }
     }
 }

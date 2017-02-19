@@ -295,14 +295,14 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`room_id`,`name`,`motto`,`look`,`x`,`y`,`z`,`rotation`,`gender`,`user_id`,`ai_type`,`walk_mode`,`automatic_chat`,`speaking_interval`,`mix_sentences`,`chat_bubble` FROM `bots` WHERE `room_id` = '" + RoomId + "' AND `ai_type` != 'pet'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
                 if (Data == null)
                     return;
 
                 foreach (DataRow Bot in Data.Rows)
                 {
                     dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = '" + Convert.ToInt32(Bot["id"]) + "'");
-                    DataTable BotSpeech = dbClient.getTable();
+                    DataTable BotSpeech = dbClient.GetTable();
 
                     List<RandomSpeech> Speeches = new List<RandomSpeech>();
 
@@ -321,7 +321,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`user_id`,`room_id`,`name`,`x`,`y`,`z` FROM `bots` WHERE `room_id` = '" + RoomId + "' AND `ai_type` = 'pet'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
 
                 if (Data == null)
                     return;
@@ -329,7 +329,7 @@ namespace Plus.HabboHotel.Rooms
                 foreach (DataRow Row in Data.Rows)
                 {
                     dbClient.SetQuery("SELECT `type`,`race`,`color`,`experience`,`energy`,`nutrition`,`respect`,`createstamp`,`have_saddle`,`anyone_ride`,`hairdye`,`pethair`,`gnome_clothing` FROM `bots_petdata` WHERE `id` = '" + Row[0] + "' LIMIT 1");
-                    DataRow mRow = dbClient.getRow();
+                    DataRow mRow = dbClient.GetRow();
                     if (mRow == null)
                         continue;
 
@@ -370,7 +370,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + this.Id + " LIMIT 1;");
-                GetPromotion = dbClient.getRow();
+                GetPromotion = dbClient.GetRow();
 
                 if (GetPromotion != null)
                 {
@@ -392,7 +392,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 dbClient.SetQuery("SELECT room_rights.user_id FROM room_rights WHERE room_id = @roomid");
                 dbClient.AddParameter("roomid", Id);
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
             }
 
             if (Data != null)
@@ -413,7 +413,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 dbClient.SetQuery("SELECT * FROM `room_filter` WHERE `room_id` = @roomid;");
                 dbClient.AddParameter("roomid", Id);
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
             }
 
             if (Data == null)
@@ -467,7 +467,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                 }
             }
-            catch (Exception e) { Logging.HandleException(e, "Room.CheckRights"); }
+            catch (Exception e) { ExceptionLogger.LogException(e); }
             return false;
         }
 
@@ -486,7 +486,7 @@ namespace Plus.HabboHotel.Rooms
 
                     PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(User.GetClient(), "ACH_FootballGoalScored", 1);
 
-                    SendMessage(new ActionComposer(User.VirtualId, 1));
+                    SendPacket(new ActionComposer(User.VirtualId, 1));
                 }
             }
 
@@ -537,13 +537,13 @@ namespace Plus.HabboHotel.Rooms
                 try { GetRoomItemHandler().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room items." + e.ToString());
+                    ExceptionLogger.LogException(e);
                 }
 
                 try { GetRoomUserManager().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room users." + e.ToString());
+                    ExceptionLogger.LogException(e);
                 }
 
                 #region Status Updates
@@ -553,7 +553,7 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the room user statuses." + e.ToString());
+                    ExceptionLogger.LogException(e);
                 }
                 #endregion
 
@@ -565,29 +565,26 @@ namespace Plus.HabboHotel.Rooms
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling the game items." + e.ToString());
+                    ExceptionLogger.LogException(e);
                 }
                 #endregion
 
                 try { GetWired().OnCycle(); }
                 catch (Exception e)
                 {
-                    Logging.LogException("Room ID [" + RoomId + "] is currently having issues cycling wired." + e.ToString());
+                    ExceptionLogger.LogException(e);
                 }
 
             }
             catch (Exception e)
             {
-                Logging.WriteLine("Room ID [" + RoomId + "] has crashed.");
-                Logging.LogException("Room ID [" + RoomId + "] has crashed." + e.ToString());
+                ExceptionLogger.LogException(e);
                 OnRoomCrash(e);
             }
         }
 
         private void OnRoomCrash(Exception e)
         {
-            Logging.LogThreadException(e.ToString(), "Room cycle task for room " + RoomId);
-
             try
             {
                 foreach (RoomUser user in _roomUserManager.GetRoomUsers().ToList())
@@ -601,10 +598,15 @@ namespace Plus.HabboHotel.Rooms
                     {
                         GetRoomUserManager().RemoveUserFromRoom(user.GetClient(), true, false);
                     }
-                    catch (Exception e2) { Logging.LogException(e2.ToString()); }
+                    catch (Exception e2)
+                    {
+                        ExceptionLogger.LogException(e2); }
                 }
             }
-            catch (Exception e3) { Logging.LogException(e3.ToString()); }
+            catch (Exception e3)
+            {
+                ExceptionLogger.LogException(e3);
+            }
 
             isCrashed = true;
             PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(this, true);
@@ -635,34 +637,34 @@ namespace Plus.HabboHotel.Rooms
         {
             Room Room = Session.GetHabbo().CurrentRoom;
 
-            Session.SendMessage(new HeightMapComposer(Room.GetGameMap().Model.Heightmap));
-            Session.SendMessage(new FloorHeightMapComposer(Room.GetGameMap().Model.GetRelativeHeightmap(), Room.GetGameMap().StaticModel.WallHeight));
+            Session.SendPacket(new HeightMapComposer(Room.GetGameMap().Model.Heightmap));
+            Session.SendPacket(new FloorHeightMapComposer(Room.GetGameMap().Model.GetRelativeHeightmap(), Room.GetGameMap().StaticModel.WallHeight));
 
             foreach (RoomUser RoomUser in _roomUserManager.GetUserList().ToList())
             {
                 if (RoomUser == null)
                     continue;
 
-                Session.SendMessage(new UsersComposer(RoomUser));
+                Session.SendPacket(new UsersComposer(RoomUser));
 
                 if (RoomUser.IsBot && RoomUser.BotData.DanceId > 0)
-                    Session.SendMessage(new DanceComposer(RoomUser, RoomUser.BotData.DanceId));
+                    Session.SendPacket(new DanceComposer(RoomUser, RoomUser.BotData.DanceId));
                 else if (!RoomUser.IsBot && !RoomUser.IsPet && RoomUser.IsDancing)
-                    Session.SendMessage(new DanceComposer(RoomUser, RoomUser.DanceId));
+                    Session.SendPacket(new DanceComposer(RoomUser, RoomUser.DanceId));
 
                 if (RoomUser.IsAsleep)
-                    Session.SendMessage(new SleepComposer(RoomUser, true));
+                    Session.SendPacket(new SleepComposer(RoomUser, true));
 
                 if (RoomUser.CarryItemID > 0 && RoomUser.CarryTimer > 0)
-                    Session.SendMessage(new CarryObjectComposer(RoomUser.VirtualId, RoomUser.CarryItemID));
+                    Session.SendPacket(new CarryObjectComposer(RoomUser.VirtualId, RoomUser.CarryItemID));
 
                 if (!RoomUser.IsBot && !RoomUser.IsPet && RoomUser.CurrentEffect > 0)
-                    Session.SendMessage(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
+                    Session.SendPacket(new AvatarEffectComposer(RoomUser.VirtualId, RoomUser.CurrentEffect));
             }
 
-            Session.SendMessage(new UserUpdateComposer(_roomUserManager.GetUserList().ToList()));
-            Session.SendMessage(new ObjectsComposer(Room.GetRoomItemHandler().GetFloor.ToArray(), this));
-            Session.SendMessage(new ItemsComposer(Room.GetRoomItemHandler().GetWall.ToArray(), this));
+            Session.SendPacket(new UserUpdateComposer(_roomUserManager.GetUserList().ToList()));
+            Session.SendPacket(new ObjectsComposer(Room.GetRoomItemHandler().GetFloor.ToArray(), this));
+            Session.SendPacket(new ItemsComposer(Room.GetRoomItemHandler().GetWall.ToArray(), this));
         }
 
         #region Tents
@@ -729,13 +731,13 @@ namespace Plus.HabboHotel.Rooms
                 if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(Id) || User.GetClient().GetHabbo().TentId != TentId)
                     continue;
 
-                User.GetClient().SendMessage(Packet);
+                User.GetClient().SendPacket(Packet);
             }
         }
         #endregion
 
         #region Communication (Packets)
-        public void SendMessage(IServerPacket Message, bool UsersWithRightsOnly = false)
+        public void SendPacket(IServerPacket Message, bool UsersWithRightsOnly = false)
         {
             if (Message == null)
                 return;
@@ -759,12 +761,12 @@ namespace Plus.HabboHotel.Rooms
                     if (UsersWithRightsOnly && !this.CheckRights(User.GetClient()))
                         continue;
 
-                    User.GetClient().SendMessage(Message);
+                    User.GetClient().SendPacket(Message);
                 }
             }
             catch (Exception e)
             {
-                Logging.HandleException(e, "Room.SendMessage");
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -782,7 +784,7 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-        public void SendMessage(List<ServerPacket> Messages)
+        public void SendPacket(List<ServerPacket> Messages)
         {
             if (Messages.Count == 0)
                 return;
@@ -810,14 +812,14 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.HandleException(e, "Room.SendMessage List<ServerPacket>");
+                ExceptionLogger.LogException(e);
             }
         }
         #endregion
 
         public void Dispose()
         {
-            SendMessage(new CloseConnectionComposer());
+            SendPacket(new CloseConnectionComposer());
 
             if (!mDisposed)
             {

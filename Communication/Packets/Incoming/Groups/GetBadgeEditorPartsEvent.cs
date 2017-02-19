@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
     {
         public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            session.SendMessage(new BadgeEditorPartsComposer(
+            session.SendPacket(new BadgeEditorPartsComposer(
                 PlusEnvironment.GetGame().GetGroupManager().BadgeBases,
                 PlusEnvironment.GetGame().GetGroupManager().BadgeSymbols,
                 PlusEnvironment.GetGame().GetGroupManager().BadgeBaseColours,

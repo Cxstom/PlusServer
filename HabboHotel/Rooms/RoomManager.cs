@@ -67,7 +67,7 @@ namespace Plus.HabboHotel.Rooms
                             {
                                 Room.isCrashed = true;
                                 UnloadRoom(Room);
-                                Logging.WriteLine("[RoomMgr] Room crashed (task didn't complete within 30 seconds): " + Room.RoomId);
+                               // Logging.WriteLine("[RoomMgr] Room crashed (task didn't complete within 30 seconds): " + Room.RoomId);
                             }
                         }
                     }
@@ -75,7 +75,7 @@ namespace Plus.HabboHotel.Rooms
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Issue with the RoomManager: " + e);
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -97,7 +97,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,public_items,club_only,poolmap,`wall_height` FROM `room_models` WHERE `custom` = '0'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
 
                 if (Data == null)
                     return;
@@ -119,7 +119,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,public_items,club_only,poolmap,`wall_height` FROM `room_models` WHERE `custom` = '1' AND `id` = '" + Id + "' LIMIT 1");
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
 
                 if (Row == null)
                     return;
@@ -375,7 +375,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM rooms WHERE id = " + RoomId + " LIMIT 1");
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
             if (Row == null)
@@ -434,13 +434,13 @@ namespace Plus.HabboHotel.Rooms
         {
             if (!_roomModels.ContainsKey(Model))
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("room_model_missing"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.creation.model.not_found"));
                 return null;
             }
 
             if (Name.Length < 3)
             {
-                Session.SendNotification(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("room_name_length_short"));
+                Session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("room.creation.name.too_short"));
                 return null;
             }
 

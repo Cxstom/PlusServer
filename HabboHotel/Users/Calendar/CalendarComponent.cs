@@ -44,7 +44,7 @@ namespace Plus.HabboHotel.Users.Calendar
             {
                 dbClient.SetQuery("SELECT * FROM `user_xmas15_calendar` WHERE `user_id` = @id;");
                 dbClient.AddParameter("id", Player.Id);
-                GetData = dbClient.getTable();
+                GetData = dbClient.GetTable();
 
                 if (GetData != null)
                 {

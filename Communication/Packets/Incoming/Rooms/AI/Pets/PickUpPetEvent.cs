@@ -51,10 +51,10 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 TargetUser.GetClient().GetHabbo().PetId = 0;
 
                 //Quickly remove the old user instance.
-                Room.SendMessage(new UserRemoveComposer(TargetUser.VirtualId));
+                Room.SendPacket(new UserRemoveComposer(TargetUser.VirtualId));
 
                 //Add the new one, they won't even notice a thing!!11 8-)
-                Room.SendMessage(new UsersComposer(TargetUser));
+                Room.SendPacket(new UsersComposer(TargetUser));
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                     Target.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
                     Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
 
-                    Target.SendMessage(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
+                    Target.SendPacket(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
                     return;
                 }
             }

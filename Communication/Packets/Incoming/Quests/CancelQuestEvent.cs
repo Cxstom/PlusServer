@@ -19,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Quests
             }
 
             Session.GetHabbo().GetStats().QuestID = 0;
-            Session.SendMessage(new QuestAbortedComposer());
+            Session.SendPacket(new QuestAbortedComposer());
 
             PlusEnvironment.GetGame().GetQuestManager().GetList(Session, null);
         }

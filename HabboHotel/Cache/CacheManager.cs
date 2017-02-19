@@ -49,7 +49,7 @@ namespace Plus.HabboHotel.Cache
                 dbClient.SetQuery("SELECT `username`, `motto`, `look` FROM users WHERE id = @id LIMIT 1");
                 dbClient.AddParameter("id", Id);
 
-                DataRow dRow = dbClient.getRow();
+                DataRow dRow = dbClient.GetRow();
 
                 if (dRow != null)
                 {

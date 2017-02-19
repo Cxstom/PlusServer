@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
             int PetId = Item.BehaviourData;
 
-            Session.SendMessage(new SellablePetBreedsComposer(Type, PetId, PlusEnvironment.GetGame().GetCatalog().GetPetRaceManager().GetRacesForRaceId(PetId)));
+            Session.SendPacket(new SellablePetBreedsComposer(Type, PetId, PlusEnvironment.GetGame().GetCatalog().GetPetRaceManager().GetRacesForRaceId(PetId)));
         }
     }
 }

@@ -97,7 +97,7 @@ namespace Plus.HabboHotel.Users.Inventory
             this._wallItems.Clear();
 
             if (_client != null)
-                _client.SendMessage(new FurniListUpdateComposer());
+                _client.SendPacket(new FurniListUpdateComposer());
         }
 
         public void SetIdleState()
@@ -124,7 +124,7 @@ namespace Plus.HabboHotel.Users.Inventory
 
             if (_client != null)
             {
-                _client.SendMessage(new FurniListUpdateComposer());
+                _client.SendPacket(new FurniListUpdateComposer());
             }
         }
 
@@ -227,7 +227,7 @@ namespace Plus.HabboHotel.Users.Inventory
                 this._wallItems.TryRemove(Id, out ToRemove);
             }
 
-            GetClient().SendMessage(new FurniListRemoveComposer(Id));
+            GetClient().SendPacket(new FurniListRemoveComposer(Id));
         }
 
         private GameClient GetClient()
@@ -237,7 +237,7 @@ namespace Plus.HabboHotel.Users.Inventory
 
         public void SendNewItems(int Id)
         {
-            _client.SendMessage(new FurniListNotificationComposer(Id, 1));
+            _client.SendPacket(new FurniListNotificationComposer(Id, 1));
         }
 
         #region Pet Handling

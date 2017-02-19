@@ -55,30 +55,4 @@ namespace Plus.Core
             }
         }
     }
-
-    public class ConfigData
-    {
-        public Dictionary<string, string> DBData;
-
-        public ConfigData()
-        {
-            DBData = new Dictionary<string, string>();
-            DBData.Clear();
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT * FROM `server_settings`");
-                DataTable ConfigData = dbClient.getTable();
-
-                if (ConfigData != null)
-                {
-                    foreach (DataRow Data in ConfigData.Rows)
-                    {
-                        DBData.Add(Data[0].ToString(), Data[1].ToString());
-                    }
-                }
-            }
-            return;
-        }
-    }
 }

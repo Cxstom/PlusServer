@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                     OthersUsers.Add(Result);
             }
 
-            Session.SendMessage(new HabboSearchResultComposer(Friends, OthersUsers));
+            Session.SendPacket(new HabboSearchResultComposer(Friends, OthersUsers));
         }
     }
 }

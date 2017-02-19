@@ -22,9 +22,9 @@ using Plus.Database.Interfaces;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Permissions;
 using Plus.Communication.Packets.Outgoing.Notifications;
-using Plus.Core.ConnectionManager;
+using Plus.Communication.ConnectionManager;
 using Plus.HabboHotel.Users.UserData;
-using Plus.Messages.Net;
+using Plus.Communication;
 
 namespace Plus.HabboHotel.GameClients
 {
@@ -66,7 +66,7 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogPacketException(Message.ToString(), e.ToString());
+                ExceptionLogger.LogException(e);
             }
         }
 
@@ -140,25 +140,19 @@ namespace Plus.HabboHotel.GameClients
                 {
                     userData.user.Init(this, userData);
 
-                    SendMessage(new AuthenticationOKComposer());
-                    SendMessage(new AvatarEffectsComposer(_habbo.Effects().GetAllEffects));
-                    //FurniListNotification -> why?
-                    SendMessage(new NavigatorSettingsComposer(_habbo.HomeRoom));
-                    SendMessage(new FavouritesComposer(userData.user.FavoriteRooms));
-                    SendMessage(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingAllParts));
-                    //1984
-                    //2102
-                    SendMessage(new UserRightsComposer(_habbo.Rank));
-                    SendMessage(new AvailabilityStatusComposer());
-                    //1044
-                    SendMessage(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
-                    //3674
-                    //3437
-                    SendMessage(new BuildersClubMembershipComposer());
-                    SendMessage(new CfhTopicsInitComposer());
+                    SendPacket(new AuthenticationOKComposer());
+                    SendPacket(new AvatarEffectsComposer(_habbo.Effects().GetAllEffects));
+                    SendPacket(new NavigatorSettingsComposer(_habbo.HomeRoom));
+                    SendPacket(new FavouritesComposer(userData.user.FavoriteRooms));
+                    SendPacket(new FigureSetIdsComposer(_habbo.GetClothing().GetClothingParts));
+                    SendPacket(new UserRightsComposer(_habbo.Rank));
+                    SendPacket(new AvailabilityStatusComposer());
+                    SendPacket(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
+                    SendPacket(new BuildersClubMembershipComposer());
+                    SendPacket(new CfhTopicsInitComposer(PlusEnvironment.GetGame().GetModerationManager().UserActionPresets));
 
-                    SendMessage(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
-                    SendMessage(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
+                    SendPacket(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
+                    SendPacket(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
                     //SendMessage(new TalentTrackLevelComposer());
 
                     if (GetHabbo().GetMessenger() != null)
@@ -201,19 +195,19 @@ namespace Plus.HabboHotel.GameClients
                     if (!PlusEnvironment.GetGame().GetCacheManager().ContainsUser(_habbo.Id))
                         PlusEnvironment.GetGame().GetCacheManager().GenerateUser(_habbo.Id);
 
+                    _habbo.Look = PlusEnvironment.GetFigureManager().ProcessFigure(this._habbo.Look, this._habbo.Gender, this._habbo.GetClothing().GetClothingParts, true);
                     _habbo.InitProcess();
           
                     if (userData.user.GetPermissions().HasRight("mod_tickets"))
                     {
-                        SendMessage(new ModeratorInitComposer(
+                        SendPacket(new ModeratorInitComposer(
                           PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
-                          PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
                           PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
-               
-                    if (!string.IsNullOrWhiteSpace(PlusEnvironment.GetDBConfig().DBData["welcome_message"]))
-                        SendMessage(new MOTDNotificationComposer(PlusEnvironment.GetDBConfig().DBData["welcome_message"]));
+
+                    if (PlusEnvironment.GetSettingsManager().TryGetValue("user.login.message.enabled") == "1")
+                        SendPacket(new MOTDNotificationComposer(PlusEnvironment.GetLanguageManager().TryGetValue("user.login.message")));
 
                     PlusEnvironment.GetGame().GetRewardManager().CheckRewards(this);
                     return true;
@@ -221,29 +215,29 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogCriticalException("Bug during user login: " + e);
+                ExceptionLogger.LogException(e);
             }
             return false;
         }
 
         public void SendWhisper(string Message, int Colour = 0)
         {
-            if (this == null || GetHabbo() == null || GetHabbo().CurrentRoom == null)
+            if (GetHabbo() == null || GetHabbo().CurrentRoom == null)
                 return;
 
             RoomUser User = GetHabbo().CurrentRoom.GetRoomUserManager().GetRoomUserByHabbo(GetHabbo().Username);
             if (User == null)
                 return;
 
-            SendMessage(new WhisperComposer(User.VirtualId, Message, 0, (Colour == 0 ? User.LastBubble : Colour)));
+            SendPacket(new WhisperComposer(User.VirtualId, Message, 0, (Colour == 0 ? User.LastBubble : Colour)));
         }
 
         public void SendNotification(string Message)
         {
-            SendMessage(new BroadcastMessageAlertComposer(Message));
+            SendPacket(new BroadcastMessageAlertComposer(Message));
         }
 
-        public void SendMessage(IServerPacket Message)
+        public void SendPacket(IServerPacket Message)
         {
             byte[] bytes = Message.GetBytes();
 
@@ -287,9 +281,8 @@ namespace Plus.HabboHotel.GameClients
             }
             catch (Exception e)
             {
-                Logging.LogException(e.ToString());
+                ExceptionLogger.LogException(e);
             }
-
 
             if (!_disconnected)
             {

@@ -176,10 +176,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                                     User.GetClient().GetHabbo().PetId = 0;
 
                                     //Quickly remove the old user instance.
-                                    Room.SendMessage(new UserRemoveComposer(User.VirtualId));
+                                    Room.SendPacket(new UserRemoveComposer(User.VirtualId));
 
                                     //Add the new one, they won't even notice a thing!!11 8-)
-                                    Room.SendMessage(new UsersComposer(User));
+                                    Room.SendPacket(new UsersComposer(User));
                                 }
                             }
                         }

@@ -22,10 +22,10 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
             {
                 dbClient.SetQuery("SELECT `avgprice` FROM `catalog_marketplace_data` WHERE `sprite` = @SpriteId LIMIT 1");
                 dbClient.AddParameter("SpriteId", SpriteId);
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
-            Session.SendMessage(new MarketplaceItemStatsComposer(ItemId, SpriteId, (Row != null ? Convert.ToInt32(Row["avgprice"]) : 0)));
+            Session.SendPacket(new MarketplaceItemStatsComposer(ItemId, SpriteId, (Row != null ? Convert.ToInt32(Row["avgprice"]) : 0)));
         }
     }
 }

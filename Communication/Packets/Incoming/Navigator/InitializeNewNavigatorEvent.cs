@@ -10,10 +10,10 @@ namespace Plus.Communication.Packets.Incoming.Navigator
         {
             ICollection<TopLevelItem> TopLevelItems = PlusEnvironment.GetGame().GetNavigator().GetTopLevelItems();
 
-            Session.SendMessage(new NavigatorMetaDataParserComposer(TopLevelItems));
-            Session.SendMessage(new NavigatorLiftedRoomsComposer());
-            Session.SendMessage(new NavigatorCollapsedCategoriesComposer());
-            Session.SendMessage(new NavigatorPreferencesComposer());
+            Session.SendPacket(new NavigatorMetaDataParserComposer(TopLevelItems));
+            Session.SendPacket(new NavigatorLiftedRoomsComposer());
+            Session.SendPacket(new NavigatorCollapsedCategoriesComposer());
+            Session.SendPacket(new NavigatorPreferencesComposer());
         }
     }
 }

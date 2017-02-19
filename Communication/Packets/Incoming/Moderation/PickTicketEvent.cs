@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 return;
 
             Ticket.Moderator = Session.GetHabbo();
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(Session.GetHabbo().Id, Ticket), "mod_tool");
         }
     }
 }

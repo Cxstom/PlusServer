@@ -22,7 +22,11 @@ using Plus.Database.Interfaces;
 using Plus.Database;
 using Plus.HabboHotel.Cache.Type;
 using Plus.HabboHotel.Users.UserData;
-using Plus.Messages.Net;
+using Plus.Communication.RCON;
+using Plus.Communication.ConnectionManager;
+using Plus.Core.FigureData;
+using Plus.Core.Language;
+using Plus.Core.Settings;
 
 namespace Plus
 {
@@ -33,15 +37,19 @@ namespace Plus
         public const string PrettyVersion = "Plus Emulator";
         public const string PrettyBuild = "3.4.3.0";
 
-        private static ConfigurationData _configuration;
         private static Encoding _defaultEncoding;
-        private static ConnectionHandling _connectionManager;
-        private static Game _game;
-        private static DatabaseManager _manager;
-        public static ConfigData ConfigData;
-        public static MusSocket MusSystem;
         public static CultureInfo CultureInfo;
 
+        private static Game _game;
+        private static ConfigurationData _configuration;
+        private static ConnectionHandling _connectionManager;
+        private static LanguageManager _languageManager;
+        private static SettingsManager _settingsManager;
+        private static DatabaseManager _manager;
+        private static RCONSocket _rcon;
+        private static FigureDataManager _figureManager;
+
+        // TODO: Get rid?
         public static bool Event = false;
         public static DateTime lastEvent;
         public static DateTime ServerStarted;
@@ -82,10 +90,8 @@ namespace Plus
 
             CultureInfo = CultureInfo.CreateSpecificCulture("en-GB");
 
-
             try
             {
-
                 _configuration = new ConfigurationData(Path.Combine(Application.StartupPath, @"config.ini"));
 
                 var connectionString = new MySqlConnectionStringBuilder
@@ -127,19 +133,26 @@ namespace Plus
                 }
 
                 //Get the configuration & Game set.
-                ConfigData = new ConfigData();
-                _game = new Game();
+                _languageManager = new LanguageManager();
+                _languageManager.Init();
+
+                _settingsManager = new SettingsManager();
+                _settingsManager.Init();
+
+                _figureManager = new FigureDataManager();
+                _figureManager.Init();
 
                 //Have our encryption ready.
                 HabboEncryptionV2.Initialize(new RSAKeys());
 
-                //Make sure MUS is working.
-                MusSystem = new MusSocket(GetConfig().data["mus.tcp.bindip"], int.Parse(GetConfig().data["mus.tcp.port"]), GetConfig().data["mus.tcp.allowedaddr"].Split(Convert.ToChar(";")), 0);
+                //Make sure RCON is connected before we allow clients to connect.
+                _rcon = new RCONSocket(GetConfig().data["rcon.tcp.bindip"], int.Parse(GetConfig().data["rcon.tcp.port"]), GetConfig().data["rcon.tcp.allowedaddr"].Split(Convert.ToChar(";")));
 
                 //Accept connections.
                 _connectionManager = new ConnectionHandling(int.Parse(GetConfig().data["game.tcp.port"]), int.Parse(GetConfig().data["game.tcp.conlimit"]), int.Parse(GetConfig().data["game.tcp.conperip"]), GetConfig().data["game.tcp.enablenagles"].ToLower() == "true");
                 _connectionManager.init();
 
+                _game = new Game();
                 _game.StartGameLoop();
 
                 TimeSpan TimeUsed = DateTime.Now - ServerStarted;
@@ -149,26 +162,26 @@ namespace Plus
                 log.Info("EMULATOR -> READY! (" + TimeUsed.Seconds + " s, " + TimeUsed.Milliseconds + " ms)");
             }
             catch (KeyNotFoundException e)
-            {
-                Logging.WriteLine("Please check your configuration file - some values appear to be missing.", ConsoleColor.Red);
-                Logging.WriteLine("Press any key to shut down ...");
-                Logging.WriteLine(e.ToString());
+            { 
+                log.Error("Please check your configuration file - some values appear to be missing.");
+                log.Error("Press any key to shut down ...");
+         
                 Console.ReadKey(true);
                 Environment.Exit(1);
                 return;
             }
             catch (InvalidOperationException e)
             {
-                Logging.WriteLine("Failed to initialize PlusEmulator: " + e.Message, ConsoleColor.Red);
-                Logging.WriteLine("Press any key to shut down ...");
+                log.Error("Failed to initialize PlusEmulator: " + e.Message);
+                log.Error("Press any key to shut down ...");
                 Console.ReadKey(true);
                 Environment.Exit(1);
                 return;
             }
             catch (Exception e)
             {
-                Logging.WriteLine("Fatal error during startup: " + e, ConsoleColor.Red);
-                Logging.WriteLine("Press a key to exit");
+                log.Error("Fatal error during startup: " + e);
+                log.Error("Press a key to exit");
 
                 Console.ReadKey();
                 Environment.Exit(1);
@@ -254,7 +267,7 @@ namespace Plus
             {
                 dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @id LIMIT 1");
                 dbClient.AddParameter("id", UserId);
-                Name = dbClient.getString();
+                Name = dbClient.GetString();
             }
 
             if (string.IsNullOrEmpty(Name))
@@ -317,7 +330,7 @@ namespace Plus
                 {
                     dbClient.SetQuery("SELECT `id` FROM `users` WHERE `username` = @user LIMIT 1");
                     dbClient.AddParameter("user", UserName);
-                    int id = dbClient.getInteger();
+                    int id = dbClient.GetInteger();
                     if (id > 0)
                         return GetHabboById(Convert.ToInt32(id));
                 }
@@ -334,7 +347,7 @@ namespace Plus
             log.Info("Server shutting down...");
             Console.Title = "PLUS EMULATOR: SHUTTING DOWN!";
 
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(PlusEnvironment.GetGame().GetLanguageLocale().TryGetValue("shutdown_alert")));
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
             GetGame().StopGameLoop();
             Thread.Sleep(2500);
             GetConnectionManager().Destroy();//Stop listening.
@@ -362,11 +375,6 @@ namespace Plus
             return _configuration;
         }
 
-        public static ConfigData GetDBConfig()
-        {
-            return ConfigData;
-        }
-
         public static Encoding GetDefaultEncoding()
         {
             return _defaultEncoding;
@@ -382,9 +390,29 @@ namespace Plus
             return _game;
         }
 
+        public static RCONSocket GetRCONSocket()
+        {
+            return _rcon;
+        }
+
+        public static FigureDataManager GetFigureManager()
+        {
+            return _figureManager;
+        }
+
         public static DatabaseManager GetDatabaseManager()
         {
             return _manager;
+        }
+
+        public static LanguageManager GetLanguageManager()
+        {
+            return _languageManager;
+        }
+
+        public static SettingsManager GetSettingsManager()
+        {
+            return _settingsManager;
         }
 
         public static ICollection<Habbo> GetUsersCached()

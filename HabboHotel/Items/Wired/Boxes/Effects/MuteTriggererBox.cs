@@ -58,7 +58,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
             if (Player.GetPermissions().HasRight("mod_tool") || this.Instance.OwnerId == Player.Id)
             {
-                Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, "Wired Mute Exception: Unmutable Player", 0, 0));
+                Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, "Wired Mute Exception: Unmutable Player", 0, 0));
                 return false;
             }
 
@@ -67,7 +67,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
             if (Time > 0)
             {
-                Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, "Wired Mute: Muted for " + Time + "! Message: " + Message, 0, 0));
+                Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, "Wired Mute: Muted for " + Time + "! Message: " + Message, 0, 0));
                 if (!Instance.MutedUsers.ContainsKey(Player.Id))
                     Instance.MutedUsers.Add(Player.Id, (PlusEnvironment.GetUnixTimestamp() + (Time * 60)));
                 else

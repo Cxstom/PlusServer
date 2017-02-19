@@ -31,7 +31,7 @@ namespace Plus.HabboHotel.Items
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `furniture`");
-                DataTable ItemData = dbClient.getTable();
+                DataTable ItemData = dbClient.GetTable();
 
                 if (ItemData != null)
                 {
@@ -74,7 +74,7 @@ namespace Plus.HabboHotel.Items
                         {
                             Console.WriteLine(e.ToString());
                             Console.ReadKey();
-                            Logging.WriteLine("Could not load item #" + Convert.ToInt32(Row[0]) + ", please verify the data is okay.");
+                            //Logging.WriteLine("Could not load item #" + Convert.ToInt32(Row[0]) + ", please verify the data is okay.");
                         }
                     }
                 }

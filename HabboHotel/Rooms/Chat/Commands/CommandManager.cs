@@ -77,7 +77,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands
 
                     List.Append(":" + CmdList.Key + " " + CmdList.Value.Parameters + " - " + CmdList.Value.Description + "\n");
                 }
-                Session.SendMessage(new MOTDNotificationComposer(List.ToString()));
+                Session.SendPacket(new MOTDNotificationComposer(List.ToString()));
                 return true;
             }
 

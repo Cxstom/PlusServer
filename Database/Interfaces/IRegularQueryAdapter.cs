@@ -5,11 +5,11 @@ namespace Plus.Database.Interfaces
     public interface IRegularQueryAdapter
     {
         void AddParameter(string name, object query);
-        bool findsResult();
-        int getInteger();
-        DataRow getRow();
-        string getString();
-        DataTable getTable();
+        bool FindsResult();
+        int GetInteger();
+        DataRow GetRow();
+        string GetString();
+        DataTable GetTable();
         void RunQuery(string query);
         void SetQuery(string query);
     }

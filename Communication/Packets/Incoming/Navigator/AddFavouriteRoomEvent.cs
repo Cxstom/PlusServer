@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             }
 
             Session.GetHabbo().FavoriteRooms.Add(RoomId);
-            Session.SendMessage(new UpdateFavouriteRoomComposer(RoomId, true));
+            Session.SendPacket(new UpdateFavouriteRoomComposer(RoomId, true));
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {

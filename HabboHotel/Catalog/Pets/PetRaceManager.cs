@@ -20,7 +20,7 @@ namespace Plus.HabboHotel.Catalog.Pets
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `catalog_pet_races`");
-                DataTable Table = dbClient.getTable();
+                DataTable Table = dbClient.GetTable();
 
                 if (Table != null)
                 {

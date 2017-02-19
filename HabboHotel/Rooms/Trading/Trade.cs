@@ -45,7 +45,7 @@ namespace Plus.HabboHotel.Rooms.Trading
                 if (TradeUser == null || TradeUser.RoomUser == null || TradeUser.RoomUser.GetClient() == null)
                     continue;
 
-                TradeUser.RoomUser.GetClient().SendMessage(Packet);
+                TradeUser.RoomUser.GetClient().SendPacket(Packet);
             }
         }
 
@@ -170,10 +170,10 @@ namespace Plus.HabboHotel.Rooms.Trading
                 {
                     logUserOne += Item.Id + ";";
                     RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
-                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE && PlusEnvironment.GetSettingsManager().TryGetValue("trading.auto_exchange_redeemables") == "1")
                     {
                         RoomUserTwo.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
-                        RoomUserTwo.GetClient().SendMessage(new CreditBalanceComposer(RoomUserTwo.GetClient().GetHabbo().Credits));
+                        RoomUserTwo.GetClient().SendPacket(new CreditBalanceComposer(RoomUserTwo.GetClient().GetHabbo().Credits));
 
                         dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @id LIMIT 1");
                         dbClient.AddParameter("id", Item.Id);
@@ -183,8 +183,8 @@ namespace Plus.HabboHotel.Rooms.Trading
                     {
                         if (RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().TryAddItem(Item))
                         {
-                            RoomUserTwo.GetClient().SendMessage(new FurniListAddComposer(Item));
-                            RoomUserTwo.GetClient().SendMessage(new FurniListNotificationComposer(Item.Id, 1));
+                            RoomUserTwo.GetClient().SendPacket(new FurniListAddComposer(Item));
+                            RoomUserTwo.GetClient().SendPacket(new FurniListNotificationComposer(Item.Id, 1));
 
                             dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE id=@id LIMIT 1");
                             dbClient.AddParameter("user", RoomUserTwo.UserId);
@@ -198,10 +198,10 @@ namespace Plus.HabboHotel.Rooms.Trading
                 {
                     logUserTwo += Item.Id + ";";
                     RoomUserTwo.GetClient().GetHabbo().GetInventoryComponent().RemoveItem(Item.Id);
-                    if (Item.Data.InteractionType == InteractionType.EXCHANGE)
+                    if (Item.Data.InteractionType == InteractionType.EXCHANGE && PlusEnvironment.GetSettingsManager().TryGetValue("trading.auto_exchange_redeemables") == "1")
                     {
                         RoomUserOne.GetClient().GetHabbo().Credits += Item.Data.BehaviourData;
-                        RoomUserOne.GetClient().SendMessage(new CreditBalanceComposer(RoomUserOne.GetClient().GetHabbo().Credits));
+                        RoomUserOne.GetClient().SendPacket(new CreditBalanceComposer(RoomUserOne.GetClient().GetHabbo().Credits));
 
                         dbClient.SetQuery("DELETE FROM `items` WHERE `id` = @id LIMIT 1");
                         dbClient.AddParameter("id", Item.Id);
@@ -211,8 +211,8 @@ namespace Plus.HabboHotel.Rooms.Trading
                     {
                         if (RoomUserOne.GetClient().GetHabbo().GetInventoryComponent().TryAddItem(Item))
                         {
-                            RoomUserOne.GetClient().SendMessage(new FurniListAddComposer(Item));
-                            RoomUserOne.GetClient().SendMessage(new FurniListNotificationComposer(Item.Id, 1));
+                            RoomUserOne.GetClient().SendPacket(new FurniListAddComposer(Item));
+                            RoomUserOne.GetClient().SendPacket(new FurniListNotificationComposer(Item.Id, 1));
 
                             dbClient.SetQuery("UPDATE `items` SET `user_id` = @user WHERE id=@id LIMIT 1");
                             dbClient.AddParameter("user", RoomUserOne.UserId);

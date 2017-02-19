@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new CanCreateRoomComposer(false, 150));
+            Session.SendPacket(new CanCreateRoomComposer(false, 150));
         }
     }
 }

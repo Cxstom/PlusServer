@@ -45,7 +45,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
 
             Data.Promotion.Name = Name;
             Data.Promotion.Description = Desc;
-            Room.SendMessage(new RoomEventComposer(Data, Data.Promotion));
+            Room.SendPacket(new RoomEventComposer(Data, Data.Promotion));
         }
     }
 }

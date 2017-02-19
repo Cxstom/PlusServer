@@ -34,8 +34,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
 
             Item.GetZ = ((double)DecimalHeight) / 100.0;
 
-            Room.SendMessage(new ObjectUpdateComposer(Item, Convert.ToInt32(Session.GetHabbo().Id)));
-            Room.SendMessage(new UpdateMagicTileComposer(ItemId, DecimalHeight));
+            Room.SendPacket(new ObjectUpdateComposer(Item, Convert.ToInt32(Session.GetHabbo().Id)));
+            Room.SendPacket(new UpdateMagicTileComposer(ItemId, DecimalHeight));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             Boolean isLoading = Packet.PopInt() == 1;
             Boolean checkEntry = Packet.PopInt() == 1;
 
-            Session.SendMessage(new GetGuestRoomResultComposer(Session, roomData, isLoading, checkEntry));
+            Session.SendPacket(new GetGuestRoomResultComposer(Session, roomData, isLoading, checkEntry));
         }
     }
 }

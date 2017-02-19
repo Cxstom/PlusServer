@@ -26,7 +26,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Wired
 
             int ItemId = Packet.PopInt();
 
-            Session.SendMessage(new HideWiredConfigComposer());
+            Session.SendPacket(new HideWiredConfigComposer());
 
             Item SelectedItem = Room.GetRoomItemHandler().GetItem(ItemId);
             if (SelectedItem == null)

@@ -113,6 +113,7 @@
         public const int ModeratorSupportTicketMessageComposer = 1258;//1275
         public const int ModeratorTicketChatlogMessageComposer = 3637;//766
         public const int CallForHelpPendingCallsMessageComposer = 2460;
+        public const int CfhTopicsInitMessageComposer = 1094;
 
         // Inventory
         public const int CreditBalanceMessageComposer = 1958;//3604
@@ -255,7 +256,6 @@
         public const int CanCreateRoomMessageComposer = 3568;//1237
         public const int InstantMessageErrorMessageComposer = 945;//2964
         public const int GnomeBoxMessageComposer = 1694;//1778
-        public const int CfhTopicsInitMessageComposer = 1094;//2067
         public const int IgnoreStatusMessageComposer = 2485;//3882
         public const int PetInformationMessageComposer = 3380;//3913
         public const int NavigatorSearchResultSetMessageComposer = 1089;//815

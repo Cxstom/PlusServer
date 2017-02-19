@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Outgoing.Avatar
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `slot_id`,`look`,`gender` FROM `user_wardrobe` WHERE `user_id` = '" + Session.GetHabbo().Id + "'");
-                DataTable WardrobeData = dbClient.getTable();
+                DataTable WardrobeData = dbClient.GetTable();
 
                 if (WardrobeData == null)
                     base.WriteInteger(0);

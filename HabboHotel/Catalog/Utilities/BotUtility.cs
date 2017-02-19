@@ -22,7 +22,7 @@ namespace Plus.HabboHotel.Catalog.Utilities
                 int Id = Convert.ToInt32(dbClient.InsertQuery());
 
                 dbClient.SetQuery("SELECT `id`,`user_id`,`name`,`motto`,`look`,`gender` FROM `bots` WHERE `user_id` = '" + OwnerId + "' AND `id` = '" + Id + "' LIMIT 1");
-                BotData = dbClient.getRow();
+                BotData = dbClient.GetRow();
             }
 
             return new Bot(Convert.ToInt32(BotData["id"]), Convert.ToInt32(BotData["user_id"]), Convert.ToString(BotData["name"]), Convert.ToString(BotData["motto"]), Convert.ToString(BotData["look"]), Convert.ToString(BotData["gender"]));

@@ -14,7 +14,7 @@ namespace Plus.HabboHotel.Items
                 int RoomId = 0;
                 dbClient.SetQuery("SELECT room_id FROM items_hopper WHERE room_id <> @room ORDER BY room_id ASC LIMIT 1");
                 dbClient.AddParameter("room", CurRoom);
-                RoomId = dbClient.getInteger();
+                RoomId = dbClient.GetInteger();
                 return RoomId;
             }
         }
@@ -25,7 +25,7 @@ namespace Plus.HabboHotel.Items
             {
                 dbClient.SetQuery("SELECT hopper_id FROM items_hopper WHERE room_id = @room LIMIT 1");
                 dbClient.AddParameter("room", NextRoom);
-                string Row = dbClient.getString();
+                string Row = dbClient.GetString();
 
                 if (Row == null)
                     return 0;

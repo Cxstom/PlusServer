@@ -20,7 +20,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.YouTubeTelevisions
                 if (Tele.YouTubeId != VideoId)
                     continue;
 
-                Session.SendMessage(new GetYouTubeVideoComposer(ItemId, Tele.YouTubeId));
+                Session.SendPacket(new GetYouTubeVideoComposer(ItemId, Tele.YouTubeId));
             }
         }
     }

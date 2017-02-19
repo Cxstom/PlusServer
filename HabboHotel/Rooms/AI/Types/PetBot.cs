@@ -134,7 +134,7 @@ namespace Plus.HabboHotel.Rooms.AI.Types
                 }
                 catch (Exception e)
                 {
-                    Logging.HandleException(e, "PetBot.OnTimerTick");
+                    ExceptionLogger.LogException(e);
                 }
             }
             else

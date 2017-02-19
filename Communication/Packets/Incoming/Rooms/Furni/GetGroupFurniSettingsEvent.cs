@@ -31,8 +31,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(GroupId, out Group))
                 return;
 
-            Session.SendMessage(new GroupFurniSettingsComposer(Group, ItemId, Session.GetHabbo().Id));
-            Session.SendMessage(new GroupInfoComposer(Group, Session, false));
+            Session.SendPacket(new GroupFurniSettingsComposer(Group, ItemId, Session.GetHabbo().Id));
+            Session.SendPacket(new GroupInfoComposer(Group, Session, false));
         }
     }
 }

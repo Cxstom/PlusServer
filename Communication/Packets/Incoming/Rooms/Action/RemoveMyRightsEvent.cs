@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     User.RemoveStatus("flatctrl 1");
                     User.UpdateNeeded = true;
 
-                    User.GetClient().SendMessage(new YouAreNotControllerComposer());
+                    User.GetClient().SendPacket(new YouAreNotControllerComposer());
                 }
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())

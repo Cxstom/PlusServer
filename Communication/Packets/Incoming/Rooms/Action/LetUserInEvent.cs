@@ -33,13 +33,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             if (Accepted)
             {
                 Client.GetHabbo().RoomAuthOk = true;
-                Client.SendMessage(new FlatAccessibleComposer(""));
-                Room.SendMessage(new FlatAccessibleComposer(Client.GetHabbo().Username), true);
+                Client.SendPacket(new FlatAccessibleComposer(""));
+                Room.SendPacket(new FlatAccessibleComposer(Client.GetHabbo().Username), true);
             }
             else
             {
-                Client.SendMessage(new FlatAccessDeniedComposer(""));
-                Room.SendMessage(new FlatAccessDeniedComposer(Client.GetHabbo().Username), true);
+                Client.SendPacket(new FlatAccessDeniedComposer(""));
+                Room.SendPacket(new FlatAccessDeniedComposer(Client.GetHabbo().Username), true);
             }
         }
     }

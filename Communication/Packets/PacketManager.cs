@@ -575,6 +575,8 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.ModerationMsgMessageEvent, new ModerationMsgEvent());
             this._incomingPackets.Add(ClientPacketHeader.ModerationCautionMessageEvent, new ModerationCautionEvent());
             this._incomingPackets.Add(ClientPacketHeader.ModerationTradeLockMessageEvent, new ModerationTradeLockEvent());
+            this._incomingPackets.Add(ClientPacketHeader.CallForHelpPendingCallsDeletedMessageEvent, new CallForHelpPendingCallsDeletedEvent());
+            this._incomingPackets.Add(ClientPacketHeader.CloseIssueDefaultActionEvent, new CloseIssueDefaultActionEvent());
         }
 
         public void RegisterGameCenter()

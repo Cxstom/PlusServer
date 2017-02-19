@@ -32,13 +32,13 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Trading
 
             if (!RoomUser.IsTrading)
             {
-                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new TradingClosedComposer(Session.GetHabbo().Id));
                 return;
             }
 
             if (!Room.GetTrading().TryGetTrade(RoomUser.TradeId, out Trade))
             {
-                Session.SendMessage(new TradingClosedComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new TradingClosedComposer(Session.GetHabbo().Id));
                 return;
             }
 

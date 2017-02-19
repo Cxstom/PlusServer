@@ -27,7 +27,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
 
             if (!Client.GetHabbo().InRoom)
             {
-                Session.SendMessage(new FollowFriendFailedComposer(2));
+                Session.SendPacket(new FollowFriendFailedComposer(2));
                 Session.GetHabbo().GetMessenger().UpdateFriend(Client.GetHabbo().Id, Client, true);
                 return;
             }
@@ -37,7 +37,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                     return;
             }
 
-            Session.SendMessage(new RoomForwardComposer(Client.GetHabbo().CurrentRoomId));
+            Session.SendPacket(new RoomForwardComposer(Client.GetHabbo().CurrentRoomId));
         }
     }
 }

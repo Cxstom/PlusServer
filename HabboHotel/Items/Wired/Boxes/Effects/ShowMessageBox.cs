@@ -71,7 +71,7 @@ namespace Plus.HabboHotel.Items.Wired.Boxes.Effects
 
 
 
-            Player.GetClient().SendMessage(new WhisperComposer(User.VirtualId, Message, 0, 34));
+            Player.GetClient().SendPacket(new WhisperComposer(User.VirtualId, Message, 0, 34));
             return true;
         }
     }

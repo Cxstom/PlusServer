@@ -37,7 +37,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                     if (Item == null)
                         return;
 
-                    Session.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                    Session.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
                     return;
                 }
             }
@@ -66,7 +66,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             if (!Room.GetRoomItemHandler().SetFloorItem(Session, Item, x, y, Rotation, false, false, true))
             {
-                Room.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                Room.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
                 return;
             }
 

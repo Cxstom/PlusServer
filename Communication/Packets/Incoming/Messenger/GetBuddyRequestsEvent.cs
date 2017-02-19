@@ -14,7 +14,7 @@ namespace Plus.Communication.Packets.Incoming.Messenger
         {
             ICollection<MessengerRequest> Requests = Session.GetHabbo().GetMessenger().GetRequests().ToList();
 
-            Session.SendMessage(new BuddyRequestsComposer(Requests));
+            Session.SendPacket(new BuddyRequestsComposer(Requests));
         }
     }
 }
