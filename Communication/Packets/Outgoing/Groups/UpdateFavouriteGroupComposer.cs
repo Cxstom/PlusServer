@@ -12,9 +12,9 @@ namespace Plus.Communication.Packets.Outgoing.Groups
             : base(ServerPacketHeader.UpdateFavouriteGroupMessageComposer)
         {
             base.WriteInteger(VirtualId);//Sends 0 on .COM
-            base.WriteInteger(Group.Id);
+            base.WriteInteger(Group != null ? Group.Id : 0);
             base.WriteInteger(3);
-            base.WriteString(Group.Name);
+            base.WriteString(Group != null ? Group.Name : string.Empty);
         }
     }
 }
