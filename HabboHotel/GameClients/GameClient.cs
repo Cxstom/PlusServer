@@ -149,7 +149,7 @@ namespace Plus.HabboHotel.GameClients
                     SendMessage(new AvailabilityStatusComposer());
                     SendMessage(new AchievementScoreComposer(_habbo.GetStats().AchievementPoints));
                     SendMessage(new BuildersClubMembershipComposer());
-                    SendMessage(new CfhTopicsInitComposer());
+                    SendMessage(new CfhTopicsInitComposer(PlusEnvironment.GetGame().GetModerationManager().UserActionPresets));
 
                     SendMessage(new BadgeDefinitionsComposer(PlusEnvironment.GetGame().GetAchievementManager()._achievements));
                     SendMessage(new SoundSettingsComposer(_habbo.ClientVolume, _habbo.ChatPreference, _habbo.AllowMessengerInvites, _habbo.FocusPreference, FriendBarStateUtility.GetInt(_habbo.FriendbarState)));
@@ -203,7 +203,6 @@ namespace Plus.HabboHotel.GameClients
                         SendMessage(new ModeratorInitComposer(
                           PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                           PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
-                          PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
                           PlusEnvironment.GetGame().GetModerationManager().GetTickets));
                     }
 

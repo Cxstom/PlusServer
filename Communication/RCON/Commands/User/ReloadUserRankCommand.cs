@@ -40,7 +40,6 @@ namespace Plus.Communication.RCON.Commands.User
                 client.SendMessage(new ModeratorInitComposer(
                   PlusEnvironment.GetGame().GetModerationManager().UserMessagePresets,
                   PlusEnvironment.GetGame().GetModerationManager().RoomMessagePresets,
-                  PlusEnvironment.GetGame().GetModerationManager().UserActionPresets,
                   PlusEnvironment.GetGame().GetModerationManager().GetTickets));
             }
             return true;

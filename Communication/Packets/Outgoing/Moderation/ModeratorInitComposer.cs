@@ -8,7 +8,7 @@ namespace Plus.Communication.Packets.Outgoing.Moderation
 {
     class ModeratorInitComposer : ServerPacket
     {
-        public ModeratorInitComposer(ICollection<string> UserPresets, ICollection<string> RoomPresets, Dictionary<string, List<ModerationPresetActionMessages>> UserActionPresets, ICollection<ModerationTicket> Tickets)
+        public ModeratorInitComposer(ICollection<string> UserPresets, ICollection<string> RoomPresets, ICollection<ModerationTicket> Tickets)
             : base(ServerPacketHeader.ModeratorInitMessageComposer)
         {
             base.WriteInteger(Tickets.Count);

@@ -203,6 +203,8 @@
     <Compile Include="Communication\Packets\Incoming\Messenger\SendRoomInviteEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Misc\MemoryPerformanceEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Misc\SetFriendBarStateEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Moderation\CallForHelpPendingCallsDeletedEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Moderation\CloseIssueDefaultActionEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Moderation\CloseTicketEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Moderation\GetModeratorRoomChatlogEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Moderation\GetModeratorRoomInfoEvent.cs" />
@@ -688,6 +690,7 @@
     <Compile Include="HabboHotel\Items\Wired\Boxes\Triggers\UserSaysCommandBox.cs" />
     <Compile Include="HabboHotel\LandingView\Promotions\Promotion.cs" />
     <Compile Include="HabboHotel\Moderation\BanTypeUtility.cs" />
+    <Compile Include="HabboHotel\Moderation\ModerationPresetActions.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorCategoryType.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorCategoryTypeUtility.cs" />
     <Compile Include="HabboHotel\Navigator\NavigatorSearchAllowance.cs" />
