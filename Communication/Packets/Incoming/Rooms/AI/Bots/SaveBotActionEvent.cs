@@ -137,7 +137,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
                             dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = @id");
                             dbClient.AddParameter("id", BotId);
 
-                            DataTable BotSpeech = dbClient.getTable();
+                            DataTable BotSpeech = dbClient.GetTable();
 
                             List<RandomSpeech> Speeches = new List<RandomSpeech>();
                             foreach (DataRow Speech in BotSpeech.Rows)

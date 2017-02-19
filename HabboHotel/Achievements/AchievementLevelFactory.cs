@@ -14,7 +14,7 @@ namespace Plus.HabboHotel.Achievements
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`category`,`group_name`,`level`,`reward_pixels`,`reward_points`,`progress_needed`,`game_id` FROM `achievements`");
-                DataTable dTable = dbClient.getTable();
+                DataTable dTable = dbClient.GetTable();
 
                 if (dTable != null)
                 {

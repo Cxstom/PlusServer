@@ -68,7 +68,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @owner LIMIT 1");
                 dbClient.AddParameter("owner", OwnerId);
-                string result = dbClient.getString();
+                string result = dbClient.GetString();
                 if (!String.IsNullOrEmpty(result))
                     OwnerName = result;
             }

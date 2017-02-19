@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Users.Effects
             {
                 dbClient.SetQuery("SELECT * FROM `user_effects` WHERE `user_id` = @id;");
                 dbClient.AddParameter("id", habbo.Id);
-                DataTable getEffects = dbClient.getTable();
+                DataTable getEffects = dbClient.GetTable();
 
                 if (getEffects != null)
                 {

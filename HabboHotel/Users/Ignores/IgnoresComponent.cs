@@ -24,7 +24,7 @@ namespace Plus.HabboHotel.Users.Ignores
             {
                 dbClient.SetQuery("SELECT * FROM `user_ignores` WHERE `user_id` = @uid;");
                 dbClient.AddParameter("uid", player.Id);
-                DataTable GetIgnores = dbClient.getTable();
+                DataTable GetIgnores = dbClient.GetTable();
 
                 if (GetIgnores != null)
                 {

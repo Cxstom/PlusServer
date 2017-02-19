@@ -46,7 +46,7 @@ namespace Plus.Communication.RCON.Commands.User
                         {
                             dbClient.SetQuery("SELECT `credits` FROM `users` WHERE `id` = @id LIMIT 1");
                             dbClient.AddParameter("id", userId);
-                            credits = dbClient.getInteger();
+                            credits = dbClient.GetInteger();
                         }
 
                         client.GetHabbo().Credits = credits;
@@ -62,7 +62,7 @@ namespace Plus.Communication.RCON.Commands.User
                         {
                             dbClient.SetQuery("SELECT `activity_points` FROM `users` WHERE `id` = @id LIMIT 1");
                             dbClient.AddParameter("id", userId);
-                            duckets = dbClient.getInteger();
+                            duckets = dbClient.GetInteger();
                         }
 
                         client.GetHabbo().Duckets = duckets;
@@ -77,7 +77,7 @@ namespace Plus.Communication.RCON.Commands.User
                         {
                             dbClient.SetQuery("SELECT `vip_points` FROM `users` WHERE `id` = @id LIMIT 1");
                             dbClient.AddParameter("id", userId);
-                            diamonds = dbClient.getInteger();
+                            diamonds = dbClient.GetInteger();
                         }
 
                         client.GetHabbo().Diamonds = diamonds;
@@ -92,7 +92,7 @@ namespace Plus.Communication.RCON.Commands.User
                         {
                             dbClient.SetQuery("SELECT `gotw_points` FROM `users` WHERE `id` = @id LIMIT 1");
                             dbClient.AddParameter("id", userId);
-                            gotw = dbClient.getInteger();
+                            gotw = dbClient.GetInteger();
                         }
 
                         client.GetHabbo().GOTWPoints = gotw;

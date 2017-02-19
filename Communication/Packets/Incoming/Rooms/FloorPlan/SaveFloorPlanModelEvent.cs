@@ -119,7 +119,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
             {
                 dbClient.SetQuery("SELECT * FROM `room_models` WHERE `id` = @model AND `custom` = '1' LIMIT 1");
                 dbClient.AddParameter("model", "model_bc_" + Room.Id);
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
 
                 if (Row == null)//The row is still null, let's insert instead.
                 {

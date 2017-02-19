@@ -90,7 +90,7 @@ namespace Plus.HabboHotel.GameClients
             {
                 dbClient.SetQuery("SELECT username FROM users WHERE id = @id LIMIT 1");
                 dbClient.AddParameter("id", Id);
-                username = dbClient.getString();
+                username = dbClient.GetString();
             }
 
             return username;
@@ -150,7 +150,7 @@ namespace Plus.HabboHotel.GameClients
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `message` FROM `chatlogs` WHERE `user_id` = '" + Target.GetHabbo().Id + "' ORDER BY `id` DESC LIMIT 10");
-                GetLogs = dbClient.getTable();
+                GetLogs = dbClient.GetTable();
 
                 if (GetLogs != null)
                 {
@@ -174,7 +174,7 @@ namespace Plus.HabboHotel.GameClients
         }
 
 
-        public void SendMessage(ServerPacket Packet, string fuse = "")
+        public void SendPacket(ServerPacket Packet, string fuse = "")
         {
             foreach (GameClient Client in this._clients.Values.ToList())
             {

@@ -23,7 +23,7 @@ namespace Plus.Database.Adapter
             command.Parameters.AddWithValue(parameterName, val);
         }
 
-        public bool findsResult()
+        public bool FindsResult()
         {
             bool hasRows = false;
             try
@@ -35,13 +35,13 @@ namespace Plus.Database.Adapter
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return hasRows;
         }
 
-        public int getInteger()
+        public int GetInteger()
         {
             int result = 0;
             try
@@ -60,7 +60,8 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             return result;
         }
 
-        public DataRow getRow()
+        public DataRow GetRow
+            ()
         {
             DataRow row = null;
             try
@@ -77,13 +78,13 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return row;
         }
 
-        public string getString()
+        public string GetString()
         {
             string str = string.Empty;
             try
@@ -96,13 +97,13 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return str;
         }
 
-        public DataTable getTable()
+        public DataTable GetTable()
         {
             var dataTable = new DataTable();
             if (!dbEnabled)
@@ -117,7 +118,7 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
 
             return dataTable;
@@ -138,11 +139,6 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             command.CommandText = query;
         }
 
-        public void addParameter(string name, byte[] data)
-        {
-            command.Parameters.Add(new MySqlParameter(name, MySqlDbType.Blob, data.Length));
-        }
-
         public long InsertQuery()
         {
             if (!dbEnabled)
@@ -156,7 +152,7 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             return lastInsertedId;
         }
@@ -172,7 +168,7 @@ ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
             catch (Exception exception)
             {
-ExceptionLogger.LogQueryError(command.CommandText, exception);
+                ExceptionLogger.LogQueryError(command.CommandText, exception);
             }
         }
     }

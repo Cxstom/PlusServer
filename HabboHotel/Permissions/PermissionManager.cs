@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Permissions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `permissions`");
-                DataTable GetPermissions = dbClient.getTable();
+                DataTable GetPermissions = dbClient.GetTable();
 
                 if (GetPermissions != null)
                 {
@@ -53,7 +53,7 @@ namespace Plus.HabboHotel.Permissions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `permissions_commands`");
-                DataTable GetCommands = dbClient.getTable();
+                DataTable GetCommands = dbClient.GetTable();
 
                 if (GetCommands != null)
                 {
@@ -67,7 +67,7 @@ namespace Plus.HabboHotel.Permissions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `permissions_groups`");
-                DataTable GetPermissionGroups = dbClient.getTable();
+                DataTable GetPermissionGroups = dbClient.GetTable();
 
                 if (GetPermissionGroups != null)
                 {
@@ -81,7 +81,7 @@ namespace Plus.HabboHotel.Permissions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `permissions_rights`");
-                DataTable GetPermissionRights = dbClient.getTable();
+                DataTable GetPermissionRights = dbClient.GetTable();
 
                 if (GetPermissionRights != null)
                 {
@@ -123,7 +123,7 @@ namespace Plus.HabboHotel.Permissions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `permissions_subscriptions`");
-                DataTable GetPermissionSubscriptions = dbClient.getTable();
+                DataTable GetPermissionSubscriptions = dbClient.GetTable();
 
                 if (GetPermissionSubscriptions != null)
                 {

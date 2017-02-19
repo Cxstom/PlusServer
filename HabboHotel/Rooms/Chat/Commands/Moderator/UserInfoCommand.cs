@@ -45,7 +45,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             {
                 dbClient.SetQuery("SELECT `id`,`username`,`mail`,`rank`,`motto`,`credits`,`activity_points`,`vip_points`,`gotw_points`,`online`,`rank_vip` FROM users WHERE `username` = @Username LIMIT 1");
                 dbClient.AddParameter("Username", Username);
-                UserData = dbClient.getRow();
+                UserData = dbClient.GetRow();
             }
 
             if (UserData == null)
@@ -57,13 +57,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + Convert.ToInt32(UserData["id"]) + "' LIMIT 1");
-                UserInfo = dbClient.getRow();
+                UserInfo = dbClient.GetRow();
                 if (UserInfo == null)
                 {
                     dbClient.RunQuery("INSERT INTO `user_info` (`user_id`) VALUES ('" + Convert.ToInt32(UserData["id"]) + "')");
 
                     dbClient.SetQuery("SELECT * FROM `user_info` WHERE `user_id` = '" + Convert.ToInt32(UserData["id"]) + "' LIMIT 1");
-                    UserInfo = dbClient.getRow();
+                    UserInfo = dbClient.GetRow();
                 }
             }
 

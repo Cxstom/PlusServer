@@ -77,11 +77,11 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Bots
             {
                 dbClient.SetQuery("SELECT `ai_type`,`rotation`,`walk_mode`,`automatic_chat`,`speaking_interval`,`mix_sentences`,`chat_bubble` FROM `bots` WHERE `id` = @BotId LIMIT 1");
                 dbClient.AddParameter("BotId", Bot.Id);
-                GetData = dbClient.getRow();
+                GetData = dbClient.GetRow();
 
                 dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = @BotId");
                 dbClient.AddParameter("BotId", Bot.Id);
-                DataTable BotSpeech = dbClient.getTable();
+                DataTable BotSpeech = dbClient.GetTable();
 
                 foreach (DataRow Speech in BotSpeech.Rows)
                 {

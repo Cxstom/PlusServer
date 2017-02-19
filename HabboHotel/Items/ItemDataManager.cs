@@ -31,7 +31,7 @@ namespace Plus.HabboHotel.Items
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `furniture`");
-                DataTable ItemData = dbClient.getTable();
+                DataTable ItemData = dbClient.GetTable();
 
                 if (ItemData != null)
                 {

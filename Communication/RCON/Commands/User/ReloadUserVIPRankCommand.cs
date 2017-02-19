@@ -29,7 +29,7 @@ namespace Plus.Communication.RCON.Commands.User
             {
                 dbClient.SetQuery("SELECT `rank_vip` FROM `users` WHERE `id` = @userId LIMIT 1");
                 dbClient.AddParameter("userId", userId);
-                client.GetHabbo().VIPRank = dbClient.getInteger();
+                client.GetHabbo().VIPRank = dbClient.GetInteger();
             }
 
             client.GetHabbo().GetPermissions().Init(client.GetHabbo());

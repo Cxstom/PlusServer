@@ -17,7 +17,7 @@ namespace Plus.HabboHotel.Users.Messenger
                 dbClient.SetQuery("SELECT `id`,`username`,`motto`,`look`,`last_online` FROM users WHERE username LIKE @query LIMIT 50");
 
                 dbClient.AddParameter("query", query + "%");
-                dTable = dbClient.getTable();
+                dTable = dbClient.GetTable();
             }
 
             List<SearchResult> results = new List<SearchResult>();

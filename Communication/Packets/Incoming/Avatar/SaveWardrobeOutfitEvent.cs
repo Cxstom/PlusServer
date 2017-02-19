@@ -19,7 +19,7 @@ namespace Plus.Communication.Packets.Incoming.Avatar
                 dbClient.AddParameter("id", Session.GetHabbo().Id);
                 dbClient.AddParameter("slot", SlotId);
 
-                if (dbClient.getRow() != null)
+                if (dbClient.GetRow() != null)
                 {
                     dbClient.SetQuery("UPDATE `user_wardrobe` SET `look` = @look, `gender` = @gender WHERE `user_id` = @id AND `slot_id` = @slot LIMIT 1");
                     dbClient.AddParameter("id", Session.GetHabbo().Id);

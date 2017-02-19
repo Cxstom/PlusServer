@@ -48,7 +48,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
                         }
 
                         PlusEnvironment.GetGame().GetCatalog().Init(PlusEnvironment.GetGame().GetItemManager());
-                        PlusEnvironment.GetGame().GetClientManager().SendMessage(new CatalogUpdatedComposer());
+                        PlusEnvironment.GetGame().GetClientManager().SendPacket(new CatalogUpdatedComposer());
                         Session.SendWhisper("Catalogue successfully updated.");
                         break;
                     }

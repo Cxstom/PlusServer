@@ -36,7 +36,7 @@ namespace Plus.HabboHotel.Quests
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`type`,`level_num`,`goal_type`,`goal_data`,`action`,`pixel_reward`,`data_bit`,`reward_type`,`timestamp_unlock`,`timestamp_lock` FROM `quests`");
-                DataTable dTable = dbClient.getTable();
+                DataTable dTable = dbClient.GetTable();
 
                 if (dTable != null)
                 {

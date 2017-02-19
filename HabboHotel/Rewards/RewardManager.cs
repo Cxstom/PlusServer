@@ -29,7 +29,7 @@ namespace Plus.HabboHotel.Rewards
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `server_rewards` WHERE enabled = '1'");
-                DataTable dTable = dbClient.getTable();
+                DataTable dTable = dbClient.GetTable();
                 if (dTable != null)
                 {
                     foreach (DataRow dRow in dTable.Rows)
@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Rewards
                 }
 
                 dbClient.SetQuery("SELECT * FROM `server_reward_logs`");
-                dTable = dbClient.getTable();
+                dTable = dbClient.GetTable();
                 if (dTable != null)
                 {
                     foreach (DataRow dRow in dTable.Rows)

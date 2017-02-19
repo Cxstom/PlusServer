@@ -295,14 +295,14 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`room_id`,`name`,`motto`,`look`,`x`,`y`,`z`,`rotation`,`gender`,`user_id`,`ai_type`,`walk_mode`,`automatic_chat`,`speaking_interval`,`mix_sentences`,`chat_bubble` FROM `bots` WHERE `room_id` = '" + RoomId + "' AND `ai_type` != 'pet'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
                 if (Data == null)
                     return;
 
                 foreach (DataRow Bot in Data.Rows)
                 {
                     dbClient.SetQuery("SELECT `text` FROM `bots_speech` WHERE `bot_id` = '" + Convert.ToInt32(Bot["id"]) + "'");
-                    DataTable BotSpeech = dbClient.getTable();
+                    DataTable BotSpeech = dbClient.GetTable();
 
                     List<RandomSpeech> Speeches = new List<RandomSpeech>();
 
@@ -321,7 +321,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`user_id`,`room_id`,`name`,`x`,`y`,`z` FROM `bots` WHERE `room_id` = '" + RoomId + "' AND `ai_type` = 'pet'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
 
                 if (Data == null)
                     return;
@@ -329,7 +329,7 @@ namespace Plus.HabboHotel.Rooms
                 foreach (DataRow Row in Data.Rows)
                 {
                     dbClient.SetQuery("SELECT `type`,`race`,`color`,`experience`,`energy`,`nutrition`,`respect`,`createstamp`,`have_saddle`,`anyone_ride`,`hairdye`,`pethair`,`gnome_clothing` FROM `bots_petdata` WHERE `id` = '" + Row[0] + "' LIMIT 1");
-                    DataRow mRow = dbClient.getRow();
+                    DataRow mRow = dbClient.GetRow();
                     if (mRow == null)
                         continue;
 
@@ -370,7 +370,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + this.Id + " LIMIT 1;");
-                GetPromotion = dbClient.getRow();
+                GetPromotion = dbClient.GetRow();
 
                 if (GetPromotion != null)
                 {
@@ -392,7 +392,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 dbClient.SetQuery("SELECT room_rights.user_id FROM room_rights WHERE room_id = @roomid");
                 dbClient.AddParameter("roomid", Id);
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
             }
 
             if (Data != null)
@@ -413,7 +413,7 @@ namespace Plus.HabboHotel.Rooms
             {
                 dbClient.SetQuery("SELECT * FROM `room_filter` WHERE `room_id` = @roomid;");
                 dbClient.AddParameter("roomid", Id);
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
             }
 
             if (Data == null)

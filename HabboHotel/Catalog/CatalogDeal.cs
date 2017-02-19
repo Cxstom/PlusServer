@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.Catalog
                 {
                     dbClient.SetQuery("SELECT `items`.base_item, COALESCE(`items_groups`.`group_id`, 0) AS `group_id` FROM `items` LEFT OUTER JOIN `items_groups` ON `items`.`id` = `items_groups`.`id` WHERE `items`.`room_id` = @rid;");
                     dbClient.AddParameter("rid", RoomId);
-                    getRoomItems = dbClient.getTable();
+                    getRoomItems = dbClient.GetTable();
                 }
 
                 if (getRoomItems != null)

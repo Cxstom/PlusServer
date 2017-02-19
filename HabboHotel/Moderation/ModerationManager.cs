@@ -46,7 +46,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable PresetsTable = null;
                 dbClient.SetQuery("SELECT * FROM `moderation_presets`;");
-                PresetsTable = dbClient.getTable();
+                PresetsTable = dbClient.GetTable();
 
                 if (PresetsTable != null)
                 {
@@ -71,7 +71,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable ModerationTopics = null;
                 dbClient.SetQuery("SELECT * FROM `moderation_topics`;");
-                ModerationTopics = dbClient.getTable();
+                ModerationTopics = dbClient.GetTable();
 
                 if (ModerationTopics != null)
                 {
@@ -87,7 +87,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable ModerationTopicsActions = null;
                 dbClient.SetQuery("SELECT * FROM `moderation_topic_actions`;");
-                ModerationTopicsActions = dbClient.getTable();
+                ModerationTopicsActions = dbClient.GetTable();
 
                 if (ModerationTopicsActions != null)
                 {
@@ -110,7 +110,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable PresetsActionCats = null;
                 dbClient.SetQuery("SELECT * FROM `moderation_preset_action_categories`;");
-                PresetsActionCats = dbClient.getTable();
+                PresetsActionCats = dbClient.GetTable();
 
                 if (PresetsActionCats != null)
                 {
@@ -125,7 +125,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable PresetsActionMessages = null;
                 dbClient.SetQuery("SELECT * FROM `moderation_preset_action_messages`;");
-                PresetsActionMessages = dbClient.getTable();
+                PresetsActionMessages = dbClient.GetTable();
 
                 if (PresetsActionMessages != null)
                 {
@@ -148,7 +148,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable GetBans = null;
                 dbClient.SetQuery("SELECT `bantype`,`value`,`reason`,`expire` FROM `bans` WHERE `bantype` = 'machine' OR `bantype` = 'user'");
-                GetBans = dbClient.getTable();
+                GetBans = dbClient.GetTable();
 
                 if (GetBans != null)
                 {
@@ -193,7 +193,7 @@ namespace Plus.HabboHotel.Moderation
             {
                 DataTable GetBans = null;
                 dbClient.SetQuery("SELECT `bantype`,`value`,`reason`,`expire` FROM `bans` WHERE `bantype` = 'machine' OR `bantype` = 'user'");
-                GetBans = dbClient.getTable();
+                GetBans = dbClient.GetTable();
 
                 if (GetBans != null)
                 {
@@ -344,7 +344,7 @@ namespace Plus.HabboHotel.Moderation
                 {
                     dbClient.SetQuery("SELECT * FROM `bans` WHERE `bantype` = 'machine' AND `value` = @value LIMIT 1");
                     dbClient.AddParameter("value", MachineId);
-                    BanRow = dbClient.getRow();
+                    BanRow = dbClient.GetRow();
 
                     //If there is no more ban record, then we can simply remove it from our cache!
                     if (BanRow == null)
@@ -372,7 +372,7 @@ namespace Plus.HabboHotel.Moderation
                 {
                     dbClient.SetQuery("SELECT * FROM `bans` WHERE `bantype` = 'user' AND `value` = @value LIMIT 1");
                     dbClient.AddParameter("value", Username);
-                    BanRow = dbClient.getRow();
+                    BanRow = dbClient.GetRow();
 
                     //If there is no more ban record, then we can simply remove it from our cache!
                     if (BanRow == null)

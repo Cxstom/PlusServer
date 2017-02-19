@@ -30,7 +30,7 @@ namespace Plus.Communication.RCON.Commands.User
             {
                 dbClient.SetQuery("SELECT `rank` FROM `users` WHERE `id` = @userId LIMIT 1");
                 dbClient.AddParameter("userId", userId);
-                client.GetHabbo().Rank = dbClient.getInteger();
+                client.GetHabbo().Rank = dbClient.GetInteger();
             }
 
             client.GetHabbo().GetPermissions().Init(client.GetHabbo());

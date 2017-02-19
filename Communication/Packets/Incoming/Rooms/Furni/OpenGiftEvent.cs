@@ -45,7 +45,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             {
                 dbClient.SetQuery("SELECT `base_id`,`extra_data` FROM `user_presents` WHERE `item_id` = @presentId LIMIT 1");
                 dbClient.AddParameter("presentId", Present.Id);
-                Data = dbClient.getRow();
+                Data = dbClient.GetRow();
             }
 
             if (Data == null)

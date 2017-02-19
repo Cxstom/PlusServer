@@ -25,7 +25,7 @@ namespace Plus.Core.Language
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `server_locale`");
-                DataTable Table = dbClient.getTable();
+                DataTable Table = dbClient.GetTable();
 
                 if (Table != null)
                 {

@@ -23,7 +23,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Pets.Locale
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `bots_pet_responses`");
-                DataTable Pets = dbClient.getTable();
+                DataTable Pets = dbClient.GetTable();
 
                 if (Pets != null)
                 {

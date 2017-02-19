@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 {
                     dbClient.SetQuery("SELECT `id` FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
-                    int Id = dbClient.getInteger();
+                    int Id = dbClient.GetInteger();
 
                     dbClient.SetQuery("DELETE FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
@@ -61,7 +61,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 {
                     dbClient.SetQuery("SELECT `id` FROM `user_relationships` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND `target` = @target LIMIT 1");
                     dbClient.AddParameter("target", User);
-                    int Id = dbClient.getInteger();
+                    int Id = dbClient.GetInteger();
 
                     if (Id > 0)
                     {

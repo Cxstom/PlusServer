@@ -39,7 +39,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 dbClient.SetQuery("SELECT * FROM `user_vouchers` WHERE `user_id` = @userId AND `voucher` = @Voucher LIMIT 1");
                 dbClient.AddParameter("userId", Session.GetHabbo().Id);
                 dbClient.AddParameter("Voucher", VoucherCode);
-                GetRow = dbClient.getRow();
+                GetRow = dbClient.GetRow();
             }
 
             if (GetRow != null)

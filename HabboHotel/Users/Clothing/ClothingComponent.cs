@@ -39,7 +39,7 @@ namespace Plus.HabboHotel.Users.Clothing
             {
                 dbClient.SetQuery("SELECT `id`,`part_id`,`part` FROM `user_clothing` WHERE `user_id` = @id;");
                 dbClient.AddParameter("id", Habbo.Id);
-                GetClothing = dbClient.getTable();
+                GetClothing = dbClient.GetTable();
 
                 if (GetClothing != null)
                 {

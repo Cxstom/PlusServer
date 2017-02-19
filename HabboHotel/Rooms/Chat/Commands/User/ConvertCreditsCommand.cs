@@ -37,7 +37,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
                     dbClient.SetQuery("SELECT `id` FROM `items` WHERE `user_id` = '" + Session.GetHabbo().Id + "' AND (`room_id`=  '0' OR `room_id` = '')");
-                    Table = dbClient.getTable();
+                    Table = dbClient.GetTable();
                 }
 
                 if (Table == null)

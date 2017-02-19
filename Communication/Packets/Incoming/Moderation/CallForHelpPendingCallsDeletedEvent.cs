@@ -17,7 +17,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 if (PendingTicket != null)
                 {
                     PendingTicket.Answered = true;
-                    PlusEnvironment.GetGame().GetClientManager().SendMessage(new ModeratorSupportTicketComposer(session.GetHabbo().Id, PendingTicket), "mod_tool");
+                    PlusEnvironment.GetGame().GetClientManager().SendPacket(new ModeratorSupportTicketComposer(session.GetHabbo().Id, PendingTicket), "mod_tool");
                 }
             }
         }

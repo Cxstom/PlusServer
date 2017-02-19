@@ -25,7 +25,7 @@ namespace Plus.Core.Settings
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `server_settings`");
-                DataTable Table = dbClient.getTable();
+                DataTable Table = dbClient.GetTable();
 
                 if (Table != null)
                 {

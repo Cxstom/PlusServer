@@ -60,7 +60,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 dbClient.RunQuery("UPDATE `user_info` SET `bans` = `bans` + '1' WHERE `user_id` = '" + Habbo.Id + "' LIMIT 1");
 
                 dbClient.SetQuery("SELECT `ip_last` FROM `users` WHERE `id` = '" + Habbo.Id + "' LIMIT 1");
-                IPAddress = dbClient.getString();
+                IPAddress = dbClient.GetString();
             }
 
             string Reason = null;

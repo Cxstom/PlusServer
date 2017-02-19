@@ -32,7 +32,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             {
                 dbClient.SetQuery("SELECT COUNT(0) FROM `messenger_friendships` WHERE (`user_one_id` = @userid OR `user_two_id` = @userid)");
                 dbClient.AddParameter("userid", userID);
-                friendCount = dbClient.getInteger();
+                friendCount = dbClient.GetInteger();
             }
 
             Session.SendPacket(new ProfileInformationComposer(targetData, Session, Groups, friendCount));

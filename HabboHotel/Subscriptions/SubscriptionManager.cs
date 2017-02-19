@@ -27,7 +27,7 @@ namespace Plus.HabboHotel.Subscriptions
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `subscriptions`;");
-                DataTable GetSubscriptions = dbClient.getTable();
+                DataTable GetSubscriptions = dbClient.GetTable();
 
                 if (GetSubscriptions != null)
                 {

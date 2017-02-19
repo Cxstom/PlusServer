@@ -50,7 +50,7 @@ namespace Plus.HabboHotel.Groups
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`type`,`firstvalue`,`secondvalue` FROM `groups_items` WHERE `enabled` = '1'");
-                DataTable dItems = dbClient.getTable();
+                DataTable dItems = dbClient.GetTable();
 
                 foreach (DataRow dRow in dItems.Rows)
                 {
@@ -97,7 +97,7 @@ namespace Plus.HabboHotel.Groups
                 {
                     dbClient.SetQuery("SELECT * FROM `groups` WHERE `id` = @id LIMIT 1");
                     dbClient.AddParameter("id", id);
-                    Row = dbClient.getRow();
+                    Row = dbClient.GetRow();
 
                     if (Row != null)
                     {
@@ -187,7 +187,7 @@ namespace Plus.HabboHotel.Groups
             {
                 dbClient.SetQuery("SELECT g.id FROM `group_memberships` AS m RIGHT JOIN `groups` AS g ON m.group_id = g.id WHERE m.user_id = @user");
                 dbClient.AddParameter("user", userId);
-                DataTable GetGroups = dbClient.getTable();
+                DataTable GetGroups = dbClient.GetTable();
 
                 if (GetGroups != null)
                 {

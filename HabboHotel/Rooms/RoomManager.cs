@@ -97,7 +97,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,public_items,club_only,poolmap,`wall_height` FROM `room_models` WHERE `custom` = '0'");
-                DataTable Data = dbClient.getTable();
+                DataTable Data = dbClient.GetTable();
 
                 if (Data == null)
                     return;
@@ -119,7 +119,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT id,door_x,door_y,door_z,door_dir,heightmap,public_items,club_only,poolmap,`wall_height` FROM `room_models` WHERE `custom` = '1' AND `id` = '" + Id + "' LIMIT 1");
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
 
                 if (Row == null)
                     return;
@@ -375,7 +375,7 @@ namespace Plus.HabboHotel.Rooms
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM rooms WHERE id = " + RoomId + " LIMIT 1");
-                Row = dbClient.getRow();
+                Row = dbClient.GetRow();
             }
 
             if (Row == null)

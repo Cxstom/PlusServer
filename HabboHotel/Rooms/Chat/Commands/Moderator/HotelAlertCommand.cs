@@ -33,7 +33,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
             }
 
             string Message = CommandManager.MergeParams(Params, 1);
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(Message + "\r\n" + "- " + Session.GetHabbo().Username));
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(Message + "\r\n" + "- " + Session.GetHabbo().Username));
                             
             return;
         }

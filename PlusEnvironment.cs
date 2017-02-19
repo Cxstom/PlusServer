@@ -267,7 +267,7 @@ namespace Plus
             {
                 dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @id LIMIT 1");
                 dbClient.AddParameter("id", UserId);
-                Name = dbClient.getString();
+                Name = dbClient.GetString();
             }
 
             if (string.IsNullOrEmpty(Name))
@@ -330,7 +330,7 @@ namespace Plus
                 {
                     dbClient.SetQuery("SELECT `id` FROM `users` WHERE `username` = @user LIMIT 1");
                     dbClient.AddParameter("user", UserName);
-                    int id = dbClient.getInteger();
+                    int id = dbClient.GetInteger();
                     if (id > 0)
                         return GetHabboById(Convert.ToInt32(id));
                 }
@@ -347,7 +347,7 @@ namespace Plus
             log.Info("Server shutting down...");
             Console.Title = "PLUS EMULATOR: SHUTTING DOWN!";
 
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new BroadcastMessageAlertComposer(GetLanguageManager().TryGetValue("server.shutdown.message")));
             GetGame().StopGameLoop();
             Thread.Sleep(2500);
             GetConnectionManager().Destroy();//Stop listening.

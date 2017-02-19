@@ -29,7 +29,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Filter
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `wordfilter`");
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
 
                 if (Data != null)
                 {

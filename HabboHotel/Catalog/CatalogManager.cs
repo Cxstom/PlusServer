@@ -65,7 +65,7 @@ namespace Plus.HabboHotel.Catalog
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`item_id`,`catalog_name`,`cost_credits`,`cost_pixels`,`cost_diamonds`,`amount`,`page_id`,`limited_sells`,`limited_stack`,`offer_active`,`extradata`,`badge`,`offer_id` FROM `catalog_items`");
-                DataTable CatalogueItems = dbClient.getTable();
+                DataTable CatalogueItems = dbClient.GetTable();
 
                 if (CatalogueItems != null)
                 {
@@ -100,7 +100,7 @@ namespace Plus.HabboHotel.Catalog
                 }
 
                 dbClient.SetQuery("SELECT `id`, `items`, `name`, `room_id` FROM `catalog_deals`");
-                DataTable GetDeals = dbClient.getTable();
+                DataTable GetDeals = dbClient.GetTable();
 
                 if (GetDeals != null)
                 {
@@ -120,7 +120,7 @@ namespace Plus.HabboHotel.Catalog
 
 
                 dbClient.SetQuery("SELECT `id`,`parent_id`,`caption`,`page_link`,`visible`,`enabled`,`min_rank`,`min_vip`,`icon_image`,`page_layout`,`page_strings_1`,`page_strings_2` FROM `catalog_pages` ORDER BY `order_num`");
-                DataTable CatalogPages = dbClient.getTable();
+                DataTable CatalogPages = dbClient.GetTable();
 
                 if (CatalogPages != null)
                 {
@@ -134,7 +134,7 @@ namespace Plus.HabboHotel.Catalog
                 }
 
                 dbClient.SetQuery("SELECT `id`,`name`,`figure`,`motto`,`gender`,`ai_type` FROM `catalog_bot_presets`");
-                DataTable bots = dbClient.getTable();
+                DataTable bots = dbClient.GetTable();
 
                 if (bots != null)
                 {
@@ -145,7 +145,7 @@ namespace Plus.HabboHotel.Catalog
                 }
 
                 dbClient.SetQuery("SELECT * FROM `catalog_promotions`");
-                DataTable GetPromotions = dbClient.getTable();
+                DataTable GetPromotions = dbClient.GetTable();
 
                 if (GetPromotions != null)
                 {

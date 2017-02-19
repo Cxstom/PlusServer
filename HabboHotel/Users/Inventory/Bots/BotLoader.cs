@@ -19,7 +19,7 @@ namespace Plus.HabboHotel.Users.Inventory.Bots
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `id`,`user_id`,`name`,`motto`,`look`,`gender`FROM `bots` WHERE `user_id` = '" + UserId + "' AND `room_id` = '0' AND `ai_type` != 'pet'");
-                dBots = dbClient.getTable();
+                dBots = dbClient.GetTable();
 
                 if (dBots != null)
                 {

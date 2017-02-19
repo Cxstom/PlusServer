@@ -26,7 +26,7 @@ namespace Plus.HabboHotel.Surveys
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `questions`");
-                Table = dbClient.getTable();
+                Table = dbClient.GetTable();
             }
 
             if (Table != null)

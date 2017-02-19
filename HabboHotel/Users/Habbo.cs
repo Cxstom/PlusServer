@@ -306,14 +306,14 @@ namespace Plus.HabboHotel.Users
             {
                 dbClient.SetQuery("SELECT `id`,`roomvisits`,`onlinetime`,`respect`,`respectgiven`,`giftsgiven`,`giftsreceived`,`dailyrespectpoints`,`dailypetrespectpoints`,`achievementscore`,`quest_id`,`quest_progress`,`groupid`,`tickets_answered`,`respectstimestamp`,`forum_posts` FROM `user_stats` WHERE `id` = @user_id LIMIT 1");
                 dbClient.AddParameter("user_id", Id);
-                StatRow = dbClient.getRow();
+                StatRow = dbClient.GetRow();
 
                 if (StatRow == null)//No row, add it yo
                 {
                     dbClient.RunQuery("INSERT INTO `user_stats` (`id`) VALUES ('" + Id + "')");
                     dbClient.SetQuery("SELECT `id`,`roomvisits`,`onlinetime`,`respect`,`respectgiven`,`giftsgiven`,`giftsreceived`,`dailyrespectpoints`,`dailypetrespectpoints`,`achievementscore`,`quest_id`,`quest_progress`,`groupid`,`tickets_answered`,`respectstimestamp`,`forum_posts` FROM `user_stats` WHERE `id` = @user_id LIMIT 1");
                     dbClient.AddParameter("user_id", Id);
-                    StatRow = dbClient.getRow();
+                    StatRow = dbClient.GetRow();
                 }
 
                 try

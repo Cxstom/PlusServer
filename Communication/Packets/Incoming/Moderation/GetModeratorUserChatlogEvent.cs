@@ -34,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `room_id`,`entry_timestamp`,`exit_timestamp` FROM `user_roomvisits` WHERE `user_id` = '" + Data.Id + "' ORDER BY `entry_timestamp` DESC LIMIT 7");
-                DataTable GetLogs = dbClient.getTable();
+                DataTable GetLogs = dbClient.GetTable();
 
                 if (GetLogs != null)
                 {
@@ -64,7 +64,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `user_id`, `timestamp`, `message` FROM `chatlogs` WHERE `room_id` = " + RoomData.Id + " AND `timestamp` > " + TimeEnter + " AND `timestamp` < " + TimeExit + " ORDER BY `timestamp` DESC LIMIT 100");
-                Data = dbClient.getTable();
+                Data = dbClient.GetTable();
 
                 if (Data != null)
                 {

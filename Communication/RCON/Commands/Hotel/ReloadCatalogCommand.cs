@@ -17,7 +17,7 @@ namespace Plus.Communication.RCON.Commands.Hotel
         public bool TryExecute(string[] parameters)
         {
             PlusEnvironment.GetGame().GetCatalog().Init(PlusEnvironment.GetGame().GetItemManager());
-            PlusEnvironment.GetGame().GetClientManager().SendMessage(new CatalogUpdatedComposer());
+            PlusEnvironment.GetGame().GetClientManager().SendPacket(new CatalogUpdatedComposer());
             return true;
         }
     }

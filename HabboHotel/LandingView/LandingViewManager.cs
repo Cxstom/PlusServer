@@ -30,7 +30,7 @@ namespace Plus.HabboHotel.LandingView
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT * FROM `server_landing` ORDER BY `id` DESC");
-                DataTable GetData = dbClient.getTable();
+                DataTable GetData = dbClient.GetTable();
 
                 if (GetData != null)
                 {

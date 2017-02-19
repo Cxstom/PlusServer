@@ -24,7 +24,7 @@ namespace Plus.HabboHotel.Catalog.Vouchers
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `voucher`,`type`,`value`,`current_uses`,`max_uses` FROM `catalog_vouchers` WHERE `enabled` = '1'");
-                GetVouchers = dbClient.getTable();
+                GetVouchers = dbClient.GetTable();
             }
 
             if (GetVouchers != null)

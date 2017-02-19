@@ -36,7 +36,7 @@ namespace Plus.HabboHotel.Rooms.Instance
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `user_id`, `expire` FROM `room_bans` WHERE `room_id` = " + this._instance.Id + " AND `expire` > UNIX_TIMESTAMP();");
-                GetBans = dbClient.getTable();
+                GetBans = dbClient.GetTable();
 
                 if (GetBans != null)
                 {
@@ -123,7 +123,7 @@ namespace Plus.HabboHotel.Rooms.Instance
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `user_id` FROM `room_bans` WHERE `room_id` = '" + this._instance.Id + "' AND `expire` > UNIX_TIMESTAMP();");
-                GetBans = dbClient.getTable();
+                GetBans = dbClient.GetTable();
 
                 if (GetBans != null)
                 {

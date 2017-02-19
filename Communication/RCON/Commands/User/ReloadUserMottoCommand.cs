@@ -31,7 +31,7 @@ namespace Plus.Communication.RCON.Commands.User
             {
                 dbClient.SetQuery("SELECT `motto` FROM `users` WHERE `id` = @userID LIMIT 1");
                 dbClient.AddParameter("userID", userId);
-                client.GetHabbo().Motto = dbClient.getString();
+                client.GetHabbo().Motto = dbClient.GetString();
             }
 
             // If we're in a room, we cannot really send the packets, so flag this as completed successfully, since we already updated it.
