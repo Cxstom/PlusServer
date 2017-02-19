@@ -50,7 +50,7 @@ namespace Plus.Communication.RCON.Commands.User
                         }
 
                         client.GetHabbo().Credits = credits;
-                        client.SendMessage(new CreditBalanceComposer(client.GetHabbo().Credits));
+                        client.SendPacket(new CreditBalanceComposer(client.GetHabbo().Credits));
                         break;
                     }
 
@@ -66,7 +66,7 @@ namespace Plus.Communication.RCON.Commands.User
                         }
 
                         client.GetHabbo().Duckets = duckets;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, duckets));
+                        client.SendPacket(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, duckets));
                         break;
                     }
 
@@ -81,7 +81,7 @@ namespace Plus.Communication.RCON.Commands.User
                         }
 
                         client.GetHabbo().Diamonds = diamonds;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(diamonds, 0, 5));
+                        client.SendPacket(new HabboActivityPointNotificationComposer(diamonds, 0, 5));
                         break;
                     }
 
@@ -96,7 +96,7 @@ namespace Plus.Communication.RCON.Commands.User
                         }
 
                         client.GetHabbo().GOTWPoints = gotw;
-                        client.SendMessage(new HabboActivityPointNotificationComposer(gotw, 0, 103));
+                        client.SendPacket(new HabboActivityPointNotificationComposer(gotw, 0, 103));
                         break;
                     }
             }

@@ -73,18 +73,18 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
 
                 Session.GetHabbo().Credits -= Convert.ToInt32(Row["total_price"]);
-                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
 
 
                 Item GiveItem = ItemFactory.CreateSingleItem(Item, Session.GetHabbo(), Convert.ToString(Row["extra_data"]), Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["furni_id"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]));
                 if (GiveItem != null)
                 {
                     Session.GetHabbo().GetInventoryComponent().TryAddItem(GiveItem);
-                    Session.SendMessage(new FurniListNotificationComposer(GiveItem.Id, 1));
+                    Session.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
 
-                    Session.SendMessage(new Plus.Communication.Packets.Outgoing.Catalog.PurchaseOKComposer());
-                    Session.SendMessage(new FurniListAddComposer(GiveItem));            
-                    Session.SendMessage(new FurniListUpdateComposer());
+                    Session.SendPacket(new Plus.Communication.Packets.Outgoing.Catalog.PurchaseOKComposer());
+                    Session.SendPacket(new FurniListAddComposer(GiveItem));            
+                    Session.SendPacket(new FurniListUpdateComposer());
                 }
 
 
@@ -209,7 +209,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 }
             }
 
-            Session.SendMessage(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
+            Session.SendPacket(new MarketPlaceOffersComposer(MinCost, MaxCost, dictionary, dictionary2));
         }
     }
 }

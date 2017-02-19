@@ -38,7 +38,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Moodlight
             if (Room.MoodlightData == null)
                 return;
 
-            Session.SendMessage(new MoodlightConfigComposer(Room.MoodlightData));
+            Session.SendPacket(new MoodlightConfigComposer(Room.MoodlightData));
         }
     }
 }

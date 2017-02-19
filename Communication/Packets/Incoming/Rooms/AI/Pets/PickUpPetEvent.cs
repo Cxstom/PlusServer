@@ -98,7 +98,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                     Target.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
                     Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
 
-                    Target.SendMessage(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
+                    Target.SendPacket(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
                     return;
                 }
             }

@@ -52,7 +52,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
             int OnlineUsers = PlusEnvironment.GetGame().GetClientManager().Count;
             int RoomCount = PlusEnvironment.GetGame().GetRoomManager().Count;
 
-            Session.SendMessage(new RoomNotificationComposer("Powered by PlusEmulator",
+            Session.SendPacket(new RoomNotificationComposer("Powered by PlusEmulator",
                  "<b>Credits</b>:\n" +
                  "Sledmore (Developer)\n" +
                  "123 (Developer)\n" +

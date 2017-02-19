@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 }
             }
 
-            Session.SendMessage(new ModeratorRoomChatlogComposer(Room, Chats));
+            Session.SendPacket(new ModeratorRoomChatlogComposer(Room, Chats));
         }
     }
 }

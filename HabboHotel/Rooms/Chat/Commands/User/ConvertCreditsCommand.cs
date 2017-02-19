@@ -66,7 +66,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                             if (Value > 0)
                             {
                                 Session.GetHabbo().Credits += Value;
-                                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
                             }
                         }
                     }

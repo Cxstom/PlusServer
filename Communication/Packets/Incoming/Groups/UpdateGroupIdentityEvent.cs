@@ -36,7 +36,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             Group.Name = Name;
             Group.Description = Desc;
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session));
+            Session.SendPacket(new GroupInfoComposer(Group, Session));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Connection
                 return;
 
             if (!Session.GetHabbo().EnterRoom(Session.GetHabbo().CurrentRoom))
-                Session.SendMessage(new CloseConnectionComposer());
+                Session.SendPacket(new CloseConnectionComposer());
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 }
             }
             else
-                Session.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
         {
             int ErrorCode = (Session.GetHabbo().TradingLockExpiry > 0 ? 6 : 1);
 
-            Session.SendMessage(new MarketplaceCanMakeOfferResultComposer(ErrorCode));
+            Session.SendPacket(new MarketplaceCanMakeOfferResultComposer(ErrorCode));
         }
     }
 }

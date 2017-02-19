@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new MarketPlaceOwnOffersComposer(Session.GetHabbo().Id));
+            Session.SendPacket(new MarketPlaceOwnOffersComposer(Session.GetHabbo().Id));
         }
     }
 }

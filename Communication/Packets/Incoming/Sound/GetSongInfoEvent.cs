@@ -10,7 +10,7 @@ namespace Plus.Communication.Packets.Incoming.Sound
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new TraxSongInfoComposer());
+            Session.SendPacket(new TraxSongInfoComposer());
         }
     }
 }

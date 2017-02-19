@@ -37,7 +37,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
                     if (Item == null)
                         return;
 
-                    Session.SendMessage(new ObjectUpdateComposer(Item, Room.OwnerId));
+                    Session.SendPacket(new ObjectUpdateComposer(Item, Room.OwnerId));
                     return;
                 }
             }

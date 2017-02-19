@@ -40,7 +40,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
             Group.Colour1 = Colour1;
             Group.Colour2 = Colour2;
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session));
+            Session.SendPacket(new GroupInfoComposer(Group, Session));
             if (Session.GetHabbo().CurrentRoom != null)
             {
                 foreach (Item Item in Session.GetHabbo().CurrentRoom.GetRoomItemHandler().GetFloor.ToList())

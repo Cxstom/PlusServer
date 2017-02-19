@@ -1071,8 +1071,8 @@ namespace Plus.HabboHotel.Users
                     this._credits += CreditUpdate;
                     this._duckets += DucketUpdate;
 
-                    this._client.SendMessage(new CreditBalanceComposer(this._credits));
-                    this._client.SendMessage(new HabboActivityPointNotificationComposer(this._duckets, DucketUpdate));
+                    this._client.SendPacket(new CreditBalanceComposer(this._credits));
+                    this._client.SendPacket(new HabboActivityPointNotificationComposer(this._duckets, DucketUpdate));
 
                     this.CreditsUpdateTick = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.tick"));
                 }
@@ -1168,21 +1168,21 @@ namespace Plus.HabboHotel.Users
 
             if (this.GetClient().GetHabbo().IsTeleporting && this.GetClient().GetHabbo().TeleportingRoomID != Id)
             {
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CloseConnectionComposer());
                 return;
             }
 
             Room Room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(Id);
             if (Room == null)
             {
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CloseConnectionComposer());
                 return;
             }
 
             if (Room.isCrashed)
             {
                 this.GetClient().SendNotification("This room has crashed! :(");
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CloseConnectionComposer());
                 return;
             }
 
@@ -1190,8 +1190,8 @@ namespace Plus.HabboHotel.Users
 
             if (Room.GetRoomUserManager().userCount >= Room.UsersMax && !this.GetClient().GetHabbo().GetPermissions().HasRight("room_enter_full") && this.GetClient().GetHabbo().Id != Room.OwnerId)
             {
-                this.GetClient().SendMessage(new CantConnectComposer(1));
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CantConnectComposer(1));
+                this.GetClient().SendPacket(new CloseConnectionComposer());
                 return;
             }
 
@@ -1200,26 +1200,26 @@ namespace Plus.HabboHotel.Users
             {
                 this.RoomAuthOk = false;
                 this.GetClient().GetHabbo().RoomAuthOk = false;
-                this.GetClient().SendMessage(new CantConnectComposer(4));
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CantConnectComposer(4));
+                this.GetClient().SendPacket(new CloseConnectionComposer());
                 return;
             }
 
-            this.GetClient().SendMessage(new OpenConnectionComposer());
+            this.GetClient().SendPacket(new OpenConnectionComposer());
             if (!Room.CheckRights(this.GetClient(), true, true) && !this.GetClient().GetHabbo().IsTeleporting && !this.GetClient().GetHabbo().IsHopping)
             {
                 if (Room.Access == RoomAccess.DOORBELL && !this.GetClient().GetHabbo().GetPermissions().HasRight("room_enter_locked"))
                 {
                     if (Room.UserCount > 0)
                     {
-                        this.GetClient().SendMessage(new DoorbellComposer(""));
+                        this.GetClient().SendPacket(new DoorbellComposer(""));
                         Room.SendMessage(new DoorbellComposer(this.GetClient().GetHabbo().Username), true);
                         return;
                     }
                     else
                     {
-                        this.GetClient().SendMessage(new FlatAccessDeniedComposer(""));
-                        this.GetClient().SendMessage(new CloseConnectionComposer());
+                        this.GetClient().SendPacket(new FlatAccessDeniedComposer(""));
+                        this.GetClient().SendPacket(new CloseConnectionComposer());
                         return;
                     }
                 }
@@ -1227,31 +1227,31 @@ namespace Plus.HabboHotel.Users
                 {
                     if (Password.ToLower() != Room.Password.ToLower() || String.IsNullOrWhiteSpace(Password))
                     {
-                        this.GetClient().SendMessage(new GenericErrorComposer(-100002));
-                        this.GetClient().SendMessage(new CloseConnectionComposer());
+                        this.GetClient().SendPacket(new GenericErrorComposer(-100002));
+                        this.GetClient().SendPacket(new CloseConnectionComposer());
                         return;
                     }
                 }
             }
 
             if (!EnterRoom(Room))
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CloseConnectionComposer());
 
         }
 
         public bool EnterRoom(Room Room)
         {
             if (Room == null)
-                this.GetClient().SendMessage(new CloseConnectionComposer());
+                this.GetClient().SendPacket(new CloseConnectionComposer());
 
-            this.GetClient().SendMessage(new RoomReadyComposer(Room.RoomId, Room.ModelName));
+            this.GetClient().SendPacket(new RoomReadyComposer(Room.RoomId, Room.ModelName));
             if (Room.Wallpaper != "0.0")
-                this.GetClient().SendMessage(new RoomPropertyComposer("wallpaper", Room.Wallpaper));
+                this.GetClient().SendPacket(new RoomPropertyComposer("wallpaper", Room.Wallpaper));
             if (Room.Floor != "0.0")
-                this.GetClient().SendMessage(new RoomPropertyComposer("floor", Room.Floor));
+                this.GetClient().SendPacket(new RoomPropertyComposer("floor", Room.Floor));
 
-            this.GetClient().SendMessage(new RoomPropertyComposer("landscape", Room.Landscape));
-            this.GetClient().SendMessage(new RoomRatingComposer(Room.Score, !(this.GetClient().GetHabbo().RatedRooms.Contains(Room.RoomId) || Room.OwnerId == this.GetClient().GetHabbo().Id)));
+            this.GetClient().SendPacket(new RoomPropertyComposer("landscape", Room.Landscape));
+            this.GetClient().SendPacket(new RoomRatingComposer(Room.Score, !(this.GetClient().GetHabbo().RatedRooms.Contains(Room.RoomId) || Room.OwnerId == this.GetClient().GetHabbo().Id)));
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {

@@ -11,8 +11,8 @@ namespace Plus.Communication.Packets.Incoming.Handshake
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new UserObjectComposer(Session.GetHabbo()));
-            Session.SendMessage(new UserPerksComposer(Session.GetHabbo()));
+            Session.SendPacket(new UserObjectComposer(Session.GetHabbo()));
+            Session.SendPacket(new UserPerksComposer(Session.GetHabbo()));
         }
     }
 }

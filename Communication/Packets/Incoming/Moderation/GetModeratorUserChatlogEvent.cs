@@ -52,7 +52,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                     }
                 }
 
-                Session.SendMessage(new ModeratorUserChatlogComposer(Data, Chatlogs));
+                Session.SendPacket(new ModeratorUserChatlogComposer(Data, Chatlogs));
             }
         }
 

@@ -43,7 +43,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 }
             }
 
-            Session.SendMessage(new ModeratorUserRoomVisitsComposer(Target.GetHabbo(), Visits));
+            Session.SendPacket(new ModeratorUserRoomVisitsComposer(Target.GetHabbo(), Visits));
         }
     }
 }

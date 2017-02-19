@@ -25,7 +25,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 Row = dbClient.getRow();
             }
 
-            Session.SendMessage(new MarketplaceItemStatsComposer(ItemId, SpriteId, (Row != null ? Convert.ToInt32(Row["avgprice"]) : 0)));
+            Session.SendPacket(new MarketplaceItemStatsComposer(ItemId, SpriteId, (Row != null ? Convert.ToInt32(Row["avgprice"]) : 0)));
         }
     }
 }

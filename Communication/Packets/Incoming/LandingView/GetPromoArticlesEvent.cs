@@ -15,7 +15,7 @@ namespace Plus.Communication.Packets.Incoming.LandingView
         {
             ICollection<Promotion> LandingPromotions = PlusEnvironment.GetGame().GetLandingManager().GetPromotionItems();
 
-            Session.SendMessage(new PromoArticlesComposer(LandingPromotions));
+            Session.SendPacket(new PromoArticlesComposer(LandingPromotions));
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni.Stickys
             if (Item == null || Item.GetBaseItem().InteractionType != InteractionType.POSTIT)
                 return;
 
-            Session.SendMessage(new StickyNoteComposer(Item.Id.ToString(), Item.ExtraData));
+            Session.SendPacket(new StickyNoteComposer(Item.Id.ToString(), Item.ExtraData));
         }
     }
 }

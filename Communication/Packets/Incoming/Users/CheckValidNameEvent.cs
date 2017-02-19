@@ -31,35 +31,35 @@ namespace Plus.Communication.Packets.Incoming.Users
             {
                 if (!AllowedCharacters.Contains(Chr))
                 {
-                    Session.SendMessage(new NameChangeUpdateComposer(Name, 4));
+                    Session.SendPacket(new NameChangeUpdateComposer(Name, 4));
                     return;
                 }
             }
 
             if (PlusEnvironment.GetGame().GetChatManager().GetFilter().IsFiltered(Name))
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 4));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 4));
                 return;
             }
 
             if (!Session.GetHabbo().GetPermissions().HasRight("mod_tool") && Name.ToLower().Contains("mod") || Name.ToLower().Contains("adm") || Name.ToLower().Contains("admin") || Name.ToLower().Contains("m0d"))
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 4));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 4));
                 return;
             }
             else if (!Name.ToLower().Contains("mod") && (Session.GetHabbo().Rank == 2 || Session.GetHabbo().Rank == 3))
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 4));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 4));
                 return;
             }
             else if (Name.Length > 15)
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 3));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 3));
                 return;
             }
             else if (Name.Length < 3)
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 2));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 2));
                 return;
             }
             else if (InUse)
@@ -70,12 +70,12 @@ namespace Plus.Communication.Packets.Incoming.Users
                     Suggestions.Add(i.ToString());
                 }
 
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 5, Suggestions));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 5, Suggestions));
                 return;
             }
             else
             {
-                Session.SendMessage(new NameChangeUpdateComposer(Name, 0));
+                Session.SendPacket(new NameChangeUpdateComposer(Name, 0));
                 return;
             }
         }

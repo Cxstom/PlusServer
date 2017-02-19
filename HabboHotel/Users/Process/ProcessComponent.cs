@@ -126,7 +126,7 @@ namespace Plus.HabboHotel.Users.Process
 
                     if (this._player.GetClient() != null)
                     {
-                        this._player.GetClient().SendMessage(new UserObjectComposer(this._player));
+                        this._player.GetClient().SendPacket(new UserObjectComposer(this._player));
                     }
                 }
                 #endregion

@@ -26,7 +26,7 @@ namespace Plus.Communication.Packets.Incoming.Moderation
             if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
                 return;
 
-            Session.SendMessage(new ModeratorRoomInfoComposer(Data, (Room.GetRoomUserManager().GetRoomUserByHabbo(Data.OwnerName) != null)));
+            Session.SendPacket(new ModeratorRoomInfoComposer(Data, (Room.GetRoomUserManager().GetRoomUserByHabbo(Data.OwnerName) != null)));
         }
     }
 }

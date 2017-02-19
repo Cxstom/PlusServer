@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (Room == null || !Room.CheckRights(Session, true))
                 return;
 
-            Session.SendMessage(new RoomSettingsDataComposer(Room));
+            Session.SendPacket(new RoomSettingsDataComposer(Room));
         }
     }
 }

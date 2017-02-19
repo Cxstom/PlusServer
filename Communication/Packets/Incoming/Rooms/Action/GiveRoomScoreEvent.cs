@@ -53,7 +53,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
             }
 
             Session.GetHabbo().RatedRooms.Add(Room.RoomId);        
-            Session.SendMessage(new RoomRatingComposer(Room.Score, !(Session.GetHabbo().RatedRooms.Contains(Room.RoomId) || Room.CheckRights(Session, true))));
+            Session.SendPacket(new RoomRatingComposer(Room.Score, !(Session.GetHabbo().RatedRooms.Contains(Room.RoomId) || Room.CheckRights(Session, true))));
         }
     }
 }

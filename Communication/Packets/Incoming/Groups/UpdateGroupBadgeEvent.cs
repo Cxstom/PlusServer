@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 dbClient.RunQuery();
             }
 
-            Session.SendMessage(new GroupInfoComposer(Group, Session));
+            Session.SendPacket(new GroupInfoComposer(Group, Session));
         }
     }
 }

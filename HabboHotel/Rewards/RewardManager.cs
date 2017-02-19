@@ -112,21 +112,21 @@ namespace Plus.HabboHotel.Rewards
                         case RewardType.CREDITS:
                             {
                                 Session.GetHabbo().Credits += Convert.ToInt32(Reward.RewardData);
-                                Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                                Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
                                 break;
                             }
 
                         case RewardType.DUCKETS:
                             {
                                 Session.GetHabbo().Duckets += Convert.ToInt32(Reward.RewardData);
-                                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Convert.ToInt32(Reward.RewardData)));
+                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Convert.ToInt32(Reward.RewardData)));
                                 break;
                             }
 
                         case RewardType.DIAMONDS:
                             {
                                 Session.GetHabbo().Diamonds += Convert.ToInt32(Reward.RewardData);
-                                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, Convert.ToInt32(Reward.RewardData), 5));
+                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, Convert.ToInt32(Reward.RewardData), 5));
                                 break;
                             }
                     }

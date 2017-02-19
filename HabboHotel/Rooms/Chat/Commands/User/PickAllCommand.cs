@@ -49,7 +49,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
             if (Items.Count > 0)
                 Session.SendWhisper("There are still more items in this room, manually remove them or use :ejectall to eject them!");
 
-            Session.SendMessage(new FurniListUpdateComposer());
+            Session.SendPacket(new FurniListUpdateComposer());
         }
     }
 }

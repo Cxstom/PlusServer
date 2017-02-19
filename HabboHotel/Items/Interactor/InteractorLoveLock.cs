@@ -67,8 +67,8 @@ namespace Plus.HabboHotel.Items.Interactor
                         Item.InteractingUser = UserOne.GetClient().GetHabbo().Id;
                         Item.InteractingUser2 = UserTwo.GetClient().GetHabbo().Id;
 
-                        UserOne.GetClient().SendMessage(new LoveLockDialogueMessageComposer(Item.Id));
-                        UserTwo.GetClient().SendMessage(new LoveLockDialogueMessageComposer(Item.Id));
+                        UserOne.GetClient().SendPacket(new LoveLockDialogueMessageComposer(Item.Id));
+                        UserTwo.GetClient().SendPacket(new LoveLockDialogueMessageComposer(Item.Id));
                     }
 
 

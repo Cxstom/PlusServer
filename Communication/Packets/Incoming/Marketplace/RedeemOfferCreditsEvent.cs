@@ -33,7 +33,7 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
                 if (CreditsOwed >= 1)
                 {
                     Session.GetHabbo().Credits += CreditsOwed;
-                    Session.SendMessage(new CreditBalanceComposer(Session.GetHabbo().Credits));
+                    Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
                 }
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())

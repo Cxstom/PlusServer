@@ -240,9 +240,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 
             if (Session.GetHabbo().CurrentRoom == null)
             {
-                Session.SendMessage(new RoomSettingsSavedComposer(Room.RoomId));
-                Session.SendMessage(new RoomInfoUpdatedComposer(Room.RoomId));
-                Session.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                Session.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
+                Session.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
+                Session.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
             }
             else
             {

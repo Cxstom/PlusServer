@@ -62,7 +62,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
             if (Item.Data.InteractionType == InteractionType.GNOME_BOX && Item.UserID == Session.GetHabbo().Id)
             {
-                Session.SendMessage(new GnomeBoxComposer(Item.Id));
+                Session.SendPacket(new GnomeBoxComposer(Item.Id));
             }
 
             Boolean Toggle = true;

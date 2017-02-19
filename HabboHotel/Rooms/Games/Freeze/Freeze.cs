@@ -242,7 +242,7 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
                 User.shieldCounter = 11;
 
                 _room.GetGameManager().AddPointToTeam(User.Team, 30);
-                User.GetClient().SendMessage(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
+                User.GetClient().SendPacket(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
             }
         }
 
@@ -383,7 +383,7 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
                             _room.GetGameManager().AddPointToTeam(User.Team, 10);
                         }
 
-                        User.GetClient().SendMessage(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
+                        User.GetClient().SendPacket(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
                         break;
                     }
                 case FreezePowerUp.SHIELD:
@@ -456,7 +456,7 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
             User.FreezeLives--;
             if (User.FreezeLives <= 0)
             {
-                User.GetClient().SendMessage(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
+                User.GetClient().SendPacket(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
 
                 User.ApplyEffect(-1);
                 _room.GetGameManager().AddPointToTeam(User.Team, -10);
@@ -488,7 +488,7 @@ namespace Plus.HabboHotel.Rooms.Games.Freeze
             _room.GetGameManager().AddPointToTeam(User.Team, -10);
             User.ApplyEffect(12);
 
-            User.GetClient().SendMessage(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
+            User.GetClient().SendPacket(new UpdateFreezeLivesComposer(User.InternalRoomID, User.FreezeLives));
         }
 
         private List<Item> GetVerticalItems(int x, int y, int length)

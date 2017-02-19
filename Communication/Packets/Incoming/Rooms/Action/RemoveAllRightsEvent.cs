@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     User.RemoveStatus("flatctrl 1");
                     User.UpdateNeeded = true;
 
-                    User.GetClient().SendMessage(new YouAreControllerComposer(0));
+                    User.GetClient().SendPacket(new YouAreControllerComposer(0));
                 }
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -46,9 +46,9 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                     dbClient.RunQuery();
                 }
 
-                Session.SendMessage(new FlatControllerRemovedComposer(Instance, UserId));
-                Session.SendMessage(new RoomRightsListComposer(Instance));
-                Session.SendMessage(new UserUpdateComposer(Instance.GetRoomUserManager().GetUserList().ToList()));
+                Session.SendPacket(new FlatControllerRemovedComposer(Instance, UserId));
+                Session.SendPacket(new RoomRightsListComposer(Instance));
+                Session.SendPacket(new UserUpdateComposer(Instance.GetRoomUserManager().GetUserList().ToList()));
             }
 
             if (Instance.UsersWithRights.Count > 0)

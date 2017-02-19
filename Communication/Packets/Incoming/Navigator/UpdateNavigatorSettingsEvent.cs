@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
                 return;
 
             Session.GetHabbo().HomeRoom = roomID;
-            Session.SendMessage(new NavigatorSettingsComposer(roomID));
+            Session.SendPacket(new NavigatorSettingsComposer(roomID));
         }
     }
 }

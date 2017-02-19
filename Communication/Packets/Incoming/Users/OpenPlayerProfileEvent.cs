@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 friendCount = dbClient.getInteger();
             }
 
-            Session.SendMessage(new ProfileInformationComposer(targetData, Session, Groups, friendCount));
+            Session.SendPacket(new ProfileInformationComposer(targetData, Session, Groups, friendCount));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Bots
                 return;
 
             ICollection<Bot> Bots = Session.GetHabbo().GetInventoryComponent().GetBots();
-            Session.SendMessage(new BotInventoryComposer(Bots));
+            Session.SendPacket(new BotInventoryComposer(Bots));
         }
     }
 }

@@ -79,14 +79,14 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                             Target.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
                             Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
 
-                            Target.SendMessage(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
+                            Target.SendPacket(new PetInventoryComposer(Target.GetHabbo().GetInventoryComponent().GetPets()));
                             return;
                         }
                     }
 
                     Session.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
                     Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
-                    Session.SendMessage(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
+                    Session.SendPacket(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
                 }
                 Session.SendWhisper("Success, removed all pets.");
             }

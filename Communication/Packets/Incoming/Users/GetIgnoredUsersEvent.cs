@@ -21,7 +21,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 }
             }
 
-            session.SendMessage(new IgnoredUsersComposer(ignoredUsers));
+            session.SendPacket(new IgnoredUsersComposer(ignoredUsers));
         }
     }
 }

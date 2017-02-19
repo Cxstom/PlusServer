@@ -92,7 +92,7 @@ namespace Plus.HabboHotel.Achievements
                 }
 
 
-                Session.SendMessage(new AchievementUnlockedComposer(AchievementData, TargetLevel, TargetLevelData.RewardPoints, TargetLevelData.RewardPixels));
+                Session.SendPacket(new AchievementUnlockedComposer(AchievementData, TargetLevel, TargetLevelData.RewardPoints, TargetLevelData.RewardPixels));
                 Session.GetHabbo().GetMessenger().BroadcastAchievement(Session.GetHabbo().Id, Users.Messenger.MessengerEventTypes.ACHIEVEMENT_UNLOCKED, AchievementGroup + TargetLevel);
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -107,11 +107,11 @@ namespace Plus.HabboHotel.Achievements
 
                 Session.GetHabbo().Duckets += TargetLevelData.RewardPixels;
                 Session.GetHabbo().GetStats().AchievementPoints += TargetLevelData.RewardPoints;
-                Session.SendMessage(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, TargetLevelData.RewardPixels));
-                Session.SendMessage(new AchievementScoreComposer(Session.GetHabbo().GetStats().AchievementPoints));
+                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, TargetLevelData.RewardPixels));
+                Session.SendPacket(new AchievementScoreComposer(Session.GetHabbo().GetStats().AchievementPoints));
 
                 AchievementLevel NewLevelData = AchievementData.Levels[NewTarget];
-                Session.SendMessage(new AchievementProgressedComposer(AchievementData, NewTarget, NewLevelData, TotalLevels, Session.GetHabbo().GetAchievementData(AchievementGroup)));
+                Session.SendPacket(new AchievementProgressedComposer(AchievementData, NewTarget, NewLevelData, TotalLevels, Session.GetHabbo().GetAchievementData(AchievementGroup)));
 
                 return true;
             }
@@ -126,7 +126,7 @@ namespace Plus.HabboHotel.Achievements
                     dbClient.RunQuery();
                 }
 
-                Session.SendMessage(new AchievementProgressedComposer(AchievementData, TargetLevel, TargetLevelData, TotalLevels, Session.GetHabbo().GetAchievementData(AchievementGroup)));
+                Session.SendPacket(new AchievementProgressedComposer(AchievementData, TargetLevel, TargetLevelData, TotalLevels, Session.GetHabbo().GetAchievementData(AchievementGroup)));
             }
             return false;
         }

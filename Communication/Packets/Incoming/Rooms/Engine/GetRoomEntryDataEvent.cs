@@ -56,21 +56,21 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             if (Session.GetHabbo().GetStats().QuestID > 0)
                 PlusEnvironment.GetGame().GetQuestManager().QuestReminder(Session, Session.GetHabbo().GetStats().QuestID);
 
-            Session.SendMessage(new RoomEntryInfoComposer(Room.RoomId, Room.CheckRights(Session, true)));
-            Session.SendMessage(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+            Session.SendPacket(new RoomEntryInfoComposer(Room.RoomId, Room.CheckRights(Session, true)));
+            Session.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
 
             RoomUser ThisUser = Room.GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Username);
 
             if (ThisUser != null && Session.GetHabbo().PetId == 0)
                 Room.SendMessage(new UserChangeComposer(ThisUser, false));
 
-            Session.SendMessage(new RoomEventComposer(Room.RoomData, Room.RoomData.Promotion));
+            Session.SendPacket(new RoomEventComposer(Room.RoomData, Room.RoomData.Promotion));
 
             if (Room.GetWired() != null)
                 Room.GetWired().TriggerEvent(WiredBoxType.TriggerRoomEnter, Session.GetHabbo());
 
             if (PlusEnvironment.GetUnixTimestamp() < Session.GetHabbo().FloodTime && Session.GetHabbo().FloodTime != 0)
-                Session.SendMessage(new FloodControlComposer((int)Session.GetHabbo().FloodTime - (int)PlusEnvironment.GetUnixTimestamp()));
+                Session.SendPacket(new FloodControlComposer((int)Session.GetHabbo().FloodTime - (int)PlusEnvironment.GetUnixTimestamp()));
         }
     }
 }

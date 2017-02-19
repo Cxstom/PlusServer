@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Users
         {
             int UserId = Packet.PopInt();
 
-            Session.SendMessage(new UserTagsComposer(UserId));
+            Session.SendPacket(new UserTagsComposer(UserId));
         }
     }
 }

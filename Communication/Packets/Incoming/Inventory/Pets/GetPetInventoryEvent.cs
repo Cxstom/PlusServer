@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Pets
                 return;
 
             ICollection<Pet> Pets = Session.GetHabbo().GetInventoryComponent().GetPets();
-            Session.SendMessage(new PetInventoryComposer(Pets));
+            Session.SendPacket(new PetInventoryComposer(Pets));
         }
     }
 }

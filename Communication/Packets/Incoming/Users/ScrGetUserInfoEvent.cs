@@ -9,7 +9,7 @@ namespace Plus.Communication.Packets.Incoming.Users
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            Session.SendMessage(new ScrSendUserInfoComposer());
+            Session.SendPacket(new ScrSendUserInfoComposer());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Navigator
         {
             ICollection<SearchResultList> Categories = PlusEnvironment.GetGame().GetNavigator().GetEventCategories();
 
-            Session.SendMessage(new NavigatorFlatCatsComposer(Categories, Session.GetHabbo().Rank));
+            Session.SendPacket(new NavigatorFlatCatsComposer(Categories, Session.GetHabbo().Rank));
         }
     }
 }

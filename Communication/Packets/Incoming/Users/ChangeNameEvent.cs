@@ -35,7 +35,7 @@ namespace Plus.Communication.Packets.Incoming.Users
             if (NewName == OldName)
             {
                 Session.GetHabbo().ChangeName(OldName);
-                Session.SendMessage(new UpdateUsernameComposer(NewName));
+                Session.SendPacket(new UpdateUsernameComposer(NewName));
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 Session.GetHabbo().ChangeName(NewName);
                 Session.GetHabbo().GetMessenger().OnStatusChanged(true);
 
-                Session.SendMessage(new UpdateUsernameComposer(NewName));
+                Session.SendPacket(new UpdateUsernameComposer(NewName));
                 Room.SendMessage(new UserNameChangeComposer(Room.Id, User.VirtualId, NewName));
 
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -122,7 +122,7 @@ namespace Plus.Communication.Packets.Incoming.Users
 
                 PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_Name", 1);
 
-               Session.SendMessage(new RoomForwardComposer(Room.Id));
+               Session.SendPacket(new RoomForwardComposer(Room.Id));
             }
         }
 

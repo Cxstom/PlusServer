@@ -32,7 +32,7 @@ namespace Plus.Communication.RCON.Commands.User
 
             string message = Convert.ToString(parameters[1]);
 
-            client.SendMessage(new BroadcastMessageAlertComposer(message));
+            client.SendPacket(new BroadcastMessageAlertComposer(message));
             return true;
         }
     }

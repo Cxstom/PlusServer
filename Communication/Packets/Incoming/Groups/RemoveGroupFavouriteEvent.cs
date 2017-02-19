@@ -22,7 +22,7 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 Session.GetHabbo().CurrentRoom.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
             }
             else
-                Session.SendMessage(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
+                Session.SendPacket(new RefreshFavouriteGroupComposer(Session.GetHabbo().Id));
         }
     }
 }
