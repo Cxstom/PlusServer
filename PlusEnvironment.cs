@@ -63,7 +63,7 @@ namespace Plus
 
         private static ConcurrentDictionary<int, Habbo> _usersCached = new ConcurrentDictionary<int, Habbo>();
 
-        public static string SWFRevision = "";
+        public static string SWFRevision = "PRODUCTION-201701242205-837386173";
 
         public static void Initialize()
         {
