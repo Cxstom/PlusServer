@@ -7,6 +7,7 @@ using Plus.Core.FigureData.Types;
 using System.Xml;
 using Plus.HabboHotel.Catalog.Clothing;
 using Plus.HabboHotel.Users.Clothing.Parts;
+using Plus.Core.FigureDataManager;
 
 namespace Plus.Core.FigureData
 {
@@ -14,12 +15,17 @@ namespace Plus.Core.FigureData
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.Core.FigureData");
 
+        private bool _legacyEnabled;
+        private readonly LegacyFigureMutant _legacy;
+
         private readonly List<string> _requirements;
         private readonly Dictionary<int, Palette> _palettes; //pallet id, Pallet
         private readonly Dictionary<string, FigureSet> _setTypes; //type (hr, ch, etc), Set
 
-        public FigureDataManager()
+        public FigureDataManager(bool legacyEnabled)
         {
+            this._legacyEnabled = legacyEnabled;
+            this._legacy = new LegacyFigureMutant();
             this._palettes = new Dictionary<int, Palette>();
             this._setTypes = new Dictionary<string, FigureSet>();
 
@@ -32,6 +38,13 @@ namespace Plus.Core.FigureData
 
         public void Init()
         {
+            if (this._legacyEnabled == true)
+            {
+                this._legacy.Init();
+                log.Info("Loaded legacy figure mutant checker.");
+                return;
+            }
+
             if (this._palettes.Count > 0)
                 this._palettes.Clear();
 
@@ -55,29 +68,44 @@ namespace Plus.Core.FigureData
                 }
             }
 
-            XmlNodeList Sets = xDoc.GetElementsByTagName("sets");
-            foreach (XmlNode Node in Sets)
+            XmlNodeList sets = xDoc.GetElementsByTagName("sets");
+            foreach (XmlNode node in sets)
             {
-                foreach (XmlNode Child in Node.ChildNodes)
+                foreach (XmlNode childNode in node.ChildNodes)
                 {
-                    this._setTypes.Add(Child.Attributes["type"].Value, new FigureSet(SetTypeUtility.GetSetType(Child.Attributes["type"].Value), Convert.ToInt32(Child.Attributes["paletteid"].Value)));
+                    this._setTypes.Add(childNode.Attributes["type"].Value, new FigureSet(SetTypeUtility.GetSetType(childNode.Attributes["type"].Value), Convert.ToInt32(childNode.Attributes["paletteid"].Value)));
 
-                    foreach (XmlNode Sub in Child.ChildNodes)
+                    foreach (XmlNode subChild in childNode.ChildNodes)
                     {
-                        this._setTypes[Child.Attributes["type"].Value].Sets.Add(Convert.ToInt32(Sub.Attributes["id"].Value), new Set(Convert.ToInt32(Sub.Attributes["id"].Value), Convert.ToString(Sub.Attributes["gender"].Value), Convert.ToInt32(Sub.Attributes["club"].Value), Convert.ToInt32(Sub.Attributes["colorable"].Value) == 1, Convert.ToInt32(Sub.Attributes["selectable"].Value) == 1, Convert.ToInt32(Sub.Attributes["preselectable"].Value) == 1));
-
-                        foreach (XmlNode Subb in Sub.ChildNodes)
+                        int id = 0;
+                        if (int.TryParse(subChild.Attributes["id"].Value, out id))
                         {
-                            if (Subb.Attributes["type"] != null)
+                            if (!this._setTypes[childNode.Attributes["type"].Value].Sets.ContainsKey(id))
                             {
-                                this._setTypes[Child.Attributes["type"].Value].Sets[Convert.ToInt32(Sub.Attributes["id"].Value)].Parts.Add(Convert.ToInt32(Subb.Attributes["id"].Value) + "-" + Subb.Attributes["type"].Value,
-                                  new Part(Convert.ToInt32(Subb.Attributes["id"].Value), SetTypeUtility.GetSetType(Child.Attributes["type"].Value), Convert.ToInt32(Subb.Attributes["colorable"].Value) == 1, Convert.ToInt32(Subb.Attributes["index"].Value), Convert.ToInt32(Subb.Attributes["colorindex"].Value)));
+                                if (subChild.Attributes["selectable"] == null || subChild.Attributes["preselectable"] == null)
+                                {
+                                    continue;
+                                }
+
+                                this._setTypes[childNode.Attributes["type"].Value].Sets.Add(Convert.ToInt32(subChild.Attributes["id"].Value), new Set(Convert.ToInt32(subChild.Attributes["id"].Value), Convert.ToString(subChild.Attributes["gender"].Value), Convert.ToInt32(subChild.Attributes["club"].Value), Convert.ToInt32(subChild.Attributes["colorable"].Value) == 1, Convert.ToInt32(subChild.Attributes["selectable"].Value) == 1, Convert.ToInt32(subChild.Attributes["preselectable"].Value) == 1));
+
+                                foreach (XmlNode grandChild in subChild.ChildNodes)
+                                {
+                                    if (grandChild.Attributes["type"] != null)
+                                    {
+                                        if (!this._setTypes[childNode.Attributes["type"].Value].Sets[id].Parts.ContainsKey(Convert.ToInt32(grandChild.Attributes["id"].Value) + "-" + grandChild.Attributes["type"].Value))
+                                        {
+                                            this._setTypes[childNode.Attributes["type"].Value].Sets[id].Parts.Add(Convert.ToInt32(grandChild.Attributes["id"].Value) + "-" + grandChild.Attributes["type"].Value,
+                                      new Part(Convert.ToInt32(grandChild.Attributes["id"].Value), SetTypeUtility.GetSetType(childNode.Attributes["type"].Value), Convert.ToInt32(grandChild.Attributes["colorable"].Value) == 1, Convert.ToInt32(grandChild.Attributes["index"].Value), Convert.ToInt32(grandChild.Attributes["colorindex"].Value)));
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-
+            
             //Faceless.
             this._setTypes["hd"].Sets.Add(99999, new Set(99999, "U", 0, true, false, false));
 
@@ -87,6 +115,9 @@ namespace Plus.Core.FigureData
 
         public string ProcessFigure(string figure, string gender, ICollection<ClothingParts> clothingParts, bool hasHabboClub)
         {
+            if (this._legacyEnabled)
+                return this._legacy.RunLook(figure);
+
             figure = figure.ToLower();
             gender = gender.ToUpper();
 
@@ -260,7 +291,7 @@ namespace Plus.Core.FigureData
                     int partId = Convert.ToInt32(part.Split('-')[1]);
                     if (purchasableParts.Count(x => x.PartIds.Contains(partId)) > 0)
                     {
-                        if (clothingParts.Count(x => x.PartId == partId)== 0)
+                        if (clothingParts.Count(x => x.PartId == partId) == 0)
                         {
                             string type = part.Split('-')[0];
 
