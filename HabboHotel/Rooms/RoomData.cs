@@ -74,33 +74,30 @@ namespace Plus.HabboHotel.Rooms
             }
 
             this.Access = RoomAccessUtility.ToRoomAccess(Row["state"].ToString().ToLower());
-
             Category = Convert.ToInt32(Row["category"]);
-            if (!string.IsNullOrEmpty(Row["users_now"].ToString()))
-                UsersNow = Convert.ToInt32(Row["users_now"]);
-            else
-                UsersNow = 0;
+            UsersNow = string.IsNullOrEmpty(Row["users_now"].ToString()) ? 0 : Convert.ToInt32(Row["users_now"]);        
             UsersMax = Convert.ToInt32(Row["users_max"]);
             ModelName = Convert.ToString(Row["model_name"]);
             Score = Convert.ToInt32(Row["score"]);
             Tags = new List<string>();
-            AllowPets = Convert.ToInt32(Row["allow_pets"].ToString());
-            AllowPetsEating = Convert.ToInt32(Row["allow_pets_eat"].ToString());
-            RoomBlockingEnabled = Convert.ToInt32(Row["room_blocking_disabled"].ToString());
-            Hidewall = Convert.ToInt32(Row["allow_hidewall"].ToString());
+            AllowPets = string.IsNullOrEmpty(Row["allow_pets"].ToString()) ? 0 : Convert.ToInt32(Row["allow_pets"].ToString());
+            AllowPetsEating = string.IsNullOrEmpty(Row["allow_pets_eat"].ToString()) ? 0 : Convert.ToInt32(Row["allow_pets_eat"].ToString());
+            RoomBlockingEnabled = string.IsNullOrEmpty(Row["room_blocking_disabled"].ToString()) ? 0 : Convert.ToInt32(Row["room_blocking_disabled"].ToString());
+            Hidewall = string.IsNullOrEmpty(Row["allow_hidewall"].ToString()) ? 0 : Convert.ToInt32(Row["allow_hidewall"].ToString());
             Password = Convert.ToString(Row["password"]);
             Wallpaper = Convert.ToString(Row["wallpaper"]);
             Floor = Convert.ToString(Row["floor"]);
             Landscape = Convert.ToString(Row["landscape"]);
-            FloorThickness = Convert.ToInt32(Row["floorthick"]);
-            WallThickness = Convert.ToInt32(Row["wallthick"]);
-            WhoCanMute = Convert.ToInt32(Row["mute_settings"]);
-            WhoCanKick = Convert.ToInt32(Row["kick_settings"]);
-            WhoCanBan = Convert.ToInt32(Row["ban_settings"]);
-            chatMode = Convert.ToInt32(Row["chat_mode"]);
-            chatSpeed = Convert.ToInt32(Row["chat_speed"]);
-            chatSize = Convert.ToInt32(Row["chat_size"]);
-            TradeSettings = Convert.ToInt32(Row["trade_settings"]);
+            FloorThickness = string.IsNullOrEmpty(Row["allow_hidewall"].ToString()) ? 0 : Convert.ToInt32(Row["allow_hidewall"].ToString());
+            WallThickness = string.IsNullOrEmpty(Row["floorthick"].ToString()) ? 0 : Convert.ToInt32(Row["floorthick"].ToString());
+            WhoCanMute = string.IsNullOrEmpty(Row["wallthick"].ToString()) ? 0 : Convert.ToInt32(Row["floorthick"].ToString());
+            WhoCanKick = string.IsNullOrEmpty(Row["mute_settings"].ToString()) ? 0 : Convert.ToInt32(Row["mute_settings"].ToString());
+            WhoCanBan = string.IsNullOrEmpty(Row["kick_settings"].ToString()) ? 0 : Convert.ToInt32(Row["kick_settings"].ToString());
+            chatMode = string.IsNullOrEmpty(Row["ban_settings"].ToString()) ? 0 : Convert.ToInt32(Row["ban_settings"].ToString());
+            chatSpeed = string.IsNullOrEmpty(Row["chat_mode"].ToString()) ? 0 : Convert.ToInt32(Row["chat_mode"].ToString());
+            chatMode = string.IsNullOrEmpty(Row["chat_speed"].ToString()) ? 0 : Convert.ToInt32(Row["chat_speed"].ToString());
+            chatSize = string.IsNullOrEmpty(Row["chat_size"].ToString()) ? 0 : Convert.ToInt32(Row["chat_size"].ToString());
+            TradeSettings = string.IsNullOrEmpty(Row["trade_settings"].ToString()) ? 0 : Convert.ToInt32(Row["trade_settings"].ToString());
 
             Group G = null;
             if (PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(Convert.ToInt32(Row["group_id"]), out G))
