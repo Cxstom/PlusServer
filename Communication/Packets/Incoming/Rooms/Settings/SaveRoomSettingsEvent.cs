@@ -60,12 +60,87 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             int WhoMute = Packet.PopInt(); // mute
             int WhoKick = Packet.PopInt(); // kick
             int WhoBan = Packet.PopInt(); // ban
-
             int chatMode = Packet.PopInt();
             int chatSize = Packet.PopInt();
             int chatSpeed = Packet.PopInt();
             int chatDistance = Packet.PopInt();
             int extraFlood = Packet.PopInt();
+
+            if (Name.Length < 1)
+                return;
+
+            if (Name.Length > 60)
+                Name = Name.Substring(0, 60);
+
+            if (Access == RoomAccess.PASSWORD && Password.Length == 0)
+                Access = RoomAccess.OPEN;
+
+            string AccessStr = Password.Length > 0 ? "password" : "open";
+            switch (Access)
+            {
+                default:
+                case RoomAccess.OPEN:
+                    AccessStr = "open";
+                    break;
+
+                case RoomAccess.PASSWORD:
+                    AccessStr = "password";
+                    break;
+
+                case RoomAccess.DOORBELL:
+                    AccessStr = "locked";
+                    break;
+
+                case RoomAccess.INVISIBLE:
+                    AccessStr = "invisible";
+                    break;
+            }
+
+            if (MaxUsers < 0)
+                MaxUsers = 10;
+
+            if (MaxUsers > 50)
+                MaxUsers = 50;
+
+            SearchResultList SearchResultList = null;
+            if (!PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(CategoryId, out SearchResultList))
+                CategoryId = 36;
+
+            if (SearchResultList.CategoryType != NavigatorCategoryType.CATEGORY || SearchResultList.RequiredRank > Session.GetHabbo().Rank || (Session.GetHabbo().Id != Room.OwnerId && Session.GetHabbo().Rank >= SearchResultList.RequiredRank))
+                CategoryId = 36;
+
+            if (TagCount > 2)
+                return;
+
+            if (TradeSettings < 0 || TradeSettings > 2)
+                TradeSettings = 0;
+
+            if (AllowPets < 0 || AllowPets > 1)
+                AllowPets = 0;
+
+            if (AllowPetsEat < 0 || AllowPetsEat > 1)
+                AllowPetsEat = 0;
+
+            if (RoomBlockingEnabled < 0 || RoomBlockingEnabled > 1)
+                RoomBlockingEnabled = 0;
+
+            if (Hidewall < 0 || Hidewall > 1)
+                Hidewall = 0;
+
+            if (WallThickness < -2 || WallThickness > 1)
+                WallThickness = 0;
+
+            if (FloorThickness < -2 || FloorThickness > 1)
+                FloorThickness = 0;
+
+            if (WhoMute < 0 || WhoMute > 1)
+                WhoMute = 0;
+
+            if (WhoKick < 0 || WhoKick > 1)
+                WhoKick = 0;
+
+            if (WhoBan < 0 || WhoBan > 1)
+                WhoBan = 0;
 
             if (chatMode < 0 || chatMode > 1)
                 chatMode = 0;
@@ -84,49 +159,6 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 
             if (extraFlood < 0 || extraFlood > 2)
                 extraFlood = 0;
-
-            if (TradeSettings < 0 || TradeSettings > 2)
-                TradeSettings = 0;
-
-            if (WhoMute < 0 || WhoMute > 1)
-                WhoMute = 0;
-
-            if (WhoKick < 0 || WhoKick > 1)
-                WhoKick = 0;
-
-            if (WhoBan < 0 || WhoBan > 1)
-                WhoBan = 0;
-
-            if (WallThickness < -2 || WallThickness > 1)
-                WallThickness = 0;
-
-            if (FloorThickness < -2 || FloorThickness > 1)
-                FloorThickness = 0;
-
-            if (Name.Length < 1)
-                return;
-
-            if (Name.Length > 60)
-                Name = Name.Substring(0, 60);
-
-            if (Access == RoomAccess.PASSWORD && Password.Length == 0)
-                Access = RoomAccess.OPEN;
-
-            if (MaxUsers < 0)
-                MaxUsers = 10;
-
-            if (MaxUsers > 50)
-                MaxUsers = 50;
-
-            SearchResultList SearchResultList = null;
-            if (!PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(CategoryId, out SearchResultList))
-                CategoryId = 36;
-
-            if (SearchResultList.CategoryType != NavigatorCategoryType.CATEGORY || SearchResultList.RequiredRank > Session.GetHabbo().Rank || (Session.GetHabbo().Id != Room.OwnerId && Session.GetHabbo().Rank >= SearchResultList.RequiredRank))
-                CategoryId = 36;
-
-            if (TagCount > 2)
-                return;
 
             Room.AllowPets = AllowPets;
             Room.AllowPetsEating = AllowPetsEat;
@@ -185,27 +217,6 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             Room.RoomData.extraFlood = extraFlood;
 
             Room.RoomData.TradeSettings = TradeSettings;
-
-            string AccessStr = Password.Length > 0 ? "password" : "open";
-            switch (Access)
-            {
-                default:
-                case RoomAccess.OPEN:
-                    AccessStr = "open";
-                    break;
-
-                case RoomAccess.PASSWORD:
-                    AccessStr = "password";
-                    break;
-
-                case RoomAccess.DOORBELL:
-                    AccessStr = "locked";
-                    break;
-
-                case RoomAccess.INVISIBLE:
-                    AccessStr = "invisible";
-                    break;
-            }
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
