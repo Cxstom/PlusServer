@@ -635,6 +635,8 @@
     <Compile Include="Communication\RCON\Commands\User\TakeUserCurrencyCommand.cs" />
     <Compile Include="Communication\RCON\RCONConnection.cs" />
     <Compile Include="Communication\RCON\RCONSocket.cs" />
+    <Compile Include="Core\FigureData\LegacyFigureMutant.cs" />
+    <Compile Include="Core\FigureData\Legacy\Figure.cs" />
     <Compile Include="Core\FigureData\Types\Color.cs" />
     <Compile Include="Core\FigureData\FigureDataManager.cs" />
     <Compile Include="Core\FigureData\Types\FigureSet.cs" />

@@ -93,6 +93,7 @@ namespace Plus
             try
             {
                 _configuration = new ConfigurationData(Path.Combine(Application.StartupPath, @"config.ini"));
+                SWFRevision = GetConfig().data["game.revision"];
 
                 var connectionString = new MySqlConnectionStringBuilder
                 {
@@ -139,7 +140,7 @@ namespace Plus
                 _settingsManager = new SettingsManager();
                 _settingsManager.Init();
 
-                _figureManager = new FigureDataManager();
+                _figureManager = new FigureDataManager(GetConfig().data["game.legacy.figure_mutant"].ToString() == "1");
                 _figureManager.Init();
 
                 //Have our encryption ready.
