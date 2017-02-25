@@ -135,18 +135,18 @@ namespace Plus.Communication.Packets
 
             if (!_incomingPackets.TryGetValue(Packet.Id, out Pak))
             {
-                if (System.Diagnostics.Debugger.IsAttached)
-                    log.Debug("Unhandled Packet: " + Packet.ToString());
+                //if (System.Diagnostics.Debugger.IsAttached)
+                    log.Debug("Unhandled Packet: " + Packet.Id + " " + Packet.ToString());
                 return;
             }
 
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
+            //if (System.Diagnostics.Debugger.IsAttached)
+            //{
                 if (_packetNames.ContainsKey(Packet.Id))
                     log.Debug("Handled Packet: [" + Packet.Id + "] " + _packetNames[Packet.Id]);
                 else
                     log.Debug("Handled Packet: [" + Packet.Id + "] UnnamedPacketEvent");
-            }
+            //}
 
             if (!IgnoreTasks)
                 ExecutePacketAsync(Session, Packet, Pak);
@@ -248,6 +248,8 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.GetGiftWrappingConfigurationMessageEvent, new GetGiftWrappingConfigurationEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetMarketplaceConfigurationMessageEvent, new GetMarketplaceConfigurationEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetRecyclerRewardsMessageEvent, new GetRecyclerRewardsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.ReloadRecyclerMessageEvent, new ReloadRecycleEvent());
+            this._incomingPackets.Add(ClientPacketHeader.RecycleItemEvent, new RecycleItemEvent());
             this._incomingPackets.Add(ClientPacketHeader.CheckPetNameMessageEvent, new CheckPetNameEvent());
             this._incomingPackets.Add(ClientPacketHeader.RedeemVoucherMessageEvent, new RedeemVoucherEvent());
             this._incomingPackets.Add(ClientPacketHeader.GetSellablePetBreedsMessageEvent, new GetSellablePetBreedsEvent());
@@ -610,6 +612,7 @@ namespace Plus.Communication.Packets
             this._packetNames.Add(ClientPacketHeader.GetGiftWrappingConfigurationMessageEvent, "GetGiftWrappingConfigurationEvent");
             this._packetNames.Add(ClientPacketHeader.GetMarketplaceConfigurationMessageEvent, "GetMarketplaceConfigurationEvent");
             this._packetNames.Add(ClientPacketHeader.GetRecyclerRewardsMessageEvent, "GetRecyclerRewardsEvent");
+            this._packetNames.Add(ClientPacketHeader.ReloadRecyclerMessageEvent, "GetRecyclerRewardsEvent");
             this._packetNames.Add(ClientPacketHeader.CheckPetNameMessageEvent, "CheckPetNameEvent");
             this._packetNames.Add(ClientPacketHeader.RedeemVoucherMessageEvent, "RedeemVoucherEvent");
             this._packetNames.Add(ClientPacketHeader.GetSellablePetBreedsMessageEvent, "GetSellablePetBreedsEvent");

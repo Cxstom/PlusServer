@@ -120,6 +120,8 @@
     <Compile Include="Communication\Packets\Incoming\Catalog\GetGiftWrappingConfigurationEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Catalog\GetMarketplaceConfigurationEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Catalog\GetPromotableRoomsEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Catalog\RecycleItemEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Catalog\ReloadRecycleEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Catalog\GetRecyclerRewardsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Catalog\GetSellablePetBreedsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Catalog\PurchaseFromCatalogAsGiftEvent.cs" />
@@ -249,6 +251,8 @@
     <Compile Include="Communication\Packets\Outgoing\Campaigns\CampaignCalendarDataComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\CheckGnomeNameComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Catalog\ClubGiftsComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Catalog\RecyclerStateComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Catalog\ReloadRecyclerComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\GameCenter\Game1WeeklyLeaderboardComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\GameCenter\Game2WeeklyLeaderboardComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\GameCenter\Game3WeeklyLeaderboardComposer.cs" />
@@ -662,6 +666,7 @@
     <Compile Include="HabboHotel\Catalog\Clothing\ClothingManager.cs" />
     <Compile Include="HabboHotel\Catalog\Marketplace\MarketOffer.cs" />
     <Compile Include="HabboHotel\Catalog\Marketplace\MarketplaceManager.cs" />
+    <Compile Include="HabboHotel\Catalog\Recycler\RecyclerReward.cs" />
     <Compile Include="HabboHotel\Catalog\Utilities\ItemUtility.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\Voucher.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherManager.cs" />
@@ -1069,6 +1074,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="Recycler SQLs.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
