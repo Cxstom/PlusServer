@@ -228,6 +228,8 @@
         public const int GetYouTubePlaylistMessageComposer = 1354;//763
         public const int RespectNotificationMessageComposer = 1818;//474
         public const int RecyclerRewardsMessageComposer = 1604;//2457
+        public const int ReloadRecyclerComposer = 1604;
+        public const int RecyclerStateComposer = 2769;
         public const int GetRoomBannedUsersMessageComposer = 1810;//3580
         public const int RoomRatingMessageComposer = 2454;//3464
         public const int PlayableGamesMessageComposer = 3076;//549

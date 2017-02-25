@@ -11,6 +11,7 @@ using Plus.HabboHotel.Catalog.Marketplace;
 using Plus.HabboHotel.Catalog.Clothing;
 
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Catalog.Recycler;
 
 namespace Plus.HabboHotel.Catalog
 {
@@ -29,6 +30,8 @@ namespace Plus.HabboHotel.Catalog
         private readonly Dictionary<int, Dictionary<int, CatalogItem>> _items;
         private readonly Dictionary<int, CatalogDeal> _deals;
         private readonly Dictionary<int, CatalogPromotion> _promotions;
+        private readonly List<RecyclerReward> _recyclerRewards;
+        private readonly List<int> _recyclerLevels;
 
         public CatalogManager()
         {
@@ -47,6 +50,8 @@ namespace Plus.HabboHotel.Catalog
             this._items = new Dictionary<int, Dictionary<int, CatalogItem>>();
             this._deals = new Dictionary<int, CatalogDeal>();
             this._promotions = new Dictionary<int, CatalogPromotion>();
+            this._recyclerRewards = new List<RecyclerReward>();
+            this._recyclerLevels = new List<int>();
         }
 
         public void Init(ItemDataManager ItemDataManager)
@@ -61,6 +66,10 @@ namespace Plus.HabboHotel.Catalog
                 this._deals.Clear();
             if (this._promotions.Count > 0)
                 this._promotions.Clear();
+            if (this._recyclerRewards.Count > 0)
+                this._recyclerRewards.Clear();
+            if (this._recyclerLevels.Count > 0)
+                this._recyclerLevels.Clear();
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -156,6 +165,20 @@ namespace Plus.HabboHotel.Catalog
                     }
                 }
 
+                dbClient.SetQuery("SELECT * FROM catalog_ecotron_rewards ORDER BY reward_level ASC");
+                DataTable EcoData = dbClient.GetTable();
+
+                if (EcoData != null)
+                {
+                    foreach (DataRow Row in EcoData.Rows)
+                    {
+                        _recyclerRewards.Add(new RecyclerReward(Convert.ToInt32(Row["item_id"]), Convert.ToUInt32(Row["reward_level"])));
+
+                        if (!_recyclerLevels.Contains(Convert.ToInt16(Row["reward_level"])))
+                            _recyclerLevels.Add(Convert.ToInt16(Row["reward_level"]));
+                    }
+                }
+
                 this._petRaceManager.Init();
                 this._clothingManager.Init();
             }
@@ -211,6 +234,54 @@ namespace Plus.HabboHotel.Catalog
         public ClothingManager GetClothingManager()
         {
             return this._clothingManager;
+        }
+
+        internal List<int> GetEcotronRewardsLevels()
+        {
+            return _recyclerLevels;
+        }
+
+        internal RecyclerReward GetRandomEcotronReward()
+        {
+            uint Level = 1;
+
+            if (PlusEnvironment.GetRandomNumber(1, 2000) == 2000)
+            {
+                Level = 5;
+            }
+            else if (PlusEnvironment.GetRandomNumber(1, 200) == 200)
+            {
+                Level = 4;
+            }
+            else if (PlusEnvironment.GetRandomNumber(1, 40) == 40)
+            {
+                Level = 3;
+            }
+            else if (PlusEnvironment.GetRandomNumber(1, 4) == 4)
+            {
+                Level = 2;
+            }
+
+            List<RecyclerReward> PossibleRewards = GetEcotronRewardsForLevel(Level);
+
+            if (PossibleRewards != null && PossibleRewards.Count >= 1)
+                return PossibleRewards[PlusEnvironment.GetRandomNumber(0, (PossibleRewards.Count - 1))];
+            else
+                return new RecyclerReward(1479, 0); // eco lamp two :D
+        }
+
+        internal List<RecyclerReward> GetEcotronRewardsForLevel(uint Level)
+        {
+            List<RecyclerReward> Rewards = new List<RecyclerReward>();
+
+            foreach (RecyclerReward R in _recyclerRewards)
+            {
+                if (R.RewardLevel == Level)
+                {
+                    Rewards.Add(R);
+                }
+            }
+            return Rewards;
         }
     }
 }

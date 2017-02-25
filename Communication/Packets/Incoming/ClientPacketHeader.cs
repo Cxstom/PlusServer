@@ -289,7 +289,7 @@
         public const int PingMessageEvent = 509;//2584
         public const int DeleteGroupMessageEvent = 114;//747
         public const int UpdateGroupSettingsMessageEvent = 2435;//3180
-        public const int GetRecyclerRewardsMessageEvent = 2152;//3258
+        public const int GetRecyclerRewardsMessageEvent = 1595;//3258
         public const int PurchaseRoomPromotionMessageEvent = 1542;//3078
         public const int PickUpBotMessageEvent = 3058;//644
         public const int GetOffersMessageEvent = 2817;//442
@@ -310,5 +310,7 @@
         public const int GetRoomRightsMessageEvent = 3937;//2734
         public const int SendMsgMessageEvent = 2409;//1981
         public const int CloseTicketMesageEvent = 1080;//50
+        public const int ReloadRecyclerMessageEvent = 2152;
+        public const int RecycleItemEvent = 88;
     }
 }

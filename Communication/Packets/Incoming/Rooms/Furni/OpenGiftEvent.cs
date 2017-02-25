@@ -63,6 +63,21 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
                 return;
             }
 
+            Thread thread;
+            if (Present.GetBaseItem().ItemName == "ecotron_box")
+            {
+                ItemData BaseItemEco = null;
+                if (PlusEnvironment.GetGame().GetItemManager().GetItem(Convert.ToInt32(Data["base_id"]), out BaseItemEco))
+                {
+                    Present.MagicRemove = true;
+                    Room.SendPacket(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
+
+                    thread = new Thread(() => FinishOpenGift(Session, BaseItemEco, Present, Room, Data));
+                    thread.Start();
+                    return;
+                }
+            }
+
             int PurchaserId = 0;
             if (!int.TryParse(Present.ExtraData.Split(Convert.ToChar(5))[2], out PurchaserId))
             {
@@ -115,10 +130,8 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Furni
             Present.MagicRemove = true;
             Room.SendPacket(new ObjectUpdateComposer(Present, Convert.ToInt32(Session.GetHabbo().Id)));
 
-            Thread thread = new Thread(() => FinishOpenGift(Session, BaseItem, Present, Room, Data));
+            thread = new Thread(() => FinishOpenGift(Session, BaseItem, Present, Room, Data));
             thread.Start();
-
-
         }
 
         private void FinishOpenGift(GameClient Session, ItemData BaseItem, Item Present, Room Room, DataRow Row)
