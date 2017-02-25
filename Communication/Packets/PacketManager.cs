@@ -135,18 +135,18 @@ namespace Plus.Communication.Packets
 
             if (!_incomingPackets.TryGetValue(Packet.Id, out Pak))
             {
-                //if (System.Diagnostics.Debugger.IsAttached)
+                if (System.Diagnostics.Debugger.IsAttached)
                     log.Debug("Unhandled Packet: " + Packet.Id + " " + Packet.ToString());
                 return;
             }
 
-            //if (System.Diagnostics.Debugger.IsAttached)
-            //{
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
                 if (_packetNames.ContainsKey(Packet.Id))
                     log.Debug("Handled Packet: [" + Packet.Id + "] " + _packetNames[Packet.Id]);
                 else
                     log.Debug("Handled Packet: [" + Packet.Id + "] UnnamedPacketEvent");
-            //}
+            }
 
             if (!IgnoreTasks)
                 ExecutePacketAsync(Session, Packet, Pak);
