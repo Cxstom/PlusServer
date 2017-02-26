@@ -90,6 +90,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                 }
             }
 
+            // Are we kicking the pet, if so send it to the other user.
             if (pet.OwnerId != Session.GetHabbo().Id)
             {
                 GameClient Target = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(pet.OwnerId);
@@ -102,7 +103,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.AI.Pets
                     return;
                 }
             }
+            else
+            {
+                Session.GetHabbo().GetInventoryComponent().TryAddPet(Pet.PetData);
+                Session.SendPacket(new PetInventoryComposer(Session.GetHabbo().GetInventoryComponent().GetPets()));
+            }
             
+            // And finally, remove the pet.
             Room.GetRoomUserManager().RemoveBot(Pet.VirtualId, false);
         }
     }
