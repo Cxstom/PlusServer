@@ -8,17 +8,23 @@ namespace Plus.HabboHotel.Items.Interactor
     {
         public void SerializeExtradata(ServerPacket Message, Item Item)
         {
-            //extradata?
-            Message.WriteInteger((Item.LimitedNo > 0 ? 256 : 0) + 5);
-            Message.WriteInteger(4);
+            if (Item.RoomId != 0)
+            {
+                if (Item.GetRoom().TonerData == null)
+                    Item.GetRoom().TonerData = new TonerData(Item.Id);
 
-            if (Item.GetRoom().TonerData == null)
-                Item.GetRoom().TonerData = new TonerData(Item.Id);
-                
-            Message.WriteInteger(Item.GetRoom().TonerData.Enabled);
-            Message.WriteInteger(Item.GetRoom().TonerData.Hue);
-            Message.WriteInteger(Item.GetRoom().TonerData.Saturation);
-            Message.WriteInteger(Item.GetRoom().TonerData.Lightness);
+                Message.WriteInteger((Item.LimitedNo > 0 ? 256 : 0) + 5);
+                Message.WriteInteger(4);
+                Message.WriteInteger(Item.GetRoom().TonerData.Enabled);
+                Message.WriteInteger(Item.GetRoom().TonerData.Hue);
+                Message.WriteInteger(Item.GetRoom().TonerData.Saturation);
+                Message.WriteInteger(Item.GetRoom().TonerData.Lightness);
+            }
+            else
+            {
+                Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+                Message.WriteString(string.Empty);
+            }
         }
 
         public void OnPlace(GameClient Session, Item Item)

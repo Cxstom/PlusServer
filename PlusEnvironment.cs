@@ -63,7 +63,7 @@ namespace Plus
 
         private static ConcurrentDictionary<int, Habbo> _usersCached = new ConcurrentDictionary<int, Habbo>();
 
-        public static string SWFRevision = "PRODUCTION-201701242205-837386173";
+        public static string SWFRevision;
 
         public static void Initialize()
         {
@@ -360,7 +360,9 @@ namespace Plus
             using (IQueryAdapter dbClient = _manager.GetQueryReactor())
             {
                 dbClient.RunQuery("TRUNCATE `catalog_marketplace_data`");
-                dbClient.RunQuery("UPDATE `users` SET `online` = '0', `auth_ticket` = NULL");
+                dbClient.RunQuery("UPDATE `users` SET `online` = '0'");
+                if (PlusEnvironment.GetSettingsManager().TryGetValue("sso.advanced") != "1")
+                    dbClient.RunQuery("UPDATE `users` SET `auth_ticket` = NULL");
                 dbClient.RunQuery("UPDATE `rooms` SET `users_now` = '0' WHERE `users_now` > '0'");
                 dbClient.RunQuery("UPDATE `server_status` SET `users_online` = '0', `loaded_rooms` = '0'");
             }
