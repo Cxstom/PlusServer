@@ -356,6 +356,7 @@ namespace Plus
             GetGame().GetPacketManager().WaitForAllToComplete();
             GetGame().GetClientManager().CloseAll();//Close all connections
             GetGame().GetRoomManager().Dispose();//Stop the game loop.
+            GetGame().GetGroupManager().GetGroupForumManager().Dispose();
 
             using (IQueryAdapter dbClient = _manager.GetQueryReactor())
             {
