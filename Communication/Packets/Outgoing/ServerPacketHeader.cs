@@ -132,7 +132,7 @@
         public const int AvatarEffectsMessageComposer = 1684;//3310
         public const int AvatarEffectActivatedMessageComposer = 545;//1710
         public const int AvatarEffectExpiredMessageComposer = 2673;//68
-        public const int AvatarEffectAddedMessageComposer = 2959;//2760
+        public const int AvatarEffectAddedMessageComposer = 1507;//2760
         public const int TradingErrorMessageComposer = 2484;//2876
         public const int TradingAcceptMessageComposer = 969;//1367
         public const int TradingStartMessageComposer = 2527;//2290

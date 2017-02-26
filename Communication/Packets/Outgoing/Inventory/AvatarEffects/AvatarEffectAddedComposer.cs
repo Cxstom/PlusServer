@@ -8,13 +8,13 @@ namespace Plus.Communication.Packets.Outgoing.Inventory.AvatarEffects
 {
     class AvatarEffectAddedComposer : ServerPacket
     {
-        public AvatarEffectAddedComposer(int SpriteId, int Duration)
+        public AvatarEffectAddedComposer(int spriteId, int duration)
             : base(ServerPacketHeader.AvatarEffectAddedMessageComposer)
         {
-            base.WriteInteger(SpriteId);
-            base.WriteInteger(0);//Types
-            base.WriteInteger(Duration);
-            base.WriteBoolean(false);//Permanent
+            base.WriteInteger(spriteId);
+            base.WriteInteger(1); // Types
+            base.WriteInteger(duration);
+            base.WriteBoolean(false); // Permanent
         }
     }
 }
