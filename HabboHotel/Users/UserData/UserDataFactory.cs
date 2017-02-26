@@ -30,7 +30,19 @@ namespace Plus.HabboHotel.Users.UserData
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `id`,`username`,`rank`,`motto`,`look`,`gender`,`last_online`,`credits`,`activity_points`,`home_room`,`block_newfriends`,`hide_online`,`hide_inroom`,`vip`,`account_created`,`vip_points`,`machine_id`,`volume`,`chat_preference`,`focus_preference`, `pets_muted`,`bots_muted`,`advertising_report_blocked`,`last_change`,`gotw_points`,`ignore_invites`,`time_muted`,`allow_gifts`,`friend_bar_state`,`disable_forced_effects`,`allow_mimic`,`rank_vip` FROM `users` WHERE `auth_ticket` = @sso LIMIT 1");
+                if (PlusEnvironment.GetSettingsManager().TryGetValue("sso.advanced") != "1")
+                    dbClient.SetQuery("SELECT `id`,`username`,`rank`,`motto`,`look`,`gender`,`last_online`,`credits`,`activity_points`,`home_room`,`block_newfriends`,`hide_online`,`hide_inroom`,`vip`,`account_created`,`vip_points`,`machine_id`,`volume`,`chat_preference`,`focus_preference`, `pets_muted`,`bots_muted`,`advertising_report_blocked`,`last_change`,`gotw_points`,`ignore_invites`,`time_muted`,`allow_gifts`,`friend_bar_state`,`disable_forced_effects`,`allow_mimic`,`rank_vip` FROM `users` WHERE `auth_ticket` = @sso LIMIT 1");
+                else
+                {
+                    dbClient.SetQuery(
+                        "SELECT users.id,users.username,users.rank,users.motto,users.look,users.gender,users.last_online,users.credits,users.activity_points,users.home_room,users.block_newfriends,users.hide_online,users.hide_inroom,users.vip,users.account_created,users.vip_points,users.machine_id,users.volume,users.chat_preference,users.focus_preference,users.pets_muted,users.bots_muted,users.advertising_report_blocked,users.last_change,users.gotw_points,users.ignore_invites,users.time_muted,users.allow_gifts,users.friend_bar_state,users.disable_forced_effects,users.allow_mimic,users.rank_vip " +
+                        "FROM users " +
+                        "JOIN user_auth_ticket " +
+                        "ON users.id = user_auth_ticket.user_id " +
+                        "WHERE user_auth_ticket.auth_ticket = @sso " +
+                        "LIMIT 1"
+                    );
+                }
                 dbClient.AddParameter("sso", SessionTicket);
                 dUserInfo = dbClient.GetRow();
 
@@ -93,7 +105,13 @@ namespace Plus.HabboHotel.Users.UserData
                     UserInfo = dbClient.GetRow();
                 }
 
-                dbClient.RunQuery("UPDATE `users` SET `online` = '1', `auth_ticket` = '' WHERE `id` = '" + UserId + "' LIMIT 1");
+                if (PlusEnvironment.GetSettingsManager().TryGetValue("sso.advanced") != "1")
+                    dbClient.RunQuery("UPDATE `users` SET `online` = '1', `auth_ticket` = '' WHERE `id` = '" + UserId + "' LIMIT 1");
+                else
+                {
+                    dbClient.RunQuery("UPDATE `users` SET `online` = '1' WHERE `id` = '" + UserId + "' LIMIT 1");
+                    dbClient.RunQuery("DELETE FROM `user_auth_ticket` WHERE `user_id` = '" + UserId + "' LIMIT 1");
+                }
             }
 
             ConcurrentDictionary<string, UserAchievement> Achievements = new ConcurrentDictionary<string, UserAchievement>();
