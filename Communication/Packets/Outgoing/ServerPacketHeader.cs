@@ -27,6 +27,15 @@
         public const int GroupFurniConfigMessageComposer = 3388;//418
         public const int PresentDeliverErrorMessageComposer = 1971;//934
 
+        // Marketplace
+        public const int MarketplaceCancelOfferResultMessageComposer = 1980;//202
+        public const int MarketPlaceOffersMessageComposer = 291;//2985
+        public const int MarketPlaceOwnOffersMessageComposer = 1892;//2806
+        public const int MarketplaceItemStatsMessageComposer = 2201;//2909
+        public const int MarketplaceConfigurationMessageComposer = 1817;//3702
+        public const int MarketplaceCanMakeOfferResultMessageComposer = 2452;//1874
+        public const int MarketplaceMakeOfferResultMessageComposer = 480;//3960
+
         // Quests
         public const int QuestListMessageComposer = 3436;//664
         public const int QuestCompletedMessageComposer = 3715;//3692
@@ -193,7 +202,6 @@
         public const int FloorHeightMapMessageComposer = 1819;//1112
         public const int RoomInfoUpdatedMessageComposer = 3743;//3833
         public const int MessengerErrorMessageComposer = 880;//915
-        public const int MarketplaceCanMakeOfferResultMessageComposer = 2452;//1874
         public const int GameAccountStatusMessageComposer = 3750;//139
         public const int GuestRoomSearchResultMessageComposer = 1634;//43
         public const int NewUserExperienceGiftOfferMessageComposer = 2029;//1904
@@ -213,7 +221,6 @@
         public const int PostUpdatedMessageComposer = 1180;//1752
         public const int UserUpdateMessageComposer = 3559;//3153
         public const int MutedMessageComposer = 2246;//229
-        public const int MarketplaceConfigurationMessageComposer = 1817;//3702
         public const int CheckGnomeNameMessageComposer = 3228;//2491
         public const int OpenBotActionMessageComposer = 464;//895
         public const int FavouritesMessageComposer = 3267;//604
@@ -223,7 +230,6 @@
         public const int UserTagsMessageComposer = 940;//774
         public const int CampaignMessageComposer = 2394;//3234
         public const int RoomEventMessageComposer = 1587;//2274
-        public const int MarketplaceItemStatsMessageComposer = 480;//2909
         public const int HabboSearchResultMessageComposer = 2823;//214
         public const int PetHorseFigureInformationMessageComposer = 2926;//560
         public const int PetInventoryMessageComposer = 1988;//3528
@@ -239,7 +245,6 @@
         public const int PlayableGamesMessageComposer = 3076;//549
         public const int TalentTrackLevelMessageComposer = 700;//2382
         public const int JoinQueueMessageComposer = 3139;//749
-        public const int MarketPlaceOwnOffersMessageComposer = 1892;//2806
         public const int PetBreedingMessageComposer = 528;//616
         public const int SubmitBullyReportMessageComposer = 47;//453
         public const int UserNameChangeMessageComposer = 574;//2587
@@ -293,14 +298,12 @@
         public const int PopularRoomTagsResultMessageComposer = 1002;//234
         public const int NewConsoleMessageMessageComposer = 984;//2121
         public const int RoomPropertyMessageComposer = 1897;//1328
-        public const int MarketPlaceOffersMessageComposer = 291;//2985
         public const int TalentTrackMessageComposer = 382;//3614
         public const int ProfileInformationMessageComposer = 3263;//3872
         public const int BadgeDefinitionsMessageComposer = 1827;//2066
         public const int Game2WeeklyLeaderboardMessageComposer = 275;//1127
         public const int NameChangeUpdateMessageComposer = 1226;//2698
         public const int RoomVisualizationSettingsMessageComposer = 3003;//3786
-        public const int MarketplaceMakeOfferResultMessageComposer = 480;//3960
         public const int FlatCreatedMessageComposer = 3001;//1621
         public const int BotInventoryMessageComposer = 3692;//2620
         public const int LoadGameMessageComposer = 652;//1403        
@@ -313,8 +316,6 @@
         public const int RoomInviteMessageComposer = 2138;//3942
         public const int LoveLockDialogueSetLockedMessageComposer = 1767;//1534
         public const int BroadcastMessageAlertMessageComposer = 1751;//1279
-        public const int MarketplaceCancelOfferResultMessageComposer = 1892;//202
-
         public const int MessengerInitMessageComposer = 1329;//391
     }
 }

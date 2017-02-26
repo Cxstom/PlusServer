@@ -38,12 +38,14 @@ namespace Plus.HabboHotel.Catalog.Utilities
             }
         }
 
+        /// <summary>
+        /// This method is used for 
+        /// </summary>
+        /// <param name="Item"></param>
+        /// <returns></returns>
         public static bool IsRare(Item Item)
         {
-            if (Item.LimitedNo > 0)
-                return true;
-
-            if (Item.Data.IsRare)
+            if (Item.LimitedNo > 0 || Item.Data.IsRare)
                 return true;
 
             return false;

@@ -29,7 +29,16 @@
         public const int PurchaseRoomPromotionMessageEvent = 1542;//3078
         public const int PurchaseGroupMessageEvent = 2959;//2546
         public const int GetClubGiftsMessageEvent = 3127;//3302
+
+        // Marketplace
+        public const int GetOffersMessageEvent = 2817;//442
+        public const int GetOwnOffersMessageEvent = 904;//3829
+        public const int GetMarketplaceCanMakeOfferMessageEvent = 1552;//1647
         public const int GetMarketplaceItemStatsMessageEvent = 1561;//1203
+        public const int MakeOfferMessageEvent = 2308;//255
+        public const int CancelOfferMessageEvent = 100;//1862
+        public const int RedeemOfferCreditsMessageEvent = 195;//1207
+        public const int BuyOfferMessageEvent = 2879;//3699
 
         // Game Center
         public const int InitializeGameCenterMessageEvent = 1825;//751
@@ -195,7 +204,6 @@
         public const int ForceOpenCalendarBoxMessageEvent = 1275;//2879
         public const int SetFriendBarStateMessageEvent = 3841;//716
         public const int SetSoundSettingsMessageEvent = 608;//3820
-        public const int RedeemOfferCreditsMessageEvent = 2879;//1207
         public const int FriendListUpdateMessageEvent = 1166;//2664
         public const int ConfirmLoveLockMessageEvent = 3873;//2082
         public const int UseHabboWheelMessageEvent = 2148;//2651
@@ -208,10 +216,8 @@
         public const int PickUpPetMessageEvent = 3975;//2342        
         public const int GetPetInventoryMessageEvent = 3646;//263
         public const int InitializeFloorPlanSessionMessageEvent = 3069;//2623
-        public const int GetOwnOffersMessageEvent = 360;//3829
         public const int SetUserFocusPreferenceEvent = 799;//526
         public const int RemoveRightsMessageEvent = 877;//40
-        public const int MakeOfferMessageEvent = 2308;//255
         public const int SaveWiredEffectConfigMessageEvent = 2234;//3431
         public const int GetRoomEntryDataMessageEvent = 1747;//2768
         public const int CanCreateRoomMessageEvent = 2411;//361
@@ -235,7 +241,6 @@
         public const int UseWallItemMessageEvent = 3674;//3396
         public const int GetTalentTrackMessageEvent = 680;//1284
         public const int GiveAdminRightsMessageEvent = 404;//465
-        public const int CancelOfferMessageEvent = 195;//1862
         public const int SaveWiredConditionConfigMessageEvent = 2370;//488
         public const int RedeemVoucherMessageEvent = 1384;//489
         public const int ThrowDiceMessageEvent = 3427;//1182
@@ -289,7 +294,6 @@
         public const int GetPetInformationMessageEvent = 2986;//2853
         public const int GetGuestRoomMessageEvent = 2247;//1164
         public const int GetMarketplaceConfigurationMessageEvent = 2811;//1604
-        public const int BuyOfferMessageEvent = 904;//3699
         public const int RemoveSaddleFromHorseMessageEvent = 844;//1892
         public const int GetHabboClubWindowMessageEvent = 3530;//715
         public const int DeleteStickyNoteMessageEvent = 3885;//2777
@@ -306,13 +310,11 @@
         public const int MoveWallItemMessageEvent = 1778;//609
         public const int ClientVariablesMessageEvent = 1220;//1600
         public const int PickUpBotMessageEvent = 3058;//644
-        public const int GetOffersMessageEvent = 2817;//442
         public const int GetHabboGroupBadgesMessageEvent = 3925;//301
         public const int GetUserTagsMessageEvent = 84;//1722
         public const int MoveAvatarMessageEvent = 2121;//1737
         public const int SaveBrandingItemMessageEvent = 2208;//3156
         public const int RespectPetMessageEvent = 1967;//1618
-        public const int GetMarketplaceCanMakeOfferMessageEvent = 1552;//1647
         public const int UpdateMagicTileMessageEvent = 2997;//1248
         public const int GetStickyNoteMessageEvent = 2469;//2796
         public const int IgnoreUserMessageEvent = 2374;//2394
