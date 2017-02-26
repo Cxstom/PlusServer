@@ -248,6 +248,8 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\GetGroupFurniSettingsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\UseSellableClothingEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\YouTubeTelevisions\YouTubeGetNextVideo.cs" />
+    <Compile Include="Communication\Packets\Incoming\Rooms\Polls\PollAnswerEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Rooms\Polls\PollRejectEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Polls\PollStartEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Settings\SaveEnforcedCategorySettingsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Sound\GetSongInfoEvent.cs" />
@@ -909,7 +911,14 @@
     <Compile Include="HabboHotel\Rooms\Instance\FilterComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\TradingComponent.cs" />
     <Compile Include="HabboHotel\Rooms\Instance\WiredComponent.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPoll.cs" />
     <Compile Include="HabboHotel\Rooms\Polls\RoomPollManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollQuestion.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollQuestionSelection.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollQuestionType.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollQuestionTypeUtility.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollType.cs" />
+    <Compile Include="HabboHotel\Rooms\Polls\RoomPollTypeUtility.cs" />
     <Compile Include="HabboHotel\Rooms\RoomAccess.cs" />
     <Compile Include="HabboHotel\Rooms\RoomAccessUtility.cs" />
     <Compile Include="HabboHotel\Rooms\RoomAppender.cs" />
@@ -982,6 +991,7 @@
     <Compile Include="HabboHotel\Users\Navigator\SavedSearches\SavedSearch.cs" />
     <Compile Include="HabboHotel\Users\Navigator\SavedSearches\SearchesComponent.cs" />
     <Compile Include="HabboHotel\Users\Permissions\PermissionComponent.cs" />
+    <Compile Include="HabboHotel\Users\Polls\PollsComponent.cs" />
     <Compile Include="HabboHotel\Users\Process\ProcessComponent.cs" />
     <Compile Include="HabboHotel\Users\Relationships\Relationship.cs" />
     <Compile Include="HabboHotel\Users\HabboStats.cs" />

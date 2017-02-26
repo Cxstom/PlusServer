@@ -53,6 +53,7 @@ using Plus.Communication.Packets.Incoming.Marketplace;
 using Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks;
 using Plus.Communication.Packets.Incoming.Talents;
 using Plus.Communication.Packets.Incoming.Groups.Forums;
+using Plus.Communication.Packets.Incoming.Rooms.Polls;
 
 namespace Plus.Communication.Packets
 {
@@ -104,6 +105,7 @@ namespace Plus.Communication.Packets
             this.RegisterNavigator();
             this.RegisterNewNavigator();
             this.RegisterRoomAction();
+            this.RegisterPolls();
             this.RegisterQuests();
             this.RegisterRoomConnection();
             this.RegisterRoomChat();
@@ -295,6 +297,12 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.InitializeNewNavigatorMessageEvent, new InitializeNewNavigatorEvent());
             this._incomingPackets.Add(ClientPacketHeader.NavigatorSearchMessageEvent, new NavigatorSearchEvent());
             this._incomingPackets.Add(ClientPacketHeader.FindRandomFriendingRoomMessageEvent, new FindRandomFriendingRoomEvent());
+        }
+        private void RegisterPolls()
+        {
+            this._incomingPackets.Add(ClientPacketHeader.PollStartMessageEvent, new PollStartEvent());
+            this._incomingPackets.Add(ClientPacketHeader.PollAnswerMessageEvent, new PollAnswerEvent());
+            this._incomingPackets.Add(ClientPacketHeader.PollRejectMessageEvent, new PollRejectEvent());
         }
 
         private void RegisterQuests()

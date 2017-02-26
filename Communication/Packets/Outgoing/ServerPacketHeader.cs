@@ -80,6 +80,10 @@
         public const int FlatControllerAddedMessageComposer = 3493;//1056
         public const int RoomRightsListMessageComposer = 225;//2410
 
+        // Room Polls
+        public const int PollOfferMessageComposer = 2350;
+        public const int PollContentsMessageComposer = 813;
+
         // Room Furniture
         public const int HideWiredConfigMessageComposer = 2430;//3715
         public const int WiredEffectConfigMessageComposer = 1428;//1469

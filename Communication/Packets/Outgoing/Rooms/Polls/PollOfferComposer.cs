@@ -1,19 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
+﻿using Plus.HabboHotel.Rooms.Polls;
 
 namespace Plus.Communication.Packets.Outgoing.Rooms.Polls
 {
     class PollOfferComposer : ServerPacket
     {
-        public PollOfferComposer()
-            : base(1074)
+        public PollOfferComposer(RoomPoll poll)
+            : base(ServerPacketHeader.PollOfferMessageComposer)
         {
-            base.WriteInteger(111141);//Room Id
-           base.WriteString("CLIENT_NPS");
-           base.WriteString("Customer Satisfaction Poll");
-           base.WriteString("Give us your opinion!");
+            base.WriteInteger(poll.Id);
+            base.WriteString(RoomPollTypeUtility.GetRoomPollType(poll.Type).ToUpper());
+            base.WriteString(poll.Headline);
+            base.WriteString(poll.Summary);
         }
     }
 }

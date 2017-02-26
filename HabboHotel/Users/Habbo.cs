@@ -33,6 +33,7 @@ using Plus.HabboHotel.Users.Permissions;
 using Plus.HabboHotel.Subscriptions;
 using Plus.HabboHotel.Users.Calendar;
 using Plus.HabboHotel.Users.Ignores;
+using Plus.HabboHotel.Users.Polls;
 
 namespace Plus.HabboHotel.Users
 {
@@ -168,6 +169,7 @@ namespace Plus.HabboHotel.Users
         private ClothingComponent _clothing;
         private PermissionComponent _permissions;
         private IgnoresComponent _ignores;
+        private PollsComponent _polls;
 
         private IChatCommand _iChatCommand;
 
@@ -933,6 +935,13 @@ namespace Plus.HabboHotel.Users
             return this._ignores.Init(this);
         }
 
+        private bool InitPolls()
+        {
+            this._polls = new PollsComponent();
+
+            return this._polls.Init(this);
+        }
+
         private bool InitPermissions()
         {
             this._permissions = new PermissionComponent();
@@ -973,6 +982,7 @@ namespace Plus.HabboHotel.Users
             this.InitFX();
             this.InitClothing();
             this.InitIgnores();
+            this.InitPolls();
         }
 
 
@@ -984,6 +994,11 @@ namespace Plus.HabboHotel.Users
         public IgnoresComponent GetIgnores()
         {
             return this._ignores;
+        }
+
+        public PollsComponent GetPolls()
+        {
+            return this._polls;
         }
 
         public void OnDisconnect()
