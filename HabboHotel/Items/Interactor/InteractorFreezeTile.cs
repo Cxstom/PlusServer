@@ -1,15 +1,18 @@
-﻿using System;
-
-using Plus.HabboHotel.Items;
-using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Rooms.Games;
+﻿using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms.Games.Teams;
+using Plus.Communication.Packets.Outgoing;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     class InteractorFreezeTile : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
         }
@@ -42,7 +45,18 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnWiredTrigger(Item Item)
         {
+        }
 
+        public void OnCycle(Item Item)
+        {
+            if (Item.InteractingUser > 0)
+            {
+                Item.ExtraData = "11000";
+                Item.UpdateState(false, true);
+                Item.GetRoom().GetFreeze().onFreezeTiles(Item, Item.freezePowerUp);
+                Item.InteractingUser = 0;
+                Item.interactionCountHelper = 0;
+            }
         }
     }
 }

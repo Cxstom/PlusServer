@@ -1,7 +1,4 @@
-﻿using System;
-using Plus;
-using Plus.Core;
-namespace Plus.HabboHotel.Items
+﻿namespace Plus.HabboHotel.Items
 {
     public enum InteractionType
     {
@@ -13,7 +10,6 @@ namespace Plus.HabboHotel.Items
         BED,
         SCOREBOARD,
         VENDING_MACHINE,
-        ALERT,
         ONE_WAY_GATE,
         LOVE_SHUFFLER,
         HABBO_WHEEL,
@@ -146,8 +142,6 @@ namespace Plus.HabboHotel.Items
                     return InteractionType.SCOREBOARD;
                 case "vendingmachine":
                     return InteractionType.VENDING_MACHINE;
-                case "alert":
-                    return InteractionType.ALERT;
                 case "onewaygate":
                     return InteractionType.ONE_WAY_GATE;
                 case "loveshuffler":

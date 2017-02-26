@@ -1,12 +1,18 @@
-﻿using System;
-
-using Plus.HabboHotel.Rooms;
+﻿using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.GameClients;
+using Plus.Communication.Packets.Outgoing;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorDice : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(1);
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
             if (Item.ExtraData == "-1")
@@ -57,9 +63,14 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnWiredTrigger(Item Item)
         {
-            Item.ExtraData = "-1";
-            Item.UpdateState(false, true);
-            Item.RequestUpdate(4, true);
+        }
+
+        public void OnCycle(Item Item)
+        {
+            string[] numbers = new string[] { "1", "2", "3", "4", "5", "6" };
+            if (Item.ExtraData == "-1")
+                Item.ExtraData = Item.RandomizeStrings(numbers)[0];
+            Item.UpdateState();
         }
     }
 }

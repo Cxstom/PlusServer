@@ -1,19 +1,20 @@
-﻿using System;
-using System.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-using Plus.Communication.Packets.Incoming;
-using Plus.HabboHotel.Rooms;
+using Plus.Communication.Packets.Outgoing;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Items.Wired;
 using Plus.Communication.Packets.Outgoing.Rooms.Furni.Wired;
-
-
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorWired : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
         }
@@ -59,6 +60,15 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnWiredTrigger(Item Item)
         {
+        }
+
+        public void OnCycle(Item Item)
+        {
+            if (Item.ExtraData == "1")
+            {
+                Item.ExtraData = "0";
+                Item.UpdateState(false, true);
+            }
         }
     }
 }

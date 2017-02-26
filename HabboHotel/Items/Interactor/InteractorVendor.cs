@@ -1,11 +1,19 @@
 ﻿using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Rooms.PathFinding;
+using Plus.Communication.Packets.Outgoing;
+using Plus.Utilities;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorVendor : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
             Item.ExtraData = "0";
@@ -70,6 +78,27 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnWiredTrigger(Item Item)
         {
+        }
+
+        public void OnCycle(Item Item)
+        {
+            if (Item.ExtraData == "1")
+            {
+                RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Item.InteractingUser);
+                if (User == null)
+                    return;
+                User.UnlockWalking();
+                if (Item.GetBaseItem().VendingIds.Count > 0)
+                {
+                    int randomDrink = Item.GetBaseItem().VendingIds[RandomNumber.GenerateRandom(0, (Item.GetBaseItem().VendingIds.Count - 1))];
+                    User.CarryItem(randomDrink);
+                }
+                
+                Item.InteractingUser = 0;
+                Item.ExtraData = "0";
+
+                Item.UpdateState(false, true);
+            }
         }
     }
 }

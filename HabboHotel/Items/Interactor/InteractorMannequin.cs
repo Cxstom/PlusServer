@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
-using Plus.Communication.Packets.Incoming;
-
+using Plus.Communication.Packets.Outgoing;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 
 using Plus.Database.Interfaces;
@@ -13,15 +12,40 @@ namespace Plus.HabboHotel.Items.Interactor
 {
     class InteractorMannequin : IFurniInteractor
     {
-        public void OnPlace(GameClients.GameClient Session, Item Item)
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger((Item.LimitedNo > 0 ? 256 : 0) + 1);
+            Message.WriteInteger(3);
+            if (Item.ExtraData.Contains(Convert.ToChar(5).ToString()))
+            {
+                string[] Stuff = Item.ExtraData.Split(Convert.ToChar(5));
+                Message.WriteString("GENDER");
+                Message.WriteString(Stuff[0]);
+                Message.WriteString("FIGURE");
+                Message.WriteString(Stuff[1]);
+                Message.WriteString("OUTFIT_NAME");
+                Message.WriteString(Stuff[2]);
+            }
+            else
+            {
+                Message.WriteString("GENDER");
+                Message.WriteString("m");
+                Message.WriteString("FIGURE");
+                Message.WriteString("");
+                Message.WriteString("OUTFIT_NAME");
+                Message.WriteString("My Look");
+            }
+        }
+
+        public void OnPlace(GameClient Session, Item Item)
         {
         }
 
-        public void OnRemove(GameClients.GameClient Session, Item Item)
+        public void OnRemove(GameClient Session, Item Item)
         {
         }
 
-        public void OnTrigger(GameClients.GameClient Session, Item Item, int Request, bool HasRights)
+        public void OnTrigger(GameClient Session, Item Item, int Request, bool HasRights)
         {
             if (Item.ExtraData.Contains(Convert.ToChar(5).ToString()))
             {
@@ -86,6 +110,10 @@ namespace Plus.HabboHotel.Items.Interactor
         }
 
         public void OnWiredTrigger(Item Item)
+        {
+        }
+
+        public void OnCycle(Item Item)
         {
         }
     }

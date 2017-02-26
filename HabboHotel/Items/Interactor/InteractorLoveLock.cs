@@ -1,14 +1,42 @@
-﻿using Plus.Communication.Packets.Outgoing;
+﻿using System;
+using System.Drawing;
+
+using Plus.Communication.Packets.Outgoing;
 using Plus.Communication.Packets.Outgoing.Rooms.Furni.LoveLocks;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
-using System;
-using System.Drawing;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
+    // re-code LoveLocks?
     public class InteractorLoveLock : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger((Item.LimitedNo > 0 ? 256 : 0) + 2);
+            if (Item.ExtraData.Contains(Convert.ToChar(5).ToString()))
+            {
+                string[] EData = Item.ExtraData.Split((char)5);
+                int I = 0;
+                Message.WriteInteger(EData.Length);
+                while (I < EData.Length)
+                {
+                    Message.WriteString(EData[I]);
+                    I++;
+                }
+            }
+            else
+            {
+                Message.WriteInteger(6);
+                Message.WriteString("0");
+                Message.WriteString("");
+                Message.WriteString("");
+                Message.WriteString("");
+                Message.WriteString("");
+                Message.WriteString("");
+            }
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
         }
@@ -83,6 +111,10 @@ namespace Plus.HabboHotel.Items.Interactor
         }
 
         public void OnWiredTrigger(Item Item)
+        {
+        }
+
+        public void OnCycle(Item Item)
         {
         }
     }

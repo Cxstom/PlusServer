@@ -1,10 +1,18 @@
 ﻿using System;
+
 using Plus.HabboHotel.GameClients;
+using Plus.Communication.Packets.Outgoing;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorBanzaiTimer : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
         }
@@ -107,6 +115,46 @@ namespace Plus.HabboHotel.Items.Interactor
 
             if (!Item.GetRoom().GetBanzai().isBanzaiActive)
                 Item.GetRoom().GetBanzai().BanzaiStart();
+        }
+
+        public void OnCycle(Item Item)
+        {
+            if (string.IsNullOrEmpty(Item.ExtraData))
+                return;
+
+            int seconds = 0;
+
+            try
+            {
+                seconds = int.Parse(Item.ExtraData);
+            }
+            catch { }
+
+            if (seconds > 0)
+            {
+                if (Item.interactionCountHelper == 1)
+                {
+                    seconds--;
+                    Item.interactionCountHelper = 0;
+
+                    if (Item.GetRoom().GetBanzai().isBanzaiActive)
+                    {
+                        Item.ExtraData = seconds.ToString();
+                        Item.UpdateState();
+                    }
+                    else
+                        return;
+                }
+                else
+                    Item.interactionCountHelper++;
+
+                Item.UpdateCounter = 1;
+            }
+            else
+            {
+                Item.UpdateCounter = 0;
+                Item.GetRoom().GetBanzai().BanzaiEnd();
+            }
         }
     }
 }

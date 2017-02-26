@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
+
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
-using Plus.Communication.Packets.Incoming;
-
+using Plus.Communication.Packets.Outgoing;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.HabboHotel.Rooms.PathFinding;
 
@@ -11,6 +11,12 @@ namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorPuzzleBox : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
         }
@@ -21,6 +27,7 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnTrigger(GameClient Session, Item Item, int Request, bool HasRights)
         {
+            //check this, apparent issue
             if (Session == null)
                 return;
             RoomUser User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Session.GetHabbo().Id);
@@ -90,6 +97,10 @@ namespace Plus.HabboHotel.Items.Interactor
         }
 
         public void OnWiredTrigger(Item Item)
+        {
+        }
+
+        public void OnCycle(Item Item)
         {
         }
     }
