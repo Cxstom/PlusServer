@@ -52,6 +52,7 @@ using Plus.Communication.Packets.Incoming.GameCenter;
 using Plus.Communication.Packets.Incoming.Marketplace;
 using Plus.Communication.Packets.Incoming.Rooms.Furni.LoveLocks;
 using Plus.Communication.Packets.Incoming.Talents;
+using Plus.Communication.Packets.Incoming.Groups.Forums;
 
 namespace Plus.Communication.Packets
 {
@@ -118,6 +119,7 @@ namespace Plus.Communication.Packets
             this.RegisterAvatar();
             this.RegisterMessenger();
             this.RegisterGroups();
+            this.RegisterGroupForums();
             this.RegisterRoomSettings();
             this.RegisterPets();
             this.RegisterBots();
@@ -480,6 +482,19 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.AcceptGroupMembershipMessageEvent, new AcceptGroupMembershipEvent());
             this._incomingPackets.Add(ClientPacketHeader.DeclineGroupMembershipMessageEvent, new DeclineGroupMembershipEvent());
             this._incomingPackets.Add(ClientPacketHeader.DeleteGroupMessageEvent, new DeleteGroupEvent());
+        }
+        private void RegisterGroupForums()
+        {
+            this._incomingPackets.Add(ClientPacketHeader.GetForumsListDataMessageEvent, new GetForumsListDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetForumStatsMessageEvent, new GetForumStatsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetThreadsListDataMessageEvent, new GetThreadsListDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetThreadDataMessageEvent, new GetThreadDataEvent());
+            this._incomingPackets.Add(ClientPacketHeader.UpdateForumSettingsMessageEvent, new UpdateForumSettingsEvent());
+            this._incomingPackets.Add(ClientPacketHeader.PostGroupContentMessageEvent, new PostMessageEvent());
+            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupThreadMessageEvent, new DeleteThreadEvent());
+            this._incomingPackets.Add(ClientPacketHeader.DeleteGroupPostMessageEvent, new DeletePostEvent());
+            this._incomingPackets.Add(ClientPacketHeader.UpdateThreadMessageEvent, new UpdateThreadEvent());
+            this._incomingPackets.Add(ClientPacketHeader.GetForumUserProfileMessageEvent, new GetForumUserProfileEvent());
         }
 
         private void RegisterRoomSettings()

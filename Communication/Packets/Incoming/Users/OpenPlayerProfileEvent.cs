@@ -16,8 +16,7 @@ namespace Plus.Communication.Packets.Incoming.Users
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
             int userID = Packet.PopInt();
-            Boolean IsMe = Packet.PopBoolean();
-
+  
             Habbo targetData = PlusEnvironment.GetHabboById(userID);
             if (targetData == null)
             {
@@ -25,7 +24,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 return;
             }
             
-            List<Group> Groups = PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(targetData.Id);
+            List<Group> groups = PlusEnvironment.GetGame().GetGroupManager().GetGroupsForUser(targetData.Id);
             
             int friendCount = 0;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -35,7 +34,7 @@ namespace Plus.Communication.Packets.Incoming.Users
                 friendCount = dbClient.GetInteger();
             }
 
-            Session.SendPacket(new ProfileInformationComposer(targetData, Session, Groups, friendCount));
+            Session.SendPacket(new ProfileInformationComposer(targetData, Session, groups, friendCount));
         }
     }
 }

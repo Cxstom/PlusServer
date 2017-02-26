@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
+using System.Data;
+using System.Collections.Generic;
 
-using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Rooms;
+using log4net;
 using Plus.HabboHotel.Users;
-using Plus.Communication.Packets.Incoming;
 using System.Collections.Concurrent;
 
 using Plus.Database.Interfaces;
-using log4net;
+using Plus.HabboHotel.Groups.Forums;
 
 namespace Plus.HabboHotel.Groups
 {
     public class GroupManager
     {
         private static readonly ILog log = LogManager.GetLogger("Plus.HabboHotel.Groups.GroupManager");
+
+        private readonly GroupForumManager _groupForumManager;
 
         private readonly object _groupLoadingSync;
         private readonly ConcurrentDictionary<int, Group> _groups;
@@ -36,7 +36,9 @@ namespace Plus.HabboHotel.Groups
             this._symbols = new List<GroupBadgeParts>();
             this._baseColours = new List<GroupColours>();
             this._symbolColours = new Dictionary<int, GroupColours>();
-            this._backgroundColours = new Dictionary<int, GroupColours>();         
+            this._backgroundColours = new Dictionary<int, GroupColours>();
+
+            this._groupForumManager = new GroupForumManager();
         }
 
         public void Init()
@@ -78,6 +80,8 @@ namespace Plus.HabboHotel.Groups
                     }
                 }
             }
+
+            this._groupForumManager.Init();
         }
 
         public bool TryGetGroup(int id, out Group Group)
@@ -202,6 +206,43 @@ namespace Plus.HabboHotel.Groups
             return Groups;
         }
 
+        public List<Group> GetGroupForumsForUser(int UserId)
+        {
+            List<Group> Groups = new List<Group>();
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT g.id FROM `group_memberships` AS m RIGHT JOIN `groups` AS g ON m.group_id = g.id WHERE g.forum_enabled = '1' AND m.user_id = @user");
+                dbClient.AddParameter("user", UserId);
+                DataTable GetGroups = dbClient.GetTable();
+
+                if (GetGroups != null)
+                {
+                    foreach (DataRow Row in GetGroups.Rows)
+                    {
+                        Group Group = null;
+                        if (this.TryGetGroup(Convert.ToInt32(Row["id"]), out Group))
+                            Groups.Add(Group);
+                    }
+                }
+            }
+
+            return Groups;
+        }
+
+        public GroupForumManager GetGroupForumManager()
+        {
+            return this._groupForumManager;
+        }
+
+        public List<Group> GetActiveGroupForums()
+        {
+            return this._groups.Values.Where(x => x.ForumEnabled && x.GetForum().MessageCount > 0).OrderByDescending(x => x.GetForum().MessageCount).ToList();
+        }
+
+        public List<Group> GetPopularGroupForums()
+        {
+            return this._groups.Values.Where(x => x.ForumEnabled).OrderByDescending(x => x.GetForum().LastReplierId).ToList();
+        }
 
         public ICollection<GroupBadgeParts> BadgeBases
         {
@@ -226,6 +267,11 @@ namespace Plus.HabboHotel.Groups
         public ICollection<GroupColours> BadgeBackColours
         {
             get { return this._backgroundColours.Values; }
+        }
+
+        public ICollection<Group> Groups
+        {
+            get { return this._groups.Values; }
         }
     }
 }

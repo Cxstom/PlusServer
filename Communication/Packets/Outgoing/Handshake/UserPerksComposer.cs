@@ -49,7 +49,7 @@ namespace Plus.Communication.Packets.Outgoing.Handshake
             base.WriteBoolean(false);
             base.WriteString("CAMERA");
             base.WriteString(""); // ??
-            base.WriteBoolean(false);
+            base.WriteBoolean(true);
             base.WriteString("NAVIGATOR_PHASE_TWO_2014");
             base.WriteString(""); // ??
             base.WriteBoolean(true);

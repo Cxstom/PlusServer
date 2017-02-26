@@ -138,6 +138,16 @@
     <Compile Include="Communication\Packets\Incoming\Groups\AcceptGroupMembershipEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\DeclineGroupMembershipEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\DeleteGroupEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\DeletePostEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\DeleteThreadEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\GetForumsListDataEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\GetForumStatsEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\GetForumUserProfileEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\GetThreadDataEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\GetThreadsListDataEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\PostMessageEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\UpdateForumSettingsEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Groups\Forums\UpdateThreadEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GetBadgeEditorPartsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GetGroupCreationWindowEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Groups\GetGroupInfoEvent.cs" />
@@ -261,6 +271,15 @@
     <Compile Include="Communication\Packets\Outgoing\GameCenter\JoinQueueComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\GameCenter\LoadGameComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\GameCenter\PlayableGamesComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ForumDataComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ForumsListDataComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\GetForumStatsEvent.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\PostUpdatedComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ThreadCreatedComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ThreadDataComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ThreadReplyComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ThreadsListDataComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Groups\Forums\ThreadUpdatedComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Groups\GroupFurniSettingsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Groups\GroupMembershipRequestedComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Groups\UnknownGroupComposer.cs" />
@@ -673,6 +692,11 @@
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherType.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherUtility.cs" />
     <Compile Include="HabboHotel\Groups\BadgePartUtility.cs" />
+    <Compile Include="HabboHotel\Groups\Forums\GroupForum.cs" />
+    <Compile Include="HabboHotel\Groups\Forums\GroupForumManager.cs" />
+    <Compile Include="HabboHotel\Groups\Forums\GroupPost.cs" />
+    <Compile Include="HabboHotel\Groups\Forums\GroupThread.cs" />
+    <Compile Include="HabboHotel\Groups\Forums\Process\ProcessComponent.cs" />
     <Compile Include="HabboHotel\Groups\GroupColours.cs" />
     <Compile Include="HabboHotel\Groups\GroupBadgeParts.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorCounter.cs" />
@@ -1098,6 +1122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Communication\Packets\Incoming\Rooms\Groups\" />
+    <Folder Include="HabboHotel\Groups\Forums\Types\" />
     <Folder Include="HabboHotel\Rooms\Chat\Commands\Roleplay\Generic\" />
     <Folder Include="HabboHotel\Rooms\Chat\Moderation\" />
   </ItemGroup>

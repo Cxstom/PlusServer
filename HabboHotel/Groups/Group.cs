@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Plus.Database.Interfaces;
+using Plus.HabboHotel.Groups.Forums;
 
 namespace Plus.HabboHotel.Groups
 {
@@ -20,12 +21,14 @@ namespace Plus.HabboHotel.Groups
         public int Colour2 { get; set; }
         public bool ForumEnabled { get; set; }
         public GroupType GroupType { get; set; }
-        public bool HasForum;
+        
         private List<int> _members;
         private List<int> _requests;
         private List<int> _administrators;
 
-        public Group(int Id, string Name, string Description, string Badge, int RoomId, int Owner, int Time, int Type, int Colour1, int Colour2, int AdminOnlyDeco, bool HasForum)
+        private GroupForum _forum;
+
+        public Group(int Id, string Name, string Description, string Badge, int RoomId, int Owner, int Time, int Type, int Colour1, int Colour2, int AdminOnlyDeco, bool forumEnabled)
         {
             this.Id = Id;
             this.Name = Name;
@@ -36,7 +39,6 @@ namespace Plus.HabboHotel.Groups
             this.CreatorId = Owner;
             this.Colour1 = (Colour1 == 0) ? 1 : Colour1;
             this.Colour2 = (Colour2 == 0) ? 1 : Colour2;
-            this.HasForum = HasForum;
 
             switch (Type)
             {
@@ -52,13 +54,55 @@ namespace Plus.HabboHotel.Groups
             }
 
             this.AdminOnlyDeco = AdminOnlyDeco;
-            this.ForumEnabled = ForumEnabled;
+            this.ForumEnabled = forumEnabled;
 
             this._members = new List<int>();
             this._requests = new List<int>();
             this._administrators = new List<int>();
 
+            if (this.ForumEnabled)
+                InitForum(false);
+
             InitMembers();
+        }
+
+        /// <summary>
+        /// Used to load the GroupForum, we use this on the initial initialization, and also if a user has just bought a forum for a group.
+        /// </summary>
+        /// <param name="purchased"></param>
+        public void InitForum(bool purchased = false)
+        {
+            if (purchased)
+                this.ForumEnabled = true;
+
+            DataRow row = null;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT * FROM `group_forum_settings` WHERE `group_id` = @GroupId LIMIT 1");
+                dbClient.AddParameter("GroupId", this.Id);
+                row = dbClient.GetRow();
+            }
+
+            if (row == null)
+            {
+                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.RunQuery("INSERT INTO `group_forum_settings` (`group_id`) VALUES ('" + this.Id + "')");
+                    dbClient.SetQuery("SELECT * FROM `group_forum_settings` WHERE `group_id` = @GroupId LIMIT 1");
+                    dbClient.AddParameter("GroupId", this.Id);
+                    row = dbClient.GetRow();
+                }
+            }
+
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.RunQuery("UPDATE `groups` SET `forum_enabled` = '1' WHERE `id` = '" + this.Id + "' LIMIT 1");
+            }
+
+            if (row != null)
+            {
+                this._forum = new GroupForum(this.Id, Convert.ToInt32(row["readability_setting"]), Convert.ToInt32(row["post_creation_setting"]), Convert.ToInt32(row["thread_creation_setting"]), Convert.ToInt32(row["moderation_setting"]), Convert.ToInt32(row["score"]));
+            }
         }
 
         public void InitMembers()
@@ -282,8 +326,21 @@ namespace Plus.HabboHotel.Groups
             this._requests.Clear();
         }
 
+        public GroupForum GetForum()
+        {
+            return this._forum;
+        }
+
         public void Dispose()
         {
+            if (this._forum != null)
+            {
+                this._forum.Dispose();
+
+                //And finally..
+                this._forum = null;
+            }
+            
             this._requests.Clear();
             this._members.Clear();
             this._administrators.Clear();
