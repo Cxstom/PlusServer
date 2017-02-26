@@ -1,17 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
+﻿using Plus.HabboHotel.Rooms.Polls;
 using Plus.Communication.Packets.Outgoing.Rooms.Polls;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Polls
 {
     class PollStartEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            Session.SendPacket(new PollContentsComposer());
+            int pollId = packet.PopInt();
+
+            RoomPoll poll = null;
+            if (!PlusEnvironment.GetGame().GetPollManager().TryGetPoll(pollId, out poll))
+                return;
+
+            session.SendPacket(new PollContentsComposer(poll));
         }
     }
 }

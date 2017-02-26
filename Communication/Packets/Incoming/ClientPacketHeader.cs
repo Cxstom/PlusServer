@@ -49,6 +49,11 @@
         public const int ShoutMessageEvent = 697;//2101
         public const int WhisperMessageEvent = 3003;//878
 
+        // Room Polls
+        public const int PollStartMessageEvent = 3970;
+        public const int PollAnswerMessageEvent = 2445;
+        public const int PollRejectMessageEvent = 281;
+
         // Room Engine
 
         // Room Furniture

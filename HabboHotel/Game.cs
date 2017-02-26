@@ -28,6 +28,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Plus.Core;
 using Plus.Core.Language;
+using Plus.HabboHotel.Rooms.Polls;
 
 namespace Plus.HabboHotel
 {
@@ -57,6 +58,8 @@ namespace Plus.HabboHotel
         private readonly BadgeManager _badgeManager;
         private readonly PermissionManager _permissionManager;
         private readonly SubscriptionManager _subscriptionManager;
+        private readonly PollManager _pollManager;
+
 
         private bool _cycleEnded;
         private bool _cycleActive;
@@ -109,6 +112,8 @@ namespace Plus.HabboHotel
             this._subscriptionManager = new SubscriptionManager();
             this._subscriptionManager.Init();
 
+            this._pollManager = new PollManager();
+            this._pollManager.Init();
         }
 
         public void StartGameLoop()
@@ -246,6 +251,11 @@ namespace Plus.HabboHotel
         public BadgeManager GetBadgeManager()
         {
             return this._badgeManager;
+        }
+
+        public PollManager GetPollManager()
+        {
+            return this._pollManager;
         }
     }
 }
