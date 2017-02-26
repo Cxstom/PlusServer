@@ -64,124 +64,118 @@ namespace Plus.HabboHotel.Rooms.Games.Football
 
             foreach (Item item in this._balls.Values.ToList())
             {
-                int NewX = 0;
-                int NewY = 0;
-                int differenceX = User.X - item.GetX;
-                int differenceY = User.Y - item.GetY;
+                int ballNewX = 0;
+                int ballNewY = 0;
+                int ballTravelDistance = 2;
 
-                if (differenceX == 0 && differenceY == 0)
+                if (Gamemap.TileDistance(User.X, User.Y, item.GetX, item.GetY) == 0)
                 {
+                    if (User.X == item.GetX && User.Y == item.GetY && User.GoalX == item.GetX && User.GoalY == item.GetY)
+                    {
+                        ballTravelDistance = 6;
+                    }
+                    
                     if (User.RotBody == 4)
                     {
-                        NewX = User.X;
-                        NewY = User.Y + 2;
+                        ballNewX = User.X;
+                        ballNewY = User.Y + ballTravelDistance;
 
                     }
                     else if (User.RotBody == 6)
                     {
-                        NewX = User.X - 2;
-                        NewY = User.Y;
+                        ballNewX = User.X - ballTravelDistance;
+                        ballNewY = User.Y;
 
                     }
                     else if (User.RotBody == 0)
                     {
-                        NewX = User.X;
-                        NewY = User.Y - 2;
+                        ballNewX = User.X;
+                        ballNewY = User.Y - ballTravelDistance;
 
                     }
                     else if (User.RotBody == 2)
                     {
-                        NewX = User.X + 2;
-                        NewY = User.Y;
+                        ballNewX = User.X + ballTravelDistance;
+                        ballNewY = User.Y;
 
                     }
                     else if (User.RotBody == 1)
                     {
-                        NewX = User.X + 2;
-                        NewY = User.Y - 2;
+                        ballNewX = User.X + ballTravelDistance;
+                        ballNewY = User.Y - ballTravelDistance;
 
                     }
                     else if (User.RotBody == 7)
                     {
-                        NewX = User.X - 2;
-                        NewY = User.Y - 2;
+                        ballNewX = User.X - ballTravelDistance;
+                        ballNewY = User.Y - ballTravelDistance;
 
                     }
                     else if (User.RotBody == 3)
                     {
-                        NewX = User.X + 2;
-                        NewY = User.Y + 2;
+                        ballNewX = User.X + ballTravelDistance;
+                        ballNewY = User.Y + ballTravelDistance;
 
                     }
                     else if (User.RotBody == 5)
                     {
-                        NewX = User.X - 2;
-                        NewY = User.Y + 2;
+                        ballNewX = User.X - ballTravelDistance;
+                        ballNewY = User.Y + ballTravelDistance;
                     }
 
-                    if (!this._room.GetRoomItemHandler().CheckPosItem(User.GetClient(), item, NewX, NewY, item.Rotation, false, false))
+                    if (!this._room.GetRoomItemHandler().CheckPosItem(User.GetClient(), item, ballNewX, ballNewY, item.Rotation, false, false))
                     {
+
+                        // TODO: Calculate how far we can go?
+
                         if (User.RotBody == 0)
                         {
-                            NewX = User.X;
-                            NewY = User.Y + 1;
+                            ballNewX = User.X;
+                            ballNewY = User.Y + 1;
                         }
                         else if (User.RotBody == 2)
                         {
-                            NewX = User.X - 1;
-                            NewY = User.Y;
+                            ballNewX = User.X - 1;
+                            ballNewY = User.Y;
                         }
                         else if (User.RotBody == 4)
                         {
-                            NewX = User.X;
-                            NewY = User.Y - 1;
+                            ballNewX = User.X;
+                            ballNewY = User.Y - 1;
                         }
                         else if (User.RotBody == 6)
                         {
-                            NewX = User.X + 1;
-                            NewY = User.Y;
+                            ballNewX = User.X + 1;
+                            ballNewY = User.Y;
                         }
                         else if (User.RotBody == 5)
                         {
-                            NewX = User.X + 1;
-                            NewY = User.Y - 1;
+                            ballNewX = User.X + 1;
+                            ballNewY = User.Y - 1;
                         }
                         else if (User.RotBody == 3)
                         {
-                            NewX = User.X - 1;
-                            NewY = User.Y - 1;
+                            ballNewX = User.X - 1;
+                            ballNewY = User.Y - 1;
                         }
                         else if (User.RotBody == 7)
                         {
-                            NewX = User.X + 1;
-                            NewY = User.Y + 1;
+                            ballNewX = User.X + 1;
+                            ballNewY = User.Y + 1;
                         }
                         else if (User.RotBody == 1)
                         {
-                            NewX = User.X - 1;
-                            NewY = User.Y + 1;
+                            ballNewX = User.X - 1;
+                            ballNewY = User.Y + 1;
                         }
                     }
-                }
-                else if (differenceX <= 1 && differenceX >= -1 && differenceY <= 1 && differenceY >= -1 && VerifyBall(User, item.Coordinate.X, item.Coordinate.Y))//VERYFIC BALL CHECAR SI ESTA EN DIRECCION ASIA LA PELOTA
-                {
-                    NewX = differenceX * -1;
-                    NewY = differenceY * -1;
 
-                    NewX = NewX + item.GetX;
-                    NewY = NewY + item.GetY;
-                }
-
-                if (item.GetRoom().GetGameMap().ValidTile(NewX, NewY))
-                {
-                    MoveBall(item, NewX, NewY, User);
+                    if (item.GetRoom().GetGameMap().ValidTile(ballNewX, ballNewY))
+                    {
+                        MoveBall(item, ballNewX, ballNewY, User);
+                    }
                 }
             }
-        }
-
-        private bool VerifyBall(RoomUser user, int actualx, int actualy)
-        {
-            return Rotation.Calculate(user.X, user.Y, actualx, actualy) == user.RotBody;
         }
 
         public void RegisterGate(Item item)
