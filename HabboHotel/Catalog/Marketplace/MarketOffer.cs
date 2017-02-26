@@ -9,14 +9,14 @@
         public int LimitedNumber { get; set; }
         public int LimitedStack { get; set; }
 
-        public MarketOffer(int OfferID, int SpriteId, int TotalPrice, int ItemType, int LimitedNumber, int LimitedStack)
+        public MarketOffer(int offerId, int spriteId, int totalPrice, int itemType, int limitedNumber, int limitedStack)
         {
-            this.OfferID = OfferID;
-            this.SpriteId = SpriteId;
-            this.ItemType = ItemType;
-            this.TotalPrice = TotalPrice;
-            this.LimitedNumber = LimitedNumber;
-            this.LimitedStack = LimitedStack;
+            this.OfferID = offerId;
+            this.SpriteId = spriteId;
+            this.ItemType = itemType;
+            this.TotalPrice = totalPrice;
+            this.LimitedNumber = limitedNumber;
+            this.LimitedStack = limitedStack;
         }
     }
 }
