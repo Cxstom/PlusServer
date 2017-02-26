@@ -5,10 +5,10 @@
         private string _code;
         private string _requiredRight;
 
-        public BadgeDefinition(string Code, string RequiredRight)
+        public BadgeDefinition(string code, string requiredRight)
         {
-            this._code = Code;
-            this._requiredRight = RequiredRight;
+            this._code = code;
+            this._requiredRight = requiredRight;
         }
 
         public string Code
