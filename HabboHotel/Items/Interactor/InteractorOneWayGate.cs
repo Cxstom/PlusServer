@@ -1,14 +1,17 @@
-﻿using System;
-
-using Plus.HabboHotel.GameClients;
+﻿using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Users;
-using Plus.HabboHotel.Groups;
+using Plus.Communication.Packets.Outgoing;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorOneWayGate : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
             Item.ExtraData = "0";
@@ -109,6 +112,47 @@ namespace Plus.HabboHotel.Items.Interactor
 
         public void OnWiredTrigger(Item Item)
         {
+        }
+
+        public void OnCycle(Item Item)
+        {
+            RoomUser User = null;
+
+            if (Item.InteractingUser > 0)
+            {
+                User = Item.GetRoom().GetRoomUserManager().GetRoomUserByHabbo(Item.InteractingUser);
+            }
+
+            if (User != null && User.X == Item.GetX && User.Y == Item.GetY)
+            {
+                Item.ExtraData = "1";
+
+                User.MoveTo(Item.SquareBehind);
+                User.InteractingGate = false;
+                User.GateId = 0;
+                Item.RequestUpdate(1, false);
+                Item.UpdateState(false, true);
+            }
+            else if (User != null && User.Coordinate == Item.SquareBehind)
+            {
+                User.UnlockWalking();
+
+                Item.ExtraData = "0";
+                Item.InteractingUser = 0;
+                User.InteractingGate = false;
+                User.GateId = 0;
+                Item.UpdateState(false, true);
+            }
+            else if (Item.ExtraData == "1")
+            {
+                Item.ExtraData = "0";
+                Item.UpdateState(false, true);
+            }
+
+            if (User == null)
+            {
+                Item.InteractingUser = 0;
+            }
         }
     }
 }

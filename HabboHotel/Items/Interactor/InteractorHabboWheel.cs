@@ -1,9 +1,17 @@
 ﻿using Plus.HabboHotel.GameClients;
+using Plus.Communication.Packets.Outgoing;
+using Plus.Utilities;
 
 namespace Plus.HabboHotel.Items.Interactor
 {
     public class InteractorHabboWheel : IFurniInteractor
     {
+        public void SerializeExtradata(ServerPacket Message, Item Item)
+        {
+            Message.WriteInteger(Item.LimitedNo > 0 ? 256 : 0);
+            Message.WriteString(Item.ExtraData);
+        }
+
         public void OnPlace(GameClient Session, Item Item)
         {
             Item.ExtraData = "-1";
@@ -38,6 +46,12 @@ namespace Plus.HabboHotel.Items.Interactor
                 Item.UpdateState();
                 Item.RequestUpdate(10, true);
             }
+        }
+
+        public void OnCycle(Item Item)
+        {
+            Item.ExtraData = RandomNumber.GenerateRandom(1, 10).ToString();
+            Item.UpdateState();
         }
     }
 }

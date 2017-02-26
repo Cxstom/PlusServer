@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using Plus.HabboHotel.Rooms;
+﻿using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Items;
 
 namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
@@ -16,7 +11,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
 
             base.WriteInteger(1);
             base.WriteInteger(Room.OwnerId);
-           base.WriteString(Room.OwnerName);
+            base.WriteString(Room.OwnerName);
 
             base.WriteInteger(Objects.Length);
 
@@ -28,7 +23,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
 
         private void WriteWallItem(Item Item, int UserId)
         {
-           base.WriteString(Item.Id.ToString());
+            base.WriteString(Item.Id.ToString());
             base.WriteInteger(Item.Data.SpriteId);
 
             try
@@ -40,8 +35,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Engine
                base.WriteString("");
             }
 
-            ItemBehaviourUtility.GenerateWallExtradata(Item, this);
-
+            base.WriteString(Item.GetBaseItem().InteractionType == InteractionType.POSTIT ? Item.ExtraData.Split(' ')[0] : Item.ExtraData);
             base.WriteInteger(-1);
             base.WriteInteger((Item.Data.Modes > 1) ? 1 : 0);
             base.WriteInteger(UserId);
