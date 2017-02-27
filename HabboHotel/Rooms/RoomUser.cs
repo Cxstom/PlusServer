@@ -20,6 +20,9 @@ using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms.Games.Freeze;
 using Plus.HabboHotel.Rooms.Games.Teams;
 using Plus.HabboHotel.Rooms.PathFinding;
+using Plus.HabboHotel.Rooms.Chat;
+using Plus.HabboHotel.Rooms.Chat.Styles;
+using Plus.HabboHotel.Quests;
 
 namespace Plus.HabboHotel.Rooms
 {
@@ -361,6 +364,48 @@ namespace Plus.HabboHotel.Rooms
             return false;
         }
 
+        /// <summary>
+        /// Not yet in use, thinking about replacing the chat methods to use this?
+        /// This is a WIP.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="colourId"></param>
+        /// <param name="type"></param>
+        public void Chat(string message, int colourId, ChatType type)
+        {
+            if (this._room == null || GetClient() == null || GetClient().GetHabbo() == null)
+                return;
+
+            if (!GetClient().GetHabbo().GetPermissions().HasRight("word_filter_override"))
+                message = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(message);
+
+            ChatStyle Style = null;
+            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(colourId, out Style) || (Style.RequiredRight.Length > 0 && !GetClient().GetHabbo().GetPermissions().HasRight(Style.RequiredRight)))
+                colourId = 0;
+
+            UnIdle();
+
+            if (type == ChatType.Chat || type == ChatType.Shout)
+            {
+                ServerPacket packet = null;
+                if (type == ChatType.Chat)
+                {
+                    packet = new ChatComposer(VirtualId, message, PlusEnvironment.GetGame().GetChatManager().GetEmotions().GetEmotionsForText(message), colourId);
+                }
+                else if (type == ChatType.Shout)
+                {
+                    packet = new ShoutComposer(VirtualId, message, PlusEnvironment.GetGame().GetChatManager().GetEmotions().GetEmotionsForText(message), colourId);
+                }
+
+                List<RoomUser> audience = new List<RoomUser>();
+              
+            }
+            else if (type == ChatType.Whisper)
+            {
+
+            }
+        }
+        
         public void OnChat(int Colour, string Message, bool Shout)
         {
             if (GetClient() == null || GetClient().GetHabbo() == null || _room == null)
