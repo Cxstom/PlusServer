@@ -1,2 +1,2 @@
-Introduction
+<h1>Introduction</h1><br/>
 Project Plus is an open source community development, actively worked on and primarily sourced from DevBest. The aim of this project is to work on the original PlusEmu release and improve it, together as a community.
