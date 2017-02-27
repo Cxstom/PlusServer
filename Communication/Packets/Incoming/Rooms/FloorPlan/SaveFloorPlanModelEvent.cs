@@ -161,7 +161,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.FloorPlan
             List<RoomUser> UsersToReturn = Room.GetRoomUserManager().GetRoomUsers().ToList();
 
             PlusEnvironment.GetGame().GetRoomManager().ReloadModel(ModelName);
-            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room);
+            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room, true);
 
 
             foreach (RoomUser User in UsersToReturn)

@@ -757,6 +757,7 @@
     <Compile Include="HabboHotel\Rewards\RewardTypeUtility.cs" />
     <Compile Include="HabboHotel\Rooms\AI\Types\BartenderBot.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\ChatManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Chat\ChatType.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\BubbleCommand.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\CarryCommand.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\DeleteGroupCommand.cs" />
