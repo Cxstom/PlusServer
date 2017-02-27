@@ -145,7 +145,9 @@ namespace Plus.HabboHotel.Rooms
             get
             {
                 if (mModel == null)
+                {
                     mModel = PlusEnvironment.GetGame().GetRoomManager().GetModel(ModelName);
+                }
                 return mModel;
             }
         }
