@@ -209,6 +209,12 @@ namespace Plus.HabboHotel.GameClients
                     if (PlusEnvironment.GetSettingsManager().TryGetValue("user.login.message.enabled") == "1")
                         SendPacket(new MOTDNotificationComposer(PlusEnvironment.GetLanguageManager().TryGetValue("user.login.message")));
 
+                    if (PlusEnvironment.GetSettingsManager().TryGetValue("welcome.window.login.enabled") == "1")
+                        SendPacket(new WelcomeAlertComposer(PlusEnvironment.GetSettingsManager().TryGetValue("welcome.window.location").ToString()));
+
+                    // Tried to understand how this works, follow the SanctionStatusComposer definition for more info
+                    //SendPacket(new SanctionStatusComposer());
+
                     PlusEnvironment.GetGame().GetRewardManager().CheckRewards(this);
                     return true;
                 }

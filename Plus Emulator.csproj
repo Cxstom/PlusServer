@@ -436,6 +436,7 @@
     <Compile Include="Communication\Packets\Outgoing\Navigator\UserFlatCatsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorFlatCatsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Notifications\MOTDNotificationComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Notifications\WelcomeAlertNotification.cs" />
     <Compile Include="Communication\Packets\Outgoing\Pets\PetBreedingComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Quests\QuestAbortedComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Quests\QuestCompletedComposer.cs" />

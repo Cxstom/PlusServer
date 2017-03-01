@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Help
     {
         public void Parse(GameClient Session, ClientPacket Packet)
         {
-            //Session.SendMessage(new SanctionStatusComposer());
+            //Session.SendPacket(new SanctionStatusComposer());
         }
     }
 }
