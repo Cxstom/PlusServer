@@ -34,7 +34,7 @@ namespace Plus.HabboHotel.Subscriptions
                     foreach (DataRow Row in GetSubscriptions.Rows)
                     {
                         if (!this._subscriptions.ContainsKey(Convert.ToInt32(Row["id"])))
-                            this._subscriptions.Add(Convert.ToInt32(Row["id"]), new SubscriptionData(Convert.ToInt32(Row["id"]), Convert.ToString(Row["name"]), Convert.ToString(Row["badge_code"]), Convert.ToInt32(Row["credits"]), Convert.ToInt32(Row["duckets"]), Convert.ToInt32(Row["respects"])));
+                            this._subscriptions.Add(Convert.ToInt32(Row["id"]), new SubscriptionData(Convert.ToInt32(Row["id"]), Convert.ToString(Row["name"]), Convert.ToString(Row["badge_code"]), Convert.ToInt32(Row["credits"]), Convert.ToInt32(Row["duckets"]), Convert.ToInt32(Row["diamonds"]), Convert.ToInt32(Row["respects"])));
                     }
                 }
             }

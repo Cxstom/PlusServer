@@ -351,10 +351,17 @@ namespace Plus.HabboHotel.Rooms
                 return null;
         }
 
-        public RoomModel GetModel(string Model)
+        public RoomModel GetModel(string model)
         {
-            if (_roomModels.ContainsKey(Model))
-                return (RoomModel)_roomModels[Model];
+            if (this._roomModels.ContainsKey(model))
+                return this._roomModels[model];
+
+            // Try to load this model.
+            LoadModel(model);
+
+            RoomModel customModel = null;
+            if (TryGetModel(model, out customModel))
+                return customModel;
 
             return null;
         }
@@ -408,12 +415,14 @@ namespace Plus.HabboHotel.Rooms
         public Room LoadRoom(int Id)
         {
             Room Room = null;
-
             if (TryGetRoom(Id, out Room))
                 return Room;
 
             RoomData Data = GenerateRoomData(Id);
             if (Data == null)
+                return null;
+
+            if (GetModel(Data.ModelName) == null)
                 return null;
 
             Room = new Room(Data);

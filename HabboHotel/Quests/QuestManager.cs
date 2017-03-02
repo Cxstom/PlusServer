@@ -24,8 +24,6 @@ namespace Plus.HabboHotel.Quests
         {
             _quests = new Dictionary<int, Quest>();
             _questCount = new Dictionary<string, int>();
-
-            this.Init();
         }
 
         public void Init()

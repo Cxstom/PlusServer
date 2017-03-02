@@ -20,6 +20,9 @@ using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.Rooms.Games.Freeze;
 using Plus.HabboHotel.Rooms.Games.Teams;
 using Plus.HabboHotel.Rooms.PathFinding;
+using Plus.HabboHotel.Rooms.Chat;
+using Plus.HabboHotel.Rooms.Chat.Styles;
+using Plus.HabboHotel.Quests;
 
 namespace Plus.HabboHotel.Rooms
 {
@@ -87,8 +90,8 @@ namespace Plus.HabboHotel.Rooms
         public FreezePowerUp banzaiPowerUp;
         public bool isLying = false;
         public bool isSitting = false;
-        private GameClient mClient;
-        private Room mRoom;
+        private GameClient _client;
+        private Room _room;
         public bool moonwalkEnabled = false;
         public bool shieldActive;
         public int shieldCounter;
@@ -107,12 +110,12 @@ namespace Plus.HabboHotel.Rooms
         private int _tradePartner = 0;
         private int _tradeId = 0;
 
-        public RoomUser(int HabboId, int RoomId, int VirtualId, Room room)
+        public RoomUser(int HabboId, int roomId, int virtualId, Room room)
         {
             this.Freezed = false;
             this.HabboId = HabboId;
-            this.RoomId = RoomId;
-            this.VirtualId = VirtualId;
+            this.RoomId = roomId;
+            this.VirtualId = virtualId;
             this.IdleTime = 0;
 
             this.X = 0;
@@ -125,7 +128,7 @@ namespace Plus.HabboHotel.Rooms
             this._statusses = new Dictionary<string, string>();
 
             this.TeleDelay = -1;
-            this.mRoom = room;
+            this._room = room;
 
             this.AllowOverride = false;
             this.CanWalk = true;
@@ -279,8 +282,8 @@ namespace Plus.HabboHotel.Rooms
         public void Dispose()
         {
             Statusses.Clear();
-            mRoom = null;
-            mClient = null;
+            _room = null;
+            _client = null;
         }
 
         public void Chat(string Message, bool Shout, int colour = 0)
@@ -361,20 +364,62 @@ namespace Plus.HabboHotel.Rooms
             return false;
         }
 
-        public void OnChat(int Colour, string Message, bool Shout)
+        /// <summary>
+        /// Not yet in use, thinking about replacing the chat methods to use this?
+        /// This is a WIP.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="colourId"></param>
+        /// <param name="type"></param>
+        public void Chat(string message, int colourId, ChatType type)
         {
-            if (GetClient() == null || GetClient().GetHabbo() == null || mRoom == null)
+            if (this._room == null || GetClient() == null || GetClient().GetHabbo() == null)
                 return;
 
-            if (mRoom.GetWired().TriggerEvent(Items.Wired.WiredBoxType.TriggerUserSays, GetClient().GetHabbo(), Message))
+            if (!GetClient().GetHabbo().GetPermissions().HasRight("word_filter_override"))
+                message = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(message);
+
+            ChatStyle Style = null;
+            if (!PlusEnvironment.GetGame().GetChatManager().GetChatStyles().TryGetStyle(colourId, out Style) || (Style.RequiredRight.Length > 0 && !GetClient().GetHabbo().GetPermissions().HasRight(Style.RequiredRight)))
+                colourId = 0;
+
+            UnIdle();
+
+            if (type == ChatType.Chat || type == ChatType.Shout)
+            {
+                ServerPacket packet = null;
+                if (type == ChatType.Chat)
+                {
+                    packet = new ChatComposer(VirtualId, message, PlusEnvironment.GetGame().GetChatManager().GetEmotions().GetEmotionsForText(message), colourId);
+                }
+                else if (type == ChatType.Shout)
+                {
+                    packet = new ShoutComposer(VirtualId, message, PlusEnvironment.GetGame().GetChatManager().GetEmotions().GetEmotionsForText(message), colourId);
+                }
+
+                List<RoomUser> audience = new List<RoomUser>();
+              
+            }
+            else if (type == ChatType.Whisper)
+            {
+
+            }
+        }
+        
+        public void OnChat(int Colour, string Message, bool Shout)
+        {
+            if (GetClient() == null || GetClient().GetHabbo() == null || _room == null)
+                return;
+
+            if (_room.GetWired().TriggerEvent(Items.Wired.WiredBoxType.TriggerUserSays, GetClient().GetHabbo(), Message))
                 return;
 
 
             GetClient().GetHabbo().HasSpoken = true;
 
-            if (mRoom.WordFilterList.Count > 0 && !GetClient().GetHabbo().GetPermissions().HasRight("word_filter_override"))
+            if (_room.WordFilterList.Count > 0 && !GetClient().GetHabbo().GetPermissions().HasRight("word_filter_override"))
             {
-                Message = mRoom.GetFilter().CheckMessage(Message);
+                Message = _room.GetFilter().CheckMessage(Message);
             }
 
             ServerPacket Packet = null;
@@ -386,11 +431,11 @@ namespace Plus.HabboHotel.Rooms
 
             if (GetClient().GetHabbo().TentId > 0)
             {
-                mRoom.SendToTent(GetClient().GetHabbo().Id, GetClient().GetHabbo().TentId, Packet);
+                _room.SendToTent(GetClient().GetHabbo().Id, GetClient().GetHabbo().TentId, Packet);
 
                 Packet = new WhisperComposer(this.VirtualId, "[Tent Chat] " + Message, 0, Colour);
 
-                List<RoomUser> ToNotify = mRoom.GetRoomUserManager().GetRoomUserByRank(2);
+                List<RoomUser> ToNotify = _room.GetRoomUserManager().GetRoomUserByRank(2);
 
                 if (ToNotify.Count > 0)
                 {
@@ -408,12 +453,12 @@ namespace Plus.HabboHotel.Rooms
             }
             else
             {
-                foreach (RoomUser User in mRoom.GetRoomUserManager().GetRoomUsers().ToList())
+                foreach (RoomUser User in _room.GetRoomUserManager().GetRoomUsers().ToList())
                 {
-                    if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(mClient.GetHabbo().Id))
+                    if (User == null || User.GetClient() == null || User.GetClient().GetHabbo() == null || User.GetClient().GetHabbo().GetIgnores().IgnoredUserIds().Contains(_client.GetHabbo().Id))
                         continue;
 
-                    if (mRoom.chatDistance > 0 && Gamemap.TileDistance(this.X, this.Y, User.X, User.Y) > mRoom.chatDistance)
+                    if (_room.chatDistance > 0 && Gamemap.TileDistance(this.X, this.Y, User.X, User.Y) > _room.chatDistance)
                         continue;
 
                     User.GetClient().SendPacket(Packet);
@@ -423,7 +468,7 @@ namespace Plus.HabboHotel.Rooms
             #region Pets/Bots responces
             if (Shout)
             {
-                foreach (RoomUser User in mRoom.GetRoomUserManager().GetUserList().ToList())
+                foreach (RoomUser User in _room.GetRoomUserManager().GetUserList().ToList())
                 {
                     if (!User.IsBot)
                         continue;
@@ -434,7 +479,7 @@ namespace Plus.HabboHotel.Rooms
             }
             else
             {
-                foreach (RoomUser User in mRoom.GetRoomUserManager().GetUserList().ToList())
+                foreach (RoomUser User in _room.GetRoomUserManager().GetUserList().ToList())
                 {
                     if (!User.IsBot)
                         continue;
@@ -602,7 +647,7 @@ namespace Plus.HabboHotel.Rooms
         {
             if (IsBot)
             {
-                this.mRoom.SendPacket(new AvatarEffectComposer(VirtualId, effectID));
+                this._room.SendPacket(new AvatarEffectComposer(VirtualId, effectID));
                 return;
             }
 
@@ -726,18 +771,18 @@ namespace Plus.HabboHotel.Rooms
             {
                 return null;
             }
-            if (mClient == null)
-                mClient = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(HabboId);
-            return mClient;
+            if (_client == null)
+                _client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(HabboId);
+            return _client;
         }
 
         private Room GetRoom()
         {
-            if (mRoom == null)
-                if (PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out mRoom))
-                    return mRoom;
+            if (_room == null)
+                if (PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out _room))
+                    return _room;
 
-            return mRoom;
+            return _room;
         }
     }
 

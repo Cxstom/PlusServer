@@ -436,6 +436,7 @@
     <Compile Include="Communication\Packets\Outgoing\Navigator\UserFlatCatsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Navigator\NavigatorFlatCatsComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Notifications\MOTDNotificationComposer.cs" />
+    <Compile Include="Communication\Packets\Outgoing\Notifications\WelcomeAlertNotification.cs" />
     <Compile Include="Communication\Packets\Outgoing\Pets\PetBreedingComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Quests\QuestAbortedComposer.cs" />
     <Compile Include="Communication\Packets\Outgoing\Quests\QuestCompletedComposer.cs" />
@@ -757,6 +758,7 @@
     <Compile Include="HabboHotel\Rewards\RewardTypeUtility.cs" />
     <Compile Include="HabboHotel\Rooms\AI\Types\BartenderBot.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\ChatManager.cs" />
+    <Compile Include="HabboHotel\Rooms\Chat\ChatType.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\BubbleCommand.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\CarryCommand.cs" />
     <Compile Include="HabboHotel\Rooms\Chat\Commands\Administrator\DeleteGroupCommand.cs" />
@@ -926,8 +928,6 @@
     <Compile Include="HabboHotel\Rooms\Trading\TradeUser.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionData.cs" />
     <Compile Include="HabboHotel\Subscriptions\SubscriptionManager.cs" />
-    <Compile Include="HabboHotel\Surveys\Question.cs" />
-    <Compile Include="HabboHotel\Surveys\SurveyManager.cs" />
     <Compile Include="HabboHotel\Talents\TalentTrackSubLevel.cs" />
     <Compile Include="HabboHotel\Talents\TalentTrackManager.cs" />
     <Compile Include="HabboHotel\Talents\TalentTrackLevel.cs" />

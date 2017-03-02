@@ -192,7 +192,7 @@
         public const int SoundSettingsMessageComposer = 1949;//2921
 
         public const int QuestionParserMessageComposer = 1163;//1719
-        public const int AvatarAspectUpdateMessageComposer = 884;
+        public const int AvatarAspectUpdateMessageComposer = 1141;
         public const int HelperToolMessageComposer = 3610;//224
         public const int RoomErrorNotifMessageComposer = 2355;//444
         public const int FollowFriendFailedMessageComposer = 3469;//1170
@@ -317,5 +317,6 @@
         public const int LoveLockDialogueSetLockedMessageComposer = 1767;//1534
         public const int BroadcastMessageAlertMessageComposer = 1751;//1279
         public const int MessengerInitMessageComposer = 1329;//391
+        public const int WelcomeAlertComposer = 2954;
     }
 }

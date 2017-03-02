@@ -221,29 +221,29 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("UPDATE `rooms` SET `caption` = @caption, `description` = @description, `password` = @password, `category` = @categoryId, `state` = @state, `tags` = @tags, `users_max` = @maxUsers, `allow_pets` = @allowPets, `allow_pets_eat` = @allowPetsEat, `room_blocking_disabled` = @roomBlockingDisabled, `allow_hidewall` = @allowHidewall, `floorthick` = @floorThick, `wallthick` = @wallThick, `mute_settings` = @muteSettings, `kick_settings` = @kickSettings, `ban_settings` = @banSettings, `chat_mode` = @chatMode, `chat_size` = @chatSize, `chat_speed` = @chatSpeed, `chat_extra_flood` = @extraFlood, `chat_hearing_distance` = @chatDistance, `trade_settings` = @tradeSettings WHERE `id` = @roomId LIMIT 1");
-                dbClient.AddParameter("categoryId", CategoryId);
-                dbClient.AddParameter("maxUsers", MaxUsers);
-                dbClient.AddParameter("allowPets", AllowPets);
-                dbClient.AddParameter("allowPetsEat", AllowPetsEat);
-                dbClient.AddParameter("roomBlockingDisabled", RoomBlockingEnabled);
-                dbClient.AddParameter("allowHidewall", Room.Hidewall);
-                dbClient.AddParameter("floorThick", Room.FloorThickness);
-                dbClient.AddParameter("wallThick", Room.WallThickness);
-                dbClient.AddParameter("muteSettings", Room.WhoCanMute);
-                dbClient.AddParameter("kickSettings", Room.WhoCanKick);
-                dbClient.AddParameter("banSettings", Room.WhoCanBan);
-                dbClient.AddParameter("chatMode", Room.chatMode);
-                dbClient.AddParameter("chatSize", Room.chatSize);
-                dbClient.AddParameter("chatSpeed", Room.chatSpeed);
-                dbClient.AddParameter("extraFlood", Room.extraFlood);
-                dbClient.AddParameter("chatDistance", Room.chatDistance);
-                dbClient.AddParameter("tradeSettings", Room.TradeSettings);
-                dbClient.AddParameter("roomId", Room.Id);
                 dbClient.AddParameter("caption", Room.Name);
                 dbClient.AddParameter("description", Room.Description);
                 dbClient.AddParameter("password", Room.Password);
+                dbClient.AddParameter("categoryId", CategoryId);
                 dbClient.AddParameter("state", AccessStr);
                 dbClient.AddParameter("tags", formattedTags.ToString());
+                dbClient.AddParameter("maxUsers", MaxUsers);
+                dbClient.AddParameter("allowPets", AllowPets.ToString());
+                dbClient.AddParameter("allowPetsEat", AllowPetsEat.ToString());
+                dbClient.AddParameter("roomBlockingDisabled", RoomBlockingEnabled.ToString());
+                dbClient.AddParameter("allowHidewall", Room.Hidewall.ToString());
+                dbClient.AddParameter("floorThick", Room.FloorThickness.ToString());
+                dbClient.AddParameter("wallThick", Room.WallThickness.ToString());
+                dbClient.AddParameter("muteSettings", Room.WhoCanMute.ToString());
+                dbClient.AddParameter("kickSettings", Room.WhoCanKick.ToString());
+                dbClient.AddParameter("banSettings", Room.WhoCanBan.ToString());
+                dbClient.AddParameter("chatMode", Room.chatMode.ToString());
+                dbClient.AddParameter("chatSize", Room.chatSize.ToString());
+                dbClient.AddParameter("chatSpeed", Room.chatSpeed.ToString());
+                dbClient.AddParameter("extraFlood", Room.extraFlood.ToString());
+                dbClient.AddParameter("chatDistance", Room.chatDistance.ToString());
+                dbClient.AddParameter("tradeSettings", Room.TradeSettings.ToString());
+                dbClient.AddParameter("roomId", Room.Id);
                 dbClient.RunQuery();
             }
 
