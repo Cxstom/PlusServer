@@ -3,8 +3,8 @@ using Plus.HabboHotel.Rooms;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Rooms.Polls;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
-using Plus.Communication.Packets.Outgoing.Rooms.Polls.Questions;
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Polls
 {
@@ -69,8 +69,12 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Polls
 
                 if (poll.PixelReward > 0)
                 {
-                    session.GetHabbo().Duckets += poll.PixelReward;
-                    session.SendPacket(new HabboActivityPointNotificationComposer(session.GetHabbo().Duckets, poll.PixelReward));
+                    CurrencyType currencyType = null;
+                    if (session.GetHabbo().GetCurrency().TryGet(0, out currencyType))
+                    {
+                        currencyType.Amount += poll.PixelReward;
+                        session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, poll.PixelReward));
+                    }
                 }
             }
         }

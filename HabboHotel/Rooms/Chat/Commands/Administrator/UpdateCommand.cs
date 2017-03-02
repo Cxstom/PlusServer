@@ -37,6 +37,20 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Administrator
             string UpdateVariable = Params[1];
             switch (UpdateVariable.ToLower())
             {
+                case "currency":
+                case "currencies":
+                    {
+                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_update_currencies"))
+                        {
+                            Session.SendWhisper("Oops, you do not have the 'command_update_currencies' permission.");
+                            break;
+                        }
+
+                        PlusEnvironment.GetGame().GetCurrencyManager().Init();
+                        Session.SendWhisper("Currencies successfully updated.");
+                        break;
+                    }
+
                 case "cata":
                 case "catalog":
                 case "catalogue":

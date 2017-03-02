@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Communication.Packets.Incoming;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 using Plus.Communication.Packets.Outgoing.Quests;
@@ -171,8 +172,14 @@ namespace Plus.HabboHotel.Quests
                 Session.GetHabbo().GetStats().QuestID = 0;
                 Session.GetHabbo().QuestLastCompleted = UserQuest.Id;
                 Session.SendPacket(new QuestCompletedComposer(Session, UserQuest));
-                Session.GetHabbo().Duckets += UserQuest.Reward;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, UserQuest.Reward));
+
+                CurrencyType currencyType = null;
+                if (Session.GetHabbo().GetCurrency().TryGet(0, out currencyType))
+                {
+                    currencyType.Amount += UserQuest.Reward;
+                    Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, UserQuest.Reward));
+                }
+
                 GetList(Session, null);
             }
         }

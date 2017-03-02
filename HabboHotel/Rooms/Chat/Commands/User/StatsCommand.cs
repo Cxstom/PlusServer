@@ -34,13 +34,10 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
 
             HabboInfo.Append("Currency Info:\r");
             HabboInfo.Append("Credits: " + Session.GetHabbo().Credits + "\r");
-            HabboInfo.Append("Duckets: " + Session.GetHabbo().Duckets + "\r");
-            HabboInfo.Append("Diamonds: " + Session.GetHabbo().Diamonds + "\r");
             HabboInfo.Append("Online Time: " + OnlineTime + " Hour" + s + "\r");
-            HabboInfo.Append("Respects: " + Session.GetHabbo().GetStats().Respect + "\r");
-            HabboInfo.Append("GOTW Points: " + Session.GetHabbo().GOTWPoints + "\r\r");
-
-
+            HabboInfo.Append("Respects: " + Session.GetHabbo().GetStats().Respect + "\r\r");
+            //figure a way to handle currencies
+            
             Session.SendNotification(HabboInfo.ToString());
         }
     }

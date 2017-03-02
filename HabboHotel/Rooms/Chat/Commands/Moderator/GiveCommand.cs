@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using Plus.HabboHotel.GameClients;
+﻿using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Currency;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
 namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
@@ -40,127 +37,44 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            string UpdateVal = Params[2];
-            switch (UpdateVal.ToLower())
+            string currency = Params[2].ToLower();
+
+            int amount = 0;
+            if (!int.TryParse(Params[3], out amount))
+                return;
+
+            if (currency == "coins" || currency == "credits")
             {
-                case "coins":
-                case "credits":
-                    {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_give_coins"))
-                        {
-                            Session.SendWhisper("Oops, it appears that you do not have the permissions to use this command!");
-                            break;
-                        }
-                        else
-                        {
-                            int Amount;
-                            if (int.TryParse(Params[3], out Amount))
-                            {
-                                Target.GetHabbo().Credits = Target.GetHabbo().Credits += Amount;
-                                Target.SendPacket(new CreditBalanceComposer(Target.GetHabbo().Credits));
+                Target.GetHabbo().Credits += amount;
+                Target.SendPacket(new CreditBalanceComposer(Target.GetHabbo().Credits));
 
-                                if (Target.GetHabbo().Id != Session.GetHabbo().Id)
-                                    Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Credit(s)!");
-                                Session.SendWhisper("Successfully given " + Amount + " Credit(s) to " + Target.GetHabbo().Username + "!");
-                                break;
-                            }
-                            else
-                            {
-                                Session.SendWhisper("Oops, that appears to be an invalid amount!");
-                                break;
-                            }
-                        }
-                    }
-
-                case "pixels":
-                case "duckets":
-                    {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_give_pixels"))
-                        {
-                            Session.SendWhisper("Oops, it appears that you do not have the permissions to use this command!");
-                            break;
-                        }
-                        else
-                        {
-                            int Amount;
-                            if (int.TryParse(Params[3], out Amount))
-                            {
-                                Target.GetHabbo().Duckets += Amount;
-                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().Duckets, Amount));
-
-                                if (Target.GetHabbo().Id != Session.GetHabbo().Id)
-                                    Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Ducket(s)!");
-                                Session.SendWhisper("Successfully given " + Amount + " Ducket(s) to " + Target.GetHabbo().Username + "!");
-                                break;
-                            }
-                            else
-                            {
-                                Session.SendWhisper("Oops, that appears to be an invalid amount!");
-                                break;
-                            }
-                        }
-                    }
-
-                case "diamonds":
-                    {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_give_diamonds"))
-                        {
-                            Session.SendWhisper("Oops, it appears that you do not have the permissions to use this command!");
-                            break;
-                        }
-                        else
-                        {
-                            int Amount;
-                            if (int.TryParse(Params[3], out Amount))
-                            {
-                                Target.GetHabbo().Diamonds += Amount;
-                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().Diamonds, Amount, 5));
-
-                                if (Target.GetHabbo().Id != Session.GetHabbo().Id)
-                                    Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " Diamond(s)!");
-                                Session.SendWhisper("Successfully given " + Amount + " Diamond(s) to " + Target.GetHabbo().Username + "!");
-                                break;
-                            }
-                            else
-                            {
-                                Session.SendWhisper("Oops, that appears to be an invalid amount!");
-                                break;
-                            }
-                        }
-                    }
-
-                case "gotw":
-                case "gotwpoints":
-                    {
-                        if (!Session.GetHabbo().GetPermissions().HasCommand("command_give_gotw"))
-                        {
-                            Session.SendWhisper("Oops, it appears that you do not have the permissions to use this command!");
-                            break;
-                        }
-                        else
-                        {
-                            int Amount;
-                            if (int.TryParse(Params[3], out Amount))
-                            {
-                                Target.GetHabbo().GOTWPoints = Target.GetHabbo().GOTWPoints + Amount;
-                                Target.SendPacket(new HabboActivityPointNotificationComposer(Target.GetHabbo().GOTWPoints, Amount, 103));
-
-                                if (Target.GetHabbo().Id != Session.GetHabbo().Id)
-                                    Target.SendNotification(Session.GetHabbo().Username + " has given you " + Amount.ToString() + " GOTW Point(s)!");
-                                Session.SendWhisper("Successfully given " + Amount + " GOTW point(s) to " + Target.GetHabbo().Username + "!");
-                                break;
-                            }
-                            else
-                            {
-                                Session.SendWhisper("Oops, that appears to be an invalid amount!");
-                                break;
-                            }
-                        }
-                    }
-                default:
-                    Session.SendWhisper("'" + UpdateVal + "' is not a valid currency!");
-                    break;
+                if (Target.GetHabbo().Id != Session.GetHabbo().Id)
+                    Target.SendNotification(Session.GetHabbo().Username + " has given you " + amount.ToString() + " Credit(s)!");
+                Session.SendWhisper("Successfully given " + amount + " Credit(s) to " + Target.GetHabbo().Username + "!");
+                return;
             }
+
+            //let's check currencies
+
+            CurrencyDefinition currencyDefinition = null;
+            if (!PlusEnvironment.GetGame().GetCurrencyManager().TryGetCurrency(currency, out currencyDefinition))
+            {
+                Session.SendWhisper("'" + currency + "' is not a valid currency!");
+                return;
+            }
+
+            CurrencyType currencyType = null;
+            if (!Target.GetHabbo().GetCurrency().TryGet(currencyDefinition.Type, out currencyType, true))
+                return;
+
+            currencyType.Amount += amount;
+            Target.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, amount, currencyType.Type));
+
+            if (Target.GetHabbo().Id != Session.GetHabbo().Id)
+                Target.SendNotification(Session.GetHabbo().Username + " has given you " + amount.ToString() + " " + currencyDefinition.Name + "(s)!");
+            Session.SendWhisper("Successfully given " + amount + " " + currencyDefinition.Name + "(s) to " + Target.GetHabbo().Username + "!");
+
+            return;
         }
     }
 }

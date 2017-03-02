@@ -4,8 +4,7 @@ using System.Data;
 using Plus.Communication.Packets.Incoming;
 using Plus.HabboHotel.GameClients;
 using Plus.HabboHotel.Catalog.Vouchers;
-
-
+using Plus.HabboHotel.Users.Currency.Type;
 
 using Plus.Communication.Packets.Outgoing.Catalog;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
@@ -67,8 +66,12 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             }
             else if (Voucher.Type == VoucherType.DUCKET)
             {
-                Session.GetHabbo().Duckets += Voucher.Value;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Voucher.Value));
+                CurrencyType currencyType = null;
+                if (Session.GetHabbo().GetCurrency().TryGet(0, out currencyType))
+                {
+                    currencyType.Amount += Voucher.Value;
+                    Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, Voucher.Value));
+                }
             }
 
             Session.SendPacket(new VoucherRedeemOkComposer());

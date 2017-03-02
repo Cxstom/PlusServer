@@ -1,5 +1,8 @@
 ﻿using System;
+
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Currency;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
@@ -33,61 +36,37 @@ namespace Plus.Communication.RCON.Commands.User
 
             string currency = Convert.ToString(parameters[1]);
 
-            switch (currency)
+            if (currency == "coins" || currency == "credits")
             {
-                default:
-                    return false;
-
-                case "coins":
-                case "credits":
-                    {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("UPDATE `users` SET `credits` = @credits WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("credits", client.GetHabbo().Credits);
-                            dbClient.AddParameter("id", userId);
-                            dbClient.RunQuery();
-                        }
-                        break;
-                    }
-
-                case "pixels":
-                case "duckets":
-                    {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("UPDATE `users` SET `activity_points` = @duckets WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("duckets", client.GetHabbo().Duckets);
-                            dbClient.AddParameter("id", userId);
-                            dbClient.RunQuery();
-                        }
-                        break;
-                    }
-
-                case "diamonds":
-                    {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("UPDATE `users` SET `vip_points` = @diamonds WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("diamonds", client.GetHabbo().Diamonds);
-                            dbClient.AddParameter("id", userId);
-                            dbClient.RunQuery();
-                        }
-                        break;
-                    }
-
-                case "gotw":
-                    {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("UPDATE `users` SET `gotw_points` = @gotw WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("gotw", client.GetHabbo().GOTWPoints);
-                            dbClient.AddParameter("id", userId);
-                            dbClient.RunQuery();
-                        }
-                        break;
-                    }
+                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.SetQuery("UPDATE `users` SET `credits` = @credits WHERE `id` = @id LIMIT 1");
+                    dbClient.AddParameter("credits", client.GetHabbo().Credits);
+                    dbClient.AddParameter("id", userId);
+                    dbClient.RunQuery();
+                }
+                return true;
             }
+
+            //let's check currencies 
+
+            CurrencyDefinition currencyDefinition = null;
+            if (!PlusEnvironment.GetGame().GetCurrencyManager().TryGetCurrency(currency, out currencyDefinition))
+                return false;
+
+            CurrencyType currencyType = null;
+            if (!client.GetHabbo().GetCurrency().TryGet(currencyDefinition.Type, out currencyType))
+                return false;
+
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("UPDATE `user_currencies` SET `amount` = @amount WHERE `type` = @type AND `user_id` = @id LIMIT 1");
+                dbClient.AddParameter("amount", currencyType.Amount);
+                dbClient.AddParameter("type", currencyType.Type);
+                dbClient.AddParameter("id", userId);
+                dbClient.RunQuery();
+            }
+
             return true;
         }
     }

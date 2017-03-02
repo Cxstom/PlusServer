@@ -7,7 +7,7 @@ using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Catalog;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Users.Inventory;
+using Plus.HabboHotel.Users.Currency.Type;
 
 using Plus.Communication.Packets.Outgoing.Catalog;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
@@ -74,17 +74,21 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             ItemData PresentData = null;
             if (!PlusEnvironment.GetGame().GetItemManager().GetGift(SpriteId, out PresentData) || PresentData.InteractionType != InteractionType.GIFT)
                 return;
-
+            
             if (Session.GetHabbo().Credits < Item.CostCredits)
             {
                 Session.SendPacket(new PresentDeliverErrorMessageComposer(true, false));
                 return;
             }
 
-            if (Session.GetHabbo().Duckets < Item.CostPixels)
+            CurrencyType currencyType = null;
+            if (Item.CostPoints > 0)
             {
-                Session.SendPacket(new PresentDeliverErrorMessageComposer(false, true));
-                return;
+                if (!Session.GetHabbo().GetCurrency().TryGet(Item.PointsType, out currencyType) || currencyType.Amount < Item.CostPoints)
+                {
+                    Session.SendPacket(new PresentDeliverErrorMessageComposer(false, true));
+                    return;
+                }
             }
 
             Habbo Habbo = PlusEnvironment.GetHabboByUsername(GiftUser);
@@ -261,12 +265,12 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
 
-            if (Item.CostPixels > 0)
+            if (currencyType != null && Item.CostPoints > 0)
             {
-                Session.GetHabbo().Duckets -= Item.CostPixels;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));
+                currencyType.Amount -= Item.CostPoints;
+                Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, currencyType.Amount, currencyType.Type));
             }
-
+            
             Session.GetHabbo().LastGiftPurchaseTime = DateTime.Now;
         }
     }

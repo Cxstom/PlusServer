@@ -694,6 +694,8 @@
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherManager.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherType.cs" />
     <Compile Include="HabboHotel\Catalog\Vouchers\VoucherUtility.cs" />
+    <Compile Include="HabboHotel\Currency\CurrencyDefinition.cs" />
+    <Compile Include="HabboHotel\Currency\CurrencyManager.cs" />
     <Compile Include="HabboHotel\Groups\BadgePartUtility.cs" />
     <Compile Include="HabboHotel\Groups\Forums\GroupForum.cs" />
     <Compile Include="HabboHotel\Groups\Forums\GroupForumManager.cs" />
@@ -935,6 +937,8 @@
     <Compile Include="HabboHotel\Users\Calendar\CalendarComponent.cs" />
     <Compile Include="HabboHotel\Users\Clothing\ClothingComponent.cs" />
     <Compile Include="HabboHotel\Users\Clothing\Parts\ClothingParts.cs" />
+    <Compile Include="HabboHotel\Users\Currency\Type\CurrecyType.cs" />
+    <Compile Include="HabboHotel\Users\Currency\CurrencyComponent.cs" />
     <Compile Include="HabboHotel\Users\Effects\AvatarEffect.cs" />
     <Compile Include="HabboHotel\Users\Effects\AvatarEffectFactory.cs" />
     <Compile Include="HabboHotel\Users\Effects\EffectsComponent.cs" />

@@ -277,10 +277,11 @@ namespace Plus.HabboHotel.GameClients
             {
                 if (GetHabbo() != null)
                 {
-                    using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                    {
-                        dbClient.RunQuery(GetHabbo().GetQueryString);
-                    }
+                    // Pointless?
+                    //using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                    //{
+                    //    dbClient.RunQuery(GetHabbo().GetQueryString);
+                    //}
 
                     GetHabbo().OnDisconnect();
                 }

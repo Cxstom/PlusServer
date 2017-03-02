@@ -250,10 +250,13 @@ namespace Plus.HabboHotel.GameClients
                 {
                     try
                     {
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.RunQuery(client.GetHabbo().GetQueryString);
-                        }
+                        client.GetHabbo().OnDisconnect();
+
+                        // Pointless?
+                        //using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                        //{
+                        //    dbClient.RunQuery(client.GetHabbo().GetQueryString);
+                        //}
                         Console.Clear();
                         log.Info("<<- SERVER SHUTDOWN ->> IVNENTORY IS SAVING");
                     }

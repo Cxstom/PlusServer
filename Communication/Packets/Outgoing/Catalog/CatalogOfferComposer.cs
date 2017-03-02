@@ -18,18 +18,8 @@ namespace Plus.Communication.Packets.Outgoing.Catalog
             base.WriteString(Item.Data.ItemName);
             base.WriteBoolean(false);//IsRentable
             base.WriteInteger(Item.CostCredits);
-
-            if (Item.CostDiamonds > 0)
-            {
-                base.WriteInteger(Item.CostDiamonds);
-                base.WriteInteger(5); // Diamonds
-            }
-            else
-            {
-                base.WriteInteger(Item.CostPixels);
-                base.WriteInteger(0); // Type of PixelCost
-            }
-
+            base.WriteInteger(Item.CostPoints);
+            base.WriteInteger(Item.PointsType); // 0 = Pixels, 5 = Diamonds
             base.WriteBoolean(ItemUtility.CanGiftItem(Item));
             base.WriteInteger(string.IsNullOrEmpty(Item.Badge) ? 1 : 2);//Count 1 item if there is no badge, otherwise count as 2.
 

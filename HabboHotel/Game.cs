@@ -24,6 +24,7 @@ using Plus.HabboHotel.Rewards;
 using Plus.HabboHotel.Badges;
 using Plus.HabboHotel.Permissions;
 using Plus.HabboHotel.Subscriptions;
+using Plus.HabboHotel.Currency;
 using System.Threading;
 using System.Threading.Tasks;
 using Plus.Core;
@@ -56,6 +57,7 @@ namespace Plus.HabboHotel
         private readonly CacheManager _cacheManager;
         private readonly RewardManager _rewardManager;
         private readonly BadgeManager _badgeManager;
+        private readonly CurrencyManager _currencyManager;
         private readonly PermissionManager _permissionManager;
         private readonly SubscriptionManager _subscriptionManager;
         private readonly PollManager _pollManager;
@@ -108,6 +110,9 @@ namespace Plus.HabboHotel
 
             this._badgeManager = new BadgeManager();
             this._badgeManager.Init();
+
+            this._currencyManager = new CurrencyManager();
+            this._currencyManager.Init();
 
             this._permissionManager = new PermissionManager();
             this._permissionManager.Init();
@@ -254,6 +259,11 @@ namespace Plus.HabboHotel
         public BadgeManager GetBadgeManager()
         {
             return this._badgeManager;
+        }
+
+        public CurrencyManager GetCurrencyManager()
+        {
+            return this._currencyManager;
         }
 
         public PollManager GetPollManager()

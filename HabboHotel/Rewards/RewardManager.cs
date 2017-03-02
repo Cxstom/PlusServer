@@ -1,13 +1,12 @@
-﻿using Plus.Database.Interfaces;
-using System;
+﻿using System;
+using System.Data;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
+using Plus.Database.Interfaces;
 
 namespace Plus.HabboHotel.Rewards
 {
@@ -118,15 +117,20 @@ namespace Plus.HabboHotel.Rewards
 
                         case RewardType.Duckets:
                             {
-                                Session.GetHabbo().Duckets += Convert.ToInt32(Reward.RewardData);
-                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Convert.ToInt32(Reward.RewardData)));
+                                CurrencyType currencyType = null;
+                                if (Session.GetHabbo().GetCurrency().TryGet(0, out currencyType))
+                                {
+                                    currencyType.Amount += Convert.ToInt32(Reward.RewardData);
+                                    Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, Convert.ToInt32(Reward.RewardData)));
+                                }
                                 break;
                             }
-
+                            
                         case RewardType.Diamonds:
                             {
-                                Session.GetHabbo().Diamonds += Convert.ToInt32(Reward.RewardData);
-                                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, Convert.ToInt32(Reward.RewardData), 5));
+                                //disabled
+                                //Session.GetHabbo().Diamonds += Convert.ToInt32(Reward.RewardData);
+                                //Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, Convert.ToInt32(Reward.RewardData), 5));
                                 break;
                             }
                     }

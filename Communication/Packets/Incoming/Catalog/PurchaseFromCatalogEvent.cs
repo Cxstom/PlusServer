@@ -9,8 +9,9 @@ using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Users.Effects;
 using Plus.HabboHotel.Users.Inventory.Bots;
-
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.HabboHotel.Rooms.AI;
+
 using Plus.Communication.Packets.Outgoing.Catalog;
 using Plus.Communication.Packets.Outgoing.Inventory.Bots;
 using Plus.Communication.Packets.Outgoing.Inventory.Pets;
@@ -66,11 +67,17 @@ namespace Plus.Communication.Packets.Incoming.Catalog
             int AmountPurchase = Item.Amount > 1 ? Item.Amount : Amount;
 
             int TotalCreditsCost = Amount > 1 ? ((Item.CostCredits * Amount) - ((int)Math.Floor((double)Amount / 6) * Item.CostCredits)) : Item.CostCredits;
-            int TotalPixelCost = Amount > 1 ? ((Item.CostPixels * Amount) - ((int)Math.Floor((double)Amount / 6) * Item.CostPixels)) : Item.CostPixels;
-            int TotalDiamondCost = Amount > 1 ? ((Item.CostDiamonds * Amount) - ((int)Math.Floor((double)Amount / 6) * Item.CostDiamonds)) : Item.CostDiamonds;
+            int TotalPointsCost = Amount > 1 ? ((Item.CostPoints * Amount) - ((int)Math.Floor((double)Amount / 6) * Item.CostPoints)) : Item.CostPoints;
 
-            if (Session.GetHabbo().Credits < TotalCreditsCost || Session.GetHabbo().Duckets < TotalPixelCost || Session.GetHabbo().Diamonds < TotalDiamondCost)
+            if (Session.GetHabbo().Credits < TotalCreditsCost)
                 return;
+
+            CurrencyType currencyType = null;
+            if (Item.CostPoints > 0)
+            {
+                if (!Session.GetHabbo().GetCurrency().TryGet(Item.PointsType, out currencyType) || currencyType.Amount < TotalPointsCost)
+                    return;
+            }
 
             int LimitedEditionSells = 0;
             int LimitedEditionStack = 0;
@@ -211,18 +218,12 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                 Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
             }
 
-            if (Item.CostPixels > 0)
+            if (currencyType != null)
             {
-                Session.GetHabbo().Duckets -= TotalPixelCost;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, Session.GetHabbo().Duckets));//Love you, Tom.
+                currencyType.Amount -= TotalPointsCost;
+                Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, TotalPointsCost, currencyType.Type));
             }
-
-            if (Item.CostDiamonds > 0)
-            {
-                Session.GetHabbo().Diamonds -= TotalDiamondCost;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Diamonds, 0, 5));
-            }
-
+            
             Item NewItem = null;
             switch (Item.Data.Type.ToString().ToLower())
             {

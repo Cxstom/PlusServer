@@ -1,5 +1,8 @@
 ﻿using System;
+
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Currency;
+using Plus.HabboHotel.Users.Currency.Type;
 using Plus.Database.Interfaces;
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 
@@ -33,73 +36,43 @@ namespace Plus.Communication.RCON.Commands.User
 
             string currency = Convert.ToString(parameters[1]);
 
-            switch (currency)
+            if (currency == "coins" || currency == "credits")
             {
-                default:
-                    return false;
+                int credits = 0;
+                using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+                {
+                    dbClient.SetQuery("SELECT `credits` FROM `users` WHERE `id` = @id LIMIT 1");
+                    dbClient.AddParameter("id", userId);
+                    credits = dbClient.GetInteger();
+                }
 
-                case "coins":
-                case "credits":
-                    {
-                        int credits = 0;
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("SELECT `credits` FROM `users` WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("id", userId);
-                            credits = dbClient.GetInteger();
-                        }
-
-                        client.GetHabbo().Credits = credits;
-                        client.SendPacket(new CreditBalanceComposer(client.GetHabbo().Credits));
-                        break;
-                    }
-
-                case "pixels":
-                case "duckets":
-                    {
-                        int duckets = 0;
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("SELECT `activity_points` FROM `users` WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("id", userId);
-                            duckets = dbClient.GetInteger();
-                        }
-
-                        client.GetHabbo().Duckets = duckets;
-                        client.SendPacket(new HabboActivityPointNotificationComposer(client.GetHabbo().Duckets, duckets));
-                        break;
-                    }
-
-                case "diamonds":
-                    {
-                        int diamonds = 0;
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("SELECT `vip_points` FROM `users` WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("id", userId);
-                            diamonds = dbClient.GetInteger();
-                        }
-
-                        client.GetHabbo().Diamonds = diamonds;
-                        client.SendPacket(new HabboActivityPointNotificationComposer(diamonds, 0, 5));
-                        break;
-                    }
-
-                case "gotw":
-                    {
-                        int gotw = 0;
-                        using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-                        {
-                            dbClient.SetQuery("SELECT `gotw_points` FROM `users` WHERE `id` = @id LIMIT 1");
-                            dbClient.AddParameter("id", userId);
-                            gotw = dbClient.GetInteger();
-                        }
-
-                        client.GetHabbo().GOTWPoints = gotw;
-                        client.SendPacket(new HabboActivityPointNotificationComposer(gotw, 0, 103));
-                        break;
-                    }
+                client.GetHabbo().Credits = credits;
+                client.SendPacket(new CreditBalanceComposer(client.GetHabbo().Credits));
+                return true;
             }
+
+            //let's check currencies 
+
+            CurrencyDefinition currencyDefinition = null;
+            if (!PlusEnvironment.GetGame().GetCurrencyManager().TryGetCurrency(currency, out currencyDefinition))
+                return false;
+
+            CurrencyType currencyType = null;
+            if (!client.GetHabbo().GetCurrency().TryGet(currencyDefinition.Type, out currencyType))
+                return false;
+
+            int points = 0;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT `amount` FROM `user_currencies` WHERE `type` = @type AND `user_id` = @id LIMIT 1");
+                dbClient.AddParameter("type", currencyType.Type);
+                dbClient.AddParameter("id", userId);
+                points = dbClient.GetInteger();
+            }
+
+            currencyType.Amount += points;
+            client.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, points, currencyType.Type));
+
             return true;
         }
     }

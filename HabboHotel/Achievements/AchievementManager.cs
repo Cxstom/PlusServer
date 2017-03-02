@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.GameClients;
+using Plus.HabboHotel.Users.Currency.Type;
 
 using Plus.Communication.Packets.Outgoing.Inventory.Purse;
 using Plus.Communication.Packets.Outgoing.Inventory.Achievements;
@@ -105,9 +106,14 @@ namespace Plus.HabboHotel.Achievements
                 UserData.Level = NewLevel;
                 UserData.Progress = NewProgress;
 
-                Session.GetHabbo().Duckets += TargetLevelData.RewardPixels;
+                CurrencyType currencyType = null;
+                if (Session.GetHabbo().GetCurrency().TryGet(0, out currencyType))
+                {
+                    currencyType.Amount += TargetLevelData.RewardPixels;
+                    Session.SendPacket(new HabboActivityPointNotificationComposer(currencyType.Amount, TargetLevelData.RewardPixels));
+                }
+
                 Session.GetHabbo().GetStats().AchievementPoints += TargetLevelData.RewardPoints;
-                Session.SendPacket(new HabboActivityPointNotificationComposer(Session.GetHabbo().Duckets, TargetLevelData.RewardPixels));
                 Session.SendPacket(new AchievementScoreComposer(Session.GetHabbo().GetStats().AchievementPoints));
 
                 AchievementLevel NewLevelData = AchievementData.Levels[NewTarget];
