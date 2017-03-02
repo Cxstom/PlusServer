@@ -1075,19 +1075,23 @@ namespace Plus.HabboHotel.Users
                 {
                     int CreditUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.credit_reward"));
                     int DucketUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.ducket_reward"));
+                    int DiamondUpdate = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.diamond_reward"));
 
                     SubscriptionData SubData = null;
                     if (PlusEnvironment.GetGame().GetSubscriptionManager().TryGetSubscriptionData(this._vipRank, out SubData))
                     {
                         CreditUpdate += SubData.Credits;
                         DucketUpdate += SubData.Duckets;
+                        DiamondUpdate += SubData.Diamonds;
                     }
 
                     this._credits += CreditUpdate;
                     this._duckets += DucketUpdate;
+                    this._diamonds += DiamondUpdate;
 
                     this._client.SendPacket(new CreditBalanceComposer(this._credits));
                     this._client.SendPacket(new HabboActivityPointNotificationComposer(this._duckets, DucketUpdate));
+                    this._client.SendPacket(new HabboActivityPointNotificationComposer(this._diamonds, DiamondUpdate, 5));
 
                     this.CreditsUpdateTick = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.currency_scheduler.tick"));
                 }
