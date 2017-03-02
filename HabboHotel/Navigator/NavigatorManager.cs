@@ -64,8 +64,8 @@ namespace Plus.HabboHotel.Navigator
                         }
                     }
                 }
-
-                dbClient.SetQuery("SELECT `room_id`,`caption`,`description`,`image_url`,`enabled` FROM `navigator_publics` ORDER BY `order_num` ASC");
+                
+                dbClient.SetQuery("SELECT `id`,`room_id`,`caption`,`description`,`image_url`,`enabled`,`cat_id` FROM `navigator_publics` ORDER BY `order_num` ASC");
                 DataTable GetPublics = dbClient.GetTable();
 
                 if (GetPublics != null)
@@ -74,8 +74,8 @@ namespace Plus.HabboHotel.Navigator
                     {
                         if (Convert.ToInt32(Row["enabled"]) == 1)
                         {
-                            if (!this._featuredRooms.ContainsKey(Convert.ToInt32(Row["room_id"])))
-                                this._featuredRooms.Add(Convert.ToInt32(Row["room_id"]), new FeaturedRoom(Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["caption"]), Convert.ToString(Row["description"]), Convert.ToString(Row["image_url"])));
+                            if (!this._featuredRooms.ContainsKey(Convert.ToInt32(Row["id"])))
+                                this._featuredRooms.Add(Convert.ToInt32(Row["id"]), new FeaturedRoom(Convert.ToInt32(Row["id"]), Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["caption"]), Convert.ToString(Row["description"]), Convert.ToString(Row["image_url"]), Convert.ToInt32(Row["cat_id"])));
                         }
                     }
                 }
@@ -183,9 +183,15 @@ namespace Plus.HabboHotel.Navigator
             return this._staffPicks.Remove(roomId);
         }
 
-        public ICollection<FeaturedRoom> GetFeaturedRooms()
+        public ICollection<FeaturedRoom> GetFeaturedRooms(int CategoryId)
         {
-            return this._featuredRooms.Values;
+            List<FeaturedRoom> FeaturedRooms = new List<FeaturedRoom>();
+            foreach (var featuredRoom in this._featuredRooms)
+            {
+                if (featuredRoom.Value.CategoryId == CategoryId)
+                    FeaturedRooms.Add(featuredRoom.Value);
+            }
+            return FeaturedRooms;
         }
 
         public ICollection<StaffPick> GetStaffPicks()

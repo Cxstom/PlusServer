@@ -126,7 +126,7 @@ namespace Plus.HabboHotel.Navigator
                     {
                         #region Featured
                         List<RoomData> Rooms = new List<RoomData>();
-                        ICollection<FeaturedRoom> Featured = PlusEnvironment.GetGame().GetNavigator().GetFeaturedRooms();
+                        ICollection<FeaturedRoom> Featured = PlusEnvironment.GetGame().GetNavigator().GetFeaturedRooms(SearchResult.Id);
                         foreach (FeaturedRoom FeaturedItem in Featured.ToList())
                         {
                             if (FeaturedItem == null)
