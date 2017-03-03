@@ -66,9 +66,7 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
 
             StaffPick staffPick = null;
             if (!PlusEnvironment.GetGame().GetNavigator().TryGetStaffPickedRoom(Data.Id, out staffPick))
-            {
-                base.WriteBoolean(true);
-            }
+                base.WriteBoolean(false);
             else
                 base.WriteBoolean(true);
             base.WriteBoolean(false);
