@@ -90,7 +90,16 @@ namespace Plus.HabboHotel.Users.Inventory
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.RunQuery("DELETE FROM items WHERE room_id='0' AND user_id = " + _userId); //Do join 
+                //dbClient.RunQuery("DELETE FROM items WHERE room_id='0' AND user_id = " + _userId); //Do join
+
+                dbClient.RunQuery("DELETE items, wired_items, user_presents, room_items_moodlight, room_items_tele_links, room_items_toner, items_groups FROM items " +
+                    "LEFT JOIN wired_items ON(wired_items.id = items.id) " +
+                    "LEFT JOIN user_presents ON(user_presents.item_id = items.id) " +
+                    "LEFT JOIN room_items_moodlight ON(room_items_moodlight.item_id = items.id) " +
+                    "LEFT JOIN room_items_tele_links ON(room_items_tele_links.tele_one_id = items.id OR room_items_tele_links.tele_two_id = items.id) " +
+                    "LEFT JOIN room_items_toner ON(room_items_toner.id = items.id) " +
+                    "LEFT JOIN items_groups ON(items_groups.id = items.id) " +
+                    "WHERE items.room_id = '0' AND items.user_id = '" + _userId + "'");
             }
 
             this._floorItems.Clear();
