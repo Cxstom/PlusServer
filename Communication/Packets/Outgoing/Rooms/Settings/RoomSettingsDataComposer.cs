@@ -18,7 +18,7 @@ namespace Plus.Communication.Packets.Outgoing.Rooms.Settings
             base.WriteInteger(RoomAccessUtility.GetRoomAccessPacketNum(Room.Access));
             base.WriteInteger(Room.Category);
             base.WriteInteger(Room.UsersMax);
-            base.WriteInteger(((Room.RoomData.Model.MapSizeX * Room.RoomData.Model.MapSizeY) > 100) ? 50 : 25);
+            base.WriteInteger(75);
 
             base.WriteInteger(Room.Tags.Count);
             foreach (string Tag in Room.Tags.ToArray())

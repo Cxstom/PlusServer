@@ -44,7 +44,14 @@ namespace Plus.Communication.Packets.Incoming.Messenger
                     page++;
                 }
             }
-          
+
+            try
+            {
+                if (Session.GetHabbo().GetMessenger() != null)
+                    Session.GetHabbo().GetMessenger().OnStatusChanged(true);
+            }
+            catch { }
+
             Session.GetHabbo().GetMessenger().ProcessOfflineMessages();
         }
     }
