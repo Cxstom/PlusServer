@@ -13,7 +13,7 @@ namespace Plus.Communication.Packets.Incoming.Inventory.Purse
         public void Parse(GameClient Session, ClientPacket Packet)
         {
             Session.SendPacket(new CreditBalanceComposer(Session.GetHabbo().Credits));
-            Session.SendPacket(new ActivityPointsComposer(Session.GetHabbo().GetCurrency().GetCurrencies));
+            Session.SendPacket(new ActivityPointsComposer(Session.GetHabbo().GetCurrency().getCurrencies));
         }
     }
 }
