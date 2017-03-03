@@ -22,7 +22,7 @@ namespace Plus.HabboHotel.Currency
         {
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT `name`, `type_id`, `cycle_reward` FROM `currency_deffinitions`;");
+                dbClient.SetQuery("SELECT `name`, `type_id`, `cycle_reward` FROM `currency_definitions`;");
                 DataTable GetBadges = dbClient.GetTable();
 
                 foreach (DataRow Row in GetBadges.Rows)
