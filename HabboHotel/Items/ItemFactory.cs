@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using Plus.HabboHotel.Users;
 
 using Plus.Database.Interfaces;
-
+using Plus.HabboHotel.Groups;
+using Plus.HabboHotel.GameClients;
+using Plus.Communication.Packets.Outgoing.Rooms.Notifications;
 
 namespace Plus.HabboHotel.Items
 {
@@ -40,7 +42,26 @@ namespace Plus.HabboHotel.Items
                     dbClient.AddParameter("id", Item.Id);
                     dbClient.AddParameter("gid", GroupId);
                     dbClient.RunQuery();
-                }
+
+                    if (Data.InteractionType == InteractionType.GUILD_FORUM)
+                    {
+                        GameClient client = PlusEnvironment.GetGame().GetClientManager().GetClientByUserID(Habbo.Id);
+
+                        Group group = null;
+                        if (!PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(GroupId, out group))
+                        {
+                            if (client != null)
+                                client.SendNotification("Oops, your group doesn't seem to exist!");
+                            return null;
+                        }
+
+                        group.InitForum(true);
+                        
+                        if (client != null)
+                            client.SendPacket(new RoomNotificationComposer("Congrats!", "You successfully bought your group terminal! Place it on your room, open it and post your first message ;)", "admin", "See my Group Forum", "event:groupforum/" + GroupId));
+                    }
+
+                }               
                 return Item;
             }
         }

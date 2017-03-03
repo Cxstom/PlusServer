@@ -91,6 +91,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
 
                 case InteractionType.GUILD_ITEM:
                 case InteractionType.GUILD_GATE:
+                case InteractionType.GUILD_FORUM:
                     break;
 
                 #region Pet handling

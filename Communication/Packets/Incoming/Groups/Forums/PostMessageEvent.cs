@@ -35,13 +35,13 @@ namespace Plus.Communication.Packets.Incoming.Groups.Forums
                 return;
             }
 
-            if (string.IsNullOrEmpty(title))
+            if (threadId == 0 && string.IsNullOrEmpty(title))
             {
                 session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("forum.post.title.empty"));
                 return;
             }
 
-            if (title.Length < 10)
+            if (threadId == 0 && title.Length < 10)
             {
                 session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("forum.post.title.too_short"));
                 return;
@@ -59,14 +59,17 @@ namespace Plus.Communication.Packets.Incoming.Groups.Forums
                 return;
             }
 
-            if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(title))
+            if (threadId == 0)
             {
-                session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("forum.post.message.title.contains_flagged_words"));
-                return;
-            }
+                if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(title))
+                {
+                    session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("forum.post.message.title.contains_flagged_words"));
+                    return;
+                }
 
-            if (!session.GetHabbo().GetPermissions().HasRight("word_filter_override"))
-                title = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(title);
+                if (!session.GetHabbo().GetPermissions().HasRight("word_filter_override"))
+                    title = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(title);
+            }
 
             if (PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckBannedWords(message))
             {
@@ -77,7 +80,7 @@ namespace Plus.Communication.Packets.Incoming.Groups.Forums
             if (!session.GetHabbo().GetPermissions().HasRight("word_filter_override"))
                 message = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(message);
 
-            if (title.Length > 60)
+            if (threadId == 0 && title.Length > 60)
             {
                 session.SendNotification(PlusEnvironment.GetLanguageManager().TryGetValue("forum.post.title.length.too_long"));
                 return;
