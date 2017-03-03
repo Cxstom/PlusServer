@@ -42,16 +42,14 @@ namespace Plus.HabboHotel.Currency
             return this._currencies.TryGetValue(currencyName.ToUpper(), out currency);
         }
 
-        public bool GetCurrencyByType(int currencyType, out CurrencyDefinition currency)
+        public CurrencyDefinition GetCurrencyByType(int currencyType)
         {
-            currency = null;
             foreach (CurrencyDefinition currencyDefinition in this._currencies.Values)
             {
                 if (currencyDefinition.Type == currencyType)
-                    currency = currencyDefinition;
-                return true;
+                    return currencyDefinition;
             }
-            return false;
+            return null;
         }
     }
 }

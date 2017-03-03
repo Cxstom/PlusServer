@@ -1016,6 +1016,8 @@ namespace Plus.HabboHotel.Users
 
                     if (GetPermissions().HasRight("mod_tickets"))
                         dbClient.RunQuery("UPDATE `moderation_tickets` SET `status` = 'open', `moderator_id` = '0' WHERE `status` ='picked' AND `moderator_id` = '" + Id + "'");
+
+                    this._currencies.SaveCurrency(dbClient);
                 }
             }
 

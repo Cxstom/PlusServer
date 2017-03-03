@@ -60,8 +60,8 @@ namespace Plus.HabboHotel.Users.Currency
         {
             foreach (CurrencyType currency in this._currecies.Values)
             {
-                CurrencyDefinition currencyDefinition = null;
-                if (!PlusEnvironment.GetGame().GetCurrencyManager().GetCurrencyByType(currency.Type, out currencyDefinition))
+                CurrencyDefinition currencyDefinition = PlusEnvironment.GetGame().GetCurrencyManager().GetCurrencyByType(currency.Type);
+                if (currencyDefinition == null)
                     continue;
 
                 currency.Amount += currencyDefinition.Reward;
@@ -92,19 +92,20 @@ namespace Plus.HabboHotel.Users.Currency
             get { return this._currecies.Values; }
         }
 
+        public void SaveCurrency(IQueryAdapter dbClient)
+        {
+            foreach (CurrencyType currency in this._currecies.Values)
+            {
+                dbClient.SetQuery("UPDATE `user_currencies` SET `amount` = @amount WHERE `type` = @type AND `user_id` = @uid LIMIT 1");
+                dbClient.AddParameter("amount", currency.Amount);
+                dbClient.AddParameter("type", currency.Type);
+                dbClient.AddParameter("uid", _player.Id);
+                dbClient.RunQuery();
+            }
+        }
+
         public void Dispose()
         {
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                foreach (CurrencyType currency in this._currecies.Values)
-                {
-                    dbClient.SetQuery("UPDATE `user_currencies` SET `amount` = @amount WHERE `type` = @type AND `user_id` = @uid LIMIT 1;");
-                    dbClient.AddParameter("type", currency.Type);
-                    dbClient.AddParameter("amount", currency.Amount);
-                    dbClient.AddParameter("uid", _player.Id);
-                    dbClient.RunQuery();
-                }
-            }
             this._currecies.Clear();
         }
     }
