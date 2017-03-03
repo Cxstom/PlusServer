@@ -246,6 +246,8 @@
     <Compile Include="Communication\Packets\Incoming\Rooms\Action\RemoveMyRightsEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\LoveLocks\ConfirmLoveLockEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\GetGroupFurniSettingsEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Rooms\Furni\RentableSpaces\BuyRentableSpaceEvent.cs" />
+    <Compile Include="Communication\Packets\Incoming\Rooms\Furni\RentableSpaces\CancelRentableSpaceEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\UseSellableClothingEvent.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Furni\YouTubeTelevisions\YouTubeGetNextVideo.cs" />
     <Compile Include="Communication\Packets\Incoming\Rooms\Polls\PollAnswerEvent.cs" />
@@ -711,12 +713,15 @@
     <Compile Include="HabboHotel\Items\Interactor\InteractorPressurePlate.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorGuildGate.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorGuildFurni.cs" />
+    <Compile Include="HabboHotel\Items\Interactor\InteractorRentableSpace.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorRoomAd.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorGift.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorBackgroundToner.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorBadgeDisplay.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorYoutubeTV.cs" />
     <Compile Include="HabboHotel\Items\Interactor\InteractorLoveLock.cs" />
+    <Compile Include="HabboHotel\Items\RentableSpace\RentableSpaceItem.cs" />
+    <Compile Include="HabboHotel\Items\RentableSpace\RentableSpaceManager.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\ActorHasHandItemBox.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\ActorIsInTeamBox.cs" />
     <Compile Include="HabboHotel\Items\Wired\Boxes\Conditions\FurniHasNoFurniBox.cs" />

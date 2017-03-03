@@ -571,6 +571,8 @@ namespace Plus.Communication.Packets
             this._incomingPackets.Add(ClientPacketHeader.GetGroupFurniSettingsMessageEvent, new GetGroupFurniSettingsEvent());
             this._incomingPackets.Add(ClientPacketHeader.UseSellableClothingMessageEvent, new UseSellableClothingEvent());
             this._incomingPackets.Add(ClientPacketHeader.ConfirmLoveLockMessageEvent, new ConfirmLoveLockEvent());
+            //this._incomingPackets.Add(ClientPacketHeader.BuyRentableSpaceEvent, new BuyRentableSpaceEvent());
+           // this._incomingPackets.Add(ClientPacketHeader.CancelRentableSpaceEvent, new CancelRentableSpaceEvent());
         }
 
         private void FloorPlanEditor()

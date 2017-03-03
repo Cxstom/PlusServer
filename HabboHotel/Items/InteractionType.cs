@@ -115,7 +115,8 @@
         COUNTER,
         CAMERA_PICTURE,
         FX_PROVIDER,
-        EXCHANGE
+        EXCHANGE,
+        RENTABLE_SPACE
     }
 
 
@@ -350,6 +351,11 @@
                     return InteractionType.EXCHANGE;
                 case "pet":
                     return InteractionType.PET;
+                case "rentablespace":
+                case "rentable_space":
+                    return InteractionType.RENTABLE_SPACE;
+
+
                 default:
                     {
                         //Logging.WriteLine("Unknown interaction type in parse code: " + pType, ConsoleColor.Yellow);

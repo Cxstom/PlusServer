@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using Plus.Core;
 using Plus.Core.Language;
 using Plus.HabboHotel.Rooms.Polls;
+using Plus.HabboHotel.Items.RentableSpaces;
 
 namespace Plus.HabboHotel
 {
@@ -61,6 +62,7 @@ namespace Plus.HabboHotel
         private readonly PermissionManager _permissionManager;
         private readonly SubscriptionManager _subscriptionManager;
         private readonly PollManager _pollManager;
+        private RentableSpaceManager _rentableSpaceManager;
 
 
         private bool _cycleEnded;
@@ -83,7 +85,7 @@ namespace Plus.HabboHotel
             this._catalogManager.Init(this._itemDataManager);
 
             this._televisionManager = new TelevisionManager();
-
+            this._rentableSpaceManager = new RentableSpaceManager();
             this._navigatorManager = new NavigatorManager();
             this._roomManager = new RoomManager();
             this._chatManager = new ChatManager();
@@ -184,6 +186,11 @@ namespace Plus.HabboHotel
         public RoomManager GetRoomManager()
         {
             return _roomManager;
+        }
+
+        public RentableSpaceManager GetRentableSpaceManager()
+        {
+            return _rentableSpaceManager;
         }
 
         public AchievementManager GetAchievementManager()

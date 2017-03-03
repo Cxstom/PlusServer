@@ -494,6 +494,9 @@ namespace Plus.HabboHotel.Items
                     case InteractionType.COUNTER:
                         return new InteractorCounter();
 
+                    case InteractionType.RENTABLE_SPACE:
+                        return new InteractorRentableSpace();
+
                     case InteractionType.NONE:
                     default:
                         return new InteractorDefault();

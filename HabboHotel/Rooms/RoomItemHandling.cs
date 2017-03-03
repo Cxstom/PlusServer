@@ -20,6 +20,7 @@ using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 using Plus.Communication.Packets.Outgoing;
 using Plus.Database.Interfaces;
 using Plus.HabboHotel.Rooms.PathFinding;
+using Plus.HabboHotel.Items.RentableSpaces;
 
 namespace Plus.HabboHotel.Rooms
 {
@@ -609,26 +610,52 @@ namespace Plus.HabboHotel.Rooms
                 if (!OnRoller)
                 {
                     // Check for items in the stack that do not allow stacking on top of them
-                    foreach (Item I in ItemsComplete.ToList())
+                    if (Item.GetBaseItem().InteractionType != InteractionType.RENTABLE_SPACE)
                     {
-                        if (I == null)
-                            continue;
-
-                        if (I.Id == Item.Id)
-                            continue;
-
-                        if (I.GetBaseItem() == null)
-                            continue;
-
-                        if (!I.GetBaseItem().Stackable)
+                        foreach (Item I in ItemsComplete.ToList())
                         {
-                            if (NeedsReAdd)
+                            if (I == null)
+                                continue;
+
+                            if (I.Id == Item.Id)
+                                continue;
+
+                            if (I.GetBaseItem() == null)
+                                continue;
+
+                            if (I.GetBaseItem().InteractionType == InteractionType.RENTABLE_SPACE)
                             {
-                                //AddItem(Item);
-                                _room.GetGameMap().AddToMap(Item);
+                                RentableSpaceItem rsi;
+                                if (!PlusEnvironment.GetGame().GetRentableSpaceManager().GetRentableSpaceItem(I.Id, out rsi))
+                                {
+                                    rsi = PlusEnvironment.GetGame().GetRentableSpaceManager().CreateAndAddItem(I.Id);
+                                }
+                                if (rsi.OwnerId != Session.GetHabbo().Id)
+                                {
+                                    Session.SendNotification("You dont have permission to place this.");
+                                    if (NeedsReAdd)
+                                    {
+                                        //AddItem(Item);
+                                        _room.GetGameMap().AddToMap(Item);
+                                    }
+                                    return false;
+                                }
                             }
-                            return false;
+
+                            if (!I.GetBaseItem().Stackable)
+                            {
+                                if (NeedsReAdd)
+                                {
+                                    //AddItem(Item);
+                                    _room.GetGameMap().AddToMap(Item);
+                                }
+                                return false;
+                            }
                         }
+                    }
+                    else
+                    {
+
                     }
                 }
 
