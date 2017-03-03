@@ -14,42 +14,42 @@ namespace Plus.HabboHotel.Users.Currency
     public sealed class CurrencyComponent
     {
         private readonly Habbo _player;
-        private readonly ConcurrentDictionary<int, CurrencyType> _currecies;
+        private readonly ConcurrentDictionary<int, CurrencyType> _currencies;
 
         public CurrencyComponent(Habbo habbo)
         {
             this._player = habbo;
-            this._currecies = new ConcurrentDictionary<int, CurrencyType>();
+            this._currencies = new ConcurrentDictionary<int, CurrencyType>();
         }
 
         public bool Init()
         {
-            if (this._currecies.Count > 0)
+            if (this._currencies.Count > 0)
                 return false;
             
-            DataTable getcurrencies = null;
+            DataTable getCurrencies = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("SELECT `type`, `amount` FROM `user_currencies` WHERE `user_id` = @uid");
                 dbClient.AddParameter("uid", _player.Id);
-                getcurrencies = dbClient.GetTable();
+                getCurrencies = dbClient.GetTable();
 
-                if (getcurrencies != null)
+                if (getCurrencies != null)
                 {
                     // Add the duckets for the user by default
                     int duckets = Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("user.starting_duckets"));
-                    if (getcurrencies.Rows.Count == 0)
+                    if (getCurrencies.Rows.Count == 0)
                     {
                         dbClient.SetQuery("INSERT INTO `user_currencies` (`type`, `amount`, `user_id`) VALUES ('0', @amount, @uid)");
                         dbClient.AddParameter("amount", duckets);
                         dbClient.AddParameter("uid", _player.Id);
                         dbClient.RunQuery();
 
-                        this._currecies.TryAdd(0, new CurrencyType(0, duckets));
+                        this._currencies.TryAdd(0, new CurrencyType(0, duckets));
                     }
-                    foreach (DataRow dRow in getcurrencies.Rows)
+                    foreach (DataRow dRow in getCurrencies.Rows)
                     {
-                        this._currecies.TryAdd(Convert.ToInt32(dRow["type"]), new CurrencyType(Convert.ToInt32(dRow["type"]), Convert.ToInt32(dRow["amount"])));
+                        this._currencies.TryAdd(Convert.ToInt32(dRow["type"]), new CurrencyType(Convert.ToInt32(dRow["type"]), Convert.ToInt32(dRow["amount"])));
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace Plus.HabboHotel.Users.Currency
 
         public void CheckPointsTimer()
         {
-            foreach (CurrencyType currency in this._currecies.Values)
+            foreach (CurrencyType currency in this._currencies.Values)
             {
                 CurrencyDefinition currencyDefinition = PlusEnvironment.GetGame().GetCurrencyManager().GetCurrencyByType(currency.Type);
                 if (currencyDefinition == null)
@@ -72,7 +72,7 @@ namespace Plus.HabboHotel.Users.Currency
 
         public bool TryGet(int type, out CurrencyType currencyType, bool addToDatabase = false)
         {
-            if (!this._currecies.ContainsKey(type) && addToDatabase)
+            if (!this._currencies.ContainsKey(type) && addToDatabase)
             {
                 using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
                 {
@@ -81,20 +81,20 @@ namespace Plus.HabboHotel.Users.Currency
                     dbClient.AddParameter("uid", _player.Id);
                     dbClient.RunQuery();
 
-                    this._currecies.TryAdd(type, new CurrencyType(type, 0));
+                    this._currencies.TryAdd(type, new CurrencyType(type, 0));
                 }
             }
-            return this._currecies.TryGetValue(type, out currencyType);
+            return this._currencies.TryGetValue(type, out currencyType);
         }
 
-        public ICollection<CurrencyType> GetCurrencies
+        public ICollection<CurrencyType> getCurrencies
         {
-            get { return this._currecies.Values; }
+            get { return this._currencies.Values; }
         }
 
         public void SaveCurrency(IQueryAdapter dbClient)
         {
-            foreach (CurrencyType currency in this._currecies.Values)
+            foreach (CurrencyType currency in this._currencies.Values)
             {
                 dbClient.SetQuery("UPDATE `user_currencies` SET `amount` = @amount WHERE `type` = @type AND `user_id` = @uid LIMIT 1");
                 dbClient.AddParameter("amount", currency.Amount);
@@ -106,7 +106,7 @@ namespace Plus.HabboHotel.Users.Currency
 
         public void Dispose()
         {
-            this._currecies.Clear();
+            this._currencies.Clear();
         }
     }
 }
