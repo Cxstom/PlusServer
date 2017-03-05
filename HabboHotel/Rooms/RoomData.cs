@@ -48,10 +48,13 @@ namespace Plus.HabboHotel.Rooms
         public bool RespectNotificationsEnabled { get; set; }
         public bool PetMorphsAllowed { get; set; }
 
-        public Group Group;
         public List<string> Tags;
         private RoomModel mModel;
-        public RoomPromotion _promotion;
+
+        private Group _group;
+        private RoomPromotion _promotion;
+        private List<int> _usersWithRights;
+        private List<string> _wordFilterList;
 
         public RoomData(int id, string caption, string model, string ownerName, int ownerId, string password, int score, string type, string access, int usersNow, int usersMax, int category, string description,
             string tags, string floor, string landscape, int allowPets, int allowPetsEating, int roomBlockingEnabled, int hidewall, int wallThickness, int floorThickness, string wallpaper, int muteSettings,
@@ -104,7 +107,35 @@ namespace Plus.HabboHotel.Rooms
             this.PetMorphsAllowed = petMorphsAllowed;
 
             if (groupId > 0)
-                PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out this.Group);
+                PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out this._group);
+
+            LoadPromotions();
+            LoadRights();
+            LoadFilter();
+        }
+
+        public List<int> UsersWithRights
+        {
+            get { return this._usersWithRights; }
+            set { this._usersWithRights = value; }
+        }
+
+        public List<string> WordFilterList
+        {
+            get { return this._wordFilterList; }
+            set { this._wordFilterList = value; }
+        }
+
+        public RoomPromotion Promotion
+        {
+            get { return this._promotion; }
+            set { this._promotion = value; }
+        }
+
+        public Group Group
+        {
+            get { return this._group; }
+            set { this._group = value; }
         }
 
         public RoomData(RoomData data)
@@ -150,12 +181,67 @@ namespace Plus.HabboHotel.Rooms
             this.Group = data.Group;
         }
 
-
-        public RoomPromotion Promotion
+        public void LoadPromotions()
         {
-            get { return this._promotion; }
-            set { this._promotion = value; }
+            DataRow GetPromotion = null;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + Id + " LIMIT 1;");
+                GetPromotion = dbClient.GetRow();
+
+                if (GetPromotion != null)
+                {
+                    if (Convert.ToDouble(GetPromotion["timestamp_expire"]) > PlusEnvironment.GetUnixTimestamp())
+                        this._promotion = new RoomPromotion(Convert.ToString(GetPromotion["title"]), Convert.ToString(GetPromotion["description"]), Convert.ToDouble(GetPromotion["timestamp_start"]), Convert.ToDouble(GetPromotion["timestamp_expire"]), Convert.ToInt32(GetPromotion["category_id"]));
+                }
+            }
         }
+
+        public void LoadRights()
+        {
+            UsersWithRights = new List<int>();
+            if (Group != null)
+                return;
+
+            DataTable Data = null;
+
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT room_rights.user_id FROM room_rights WHERE room_id = @roomid");
+                dbClient.AddParameter("roomid", Id);
+                Data = dbClient.GetTable();
+            }
+
+            if (Data != null)
+            {
+                foreach (DataRow Row in Data.Rows)
+                {
+                    UsersWithRights.Add(Convert.ToInt32(Row["user_id"]));
+                }
+            }
+        }
+
+        private void LoadFilter()
+        {
+            _wordFilterList = new List<string>();
+
+            DataTable Data = null;
+            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
+            {
+                dbClient.SetQuery("SELECT * FROM `room_filter` WHERE `room_id` = @roomid;");
+                dbClient.AddParameter("roomid", Id);
+                Data = dbClient.GetTable();
+            }
+
+            if (Data == null)
+                return;
+
+            foreach (DataRow Row in Data.Rows)
+            {
+                _wordFilterList.Add(Convert.ToString(Row["word"]));
+            }
+        }
+
 
         public bool HasActivePromotion
         {

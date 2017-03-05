@@ -38,20 +38,15 @@ namespace Plus.HabboHotel.Rooms
         public DateTime lastTimerReset;
         public DateTime lastRegeneration;
 
-
-
         public Task ProcessTask;
-        public ArrayList ActiveTrades;
 
         public TonerData TonerData;
         public MoodlightData MoodlightData;
 
         public Dictionary<int, double> MutedUsers;
 
-
-        private Dictionary<int, List<RoomUser>> Tents;
-
-        public List<int> UsersWithRights;
+       private Dictionary<int, List<RoomUser>> Tents;
+        
         private GameManager _gameManager;
         private Freeze _freeze;
         private Soccer _soccer;
@@ -66,9 +61,7 @@ namespace Plus.HabboHotel.Rooms
 
         private RoomUserManager _roomUserManager;
         private RoomItemHandling _roomItemHandling;
-
-        private List<string> _wordFilterList;
-
+        
         private FilterComponent _filterComponent = null;
         private WiredComponent _wiredComponent = null;
         private BansComponent _bansComponent = null;
@@ -78,7 +71,7 @@ namespace Plus.HabboHotel.Rooms
         public bool Unloaded { get; set; }
         public int IdleTime { get; set; }
 
-        public Room(RoomData data) 
+        public Room(RoomData data)
             : base(data)
         {
             IsLagging = 0;
@@ -87,8 +80,7 @@ namespace Plus.HabboHotel.Rooms
 
             _roomData = data;
             RoomMuted = false;
-           
-            ActiveTrades = new ArrayList();
+
             MutedUsers = new Dictionary<int, double>();
             Tents = new Dictionary<int, List<RoomUser>>();
 
@@ -104,17 +96,8 @@ namespace Plus.HabboHotel.Rooms
             GetRoomItemHandler().LoadFurniture();
             GetGameMap().GenerateMaps();
 
-            LoadPromotions();
-            LoadRights();
-            LoadFilter();
             InitBots();
             InitPets();
-        }
-
-        public List<string> WordFilterList
-        {
-            get { return _wordFilterList; }
-            set { _wordFilterList = value; }
         }
 
         public int UserCount
@@ -125,16 +108,6 @@ namespace Plus.HabboHotel.Rooms
         public int RoomId
         {
             get { return Id; }
-        }
-
-        public bool CanTradeInRoom
-        {
-            get { return true; }
-        }
-
-        public RoomData RoomData
-        {
-            get { return _roomData; }
         }
 
         public Gamemap GetGameMap()
@@ -303,67 +276,6 @@ namespace Plus.HabboHotel.Rooms
         public TradingComponent GetTrading()
         {
             return _tradingComponent;
-        }
-
-        public void LoadPromotions()
-        {
-            DataRow GetPromotion = null;
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + Id + " LIMIT 1;");
-                GetPromotion = dbClient.GetRow();
-
-                if (GetPromotion != null)
-                {
-                    if (Convert.ToDouble(GetPromotion["timestamp_expire"]) > PlusEnvironment.GetUnixTimestamp())
-                       this._promotion = new RoomPromotion(Convert.ToString(GetPromotion["title"]), Convert.ToString(GetPromotion["description"]), Convert.ToDouble(GetPromotion["timestamp_start"]), Convert.ToDouble(GetPromotion["timestamp_expire"]), Convert.ToInt32(GetPromotion["category_id"]));
-                }
-            }
-        }
-
-        public void LoadRights()
-        {
-            UsersWithRights = new List<int>();
-            if (Group != null)
-                return;
-
-            DataTable Data = null;
-
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT room_rights.user_id FROM room_rights WHERE room_id = @roomid");
-                dbClient.AddParameter("roomid", Id);
-                Data = dbClient.GetTable();
-            }
-
-            if (Data != null)
-            {
-                foreach (DataRow Row in Data.Rows)
-                {
-                    UsersWithRights.Add(Convert.ToInt32(Row["user_id"]));
-                }
-            }
-        }
-
-        private void LoadFilter()
-        {
-            _wordFilterList = new List<string>();
-
-            DataTable Data = null;
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT * FROM `room_filter` WHERE `room_id` = @roomid;");
-                dbClient.AddParameter("roomid", Id);
-                Data = dbClient.GetTable();
-            }
-
-            if (Data == null)
-                return;
-
-            foreach (DataRow Row in Data.Rows)
-            {
-                _wordFilterList.Add(Convert.ToString(Row["word"]));
-            }
         }
 
         public bool CheckRights(GameClient Session)
@@ -776,10 +688,7 @@ namespace Plus.HabboHotel.Rooms
                     ProcessTask.Dispose();
             }
             catch { }
-
-            if (ActiveTrades.Count > 0)
-                ActiveTrades.Clear();
-
+            
             TonerData = null;
             MoodlightData = null;
 
@@ -853,9 +762,6 @@ namespace Plus.HabboHotel.Rooms
                 _roomItemHandling.Dispose();
                 _roomItemHandling = null;
             }
-
-            if (_wordFilterList.Count > 0)
-                _wordFilterList.Clear();
 
             if (_filterComponent != null)
                 _filterComponent.Cleanup();
