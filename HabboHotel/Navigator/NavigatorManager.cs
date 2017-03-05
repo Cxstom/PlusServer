@@ -65,7 +65,7 @@ namespace Plus.HabboHotel.Navigator
                     }
                 }
                 
-                dbClient.SetQuery("SELECT `id`,`room_id`,`caption`,`description`,`image_url`,`enabled`,`cat_id` FROM `navigator_publics` ORDER BY `order_num` ASC");
+                dbClient.SetQuery("SELECT `room_id`,`caption`,`description`,`image_url`,`enabled`,`cat_id` FROM `navigator_publics` ORDER BY `order_num` ASC");
                 DataTable GetPublics = dbClient.GetTable();
 
                 if (GetPublics != null)
@@ -74,8 +74,8 @@ namespace Plus.HabboHotel.Navigator
                     {
                         if (Convert.ToInt32(Row["enabled"]) == 1)
                         {
-                            if (!this._featuredRooms.ContainsKey(Convert.ToInt32(Row["id"])))
-                                this._featuredRooms.Add(Convert.ToInt32(Row["id"]), new FeaturedRoom(Convert.ToInt32(Row["id"]), Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["caption"]), Convert.ToString(Row["description"]), Convert.ToString(Row["image_url"]), Convert.ToInt32(Row["cat_id"])));
+                            if (!this._featuredRooms.ContainsKey(Convert.ToInt32(Row["room_id"])))
+                                this._featuredRooms.Add(Convert.ToInt32(Row["room_id"]), new FeaturedRoom(Convert.ToInt32(Row["room_id"]), Convert.ToString(Row["caption"]), Convert.ToString(Row["description"]), Convert.ToString(Row["image_url"]), Convert.ToInt32(Row["cat_id"])));
                         }
                     }
                 }

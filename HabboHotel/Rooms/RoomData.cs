@@ -242,7 +242,6 @@ namespace Plus.HabboHotel.Rooms
             }
         }
 
-
         public bool HasActivePromotion
         {
             get { return this.Promotion != null; }
