@@ -37,8 +37,8 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 session.SendPacket(new CreditBalanceComposer(session.GetHabbo().Credits));
             }
 
-            RoomData Room = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
-            if (Room == null || Room.OwnerId != session.GetHabbo().Id || Room.Group != null)
+            RoomData Data = null;
+            if (!RoomFactory.TryGetData(RoomId, out Data) || Data.Group != null || Data.OwnerId != session.GetHabbo().Id)
                 return;
 
             string Badge = string.Empty;
@@ -57,10 +57,10 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             session.SendPacket(new PurchaseOKComposer());
 
-            Room.Group = Group;
+            Data.Group = Group;
 
-            if (session.GetHabbo().CurrentRoomId != Room.Id)
-                session.SendPacket(new RoomForwardComposer(Room.Id));
+            if (session.GetHabbo().CurrentRoomId != Data.Id)
+                session.SendPacket(new RoomForwardComposer(Data.Id));
 
             session.SendPacket(new NewGroupInfoComposer(RoomId, Group.Id));
         }

@@ -54,7 +54,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             {
                 case "floor":
                     Room.Floor = Item.ExtraData;
-                    Room.RoomData.Floor = Item.ExtraData;
+                    Room.Floor = Item.ExtraData;
 
                     PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.FURNI_DECORATION_FLOOR);
                     PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_RoomDecoFloor", 1);
@@ -62,7 +62,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
                 case "wallpaper":
                     Room.Wallpaper = Item.ExtraData;
-                    Room.RoomData.Wallpaper = Item.ExtraData;
+                    Room.Wallpaper = Item.ExtraData;
 
                     PlusEnvironment.GetGame().GetQuestManager().ProgressUserQuest(Session, QuestType.FURNI_DECORATION_WALL);
                     PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_RoomDecoWallpaper", 1);
@@ -70,7 +70,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
 
                 case "landscape":
                     Room.Landscape = Item.ExtraData;
-                    Room.RoomData.Landscape = Item.ExtraData;
+                    Room.Landscape = Item.ExtraData;
 
                     PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_RoomDecoLandscape", 1);
                     break;

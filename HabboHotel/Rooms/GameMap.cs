@@ -28,8 +28,8 @@ namespace Plus.HabboHotel.Rooms
             this._room = room;
             this.DiagonalEnabled = true;
 
-            this._staticModel = room.RoomData.Model;
-            this._dynamicModel = new DynamicRoomModel(room.RoomData.Model);
+            this._staticModel = room.Model;
+            this._dynamicModel = new DynamicRoomModel(room.Model);
             this._gameMap = new byte[Model.MapSizeX, Model.MapSizeY];
             this._itemHeightmap = new double[Model.MapSizeX, Model.MapSizeY];
             this._userMap = new ConcurrentDictionary<Point, List<RoomUser>>();

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Collections.Generic;
 
-using Plus.HabboHotel.Users;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.GameClients;
 
 using Plus.Database.Interfaces;
-
 
 namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 {
@@ -17,20 +13,15 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            if (Session == null || Session.GetHabbo() == null || Session.GetHabbo().UsersRooms == null)
+            if (Session == null || Session.GetHabbo() == null)
                 return;
 
             int RoomId = Packet.PopInt();
             if (RoomId == 0)
                 return;
 
-            Room Room;
-
+            Room Room = null;
             if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
-                return;
-
-            RoomData data = Room.RoomData;
-            if (data == null)
                 return;
 
             if (Room.OwnerId != Session.GetHabbo().Id && !Session.GetHabbo().GetPermissions().HasRight("room_delete_any"))
@@ -76,7 +67,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                 }
             }
 
-            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room, true);
+            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room.Id);
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -87,10 +78,6 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                 dbClient.RunQuery("DELETE FROM `room_rights` WHERE `room_id` = '" + RoomId + "'");
                 dbClient.RunQuery("UPDATE `users` SET `home_room` = '0' WHERE `home_room` = '" + RoomId + "'");
             }
-
-            RoomData removedRoom = (from p in Session.GetHabbo().UsersRooms where p.Id == RoomId select p).SingleOrDefault();
-            if (removedRoom != null)
-                Session.GetHabbo().UsersRooms.Remove(removedRoom);
         }
     }
 }

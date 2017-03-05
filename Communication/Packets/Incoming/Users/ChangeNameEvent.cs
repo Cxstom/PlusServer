@@ -100,23 +100,12 @@ namespace Plus.Communication.Packets.Incoming.Users
                     dbClient.RunQuery();
                 }
 
-                ICollection<RoomData> Rooms = Session.GetHabbo().UsersRooms;
-                foreach (RoomData Data in Rooms)
-                {
-                    if (Data == null)
-                        continue;
-
-                    Data.OwnerName = NewName;
-                }
-
                 foreach (Room UserRoom in PlusEnvironment.GetGame().GetRoomManager().GetRooms().ToList())
                 {
-                    if (UserRoom == null || UserRoom.RoomData.OwnerName != NewName)
+                    if (UserRoom == null || UserRoom.OwnerName != NewName)
                         continue;
 
                     UserRoom.OwnerName = NewName;
-                    UserRoom.RoomData.OwnerName = NewName;
-
                     UserRoom.SendPacket(new RoomInfoUpdatedComposer(UserRoom.RoomId));
                 }
 

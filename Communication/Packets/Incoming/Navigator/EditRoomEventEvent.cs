@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
@@ -18,8 +15,8 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             string Name = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());
             string Desc = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());
 
-            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
-            if (Data == null)
+            RoomData Data = null;
+            if (RoomFactory.TryGetData(RoomId, out Data))
                 return;
 
             if (Data.OwnerId != Session.GetHabbo().Id)

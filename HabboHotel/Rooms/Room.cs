@@ -7,13 +7,11 @@ using System.Collections.Generic;
 
 using Plus.Core;
 using Plus.HabboHotel.GameClients;
-using Plus.HabboHotel.Groups;
 using Plus.HabboHotel.Items;
 using Plus.HabboHotel.Rooms.AI;
 using Plus.HabboHotel.Rooms.Games;
 using Plus.Communication.Interfaces;
 using Plus.Communication.Packets.Outgoing;
-
 
 using Plus.HabboHotel.Rooms.Instance;
 
@@ -25,11 +23,9 @@ using Plus.Communication.Packets.Outgoing.Rooms.Avatar;
 using Plus.Communication.Packets.Outgoing.Rooms.Engine;
 using Plus.Communication.Packets.Outgoing.Rooms.Session;
 
-
 using Plus.HabboHotel.Rooms.Games.Football;
 using Plus.HabboHotel.Rooms.Games.Banzai;
 using Plus.HabboHotel.Rooms.Games.Teams;
-using Plus.HabboHotel.Rooms.Trading;
 using Plus.HabboHotel.Rooms.AI.Speech;
 using Plus.Database.Interfaces;
 
@@ -38,7 +34,6 @@ namespace Plus.HabboHotel.Rooms
     public class Room : RoomData
     {
         public bool isCrashed;
-        public bool mDisposed;
         public bool RoomMuted;
         public DateTime lastTimerReset;
         public DateTime lastRegeneration;
@@ -80,100 +75,46 @@ namespace Plus.HabboHotel.Rooms
         private TradingComponent _tradingComponent = null;
 
         public int IsLagging { get; set; }
+        public bool Unloaded { get; set; }
         public int IdleTime { get; set; }
 
-        public Room(RoomData Data)
+        public Room(RoomData data) 
+            : base(data)
         {
-            this.IsLagging = 0;
-            this.IdleTime = 0;
+            IsLagging = 0;
+            Unloaded = false;
+            IdleTime = 0;
 
-            this._roomData = Data;
+            _roomData = data;
             RoomMuted = false;
-            mDisposed = false;
-
-            this.Id = Data.Id;
-            this.Name = Data.Name;
-            this.Description = Data.Description;
-            this.OwnerName = Data.OwnerName;
-            this.OwnerId = Data.OwnerId;
-
-            this.Category = Data.Category;
-            this.Type = Data.Type;
-            this.Access = Data.Access;
-            this.UsersNow = 0;
-            this.UsersMax = Data.UsersMax;
-            this.ModelName = Data.ModelName;
-            this.Score = Data.Score;
-            this.Tags = new List<string>();
-            foreach (string tag in Data.Tags)
-            {
-                Tags.Add(tag);
-            }
-
-            this.AllowPets = Data.AllowPets;
-            this.AllowPetsEating = Data.AllowPetsEating;
-            this.RoomBlockingEnabled = Data.RoomBlockingEnabled;
-            this.Hidewall = Data.Hidewall;
-            this.Group = Data.Group;
-
-            this.Password = Data.Password;
-            this.Wallpaper = Data.Wallpaper;
-            this.Floor = Data.Floor;
-            this.Landscape = Data.Landscape;
-
-            this.WallThickness = Data.WallThickness;
-            this.FloorThickness = Data.FloorThickness;
-
-            this.chatMode = Data.chatMode;
-            this.chatSize = Data.chatSize;
-            this.chatSpeed = Data.chatSpeed;
-            this.chatDistance = Data.chatDistance;
-            this.extraFlood = Data.extraFlood;
-
-            this.TradeSettings = Data.TradeSettings;
-
-            this.WhoCanBan = Data.WhoCanBan;
-            this.WhoCanKick = Data.WhoCanKick;
-            this.WhoCanBan = Data.WhoCanBan;
-
-            this.PushEnabled = Data.PushEnabled;
-            this.PullEnabled = Data.PullEnabled;
-            this.SPullEnabled = Data.SPullEnabled;
-            this.SPushEnabled = Data.SPushEnabled;
-            this.EnablesEnabled = Data.EnablesEnabled;
-            this.RespectNotificationsEnabled = Data.RespectNotificationsEnabled;
-            this.PetMorphsAllowed = Data.PetMorphsAllowed;
-
-            this.ActiveTrades = new ArrayList();
-            this.MutedUsers = new Dictionary<int, double>();
-            this.Tents = new Dictionary<int, List<RoomUser>>();
+           
+            ActiveTrades = new ArrayList();
+            MutedUsers = new Dictionary<int, double>();
+            Tents = new Dictionary<int, List<RoomUser>>();
 
             _gamemap = new Gamemap(this);
             if (_roomItemHandling == null)
                 _roomItemHandling = new RoomItemHandling(this);
             _roomUserManager = new RoomUserManager(this);
-
-            this._filterComponent = new FilterComponent(this);
-            this._wiredComponent = new WiredComponent(this);
-            this._bansComponent = new BansComponent(this);
-            this._tradingComponent = new TradingComponent(this);
+            _filterComponent = new FilterComponent(this);
+            _wiredComponent = new WiredComponent(this);
+            _bansComponent = new BansComponent(this);
+            _tradingComponent = new TradingComponent(this);
 
             GetRoomItemHandler().LoadFurniture();
             GetGameMap().GenerateMaps();
 
-            this.LoadPromotions();
-            this.LoadRights();
-            this.LoadFilter();
-            this.InitBots();
-            this.InitPets();
-
-            Data.UsersNow = 1;
+            LoadPromotions();
+            LoadRights();
+            LoadFilter();
+            InitBots();
+            InitPets();
         }
 
         public List<string> WordFilterList
         {
-            get { return this._wordFilterList; }
-            set { this._wordFilterList = value; }
+            get { return _wordFilterList; }
+            set { _wordFilterList = value; }
         }
 
         public int UserCount
@@ -346,22 +287,22 @@ namespace Plus.HabboHotel.Rooms
 
         public FilterComponent GetFilter()
         {
-            return this._filterComponent;
+            return _filterComponent;
         }
 
         public WiredComponent GetWired()
         {
-            return this._wiredComponent;
+            return _wiredComponent;
         }
 
         public BansComponent GetBans()
         {
-            return this._bansComponent;
+            return _bansComponent;
         }
 
         public TradingComponent GetTrading()
         {
-            return this._tradingComponent;
+            return _tradingComponent;
         }
 
         public void LoadPromotions()
@@ -369,13 +310,13 @@ namespace Plus.HabboHotel.Rooms
             DataRow GetPromotion = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
-                dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + this.Id + " LIMIT 1;");
+                dbClient.SetQuery("SELECT * FROM `room_promotions` WHERE `room_id` = " + Id + " LIMIT 1;");
                 GetPromotion = dbClient.GetRow();
 
                 if (GetPromotion != null)
                 {
                     if (Convert.ToDouble(GetPromotion["timestamp_expire"]) > PlusEnvironment.GetUnixTimestamp())
-                        RoomData._promotion = new RoomPromotion(Convert.ToString(GetPromotion["title"]), Convert.ToString(GetPromotion["description"]), Convert.ToDouble(GetPromotion["timestamp_start"]), Convert.ToDouble(GetPromotion["timestamp_expire"]), Convert.ToInt32(GetPromotion["category_id"]));
+                       this._promotion = new RoomPromotion(Convert.ToString(GetPromotion["title"]), Convert.ToString(GetPromotion["description"]), Convert.ToDouble(GetPromotion["timestamp_start"]), Convert.ToDouble(GetPromotion["timestamp_expire"]), Convert.ToInt32(GetPromotion["category_id"]));
                 }
             }
         }
@@ -406,7 +347,7 @@ namespace Plus.HabboHotel.Rooms
 
         private void LoadFilter()
         {
-            this._wordFilterList = new List<string>();
+            _wordFilterList = new List<string>();
 
             DataTable Data = null;
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
@@ -421,7 +362,7 @@ namespace Plus.HabboHotel.Rooms
 
             foreach (DataRow Row in Data.Rows)
             {
-                this._wordFilterList.Add(Convert.ToString(Row["word"]));
+                _wordFilterList.Add(Convert.ToString(Row["word"]));
             }
         }
 
@@ -475,7 +416,7 @@ namespace Plus.HabboHotel.Rooms
         {
             Func<Item, bool> predicate = null;
             string Key = null;
-            foreach (Item item in this.GetRoomItemHandler().GetFurniObjects(Ball.GetX, Ball.GetY).ToList())
+            foreach (Item item in GetRoomItemHandler().GetFurniObjects(Ball.GetX, Ball.GetY).ToList())
             {
                 if (item.GetBaseItem().ItemName.StartsWith("fball_goal_"))
                 {
@@ -497,7 +438,7 @@ namespace Plus.HabboHotel.Rooms
                     predicate = p => p.GetBaseItem().ItemName == ("fball_score_" + Key);
                 }
 
-                foreach (Item item2 in this.GetRoomItemHandler().GetFloor.Where<Item>(predicate).ToList())
+                foreach (Item item2 in GetRoomItemHandler().GetFloor.Where<Item>(predicate).ToList())
                 {
                     if (item2.GetBaseItem().ItemName == ("fball_score_" + Key))
                     {
@@ -513,24 +454,24 @@ namespace Plus.HabboHotel.Rooms
 
         public void ProcessRoom()
         {
-            if (isCrashed || mDisposed)
+            if (isCrashed || Unloaded)
                 return;
 
             try
             {
-                if (this.GetRoomUserManager().GetRoomUsers().Count == 0)
-                    this.IdleTime++;
-                else if (this.IdleTime > 0)
-                    this.IdleTime = 0;
+                if (GetRoomUserManager().GetRoomUsers().Count == 0)
+                    IdleTime++;
+                else if (IdleTime > 0)
+                    IdleTime = 0;
 
-                if (this.RoomData.HasActivePromotion && this.RoomData.Promotion.HasExpired)
+                if (HasActivePromotion && Promotion.HasExpired)
                 {
-                    this.RoomData.EndPromotion();
+                    EndPromotion();
                 }
 
-                if (this.IdleTime >= 60 && !this.RoomData.HasActivePromotion)
+                if (IdleTime >= 60 && !HasActivePromotion)
                 {
-                    PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(this);
+                    PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Id);
                     return;
                 }
 
@@ -600,7 +541,8 @@ namespace Plus.HabboHotel.Rooms
                     }
                     catch (Exception e2)
                     {
-                        ExceptionLogger.LogException(e2); }
+                        ExceptionLogger.LogException(e2);
+                    }
                 }
             }
             catch (Exception e3)
@@ -609,7 +551,7 @@ namespace Plus.HabboHotel.Rooms
             }
 
             isCrashed = true;
-            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(this, true);
+            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Id);
         }
 
 
@@ -745,9 +687,9 @@ namespace Plus.HabboHotel.Rooms
             try
             {
 
-                List<RoomUser> Users = this._roomUserManager.GetUserList().ToList();
+                List<RoomUser> Users = _roomUserManager.GetUserList().ToList();
 
-                if (this == null || this._roomUserManager == null || Users == null)
+                if (this == null || _roomUserManager == null || Users == null)
                     return;
 
                 foreach (RoomUser User in Users)
@@ -758,7 +700,7 @@ namespace Plus.HabboHotel.Rooms
                     if (User.GetClient() == null || User.GetClient().GetConnection() == null)
                         continue;
 
-                    if (UsersWithRightsOnly && !this.CheckRights(User.GetClient()))
+                    if (UsersWithRightsOnly && !CheckRights(User.GetClient()))
                         continue;
 
                     User.GetClient().SendPacket(Message);
@@ -772,7 +714,7 @@ namespace Plus.HabboHotel.Rooms
 
         public void BroadcastPacket(byte[] Packet)
         {
-            foreach (RoomUser User in this._roomUserManager.GetUserList().ToList())
+            foreach (RoomUser User in _roomUserManager.GetUserList().ToList())
             {
                 if (User == null || User.IsBot)
                     continue;
@@ -808,7 +750,7 @@ namespace Plus.HabboHotel.Rooms
                     }
                 }
 
-                this.BroadcastPacket(TotalBytes);
+                BroadcastPacket(TotalBytes);
             }
             catch (Exception e)
             {
@@ -821,111 +763,111 @@ namespace Plus.HabboHotel.Rooms
         {
             SendPacket(new CloseConnectionComposer());
 
-            if (!mDisposed)
+            if (Unloaded)
+                return;
+
+            Unloaded = true;
+            isCrashed = false;
+
+            /* TODO: Needs reviewing */
+            try
             {
-                isCrashed = false;
-                mDisposed = true;
-
-                /* TODO: Needs reviewing */
-                try
-                {
-                    if (ProcessTask != null && ProcessTask.IsCompleted)
-                        ProcessTask.Dispose();
-                }
-                catch { }
-
-                if (this.ActiveTrades.Count > 0)
-                    this.ActiveTrades.Clear();
-
-                this.TonerData = null;
-                this.MoodlightData = null;
-
-                if (this.MutedUsers.Count > 0)
-                    this.MutedUsers.Clear();
-
-                if (this.Tents.Count > 0)
-                    this.Tents.Clear();
-
-                if (this.UsersWithRights.Count > 0)
-                    this.UsersWithRights.Clear();
-
-                if (this._gameManager != null)
-                {
-                    this._gameManager.Dispose();
-                    this._gameManager = null;
-                }
-
-                if (this._freeze != null)
-                {
-                    this._freeze.Dispose();
-                    this._freeze = null;
-                }
-
-                if (this._soccer != null)
-                {
-                    this._soccer.Dispose();
-                    this._soccer = null;
-                }
-
-                if (this._banzai != null)
-                {
-                    this._banzai.Dispose();
-                    this._banzai = null;
-                }
-
-                if (this._gamemap != null)
-                {
-                    this._gamemap.Dispose();
-                    this._gamemap = null;
-                }
-
-                if (this._gameItemHandler != null)
-                {
-                    this._gameItemHandler.Dispose();
-                    this._gameItemHandler = null;
-                }
-
-                // Room Data?
-
-                if (this.teambanzai != null)
-                {
-                    this.teambanzai.Dispose();
-                    this.teambanzai = null;
-                }
-
-                if (this.teamfreeze != null)
-                {
-                    this.teamfreeze.Dispose();
-                    this.teamfreeze = null;
-                }
-
-                if (this._roomUserManager != null)
-                {
-                    this._roomUserManager.Dispose();
-                    this._roomUserManager = null;
-                }
-
-                if (this._roomItemHandling != null)
-                {
-                    this._roomItemHandling.Dispose();
-                    this._roomItemHandling = null;
-                }
-
-                if (this._wordFilterList.Count > 0)
-                    this._wordFilterList.Clear();
-
-                if (this._filterComponent != null)
-                    this._filterComponent.Cleanup();
-
-                if (this._wiredComponent != null)
-                    this._wiredComponent.Cleanup();
-
-                if (this._bansComponent != null)
-                    this._bansComponent.Cleanup();
-
-                if (this._tradingComponent != null)
-                    this._tradingComponent.Cleanup();
+                if (ProcessTask != null && ProcessTask.IsCompleted)
+                    ProcessTask.Dispose();
             }
+            catch { }
+
+            if (ActiveTrades.Count > 0)
+                ActiveTrades.Clear();
+
+            TonerData = null;
+            MoodlightData = null;
+
+            if (MutedUsers.Count > 0)
+                MutedUsers.Clear();
+
+            if (Tents.Count > 0)
+                Tents.Clear();
+
+            if (UsersWithRights.Count > 0)
+                UsersWithRights.Clear();
+
+            if (_gameManager != null)
+            {
+                _gameManager.Dispose();
+                _gameManager = null;
+            }
+
+            if (_freeze != null)
+            {
+                _freeze.Dispose();
+                _freeze = null;
+            }
+
+            if (_soccer != null)
+            {
+                _soccer.Dispose();
+                _soccer = null;
+            }
+
+            if (_banzai != null)
+            {
+                _banzai.Dispose();
+                _banzai = null;
+            }
+
+            if (_gamemap != null)
+            {
+                _gamemap.Dispose();
+                _gamemap = null;
+            }
+
+            if (_gameItemHandler != null)
+            {
+                _gameItemHandler.Dispose();
+                _gameItemHandler = null;
+            }
+
+            // Room Data?
+
+            if (teambanzai != null)
+            {
+                teambanzai.Dispose();
+                teambanzai = null;
+            }
+
+            if (teamfreeze != null)
+            {
+                teamfreeze.Dispose();
+                teamfreeze = null;
+            }
+
+            if (_roomUserManager != null)
+            {
+                _roomUserManager.Dispose();
+                _roomUserManager = null;
+            }
+
+            if (_roomItemHandling != null)
+            {
+                _roomItemHandling.Dispose();
+                _roomItemHandling = null;
+            }
+
+            if (_wordFilterList.Count > 0)
+                _wordFilterList.Clear();
+
+            if (_filterComponent != null)
+                _filterComponent.Cleanup();
+
+            if (_wiredComponent != null)
+                _wiredComponent.Cleanup();
+
+            if (_bansComponent != null)
+                _bansComponent.Cleanup();
+
+            if (_tradingComponent != null)
+                _tradingComponent.Cleanup();
         }
     }
 }

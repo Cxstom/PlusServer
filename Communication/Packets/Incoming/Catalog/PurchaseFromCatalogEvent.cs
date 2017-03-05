@@ -369,16 +369,16 @@ namespace Plus.Communication.Packets.Incoming.Catalog
                                 CatalogDeal deal = null;
                                 if (PlusEnvironment.GetGame().GetCatalog().TryGetDeal(Item.Data.BehaviourData, out deal))
                                 {
-                                    Room room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(deal.RoomId);
-                                    if (room == null)
+                                    Room room = null;
+                                    if (!PlusEnvironment.GetGame().GetRoomManager().TryLoadRoom(deal.RoomId, out room))
                                         Session.SendNotification("There was an error loading this Room Bundle, if this happens again please contact hotel management!");
 
                                     RoomData newRoom = PlusEnvironment.GetGame().GetRoomManager().CreateRoom(Session, room.Name, room.Description, room.ModelName, room.Category, 10, room.TradeSettings, room.Wallpaper, room.Floor, room.Landscape, room.WallThickness, room.FloorThickness);
                                     if (newRoom == null)
                                         return;
 
-                                    Room myRoom = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(newRoom.Id);
-                                    if (myRoom != null)
+                                    Room myRoom = null;
+                                    if (PlusEnvironment.GetGame().GetRoomManager().TryLoadRoom(newRoom.Id, out myRoom))
                                     {
                                         List<Item> Items = ItemLoader.GetItemsForRoom(deal.RoomId, room);
                                         Item teleLink = null;

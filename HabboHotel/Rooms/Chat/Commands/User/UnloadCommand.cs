@@ -32,13 +32,13 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.User
                 if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(Room.Id, out R))
                     return;
 
-                PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(R, true);
+                PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room.Id);
             }
             else
             {
                 if (Room.CheckRights(Session, true))
                 {
-                    PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room);
+                    PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room.Id);
                 }
             }
         }

@@ -23,7 +23,6 @@ namespace Plus.HabboHotel.Users.UserData
             DataTable dBadges = null;
             DataTable dFriends = null;
             DataTable dRequests = null;
-            DataTable dRooms = null;
             DataTable dQuests = null;
             DataTable dRelations = null;
             DataRow UserInfo = null;
@@ -85,9 +84,6 @@ namespace Plus.HabboHotel.Users.UserData
 
                 dbClient.SetQuery("SELECT messenger_requests.from_id,messenger_requests.to_id,users.username FROM users JOIN messenger_requests ON users.id = messenger_requests.from_id WHERE messenger_requests.to_id = " + UserId);
                 dRequests = dbClient.GetTable();
-
-                dbClient.SetQuery("SELECT * FROM rooms WHERE `owner` = '" + UserId + "' LIMIT 150");
-                dRooms = dbClient.GetTable();
 
                 dbClient.SetQuery("SELECT `quest_id`,`progress` FROM user_quests WHERE `user_id` = '" + UserId + "'");
                 dQuests = dbClient.GetTable();
@@ -170,12 +166,6 @@ namespace Plus.HabboHotel.Users.UserData
                 }
             }
 
-            List<RoomData> rooms = new List<RoomData>();
-            foreach (DataRow dRow in dRooms.Rows)
-            {
-                rooms.Add(PlusEnvironment.GetGame().GetRoomManager().FetchRoomData(Convert.ToInt32(dRow["id"]), dRow));
-            }
-
             Dictionary<int, int> quests = new Dictionary<int, int>();
             foreach (DataRow dRow in dQuests.Rows)
             {
@@ -202,11 +192,10 @@ namespace Plus.HabboHotel.Users.UserData
             dBadges = null;
             dFriends = null;
             dRequests = null;
-            dRooms = null;
             dRelations = null;
 
             errorCode = 0;
-            return new UserData(UserId, Achievements, favouritedRooms, badges, friends, requests, rooms, quests, user, Relationships);
+            return new UserData(UserId, Achievements, favouritedRooms, badges, friends, requests, quests, user, Relationships);
         }
 
         public static UserData GetUserData(int UserId)
@@ -255,7 +244,6 @@ namespace Plus.HabboHotel.Users.UserData
             List<Badge> Badges = new List<Badge>();
             Dictionary<int, MessengerBuddy> Friends = new Dictionary<int, MessengerBuddy>();
             Dictionary<int, MessengerRequest> FriendRequests = new Dictionary<int, MessengerRequest>();
-            List<RoomData> Rooms = new List<RoomData>();
             Dictionary<int, int> Quests = new Dictionary<int, int>();
 
             Dictionary<int, Relationship> Relationships = new Dictionary<int, Relationship>();
@@ -268,7 +256,7 @@ namespace Plus.HabboHotel.Users.UserData
             }
 
             Habbo user = HabboFactory.GenerateHabbo(dUserInfo, UserInfo);
-            return new UserData(UserId, Achievements, FavouritedRooms, Badges, Friends, FriendRequests, Rooms, Quests, user, Relationships);
+            return new UserData(UserId, Achievements, FavouritedRooms, Badges, Friends, FriendRequests, Quests, user, Relationships);
         }
     }
 }

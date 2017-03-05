@@ -17,11 +17,11 @@ namespace Plus.Communication.Packets.Incoming.Navigator
             if (Session == null || Session.GetHabbo() == null)
                 return;
             
-            if (Session.GetHabbo().UsersRooms.Count >= 500)
+            /*if (Session.GetHabbo().UsersRooms.Count >= 500)
             {
                 Session.SendPacket(new CanCreateRoomComposer(true, 500));
                 return;
-            }
+            }*/
 
             string Name = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());
             string Description = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());

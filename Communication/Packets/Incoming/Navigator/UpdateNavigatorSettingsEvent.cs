@@ -12,16 +12,16 @@ namespace Plus.Communication.Packets.Incoming.Navigator
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            int roomID = Packet.PopInt();
-            if (roomID == 0)
+            int roomId = Packet.PopInt();
+            if (roomId == 0)
                 return;
 
-            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(roomID);
-            if (Data == null)
+            RoomData Data = null;
+            if (!RoomFactory.TryGetData(roomId, out Data))
                 return;
 
-            Session.GetHabbo().HomeRoom = roomID;
-            Session.SendPacket(new NavigatorSettingsComposer(roomID));
+            Session.GetHabbo().HomeRoom = roomId;
+            Session.SendPacket(new NavigatorSettingsComposer(roomId));
         }
     }
 }

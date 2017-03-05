@@ -69,7 +69,7 @@ namespace Plus.HabboHotel.Rooms.Chat.Logs
             if (this._roomReference.IsAlive)
             {
                 Room RoomObj = (Room)this._roomReference.Target;
-                if (RoomObj.mDisposed)
+                if (RoomObj.Unloaded)
                     return null;
                 return RoomObj;
             }

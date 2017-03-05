@@ -24,7 +24,6 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             if (session.GetHabbo().InRoom)
             {
                 Room OldRoom;
-
                 if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(session.GetHabbo().CurrentRoomId, out OldRoom))
                     return;
 
@@ -60,7 +59,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Engine
             if (ThisUser != null && session.GetHabbo().PetId == 0)
                 Room.SendPacket(new UserChangeComposer(ThisUser, false));
 
-            session.SendPacket(new RoomEventComposer(Room.RoomData, Room.RoomData.Promotion));
+            session.SendPacket(new RoomEventComposer(Room, Room.Promotion));
 
             if (Room.GetWired() != null)
                 Room.GetWired().TriggerEvent(WiredBoxType.TriggerRoomEnter, session.GetHabbo());

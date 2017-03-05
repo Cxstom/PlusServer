@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
+using System.Collections.Generic;
 
 using Plus.HabboHotel.Groups;
 using Plus.Database.Interfaces;
@@ -9,117 +9,147 @@ namespace Plus.HabboHotel.Rooms
 {
     public class RoomData
     {
-        public int Id;
-        public int AllowPets;
-        public int AllowPetsEating;
-        public int RoomBlockingEnabled;
-        public int Category;
-        public string Description;
-        public string Floor;
-        public int FloorThickness;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ModelName { get; set; }
+        public string OwnerName { get; set; }
+        public int OwnerId { get; set; }
+        public string Password { get; set; }
+        public int Score { get; set; }
+        public RoomAccess Access { get; set; }
+        public string Type { get; set; }
+        public int UsersMax { get; set; }
+        public int UsersNow { get; set; }
+        public int Category { get; set; }
+        public string Description { get; set; }
+        public string Floor { get; set; }
+        public string Landscape { get; set; }
+        public int AllowPets { get; set; }
+        public int AllowPetsEating { get; set; }
+        public int RoomBlockingEnabled { get; set; }
+        public int Hidewall { get; set; }
+        public int WallThickness { get; set; }
+        public int FloorThickness { get; set; }
+        public string Wallpaper { get; set; }
+        public int WhoCanMute { get; set; }
+        public int WhoCanBan { get; set; }
+        public int WhoCanKick { get; set; }
+        public int chatMode { get; set; }
+        public int chatSize { get; set; }
+        public int chatSpeed { get; set; }
+        public int extraFlood { get; set; }
+        public int chatDistance { get; set; }
+        public int TradeSettings { get; set; }//Default = 2;
+        public bool PushEnabled { get; set; }
+        public bool PullEnabled { get; set; }
+        public bool SPushEnabled { get; set; }
+        public bool SPullEnabled { get; set; }
+        public bool EnablesEnabled { get; set; }
+        public bool RespectNotificationsEnabled { get; set; }
+        public bool PetMorphsAllowed { get; set; }
+
         public Group Group;
-        public int Hidewall;
-        public string Landscape;
-        public string ModelName;
-        public string Name;
-        public string OwnerName;
-        public int OwnerId;
-        public string Password;
-        public int Score;
-        public RoomAccess Access;
         public List<string> Tags;
-        public string Type;
-        public int UsersMax;
-        public int UsersNow;
-        public int WallThickness;
-        public string Wallpaper;
-        public int WhoCanBan;
-        public int WhoCanKick;
-        public int WhoCanMute;
         private RoomModel mModel;
-        public int chatMode;
-        public int chatSpeed;
-        public int chatSize;
-        public int extraFlood;
-        public int chatDistance;
-
-        public int TradeSettings;//Default = 2;
-
         public RoomPromotion _promotion;
 
-        public bool PushEnabled;
-        public bool PullEnabled;
-        public bool SPushEnabled;
-        public bool SPullEnabled;
-        public bool EnablesEnabled;
-        public bool RespectNotificationsEnabled;
-        public bool PetMorphsAllowed;
-
-        public void Fill(DataRow Row)
+        public RoomData(int id, string caption, string model, string ownerName, int ownerId, string password, int score, string type, string access, int usersNow, int usersMax, int category, string description,
+            string tags, string floor, string landscape, int allowPets, int allowPetsEating, int roomBlockingEnabled, int hidewall, int wallThickness, int floorThickness, string wallpaper, int muteSettings,
+            int banSettings, int kickSettings, int chatMode, int chatSize, int chatSpeed, int extraFlood, int chatDistance, int tradeSettings, bool pushEnabled, bool pullEnabled, bool superPushEnabled,
+            bool superPullEnabled, bool respectedNotificationsEnabled, bool petMorphsAllowed, int groupId)
         {
-            Id = Convert.ToInt32(Row["id"]);
-            Name = Convert.ToString(Row["caption"]);
-            Description = Convert.ToString(Row["description"]);
-            Type = Convert.ToString(Row["roomtype"]);
-            OwnerId = Convert.ToInt32(Row["owner"]);
+            this.Id = id;
+            this.Name = caption;
+            this.ModelName = model;
+            this.OwnerName = ownerName;
+            this.OwnerId = ownerId;
+            this.Password = password;
+            this.Score = score;
+            this.Type = type;
+            this.Access = RoomAccessUtility.ToRoomAccess(access);
+            this.UsersNow = usersNow;
+            this.UsersMax = usersMax;
+            this.Category = category;
+            this.Description = description;
 
-            OwnerName = "";
-            using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
-            {
-                dbClient.SetQuery("SELECT `username` FROM `users` WHERE `id` = @owner LIMIT 1");
-                dbClient.AddParameter("owner", OwnerId);
-                string result = dbClient.GetString();
-                if (!String.IsNullOrEmpty(result))
-                    OwnerName = result;
-            }
-
-            this.Access = RoomAccessUtility.ToRoomAccess(Row["state"].ToString().ToLower());
-            Category = Convert.ToInt32(Row["category"]);
-            UsersNow = string.IsNullOrEmpty(Row["users_now"].ToString()) ? 0 : Convert.ToInt32(Row["users_now"]);        
-            UsersMax = Convert.ToInt32(Row["users_max"]);
-            ModelName = Convert.ToString(Row["model_name"]);
-            Score = Convert.ToInt32(Row["score"]);
-            Tags = new List<string>();
-            AllowPets = string.IsNullOrEmpty(Row["allow_pets"].ToString()) ? 0 : Convert.ToInt32(Row["allow_pets"].ToString());
-            AllowPetsEating = string.IsNullOrEmpty(Row["allow_pets_eat"].ToString()) ? 0 : Convert.ToInt32(Row["allow_pets_eat"].ToString());
-            RoomBlockingEnabled = string.IsNullOrEmpty(Row["room_blocking_disabled"].ToString()) ? 0 : Convert.ToInt32(Row["room_blocking_disabled"].ToString());
-            Hidewall = string.IsNullOrEmpty(Row["allow_hidewall"].ToString()) ? 0 : Convert.ToInt32(Row["allow_hidewall"].ToString());
-            Password = Convert.ToString(Row["password"]);
-            Wallpaper = Convert.ToString(Row["wallpaper"]);
-            Floor = Convert.ToString(Row["floor"]);
-            Landscape = Convert.ToString(Row["landscape"]);
-            FloorThickness = string.IsNullOrEmpty(Row["allow_hidewall"].ToString()) ? 0 : Convert.ToInt32(Row["allow_hidewall"].ToString());
-            WallThickness = string.IsNullOrEmpty(Row["floorthick"].ToString()) ? 0 : Convert.ToInt32(Row["floorthick"].ToString());
-            WhoCanMute = string.IsNullOrEmpty(Row["wallthick"].ToString()) ? 0 : Convert.ToInt32(Row["floorthick"].ToString());
-            WhoCanKick = string.IsNullOrEmpty(Row["mute_settings"].ToString()) ? 0 : Convert.ToInt32(Row["mute_settings"].ToString());
-            WhoCanBan = string.IsNullOrEmpty(Row["kick_settings"].ToString()) ? 0 : Convert.ToInt32(Row["kick_settings"].ToString());
-            chatMode = string.IsNullOrEmpty(Row["ban_settings"].ToString()) ? 0 : Convert.ToInt32(Row["ban_settings"].ToString());
-            chatSpeed = string.IsNullOrEmpty(Row["chat_mode"].ToString()) ? 0 : Convert.ToInt32(Row["chat_mode"].ToString());
-            chatMode = string.IsNullOrEmpty(Row["chat_speed"].ToString()) ? 0 : Convert.ToInt32(Row["chat_speed"].ToString());
-            chatSize = string.IsNullOrEmpty(Row["chat_size"].ToString()) ? 0 : Convert.ToInt32(Row["chat_size"].ToString());
-            TradeSettings = string.IsNullOrEmpty(Row["trade_settings"].ToString()) ? 0 : Convert.ToInt32(Row["trade_settings"].ToString());
-
-            Group G = null;
-            if (PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(Convert.ToInt32(Row["group_id"]), out G))
-                Group = G;
-            else
-                Group = null;
-
-            foreach (string Tag in Row["tags"].ToString().Split(','))
+            this.Tags = new List<string>();
+            foreach (string Tag in tags.ToString().Split(','))
             {
                 Tags.Add(Tag);
             }
 
-            mModel = PlusEnvironment.GetGame().GetRoomManager().GetModel(ModelName);
+            this.Floor = floor;
+            this.Landscape = landscape;
+            this.AllowPets = allowPets;
+            this.AllowPetsEating = allowPetsEating;
+            this.RoomBlockingEnabled = roomBlockingEnabled;
+            this.Hidewall = hidewall;
+            this.WallThickness = wallThickness;
+            this.FloorThickness = floorThickness;
+            this.Wallpaper = wallpaper;
+            this.WhoCanMute = muteSettings;
+            this.WhoCanBan = banSettings;
+            this.WhoCanKick = kickSettings;
+            this.chatMode = chatMode;
+            this.chatSize = chatSize;
+            this.chatSpeed = chatSpeed;
+            this.extraFlood = extraFlood;
+            this.chatDistance = chatDistance;
+            this.TradeSettings = tradeSettings;
+            this.PushEnabled = pushEnabled;
+            this.PullEnabled = pullEnabled;
+            this.SPushEnabled = superPushEnabled;
+            this.SPullEnabled = superPushEnabled;
+            this.RespectNotificationsEnabled = respectedNotificationsEnabled;
+            this.PetMorphsAllowed = petMorphsAllowed;
 
-            this.PushEnabled = PlusEnvironment.EnumToBool(Row["push_enabled"].ToString());
-            this.PullEnabled = PlusEnvironment.EnumToBool(Row["pull_enabled"].ToString());
-            this.SPushEnabled = PlusEnvironment.EnumToBool(Row["spush_enabled"].ToString());
-            this.SPullEnabled = PlusEnvironment.EnumToBool(Row["spull_enabled"].ToString());
-            this.EnablesEnabled = PlusEnvironment.EnumToBool(Row["enables_enabled"].ToString());
-            this.RespectNotificationsEnabled = PlusEnvironment.EnumToBool(Row["respect_notifications_enabled"].ToString());
-            this.PetMorphsAllowed = PlusEnvironment.EnumToBool(Row["pet_morphs_allowed"].ToString());
+            if (groupId > 0)
+                PlusEnvironment.GetGame().GetGroupManager().TryGetGroup(groupId, out this.Group);
         }
+
+        public RoomData(RoomData data)
+        {
+            this.Id = data.Id;
+            this.Name = data.Name;
+            this.ModelName = data.ModelName;
+            this.OwnerName = data.OwnerName;
+            this.OwnerId = data.OwnerId;
+            this.Password = data.Password;
+            this.Score = data.Score;
+            this.Type = data.Type;
+            this.Access = data.Access;
+            this.UsersNow = data.UsersNow;
+            this.UsersMax = data.UsersMax;
+            this.Category = data.Category;
+            this.Description = data.Description;
+            this.Tags = data.Tags;
+            this.Floor = data.Floor;
+            this.Landscape = data.Landscape;
+            this.AllowPets = data.AllowPets;
+            this.AllowPetsEating = data.AllowPetsEating;
+            this.RoomBlockingEnabled = data.RoomBlockingEnabled;
+            this.Hidewall = data.Hidewall;
+            this.WallThickness = data.WallThickness;
+            this.FloorThickness = data.FloorThickness;
+            this.Wallpaper = data.Wallpaper;
+            this.WhoCanMute = data.WhoCanMute;
+            this.WhoCanBan = data.WhoCanBan;
+            this.WhoCanKick = data.WhoCanKick;
+            this.chatMode = data.chatMode;
+            this.chatSize = data.chatSize;
+            this.chatSpeed = data.chatSpeed;
+            this.extraFlood = data.extraFlood;
+            this.chatDistance = data.chatDistance;
+            this.TradeSettings = data.TradeSettings;
+            this.PushEnabled = data.PushEnabled;
+            this.PullEnabled = data.PullEnabled;
+            this.SPushEnabled = data.SPushEnabled;
+            this.SPullEnabled = data.SPullEnabled;
+            this.RespectNotificationsEnabled = data.RespectNotificationsEnabled;
+            this.PetMorphsAllowed = data.PetMorphsAllowed;
+            this.Group = data.Group;
+        }
+
 
         public RoomPromotion Promotion
         {

@@ -32,13 +32,13 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Action
                 case -1:
 
                     Room.Score--;
-                    Room.RoomData.Score--;
+                    Room.Score--;
                     break;
 
                 case 1:
 
                     Room.Score++;
-                    Room.RoomData.Score++;
+                    Room.Score++;
                     break;
 
                 default:

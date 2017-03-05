@@ -8,54 +8,54 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
 {
     class GetGuestRoomResultComposer : ServerPacket
     {
-        public GetGuestRoomResultComposer(GameClient Session, RoomData Data, Boolean isLoading, Boolean checkEntry)
+        public GetGuestRoomResultComposer(GameClient session, RoomData data, bool isLoading, bool checkEntry)
             : base(ServerPacketHeader.GetGuestRoomResultMessageComposer)
         {
             base.WriteBoolean(isLoading);
-            base.WriteInteger(Data.Id);
-            base.WriteString(Data.Name);
-            base.WriteInteger(Data.OwnerId);
-            base.WriteString(Data.OwnerName);
-            base.WriteInteger(RoomAccessUtility.GetRoomAccessPacketNum(Data.Access));
-            base.WriteInteger(Data.UsersNow);
-            base.WriteInteger(Data.UsersMax);
-            base.WriteString(Data.Description);
-            base.WriteInteger(Data.TradeSettings);
-            base.WriteInteger(Data.Score);
+            base.WriteInteger(data.Id);
+            base.WriteString(data.Name);
+            base.WriteInteger(data.OwnerId);
+            base.WriteString(data.OwnerName);
+            base.WriteInteger(RoomAccessUtility.GetRoomAccessPacketNum(data.Access));
+            base.WriteInteger(data.UsersNow);
+            base.WriteInteger(data.UsersMax);
+            base.WriteString(data.Description);
+            base.WriteInteger(data.TradeSettings);
+            base.WriteInteger(data.Score);
             base.WriteInteger(0);//Top rated room rank.
-            base.WriteInteger(Data.Category);
+            base.WriteInteger(data.Category);
 
-            base.WriteInteger(Data.Tags.Count);
-            foreach (string Tag in Data.Tags)
+            base.WriteInteger(data.Tags.Count);
+            foreach (string Tag in data.Tags)
             {
                 base.WriteString(Tag);
             }
 
-            if (Data.Group != null && Data.Promotion != null)
+            if (data.Group != null && data.Promotion != null)
             {
                 base.WriteInteger(62);//What?
 
-                base.WriteInteger(Data.Group == null ? 0 : Data.Group.Id);
-                base.WriteString(Data.Group == null ? "" : Data.Group.Name);
-                base.WriteString(Data.Group == null ? "" : Data.Group.Badge);
+                base.WriteInteger(data.Group == null ? 0 : data.Group.Id);
+                base.WriteString(data.Group == null ? "" : data.Group.Name);
+                base.WriteString(data.Group == null ? "" : data.Group.Badge);
 
-                base.WriteString(Data.Promotion != null ? Data.Promotion.Name : "");
-                base.WriteString(Data.Promotion != null ? Data.Promotion.Description : "");
-                base.WriteInteger(Data.Promotion != null ? Data.Promotion.MinutesLeft : 0);
+                base.WriteString(data.Promotion != null ? data.Promotion.Name : "");
+                base.WriteString(data.Promotion != null ? data.Promotion.Description : "");
+                base.WriteInteger(data.Promotion != null ? data.Promotion.MinutesLeft : 0);
             }
-            else if (Data.Group != null && Data.Promotion == null)
+            else if (data.Group != null && data.Promotion == null)
             {
                 base.WriteInteger(58);//What?
-                base.WriteInteger(Data.Group == null ? 0 : Data.Group.Id);
-                base.WriteString(Data.Group == null ? "" : Data.Group.Name);
-                base.WriteString(Data.Group == null ? "" : Data.Group.Badge);
+                base.WriteInteger(data.Group == null ? 0 : data.Group.Id);
+                base.WriteString(data.Group == null ? "" : data.Group.Name);
+                base.WriteString(data.Group == null ? "" : data.Group.Badge);
             }
-            else if (Data.Group == null && Data.Promotion != null)
+            else if (data.Group == null && data.Promotion != null)
             {
                 base.WriteInteger(60);//What?
-                base.WriteString(Data.Promotion != null ? Data.Promotion.Name : "");
-                base.WriteString(Data.Promotion != null ? Data.Promotion.Description : "");
-                base.WriteInteger(Data.Promotion != null ? Data.Promotion.MinutesLeft : 0);
+                base.WriteString(data.Promotion != null ? data.Promotion.Name : "");
+                base.WriteString(data.Promotion != null ? data.Promotion.Description : "");
+                base.WriteInteger(data.Promotion != null ? data.Promotion.MinutesLeft : 0);
             }
             else
             {
@@ -65,23 +65,23 @@ namespace Plus.Communication.Packets.Outgoing.Navigator
             base.WriteBoolean(checkEntry);
 
             StaffPick staffPick = null;
-            if (!PlusEnvironment.GetGame().GetNavigator().TryGetStaffPickedRoom(Data.Id, out staffPick))
+            if (!PlusEnvironment.GetGame().GetNavigator().TryGetStaffPickedRoom(data.Id, out staffPick))
                 base.WriteBoolean(false);
             else
                 base.WriteBoolean(true);
             base.WriteBoolean(false);
             base.WriteBoolean(false);
 
-            base.WriteInteger(Data.WhoCanMute);
-            base.WriteInteger(Data.WhoCanKick);
-            base.WriteInteger(Data.WhoCanBan);
+            base.WriteInteger(data.WhoCanMute);
+            base.WriteInteger(data.WhoCanKick);
+            base.WriteInteger(data.WhoCanBan);
 
-            base.WriteBoolean(Session.GetHabbo().GetPermissions().HasRight("mod_tool") || Data.OwnerName == Session.GetHabbo().Username);//Room muting.
-            base.WriteInteger(Data.chatMode);
-            base.WriteInteger(Data.chatSize);
-            base.WriteInteger(Data.chatSpeed);
-            base.WriteInteger(Data.extraFlood);//Hearing distance
-            base.WriteInteger(Data.chatDistance);//Flood!!
+            base.WriteBoolean(session.GetHabbo().GetPermissions().HasRight("mod_tool") || data.OwnerName == session.GetHabbo().Username);//Room muting.
+            base.WriteInteger(data.chatMode);
+            base.WriteInteger(data.chatSize);
+            base.WriteInteger(data.chatSpeed);
+            base.WriteInteger(data.extraFlood);//Hearing distance
+            base.WriteInteger(data.chatDistance);//Flood!!
         }
     }
 }

@@ -33,19 +33,21 @@ namespace Plus.HabboHotel.Rooms.Chat.Commands.Moderator
                 return;
             }
 
-            int RoomID;
-
-            if (!int.TryParse(Params[1], out RoomID))
+            int roomId = 0;
+            if (!int.TryParse(Params[1], out roomId))
+            {
                 Session.SendWhisper("You must enter a valid room ID");
+            }
             else
             {
-                Room _room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(RoomID);
-                if (_room == null)
-                    Session.SendWhisper("This room does not exist!");
-                else
+                Room room = null;
+                if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(roomId, out room))
                 {
-                    Session.GetHabbo().PrepareRoom(_room.Id, "");
+                    Session.SendWhisper("This room does not exist!");
+                    return;
                 }
+
+                Session.GetHabbo().PrepareRoom(room.Id, "");
             }
         }
     }

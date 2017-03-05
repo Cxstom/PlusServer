@@ -11,7 +11,7 @@ namespace Plus.Communication.Packets.Incoming.Catalog
     {
         public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
         {
-            Session.SendPacket(new GetCatalogRoomPromotionComposer(Session.GetHabbo().UsersRooms));
+            //Session.SendPacket(new GetCatalogRoomPromotionComposer(Session.GetHabbo().UsersRooms));
         }
     }
 }

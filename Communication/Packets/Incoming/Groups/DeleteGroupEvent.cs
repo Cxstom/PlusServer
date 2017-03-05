@@ -20,7 +20,9 @@ namespace Plus.Communication.Packets.Incoming.Groups
                 return;
             }
 
-            if (Group.CreatorId != Session.GetHabbo().Id && !Session.GetHabbo().GetPermissions().HasRight("group_delete_override"))//Maybe a FUSE check for staff override?
+            if (Group.CreatorId != Session.GetHabbo().Id &&
+                !Session.GetHabbo().GetPermissions().HasRight("group_delete_override"))
+                //Maybe a FUSE check for staff override?
             {
                 Session.SendNotification("Oops, only the group owner can delete a group!");
                 return;
@@ -28,17 +30,15 @@ namespace Plus.Communication.Packets.Incoming.Groups
 
             if (Group.MemberCount >= Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) && !Session.GetHabbo().GetPermissions().HasRight("group_delete_limit_override"))
             {
-                Session.SendNotification("Oops, your group exceeds the maximum amount of members (" + Convert.ToInt32(PlusEnvironment.GetSettingsManager().TryGetValue("group.delete.member.limit")) + ") a group can exceed before being eligible for deletion. Seek assistance from a staff member.");
+                Session.SendNotification("Oops, your group exceeds the maximum amount of members (" +  Convert.ToInt32(PlusEnvironment.GetSettingsManager() .TryGetValue("group.delete.member.limit")) + ") a group can exceed before being eligible for deletion. Seek assistance from a staff member.");
                 return;
             }
 
-            Room Room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(Group.RoomId);
+            RoomData RoomData = null;
+            if (RoomFactory.TryGetData(Group.RoomId, out RoomData))
+                return;
 
-            if (Room != null)
-            {
-                Room.Group = null;
-                Room.RoomData.Group = null;//I'm not sure if this is needed or not, becauseof inheritance, but oh well.
-            }
+            RoomData.Group = null; //I'm not sure if this is needed or not, becauseof inheritance, but oh well.
 
             //Remove it from the cache.
             PlusEnvironment.GetGame().GetGroupManager().DeleteGroup(Group.Id);
@@ -55,11 +55,10 @@ namespace Plus.Communication.Packets.Incoming.Groups
             }
 
             //Unload it last.
-            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(Room, true);
+            PlusEnvironment.GetGame().GetRoomManager().UnloadRoom(RoomData.Id);
 
             //Say hey!
             Session.SendNotification("You have successfully deleted your group.");
-            return;
         }
     }
 }

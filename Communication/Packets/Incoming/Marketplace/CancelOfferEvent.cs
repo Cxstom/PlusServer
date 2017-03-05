@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Collections.Generic;
 
 using Plus.HabboHotel.Items;
 using Plus.Communication.Packets.Outgoing.Marketplace;
 using Plus.Communication.Packets.Outgoing.Inventory.Furni;
 
 using Plus.Database.Interfaces;
-
+using Plus.HabboHotel.GameClients;
 
 namespace Plus.Communication.Packets.Incoming.Marketplace
 {
     class CancelOfferEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(GameClient session, ClientPacket packet)
         {
-            if (Session == null || Session.GetHabbo() == null)
+            if (session == null || session.GetHabbo() == null)
                 return;
 
             DataRow Row = null;
-            int OfferId = Packet.PopInt();
+            int OfferId = packet.PopInt();
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
@@ -32,39 +29,37 @@ namespace Plus.Communication.Packets.Incoming.Marketplace
 
             if (Row == null)
             {
-                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
-            if (Convert.ToInt32(Row["user_id"]) != Session.GetHabbo().Id)
+            if (Convert.ToInt32(Row["user_id"]) != session.GetHabbo().Id)
             {
-                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
             ItemData Item = null;
             if (!PlusEnvironment.GetGame().GetItemManager().GetItem(Convert.ToInt32(Row["item_id"]), out Item))
             {
-                Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
+                session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, false));
                 return;
             }
 
-            //PlusEnvironment.GetGame().GetCatalog().DeliverItems(Session, Item, 1, Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]), Convert.ToInt32(Row["furni_id"]));
-
-            Item GiveItem = ItemFactory.CreateSingleItem(Item, Session.GetHabbo(), Convert.ToString(Row["extra_data"]), Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["furni_id"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]));
-            Session.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
-            Session.SendPacket(new FurniListUpdateComposer());
+            Item GiveItem = ItemFactory.CreateSingleItem(Item, session.GetHabbo(), Convert.ToString(Row["extra_data"]), Convert.ToString(Row["extra_data"]), Convert.ToInt32(Row["furni_id"]), Convert.ToInt32(Row["limited_number"]), Convert.ToInt32(Row["limited_stack"]));
+            session.SendPacket(new FurniListNotificationComposer(GiveItem.Id, 1));
+            session.SendPacket(new FurniListUpdateComposer());
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("DELETE FROM `catalog_marketplace_offers` WHERE `offer_id` = @OfferId AND `user_id` = @UserId LIMIT 1");
                 dbClient.AddParameter("OfferId", OfferId);
-                dbClient.AddParameter("UserId", Session.GetHabbo().Id);
+                dbClient.AddParameter("UserId", session.GetHabbo().Id);
                 dbClient.RunQuery();
             }
 
-            Session.GetHabbo().GetInventoryComponent().UpdateItems(true);
-            Session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, true));
+            session.GetHabbo().GetInventoryComponent().UpdateItems(true);
+            session.SendPacket(new MarketplaceCancelOfferResultComposer(OfferId, true));
         }
     }
 }

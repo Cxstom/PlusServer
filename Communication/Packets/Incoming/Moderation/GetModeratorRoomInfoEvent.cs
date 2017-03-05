@@ -17,13 +17,12 @@ namespace Plus.Communication.Packets.Incoming.Moderation
 
             int RoomId = Packet.PopInt();
 
-            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
-            if (Data == null)
-                return;
+            RoomData Data = null;
+            Room Room = null;
 
-            Room Room;
-
-            if (!PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
+            if (PlusEnvironment.GetGame().GetRoomManager().TryGetRoom(RoomId, out Room))
+                Data = Room;
+            else if (!RoomFactory.TryGetData(RoomId, out Data))
                 return;
 
             Session.SendPacket(new ModeratorRoomInfoComposer(Data, (Room.GetRoomUserManager().GetRoomUserByHabbo(Data.OwnerName) != null)));

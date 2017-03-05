@@ -40,8 +40,8 @@ namespace Plus.Communication.Packets.Incoming.Moderation
                 {
                     foreach (DataRow Row in GetLogs.Rows)
                     {
-                        RoomData RoomData = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(Convert.ToInt32(Row["room_id"]));
-                        if (RoomData == null)
+                        RoomData RoomData = null;
+                        if (!RoomFactory.TryGetData(Convert.ToInt32(Row["room_id"]), out RoomData))
                         {
                             continue;
                         }

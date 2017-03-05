@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Text;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
-using Plus.Core;
 using Plus.HabboHotel.Rooms;
 using Plus.HabboHotel.Navigator;
 using Plus.Communication.Packets.Outgoing.Navigator;
@@ -17,22 +14,27 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
 {
     class SaveRoomSettingsEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (Session == null || Session.GetHabbo() == null)
+            if (session == null || session.GetHabbo() == null)
                 return;
 
-            Room Room = PlusEnvironment.GetGame().GetRoomManager().LoadRoom(Packet.PopInt());
-            if (Room == null || !Room.CheckRights(Session, true))
+            int roomId = packet.PopInt();
+
+            Room room = null;
+            if (!PlusEnvironment.GetGame().GetRoomManager().TryLoadRoom(roomId, out room))
                 return;
 
-            string Name = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());
-            string Description = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(Packet.PopString());
-            RoomAccess Access = RoomAccessUtility.ToRoomAccess(Packet.PopInt());
-            string Password = Packet.PopString();
-            int MaxUsers = Packet.PopInt();
-            int CategoryId = Packet.PopInt();
-            int TagCount = Packet.PopInt();
+            if (!room.CheckRights(session, true))
+                return;
+
+            string Name = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(packet.PopString());
+            string Description = PlusEnvironment.GetGame().GetChatManager().GetFilter().CheckMessage(packet.PopString());
+            RoomAccess Access = RoomAccessUtility.ToRoomAccess(packet.PopInt());
+            string Password = packet.PopString();
+            int MaxUsers = packet.PopInt();
+            int CategoryId = packet.PopInt();
+            int TagCount = packet.PopInt();
 
             List<string> Tags = new List<string>();
             StringBuilder formattedTags = new StringBuilder();
@@ -44,27 +46,27 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                     formattedTags.Append(",");
                 }
 
-                string tag = Packet.PopString().ToLower();
+                string tag = packet.PopString().ToLower();
 
                 Tags.Add(tag);
                 formattedTags.Append(tag);
             }
 
-            int TradeSettings = Packet.PopInt();//2 = All can trade, 1 = owner only, 0 = no trading.
-            int AllowPets = Convert.ToInt32(PlusEnvironment.BoolToEnum(Packet.PopBoolean()));
-            int AllowPetsEat = Convert.ToInt32(PlusEnvironment.BoolToEnum(Packet.PopBoolean()));
-            int RoomBlockingEnabled = Convert.ToInt32(PlusEnvironment.BoolToEnum(Packet.PopBoolean()));
-            int Hidewall = Convert.ToInt32(PlusEnvironment.BoolToEnum(Packet.PopBoolean()));
-            int WallThickness = Packet.PopInt();
-            int FloorThickness = Packet.PopInt();
-            int WhoMute = Packet.PopInt(); // mute
-            int WhoKick = Packet.PopInt(); // kick
-            int WhoBan = Packet.PopInt(); // ban
-            int chatMode = Packet.PopInt();
-            int chatSize = Packet.PopInt();
-            int chatSpeed = Packet.PopInt();
-            int chatDistance = Packet.PopInt();
-            int extraFlood = Packet.PopInt();
+            int TradeSettings = packet.PopInt();//2 = All can trade, 1 = owner only, 0 = no trading.
+            int AllowPets = Convert.ToInt32(PlusEnvironment.BoolToEnum(packet.PopBoolean()));
+            int AllowPetsEat = Convert.ToInt32(PlusEnvironment.BoolToEnum(packet.PopBoolean()));
+            int RoomBlockingEnabled = Convert.ToInt32(PlusEnvironment.BoolToEnum(packet.PopBoolean()));
+            int Hidewall = Convert.ToInt32(PlusEnvironment.BoolToEnum(packet.PopBoolean()));
+            int WallThickness = packet.PopInt();
+            int FloorThickness = packet.PopInt();
+            int WhoMute = packet.PopInt(); // mute
+            int WhoKick = packet.PopInt(); // kick
+            int WhoBan = packet.PopInt(); // ban
+            int chatMode = packet.PopInt();
+            int chatSize = packet.PopInt();
+            int chatSpeed = packet.PopInt();
+            int chatDistance = packet.PopInt();
+            int extraFlood = packet.PopInt();
 
             if (Name.Length < 1)
                 return;
@@ -106,7 +108,7 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (!PlusEnvironment.GetGame().GetNavigator().TryGetSearchResultList(CategoryId, out SearchResultList))
                 CategoryId = 36;
 
-            if (SearchResultList.CategoryType != NavigatorCategoryType.CATEGORY || SearchResultList.RequiredRank > Session.GetHabbo().Rank || (Session.GetHabbo().Id != Room.OwnerId && Session.GetHabbo().Rank >= SearchResultList.RequiredRank))
+            if (SearchResultList.CategoryType != NavigatorCategoryType.CATEGORY || SearchResultList.RequiredRank > session.GetHabbo().Rank || (session.GetHabbo().Id != room.OwnerId && session.GetHabbo().Rank >= SearchResultList.RequiredRank))
                 CategoryId = 36;
 
             if (TagCount > 2)
@@ -160,70 +162,42 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
             if (extraFlood < 0 || extraFlood > 2)
                 extraFlood = 0;
 
-            Room.AllowPets = AllowPets;
-            Room.AllowPetsEating = AllowPetsEat;
-            Room.RoomBlockingEnabled = RoomBlockingEnabled;
-            Room.Hidewall = Hidewall;
+            room.AllowPets = AllowPets;
+            room.AllowPetsEating = AllowPetsEat;
+            room.RoomBlockingEnabled = RoomBlockingEnabled;
+            room.Hidewall = Hidewall;
 
-            Room.RoomData.AllowPets = AllowPets;
-            Room.RoomData.AllowPetsEating = AllowPetsEat;
-            Room.RoomData.RoomBlockingEnabled = RoomBlockingEnabled;
-            Room.RoomData.Hidewall = Hidewall;
+            room.Name = Name;
+            room.Access = Access;
+            room.Description = Description;
+            room.Category = CategoryId;
+            room.Password = Password;
 
-            Room.Name = Name;
-            Room.Access = Access;
-            Room.Description = Description;
-            Room.Category = CategoryId;
-            Room.Password = Password;
+            room.WhoCanBan = WhoBan;
+            room.WhoCanKick = WhoKick;
+            room.WhoCanMute = WhoMute;
 
-            Room.RoomData.Name = Name;
-            Room.RoomData.Access = Access;
-            Room.RoomData.Description = Description;
-            Room.RoomData.Category = CategoryId;
-            Room.RoomData.Password = Password;
+            room.ClearTags();
+            room.AddTagRange(Tags);
+            room.UsersMax = MaxUsers;
 
-            Room.WhoCanBan = WhoBan;
-            Room.WhoCanKick = WhoKick;
-            Room.WhoCanMute = WhoMute;
-            Room.RoomData.WhoCanBan = WhoBan;
-            Room.RoomData.WhoCanKick = WhoKick;
-            Room.RoomData.WhoCanMute = WhoMute;
+            room.WallThickness = WallThickness;
+            room.FloorThickness = FloorThickness;
 
-            Room.ClearTags();
-            Room.AddTagRange(Tags);
-            Room.UsersMax = MaxUsers;
+            room.chatMode = chatMode;
+            room.chatSize = chatSize;
+            room.chatSpeed = chatSpeed;
+            room.chatDistance = chatDistance;
+            room.extraFlood = extraFlood;
 
-            Room.RoomData.Tags.Clear();
-            Room.RoomData.Tags.AddRange(Tags);
-            Room.RoomData.UsersMax = MaxUsers;
-
-            Room.WallThickness = WallThickness;
-            Room.FloorThickness = FloorThickness;
-            Room.RoomData.WallThickness = WallThickness;
-            Room.RoomData.FloorThickness = FloorThickness;
-
-            Room.chatMode = chatMode;
-            Room.chatSize = chatSize;
-            Room.chatSpeed = chatSpeed;
-            Room.chatDistance = chatDistance;
-            Room.extraFlood = extraFlood;
-
-            Room.TradeSettings = TradeSettings;
-
-            Room.RoomData.chatMode = chatMode;
-            Room.RoomData.chatSize = chatSize;
-            Room.RoomData.chatSpeed = chatSpeed;
-            Room.RoomData.chatDistance = chatDistance;
-            Room.RoomData.extraFlood = extraFlood;
-
-            Room.RoomData.TradeSettings = TradeSettings;
+            room.TradeSettings = TradeSettings;
 
             using (IQueryAdapter dbClient = PlusEnvironment.GetDatabaseManager().GetQueryReactor())
             {
                 dbClient.SetQuery("UPDATE `rooms` SET `caption` = @caption, `description` = @description, `password` = @password, `category` = @categoryId, `state` = @state, `tags` = @tags, `users_max` = @maxUsers, `allow_pets` = @allowPets, `allow_pets_eat` = @allowPetsEat, `room_blocking_disabled` = @roomBlockingDisabled, `allow_hidewall` = @allowHidewall, `floorthick` = @floorThick, `wallthick` = @wallThick, `mute_settings` = @muteSettings, `kick_settings` = @kickSettings, `ban_settings` = @banSettings, `chat_mode` = @chatMode, `chat_size` = @chatSize, `chat_speed` = @chatSpeed, `chat_extra_flood` = @extraFlood, `chat_hearing_distance` = @chatDistance, `trade_settings` = @tradeSettings WHERE `id` = @roomId LIMIT 1");
-                dbClient.AddParameter("caption", Room.Name);
-                dbClient.AddParameter("description", Room.Description);
-                dbClient.AddParameter("password", Room.Password);
+                dbClient.AddParameter("caption", room.Name);
+                dbClient.AddParameter("description", room.Description);
+                dbClient.AddParameter("password", room.Password);
                 dbClient.AddParameter("categoryId", CategoryId);
                 dbClient.AddParameter("state", AccessStr);
                 dbClient.AddParameter("tags", formattedTags.ToString());
@@ -231,42 +205,42 @@ namespace Plus.Communication.Packets.Incoming.Rooms.Settings
                 dbClient.AddParameter("allowPets", AllowPets.ToString());
                 dbClient.AddParameter("allowPetsEat", AllowPetsEat.ToString());
                 dbClient.AddParameter("roomBlockingDisabled", RoomBlockingEnabled.ToString());
-                dbClient.AddParameter("allowHidewall", Room.Hidewall.ToString());
-                dbClient.AddParameter("floorThick", Room.FloorThickness.ToString());
-                dbClient.AddParameter("wallThick", Room.WallThickness.ToString());
-                dbClient.AddParameter("muteSettings", Room.WhoCanMute.ToString());
-                dbClient.AddParameter("kickSettings", Room.WhoCanKick.ToString());
-                dbClient.AddParameter("banSettings", Room.WhoCanBan.ToString());
-                dbClient.AddParameter("chatMode", Room.chatMode.ToString());
-                dbClient.AddParameter("chatSize", Room.chatSize.ToString());
-                dbClient.AddParameter("chatSpeed", Room.chatSpeed.ToString());
-                dbClient.AddParameter("extraFlood", Room.extraFlood.ToString());
-                dbClient.AddParameter("chatDistance", Room.chatDistance.ToString());
-                dbClient.AddParameter("tradeSettings", Room.TradeSettings.ToString());
-                dbClient.AddParameter("roomId", Room.Id);
+                dbClient.AddParameter("allowHidewall", room.Hidewall.ToString());
+                dbClient.AddParameter("floorThick", room.FloorThickness.ToString());
+                dbClient.AddParameter("wallThick", room.WallThickness.ToString());
+                dbClient.AddParameter("muteSettings", room.WhoCanMute.ToString());
+                dbClient.AddParameter("kickSettings", room.WhoCanKick.ToString());
+                dbClient.AddParameter("banSettings", room.WhoCanBan.ToString());
+                dbClient.AddParameter("chatMode", room.chatMode.ToString());
+                dbClient.AddParameter("chatSize", room.chatSize.ToString());
+                dbClient.AddParameter("chatSpeed", room.chatSpeed.ToString());
+                dbClient.AddParameter("extraFlood", room.extraFlood.ToString());
+                dbClient.AddParameter("chatDistance", room.chatDistance.ToString());
+                dbClient.AddParameter("tradeSettings", room.TradeSettings.ToString());
+                dbClient.AddParameter("roomId", room.Id);
                 dbClient.RunQuery();
             }
 
-            Room.GetGameMap().GenerateMaps();
+            room.GetGameMap().GenerateMaps();
 
-            if (Session.GetHabbo().CurrentRoom == null)
+            if (session.GetHabbo().CurrentRoom == null)
             {
-                Session.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
-                Session.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
-                Session.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                session.SendPacket(new RoomSettingsSavedComposer(room.RoomId));
+                session.SendPacket(new RoomInfoUpdatedComposer(room.RoomId));
+                session.SendPacket(new RoomVisualizationSettingsComposer(room.WallThickness, room.FloorThickness, PlusEnvironment.EnumToBool(room.Hidewall.ToString())));
             }
             else
             {
-                Room.SendPacket(new RoomSettingsSavedComposer(Room.RoomId));
-                Room.SendPacket(new RoomInfoUpdatedComposer(Room.RoomId));
-                Room.SendPacket(new RoomVisualizationSettingsComposer(Room.WallThickness, Room.FloorThickness, PlusEnvironment.EnumToBool(Room.Hidewall.ToString())));
+                room.SendPacket(new RoomSettingsSavedComposer(room.RoomId));
+                room.SendPacket(new RoomInfoUpdatedComposer(room.RoomId));
+                room.SendPacket(new RoomVisualizationSettingsComposer(room.WallThickness, room.FloorThickness, PlusEnvironment.EnumToBool(room.Hidewall.ToString())));
             }
-            
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModDoorModeSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModWalkthroughSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModChatScrollSpeedSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModChatFloodFilterSeen", 1);
-            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(Session, "ACH_SelfModChatHearRangeSeen", 1);
+
+            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModDoorModeSeen", 1);
+            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModWalkthroughSeen", 1);
+            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatScrollSpeedSeen", 1);
+            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatFloodFilterSeen", 1);
+            PlusEnvironment.GetGame().GetAchievementManager().ProgressAchievement(session, "ACH_SelfModChatHearRangeSeen", 1);
         }
     }
 }

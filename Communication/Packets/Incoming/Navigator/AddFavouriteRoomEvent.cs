@@ -18,9 +18,8 @@ namespace Plus.Communication.Packets.Incoming.Navigator
 
             int RoomId = Packet.PopInt();
 
-            RoomData Data = PlusEnvironment.GetGame().GetRoomManager().GenerateRoomData(RoomId);
 
-            if (Data == null || Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(RoomId))
+            if ( Session.GetHabbo().FavoriteRooms.Count >= 30 || Session.GetHabbo().FavoriteRooms.Contains(RoomId))
             {
                 // send packet that favourites is full.
                 return;

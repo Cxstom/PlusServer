@@ -1,29 +1,26 @@
-﻿using System;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 using Plus.HabboHotel.Rooms;
-using Plus.HabboHotel.Groups;
 using Plus.Communication.Packets.Outgoing.Groups;
 
 namespace Plus.Communication.Packets.Incoming.Groups
 {
     class GetGroupCreationWindowEvent : IPacketEvent
     {
-        public void Parse(HabboHotel.GameClients.GameClient Session, ClientPacket Packet)
+        public void Parse(HabboHotel.GameClients.GameClient session, ClientPacket packet)
         {
-            if (Session == null)
+            if (session == null)
                 return;
 
-            List<RoomData> ValidRooms = new List<RoomData>();
-            foreach (RoomData Data in Session.GetHabbo().UsersRooms)
+            ICollection<RoomData> rooms = RoomFactory.GetRoomsDataByOwnerSortByName(session.GetHabbo().Id);
+            foreach (RoomData Data in rooms.ToList())
             {
-                if (Data.Group == null)
-                    ValidRooms.Add(Data);
+                if (Data.Group != null)
+                    rooms.Remove(Data);
             }
 
-            Session.SendPacket(new GroupCreationWindowComposer(ValidRooms));
+            session.SendPacket(new GroupCreationWindowComposer(rooms));
         }
     }
 }
